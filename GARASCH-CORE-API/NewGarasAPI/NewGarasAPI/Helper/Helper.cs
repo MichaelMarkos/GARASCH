@@ -87,8 +87,8 @@ namespace NewGarasAPI.Helper
                 case "graffiti":
                     result = "Data Source=" + ServerName + ";Initial Catalog=GRAFFITI;Integrated Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True;";
                     break;
-                case "sanpeter":
-                    result = "Data Source=" + ServerName + ";Initial Catalog=SanPeterReservation;Integrated Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True;";
+                case "GARASCH":
+                    result = "Data Source=" + ServerName + ";Initial Catalog=GARASCH;Integrated Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True;";
                     break;
                 case "libroyes":
                     result = "Data Source=" + ServerName + ";Initial Catalog=LIBRoyes;Integrated Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True;";
@@ -146,7 +146,7 @@ namespace NewGarasAPI.Helper
                     CopName != "graffiti" &&
                     CopName != "libmark" &&
                     CopName != "libroyes" &&
-                    CopName != "sanpeter" &&
+                    CopName != "GARASCH" &&
                     CopName != "royaltent")
                 {
                     Error error = new NewGarasAPI.Models.Common.Error();
@@ -214,7 +214,7 @@ namespace NewGarasAPI.Helper
                     headers["CompanyName"].ToString().ToLower() != "shi" &&
                     headers["CompanyName"].ToString().ToLower() != "shc" &&
                     headers["CompanyName"].ToString().ToLower() != "graffiti" &&
-                    headers["CompanyName"].ToString().ToLower() != "sanpeter" &&
+                    headers["CompanyName"].ToString().ToLower() != "GARASCH" &&
                     headers["CompanyName"].ToString().ToLower() != "libroyes" &&
                     headers["CompanyName"].ToString().ToLower() != "royaltent")
                 {

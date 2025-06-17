@@ -167,7 +167,7 @@ namespace NewGarasAPI.Controllers
                          login.CompanyName.ToLower() != "shi" &&
                          login.CompanyName.ToLower() != "shc" &&
                          login.CompanyName.ToLower() != "graffiti" &&
-                         login.CompanyName.ToLower() != "sanpeter" &&
+                         login.CompanyName.ToLower() != "GARASCH" &&
                          login.CompanyName.ToLower() != "libroyes" &&
                          login.CompanyName.ToLower() != "royaltent")
                 {
@@ -686,7 +686,7 @@ namespace NewGarasAPI.Controllers
                          login.CompanyName.ToLower() != "shi" &&
                          login.CompanyName.ToLower() != "shc" &&
                          login.CompanyName.ToLower() != "graffiti" &&
-                         login.CompanyName.ToLower() != "sanpeter" &&
+                         login.CompanyName.ToLower() != "GARASCH" &&
                          login.CompanyName.ToLower() != "libroyes" &&
                          login.CompanyName.ToLower() != "royaltent")
                 {
@@ -936,7 +936,7 @@ namespace NewGarasAPI.Controllers
                          login.CompanyName.ToLower() != "shi" &&
                          login.CompanyName.ToLower() != "shc" &&
                          login.CompanyName.ToLower() != "graffiti" &&
-                         login.CompanyName.ToLower() != "sanpeter" &&
+                         login.CompanyName.ToLower() != "GARASCH" &&
                          login.CompanyName.ToLower() != "libroyes" &&
                          login.CompanyName.ToLower() != "royaltent")
                 {
