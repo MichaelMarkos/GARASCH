@@ -1,0 +1,14 @@
+﻿namespace NewGarasAPI.Models.HR
+{
+    public partial class proc_JobTitleLoadByPrimaryKey_Result
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool Active { get; set; }
+        public long CreatedBy { get; set; }
+        public DateTime CreationDate { get; set; }
+        public long? ModifiedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+    }
+}
