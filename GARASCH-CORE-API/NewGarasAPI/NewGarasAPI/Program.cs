@@ -128,7 +128,6 @@ builder.Services.AddScoped<IInternalTicketService, InternalTicketService>();
 builder.Services.AddScoped<INotificationSubscriptionService, NotificationSubscriptionService>();
 builder.Services.AddSingleton<IGraphAuthService, GraphAuthService>();
 builder.Services.AddScoped<IPoInvoiceService, PoInvoiceService>();
-builder.Services.AddScoped<ISalesTargetsService, SalesTargetsService>();
 builder.Services.AddScoped<IRoyalTentService, RoyalTentService>();
 builder.Services.AddDbContext<GarasTestContext>();
 builder.Services.AddScoped<IDDLService,  DDLService>();

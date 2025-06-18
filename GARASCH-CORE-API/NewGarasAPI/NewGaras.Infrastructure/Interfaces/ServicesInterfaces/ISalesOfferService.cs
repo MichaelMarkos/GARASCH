@@ -103,9 +103,7 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public BaseResponseWithData<string> GetClientOrdeRate(SalesOfferReportFilter filters, string CompanyName);
 
         public Task<GetTargetOfLast5YearsResponse> GetTargetOfLast5Years();
-        public BaseResponseWithId<long> TargetNextYearDetails(TargetNextYearDetailsResponse Request, long creator);
 
-        public Task<SalesOfferAchievedTargetResponse> SalesOfferAchievedTarget(SalesOfferAchievedTargetFilters filters);
         public Task<GetRejectedOfferResponse> GetRejectedOffer(GetRejectedOfferFilters filters);
         public Task<GetPrOfferItemHistoryResponse> GetPrOfferItemHistory(long? InventoryItemId);
         public Task<BaseResponseWithID> AddEditRejectedSupplierOffer(AddEditSupplierOfferResponse Request, long UserID);
