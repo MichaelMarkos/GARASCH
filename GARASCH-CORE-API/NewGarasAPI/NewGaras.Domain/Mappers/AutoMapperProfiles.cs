@@ -87,7 +87,8 @@ namespace NewGaras.Domain.Mappers
             CreateMap<AddShiftDto,BranchSchedule>();
             CreateMap<BranchSchedule, BranchScheduleDto>();
             CreateMap<InsuranceDto, UserPatientInsurance>();
-            CreateMap<HrUserAddress, HrUserAddressDto>();
+            CreateMap<HrUserAddress, HrUserAddressDto>().ReverseMap();
+            CreateMap<HrUserAttachment, HrUserAttachmentDto>().ReverseMap();
 
 
 

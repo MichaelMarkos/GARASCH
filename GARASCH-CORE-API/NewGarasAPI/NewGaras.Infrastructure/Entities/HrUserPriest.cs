@@ -30,9 +30,27 @@ public partial class HrUserPriest
     [StringLength(250)]
     public string Reason { get; set; }
 
+    public long CreatedBy { get; set; }
+
+    public long ModifiedBy { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime CreationDate { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime ModifiedDate { get; set; }
+
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("HrUserPriestCreatedByNavigations")]
+    public virtual User CreatedByNavigation { get; set; }
+
     [ForeignKey("HrUserId")]
     [InverseProperty("HrUserPriests")]
     public virtual HrUser HrUser { get; set; }
+
+    [ForeignKey("ModifiedBy")]
+    [InverseProperty("HrUserPriestModifiedByNavigations")]
+    public virtual User ModifiedByNavigation { get; set; }
 
     [ForeignKey("PriestId")]
     [InverseProperty("HrUserPriests")]

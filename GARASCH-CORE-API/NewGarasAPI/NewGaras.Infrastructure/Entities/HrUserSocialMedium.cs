@@ -21,7 +21,25 @@ public partial class HrUserSocialMedium
     [Column("HrUserID")]
     public long HrUserId { get; set; }
 
+    public long CreatedBy { get; set; }
+
+    public long ModifiedBy { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime CreationDate { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime ModifiedDate { get; set; }
+
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("HrUserSocialMediumCreatedByNavigations")]
+    public virtual User CreatedByNavigation { get; set; }
+
     [ForeignKey("HrUserId")]
     [InverseProperty("HrUserSocialMedia")]
     public virtual HrUser HrUser { get; set; }
+
+    [ForeignKey("ModifiedBy")]
+    [InverseProperty("HrUserSocialMediumModifiedByNavigations")]
+    public virtual User ModifiedByNavigation { get; set; }
 }

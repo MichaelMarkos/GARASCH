@@ -197,6 +197,7 @@ namespace NewGaras.Infrastructure
         IBaseRepository<DoctorRoom, long> DoctorRooms { get; }
         IBaseRepository<PosNumber, int> PosNumbers { get; }
         IBaseRepository<HrUserAddress, long> HrUserAddresses { get; }
+        IBaseRepository<HrUserAttachment, long> HrUserAttachments { get; }
 
         /*IBaseRepository<HrContactInfo, int> ContactInfos { get; }
         IBaseRepository<HrUserAddress, int> UserAddresses { get; }
@@ -448,6 +449,8 @@ namespace NewGaras.Infrastructure
         IBaseRepository<Product, long> product { get; }
         IBaseRepository<ClientExtraInfo, long> ClientExtraInfos { get; }
         IBaseRepository<HremployeeAttachment, long> HREmployeeAttachments {  get; }
+        IBaseRepository<FamilyStatus, int> FamilyStatus { get; }
+        IBaseRepository<Family, long> Families { get; }
         //-----------------------------------------------------Hany-------------------------------------------------
         IBaseRepository<LaboratoryMessagesReport , long> LaboratoryMessagesReports { get; }
         IBaseRepository<MaritalStatus , int> MaritalStatus { get; }
