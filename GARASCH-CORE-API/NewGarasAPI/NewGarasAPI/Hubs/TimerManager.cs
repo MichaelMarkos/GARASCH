@@ -11,7 +11,7 @@
             _action = action;
             _timer = new Timer(Execute, null, 1000, 4000);
             TimerStarted = DateTime.Now;
-            IsTimerStarted = true;
+            IsTimerStarted = true; 
         }
         public void Execute(object? stateInfo)
         {
