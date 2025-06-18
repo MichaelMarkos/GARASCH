@@ -21,11 +21,6 @@ using NewGaras.Domain.Services.Inventory;
 using NewGaras.Domain.Services.Purchasing;
 using NewGaras.Infrastructure.Models.EmailTool;
 using NewGaras.Domain.Services.ContractExtensionJob;
-using GarasAPP.EntityFrameworkCore.Repositories.Hotel;
-using GNewGaras.Domain.Services.Hotel;
-using NewGaras.Domain.Services.Hotel;
-using NewGaras.Infrastructure.Interfaces.Hotel;
-using NewGaras.Infrastructure.Models.Hotel;
 using NewGaras.Domain.Services.ApplicationsVersion;
 using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Medical;
 using NewGaras.Domain.Services.Medical;
@@ -107,7 +102,6 @@ builder.Services.AddScoped<IInventoryMatrialReleaseForBYService, InventoryMatria
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IAccountAndFinanceService, AccountAndFinanceService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
-builder.Services.AddScoped<IMaintenanceAndService, MaintenanceAndService>();
 builder.Services.AddScoped<IEmailToolService,  EmailToolService>();
 builder.Services.AddScoped<ITaskMangerProjectService, TaskMangerProjectService>();
 builder.Services.AddScoped<IInventoryOpeningBalanceService, InventoryOpeningBalanceService>();
@@ -124,42 +118,17 @@ builder.Services.AddScoped<IItemsPricingService, ItemsPricingService>();
 builder.Services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
 builder.Services.AddScoped<ICrmService, CrmService>();
 builder.Services.AddScoped<IInventoryStoreReportsService, InventoryStoreReportsService>();
-builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IInternalTicketService, InternalTicketService>();
 builder.Services.AddScoped<INotificationSubscriptionService, NotificationSubscriptionService>();
 builder.Services.AddSingleton<IGraphAuthService, GraphAuthService>();
 builder.Services.AddScoped<IPoInvoiceService, PoInvoiceService>();
-builder.Services.AddScoped<ISalesTargetsService, SalesTargetsService>();
-builder.Services.AddScoped<IRoyalTentService, RoyalTentService>();
 builder.Services.AddDbContext<GarasTestContext>();
 builder.Services.AddScoped<IDDLService,  DDLService>();
 builder.Services.AddScoped<ISupplierService,  SupplierService>();
 builder.Services.AddScoped<IApplicationVersionService,  ApplicationVersionService>();
 builder.Services.AddScoped<IFamilyService, FamilyService>();
-//-----------------------------------------------Hotel------------------------------
 
-builder.Services.AddScoped<IAuthRepository , AuthRepository>();
-builder.Services.AddScoped<IRoomRepository , RoomRepository>();
-builder.Services.AddScoped<IRoomViewRepository , RoomViewRepository>();
-builder.Services.AddScoped<IRoomTypeRepository , RoomTypeRepository>();
-builder.Services.AddScoped<IBuildingRepository , BuildingRepository>();
-builder.Services.AddScoped<IFacilityRepository , FacilityRepository>();
-builder.Services.AddScoped<IRoleRepository , RoleRepository>();
-builder.Services.AddScoped<IRateRepository , RateRepository>();
-builder.Services.AddScoped<IReservationRepository , ReservationRepository>();
-builder.Services.AddScoped<IClientRepository , ClientRepository>();
-builder.Services.AddScoped<ICountryRepository , CountryRepository>();
-builder.Services.AddScoped<IGovernorateRepository , GovernorateRepository>();
-builder.Services.AddScoped<IAreaRepository , AreaRepository>();
-builder.Services.AddScoped<IlanguageeRepository , languageeRepository>();
-builder.Services.AddScoped<INationalityRepository , NationalityRepository>();
-builder.Services.AddScoped<IAddressRepository , AddressRepository>();
-builder.Services.AddScoped<IMealRepository , MealRepository>();
-builder.Services.AddScoped<IExpensessStatusRepository , ExpensessStatusRepository>();
-builder.Services.AddTransient<IGreenApiService , GreenApiService>();
-builder.Services.AddScoped<ILabortoryService , LabortoryService>();
 builder.Services.AddScoped<IWeekDayService , WeekDayService>();
-builder.Services.AddScoped<IDoctorRoomService , DoctorRoomService>();
 //-----------------------------------------------Medical------------------------------
 
 builder.Services.AddScoped<IMedicalService, MedicalService>();
@@ -169,15 +138,6 @@ builder.Services.AddScoped<IMedicalFinancialService, MedicalFinancialService>();
 //-----------------------------------------------Library------------------------------
 builder.Services.AddScoped<ILibraryService, LibraryService>();
 
-
-builder.Services.Configure<GreenApiSettings>(builder.Configuration.GetSection(nameof(GreenApiSettings)));
-
-//provider =>
-//   new GraphAuthService(
-//       builder.Configuration["AzureAd:ClientId"],
-//       builder.Configuration["AzureAd:TenantId"],
-//       builder.Configuration["AzureAd:ClientSecret"]
-//   ));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

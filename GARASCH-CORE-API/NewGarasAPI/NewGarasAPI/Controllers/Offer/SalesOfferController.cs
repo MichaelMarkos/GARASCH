@@ -10,7 +10,6 @@ using NewGaras.Infrastructure.Helper.TenantService;
 using NewGaras.Infrastructure.Interfaces.ServicesInterfaces;
 using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Medical;
 using NewGaras.Infrastructure.Models.Inventory;
-using NewGaras.Infrastructure.Models.Maintenance;
 using NewGaras.Infrastructure.Models.SalesOffer;
 using NewGaras.Infrastructure.Models.SalesOffer.Filters;
 using NewGarasAPI.Models.Account;
@@ -1169,71 +1168,6 @@ namespace NewGarasAPI.Controllers.Offer
 
         }
 
-        [HttpPost("TargetNextYearDetails")]
-        public BaseResponseWithId<long> TargetNextYearDetails(TargetNextYearDetailsResponse request)
-        {
-            var response = new BaseResponseWithId<long>();
-            response.Result = true;
-            response.Errors = new List<Error>();
-
-            try
-            {
-
-                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
-                response.Errors = validation.errors;
-                response.Result = validation.result;
-
-                if (response.Result)
-                {
-                    var data = _salesOfferService.TargetNextYearDetails(request, validation.userID);
-                    if (data != null)
-                    {
-                        response = data;
-                    }
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message; ;
-                response.Errors.Add(error);
-
-                return response;
-            }
-        }
-
-        [HttpGet("SalesOfferAchievedTarget")]
-        public async Task<SalesOfferAchievedTargetResponse> SalesOfferAchievedTarget(SalesOfferAchievedTargetFilters filters)
-        {
-            SalesOfferAchievedTargetResponse response = new SalesOfferAchievedTargetResponse();
-            response.Result = true;
-            response.Errors = new List<Error>();
-            try
-            {
-                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
-                response.Errors = validation.errors;
-                response.Result = validation.result;
-                if (response.Result)
-                {
-                    response = await _salesOfferService.SalesOfferAchievedTarget(filters);
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException.Message;
-                response.Errors.Add(error);
-
-                return response;
-            }
-
-        }
 
         [HttpGet("GetSalesOfferDetailsPDF")]
         public async Task<BaseMessageResponse> GetSalesOfferDetailsPDF([FromHeader] long SalesOfferId)

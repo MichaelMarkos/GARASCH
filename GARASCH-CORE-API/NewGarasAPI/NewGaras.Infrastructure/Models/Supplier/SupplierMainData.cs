@@ -16,6 +16,5 @@
         public long? SupplierSerialCounter { get; set; }
         public string SupplierSerial {  get; set; }
 
-        public List<Vehicle> SupplierVehicles { get; set; }
     }
 }
