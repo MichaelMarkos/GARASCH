@@ -371,16 +371,7 @@ namespace NewGaras.Domain.Services
                 }
                 _unitOfWork.Complete();
 
-                if (NewHrUser.Addresses.Count > 0)
-                {
-                    var addresses = _mapper.Map<List<HrUserAddress>>(NewHrUser.Addresses);
-                    foreach (var address in addresses)
-                    {
-                        address.HrUserId = HrUser.Id;
-                        _unitOfWork.HrUserAddresses.Add(address);
-                    }
-                    _unitOfWork.Complete();
-                }
+                
 
                 return response;
             }
@@ -394,6 +385,46 @@ namespace NewGaras.Domain.Services
                 return response;
             }
         }
+
+        public async Task<BaseResponse> AddAddressToHrUser(List<HrUserAddressDto> dtos)
+        {
+            var response = new BaseResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+            try
+            {
+                if (dtos.Count < 0) 
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.errorMSG = "Addresses List is Empty";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                foreach (var address in dtos)
+                {
+                    var ad = _mapper.Map<HrUserAddress>(address);
+                    ad.HrUserId = address.HrUserID;
+                    await _unitOfWork.HrUserAddresses.AddAsync(ad);
+                }
+                _unitOfWork.Complete();
+                return response;
+            }
+            catch(Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+
+        }
+
 
         public async Task<BaseResponseWithDataAndHeader<List<HrUserCardDto>>> GetAll(int CurrentPage, int NumberOfItemsPerPage, string? searchKey,
             bool? active, int? DepId, int? jobTilteId, int? BranchId, bool? isUser, string? Email, string? mobile, bool? isDeleted, bool? ActiveUser)

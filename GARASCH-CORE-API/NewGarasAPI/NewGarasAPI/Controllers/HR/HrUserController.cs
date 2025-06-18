@@ -1994,5 +1994,47 @@ namespace NewGarasAPI.Controllers.HR
             }
         }
 
+
+        [HttpPost("AddAddressToHrUser")]
+        public async Task<BaseResponse> AddAddressToHrUser(List<HrUserAddressDto> dtos)
+        {
+            var response = new BaseResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    var worker = await _hrUserService.AddAddressToHrUser(dtos);
+                    if (!worker.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(worker.Errors);
+                        return response;
+                    }
+                    response = worker;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
     }
 }

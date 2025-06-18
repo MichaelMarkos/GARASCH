@@ -18,7 +18,7 @@ namespace NewGaras.Infrastructure.DTO.HrUser
         public long? AreaID { get; set; }
 
         public string Address { get; set; } = string.Empty;
-        public string? ZipCode { get; set; }
+        public string ZipCode { get; set; }
 
         public decimal? Longitude { get; set; }
         public decimal? Latitude { get; set; }

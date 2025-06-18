@@ -83,5 +83,7 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public ActionResult<GetAbsenceDetailsResponse> GetEmployeeAbsenceDetails(long UserId = 0);
 
         public Task<BaseResponseWithId<long>> CreateHrUserWorker(AddHrUserWorker Worker, long UserId);
+
+        public  Task<BaseResponse> AddAddressToHrUser(List<HrUserAddressDto> dtos);
     }
 }
