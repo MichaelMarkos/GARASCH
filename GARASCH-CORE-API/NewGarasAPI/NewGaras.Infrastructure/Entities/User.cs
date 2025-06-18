@@ -617,11 +617,53 @@ public partial class User
     [InverseProperty("User")]
     public virtual ICollection<GroupUser> GroupUserUsers { get; set; } = new List<GroupUser>();
 
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<HrUserAddress> HrUserAddressCreatedByNavigations { get; set; } = new List<HrUserAddress>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<HrUserAddress> HrUserAddressModifiedByNavigations { get; set; } = new List<HrUserAddress>();
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<HrUserAttachment> HrUserAttachmentCreatedByNavigations { get; set; } = new List<HrUserAttachment>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<HrUserAttachment> HrUserAttachmentModifiedByNavigations { get; set; } = new List<HrUserAttachment>();
+
     [InverseProperty("CreatedBy")]
     public virtual ICollection<HrUser> HrUserCreatedBies { get; set; } = new List<HrUser>();
 
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<HrUserFamily> HrUserFamilyCreatedByNavigations { get; set; } = new List<HrUserFamily>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<HrUserFamily> HrUserFamilyModifiedByNavigations { get; set; } = new List<HrUserFamily>();
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<HrUserLandLine> HrUserLandLineCreatedByNavigations { get; set; } = new List<HrUserLandLine>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<HrUserLandLine> HrUserLandLineModifiedByNavigations { get; set; } = new List<HrUserLandLine>();
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<HrUserMobile> HrUserMobileCreatedByNavigations { get; set; } = new List<HrUserMobile>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<HrUserMobile> HrUserMobileModifiedByNavigations { get; set; } = new List<HrUserMobile>();
+
     [InverseProperty("ModifiedBy")]
     public virtual ICollection<HrUser> HrUserModifiedBies { get; set; } = new List<HrUser>();
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<HrUserPriest> HrUserPriestCreatedByNavigations { get; set; } = new List<HrUserPriest>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<HrUserPriest> HrUserPriestModifiedByNavigations { get; set; } = new List<HrUserPriest>();
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<HrUserSocialMedium> HrUserSocialMediumCreatedByNavigations { get; set; } = new List<HrUserSocialMedium>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<HrUserSocialMedium> HrUserSocialMediumModifiedByNavigations { get; set; } = new List<HrUserSocialMedium>();
 
     [InverseProperty("User")]
     public virtual ICollection<HrUser> HrUserUsers { get; set; } = new List<HrUser>();
@@ -1047,6 +1089,12 @@ public partial class User
 
     [InverseProperty("ModifiedByNavigation")]
     public virtual ICollection<PricingTerm> PricingTermModifiedByNavigations { get; set; } = new List<PricingTerm>();
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<Priest> PriestCreatedByNavigations { get; set; } = new List<Priest>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<Priest> PriestModifiedByNavigations { get; set; } = new List<Priest>();
 
     [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<Product> ProductCreatedByNavigations { get; set; } = new List<Product>();

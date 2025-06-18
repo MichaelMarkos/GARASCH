@@ -17,6 +17,24 @@ public partial class Priest
     [StringLength(250)]
     public string PriestName { get; set; }
 
+    public long CreatedBy { get; set; }
+
+    public long ModifiedBy { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime CreationDate { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime ModifiedDate { get; set; }
+
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("PriestCreatedByNavigations")]
+    public virtual User CreatedByNavigation { get; set; }
+
     [InverseProperty("Priest")]
     public virtual ICollection<HrUserPriest> HrUserPriests { get; set; } = new List<HrUserPriest>();
+
+    [ForeignKey("ModifiedBy")]
+    [InverseProperty("PriestModifiedByNavigations")]
+    public virtual User ModifiedByNavigation { get; set; }
 }

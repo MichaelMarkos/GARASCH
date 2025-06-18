@@ -22,11 +22,32 @@ public partial class HrUserAttachment
     [StringLength(250)]
     public string AttachmentNumber { get; set; }
 
+    public long CreatedBy { get; set; }
+
+    public long ModifiedBy { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime CreationDate { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime ModifiedDate { get; set; }
+
+    [Required]
+    public string AttachmentPath { get; set; }
+
     [ForeignKey("AttachmentTypeId")]
     [InverseProperty("HrUserAttachments")]
     public virtual AttachmentType AttachmentType { get; set; }
 
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("HrUserAttachmentCreatedByNavigations")]
+    public virtual User CreatedByNavigation { get; set; }
+
     [ForeignKey("Id")]
     [InverseProperty("HrUserAttachment")]
     public virtual HrUser IdNavigation { get; set; }
+
+    [ForeignKey("ModifiedBy")]
+    [InverseProperty("HrUserAttachmentModifiedByNavigations")]
+    public virtual User ModifiedByNavigation { get; set; }
 }

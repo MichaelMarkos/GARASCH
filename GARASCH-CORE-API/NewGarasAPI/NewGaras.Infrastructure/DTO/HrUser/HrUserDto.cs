@@ -77,7 +77,5 @@ namespace NewGaras.Infrastructure.DTO.HrUser
         public DateTime? AcademicYearDate { get; set; }
         [FromForm]
         public IFormFile Photo { get; set; }
-        [FromForm]
-        public List<HrUserAddressDto> Addresses { get; set; } = new List<HrUserAddressDto>();
     }
 }

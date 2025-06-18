@@ -183,6 +183,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<VNotificationsDetail, long> VNotificationsDetails { get; private set;}
         public IBaseRepository<DoctorRoom, long> DoctorRooms { get; private set;}
         public IBaseRepository<HrUserAddress, long> HrUserAddresses { get; private set;}
+        public IBaseRepository<HrUserAttachment, long> HrUserAttachments { get; private set;}
 
 
 
@@ -699,6 +700,7 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             VNotificationsDetails = new BaseRepository<VNotificationsDetail, long>(_context);
             ProjectProgressUsers = new BaseRepository<ProjectProgressUser, long>(_context);
             CostTypes = new BaseRepository<CostType, long>(_context);
+            HrUserAttachments = new BaseRepository<HrUserAttachment, long>(_context);
 
             /*UserDeviceConnections = new BaseRepository<UserDeviceConnection, long>(_context);
             InventoryItems = new InventoryItemRepository(_context);
