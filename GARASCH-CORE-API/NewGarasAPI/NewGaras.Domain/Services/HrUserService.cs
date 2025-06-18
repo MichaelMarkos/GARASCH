@@ -371,6 +371,17 @@ namespace NewGaras.Domain.Services
                 }
                 _unitOfWork.Complete();
 
+                if (NewHrUser.Addresses.Count > 0)
+                {
+                    var addresses = _mapper.Map<List<HrUserAddress>>(NewHrUser.Addresses);
+                    foreach (var address in addresses)
+                    {
+                        address.HrUserId = HrUser.Id;
+                        _unitOfWork.HrUserAddresses.Add(address);
+                    }
+                    _unitOfWork.Complete();
+                }
+
                 return response;
             }
             catch (Exception ex)
