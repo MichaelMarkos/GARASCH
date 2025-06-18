@@ -20,7 +20,6 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http.HttpResults;
 using NewGaras.Infrastructure.Helper;
-using NewGaras.Infrastructure.Models.Hotel;
 using NewGaras.Infrastructure.Models;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 using Task = System.Threading.Tasks.Task;

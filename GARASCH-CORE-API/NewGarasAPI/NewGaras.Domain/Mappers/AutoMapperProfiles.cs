@@ -44,10 +44,7 @@ using NewGaras.Infrastructure.DTO.Medical.DoctorSchedule;
 using NewGaras.Infrastructure.DTO.Medical.MedicalReservation;
 using NewGaras.Infrastructure.DTO.Medical.MedicalFinance;
 using NewGaras.Infrastructure.Models.HrUser;
-using NewGaras.Infrastructure.DTO.Medical.DoctorRooms;
-using NewGaras.Infrastructure.DTO.Hotel.DTOs.Auth;
 using NewGaras.Infrastructure.Models.Medical;
-using NewGaras.Infrastructure.DTO.Hotel.DTOs;
 
 namespace NewGaras.Domain.Mappers
 {
@@ -237,9 +234,6 @@ namespace NewGaras.Domain.Mappers
 
             CreateMap<WeekDay, WeekDayDto>();
             CreateMap<WeekDayDto, WeekDay>();
-            CreateMap<DoctorRoomDto, DoctorRoom>().ForMember(a=>a.CreationDate,dto=>dto.Ignore()).ForMember(a=>a.CreatedBy,dto=>dto.Ignore());
-            CreateMap<DoctorRoom, DoctorRoomDto>();
-            CreateMap<DoctorSchedule, RoomSchedule>();
 
             CreateMap<MedicalDailyTreasuryBalance, MedicalDailyTreasuryBalanceDto>()
             .ForMember(dest => dest.CreatedByName,
@@ -252,42 +246,6 @@ namespace NewGaras.Domain.Mappers
                        opt => opt.MapFrom(src => src.PosNumber != null ? src.PosNumber.Serial : null))
             .ForMember(dest => dest.CreationDate, opt => opt.MapFrom(src => src.CreationDate.ToString("dd-MM-yyyy h:m:s tt")))
             .ForMember(dest => dest.ClosingDate, opt => opt.MapFrom(src => src.ClosingDate.ToString("dd-MM-yyyy h:m:s tt")));
-        
-
-
-
-
-
-        // -------------------------------------------------------------------------Hany --------------------------------------------------
-        CreateMap<Room , RoomModel>();
-            CreateMap<RoomModel , Room>();
-            CreateMap<Room , RoomDto>();
-            CreateMap<RoomDto , Room>();
-            CreateMap<RoomDto2 , Room>();
-            CreateMap<Room , RoomDto2>();
-            CreateMap<Room , GetRoomDto>();
-            CreateMap<GetRoomDto , Room>();
-            CreateMap<Rate , RateDto>();
-            CreateMap<RateDto , Rate>();
-            CreateMap<Reservation , ReservationDto>();
-            CreateMap<ReservationDto , Reservation>();
-            CreateMap<UpdataRoomDto , Room>();
-            CreateMap<Room , UpdataRoomDto>();
-            CreateMap<ReservationUpdataDto , Reservation>();
-            CreateMap<Reservation , ReservationUpdataDto>();
-            CreateMap<Reservation , ReservationRoomsDto>();
-            CreateMap<ReservationRoomsDto , Reservation>();
-            CreateMap<ReservationRoomsByIDDto , Reservation>();
-            CreateMap<Reservation , ReservationRoomsByIDDto>();
-            CreateMap<ClientDto , Client>();
-            CreateMap<Client , ClientDto>();
-            CreateMap<Client , GuestProfileDto>(); 
-            CreateMap<GuestProfileDto , Client>();
-            CreateMap<AddressDto , ClientAddress>();
-            CreateMap<ClientAddress , AddressDto>();
-            CreateMap<AddRoleModel , UserRole>().ReverseMap();
-            CreateMap<UserDto , User>().ReverseMap();
-            CreateMap<ExpensessStatusDto , ExpensessStatus>().ReverseMap();
 
         }
     }

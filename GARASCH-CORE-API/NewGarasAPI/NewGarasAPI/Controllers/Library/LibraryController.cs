@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NewGaras.Infrastructure.DBContext;
 using NewGaras.Infrastructure.Helper.TenantService;
-using NewGaras.Infrastructure.Interfaces.Hotel;
 using NewGaras.Infrastructure;
 using NewGaras.Infrastructure.Interfaces.Library;
 using NewGaras.Domain.Models;

@@ -6,11 +6,6 @@ global using Microsoft.AspNetCore.Http;
 global using NewGaras.Infrastructure.Interfaces.ServicesInterfaces;
 global using Microsoft.Extensions.Configuration;
 
-//--------------------------------------Hotel--------------
-global using NewGaras.Infrastructure.Hotel.DTOs;
-global using NewGaras.Infrastructure.Interfaces.Hotel;
-
-
 //---------------------------------global variables-----------------------------------------------
 public static class Globals
 {

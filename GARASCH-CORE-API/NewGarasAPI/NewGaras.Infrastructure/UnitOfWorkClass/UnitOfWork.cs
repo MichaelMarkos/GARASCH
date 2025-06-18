@@ -3,7 +3,6 @@ using NewGaras.Domain.Interfaces.Repositories;
 using NewGaras.Domain.Models;
 using NewGaras.Infrastructure.DBContext;
 using NewGaras.Infrastructure.Entities;
-using NewGaras.Infrastructure.Interfaces.Hotel;
 using NewGaras.Infrastructure.Models.Inventory.Requests;
 using NewGaras.Infrastructure.Models.SalesOffer;
 using NewGaras.Infrastructure.Repositories;

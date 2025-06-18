@@ -8,7 +8,6 @@ global using Microsoft.AspNetCore.Http;
 //-------------------------------------Hotel--------------------
 global using NewGaras.Domain.Interfaces.Repositories;
 global using NewGaras.Domain.Models;
-global using NewGaras.Infrastructure.Hotel.DTOs;
 
 
 //---------------------------------global variables-----------------------------------------------

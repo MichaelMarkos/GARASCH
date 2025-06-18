@@ -9,7 +9,6 @@ using NewGaras.Infrastructure.DTO.Medical.DoctorSchedule;
 using NewGaras.Infrastructure.DTO.Medical.MedicalReservation;
 using NewGaras.Infrastructure.Entities;
 using NewGaras.Infrastructure.Helper;
-using NewGaras.Infrastructure.Hotel.DTOs;
 using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Medical;
 using NewGaras.Infrastructure.Models.Inventory;
 using NewGaras.Infrastructure.Models.Medical;
