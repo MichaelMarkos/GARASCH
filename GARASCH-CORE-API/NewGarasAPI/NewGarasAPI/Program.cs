@@ -31,6 +31,7 @@ using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Medical;
 using NewGaras.Domain.Services.Medical;
 using NewGaras.Infrastructure.Interfaces.Library;
 using NewGaras.Domain.Services.Library;
+using NewGaras.Domain.Services.Family;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -134,6 +135,7 @@ builder.Services.AddDbContext<GarasTestContext>();
 builder.Services.AddScoped<IDDLService,  DDLService>();
 builder.Services.AddScoped<ISupplierService,  SupplierService>();
 builder.Services.AddScoped<IApplicationVersionService,  ApplicationVersionService>();
+builder.Services.AddScoped<IFamilyService, FamilyService>();
 //-----------------------------------------------Hotel------------------------------
 
 builder.Services.AddScoped<IAuthRepository , AuthRepository>();

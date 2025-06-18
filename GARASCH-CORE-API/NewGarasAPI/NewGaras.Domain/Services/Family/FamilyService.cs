@@ -172,7 +172,7 @@ namespace NewGaras.Domain.Services.Family
 
             try
             {
-                var familiesQueryable = _unitOfWork.Families.FindAllQueryable(a => true);
+                var familiesQueryable = _unitOfWork.Families.FindAllQueryable(a => true , new[] { "FamilyStatus" } );
 
                 if (!string.IsNullOrEmpty(filters.FamilyName))
                 {
@@ -219,7 +219,7 @@ namespace NewGaras.Domain.Services.Family
 
             try
             {
-                var familyDB = _unitOfWork.Families.GetById(familyID);
+                var familyDB = _unitOfWork.Families.Find(a => a.Id == familyID, new[] { "FamilyStatus" });
 
                 
                 //var familiesList = new List<GetFamiliesListDTO>();
