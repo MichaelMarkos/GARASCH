@@ -5,7 +5,7 @@
         private Timer? _timer;
         private Action? _action;
         public DateTime TimerStarted { get; set; }
-        public bool IsTimerStarted { get; set; }
+        public bool IsTimerStarted { get; set; } 
         public void PrepareTimer(Action action)
         {
             _action = action;
