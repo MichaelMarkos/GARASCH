@@ -85,5 +85,7 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public Task<BaseResponseWithId<long>> CreateHrUserWorker(AddHrUserWorker Worker, long UserId);
 
         public  Task<BaseResponse> AddAddressToHrUser(List<HrUserAddressDto> dtos);
+
+        public Task<BaseResponse> AddAttachmentsToHrUser([FromForm] List<HrUserAttachmentDto> Attachments);
     }
 }

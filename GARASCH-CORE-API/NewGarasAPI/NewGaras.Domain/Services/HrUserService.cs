@@ -408,12 +408,72 @@ namespace NewGaras.Domain.Services
                 {
                     var ad = _mapper.Map<HrUserAddress>(address);
                     ad.HrUserId = address.HrUserID;
+                    ad.CreatedBy = validation.userID;
+                    ad.ModifiedBy = validation.userID;
+                    ad.CreationDate = DateTime.Now;
+                    ad.ModifiedDate = DateTime.Now;
                     await _unitOfWork.HrUserAddresses.AddAsync(ad);
                 }
                 _unitOfWork.Complete();
                 return response;
             }
             catch(Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+
+        }
+
+        public async Task<BaseResponse> AddAttachmentsToHrUser([FromForm] List<HrUserAttachmentDto> Attachments)
+        {
+            var response = new BaseResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+            try
+            {
+                if (Attachments.Count < 0)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.errorMSG = "Attachments List is Empty";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                foreach (var Attachment in Attachments)
+                {
+                    var Attach = _mapper.Map<HrUserAttachment>(Attachment);
+                    Attach.HrUserId = Attachment.HrUserID;
+                    Attach.CreatedBy = validation.userID;
+                    Attach.ModifiedBy = validation.userID;
+                    Attach.CreationDate = DateTime.Now;
+                    Attach.ModifiedDate = DateTime.Now;
+                    if (Attachment.AttachmentFile == null)
+                    {
+                        response.Result = false;
+                        Error err = new Error();
+                        err.ErrorCode = "E101";
+                        err.errorMSG = $"Attachments file is null at {Attachments.IndexOf(Attachment)+1}";
+                        response.Errors.Add(err);
+                    }
+                    var fileExtension = Attachment.AttachmentFile.FileName.Split('.').Last();
+                    var virtualPath = $"Attachments\\{validation.CompanyName}\\HrUser\\{Attachment.HrUserID}\\";
+                    var FileName = System.IO.Path.GetFileNameWithoutExtension(Attachment.AttachmentFile.FileName.Trim().Replace(" ", ""));
+                    Attach.AttachmentPath = Common.SaveFileIFF(virtualPath, Attachment.AttachmentFile, FileName, fileExtension, _host);
+
+                    await _unitOfWork.HrUserAttachments.AddAsync(Attach);
+                }
+                _unitOfWork.Complete();
+                return response;
+            }
+            catch (Exception ex)
             {
                 response.Result = false;
                 Error err = new Error();

@@ -58,6 +58,16 @@ public partial class HrUserAddress
 
     public int? ApartmentNumber { get; set; }
 
+    public long CreatedBy { get; set; }
+
+    public long ModifiedBy { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime CreationDate { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime ModifiedDate { get; set; }
+
     [ForeignKey("AreaId")]
     [InverseProperty("HrUserAddresses")]
     public virtual Area Area { get; set; }
@@ -69,6 +79,10 @@ public partial class HrUserAddress
     [ForeignKey("CountryId")]
     [InverseProperty("HrUserAddresses")]
     public virtual Country Country { get; set; }
+
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("HrUserAddressCreatedByNavigations")]
+    public virtual User CreatedByNavigation { get; set; }
 
     [ForeignKey("DistrictId")]
     [InverseProperty("HrUserAddresses")]
@@ -85,4 +99,8 @@ public partial class HrUserAddress
     [ForeignKey("HrUserId")]
     [InverseProperty("HrUserAddresses")]
     public virtual HrUser HrUser { get; set; }
+
+    [ForeignKey("ModifiedBy")]
+    [InverseProperty("HrUserAddressModifiedByNavigations")]
+    public virtual User ModifiedByNavigation { get; set; }
 }

@@ -23,6 +23,20 @@ public partial class HrUserFamily
 
     public bool? IsHeadOfTheFamily { get; set; }
 
+    public long CreatedBy { get; set; }
+
+    public long ModifiedBy { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime CreationDate { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime ModifiedDate { get; set; }
+
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("HrUserFamilyCreatedByNavigations")]
+    public virtual User CreatedByNavigation { get; set; }
+
     [ForeignKey("FamilyId")]
     [InverseProperty("HrUserFamilies")]
     public virtual Family Family { get; set; }
@@ -30,4 +44,8 @@ public partial class HrUserFamily
     [ForeignKey("HrUserId")]
     [InverseProperty("HrUserFamilies")]
     public virtual HrUser HrUser { get; set; }
+
+    [ForeignKey("ModifiedBy")]
+    [InverseProperty("HrUserFamilyModifiedByNavigations")]
+    public virtual User ModifiedByNavigation { get; set; }
 }
