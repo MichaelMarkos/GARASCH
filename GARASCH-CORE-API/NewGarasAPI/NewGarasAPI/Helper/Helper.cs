@@ -13,7 +13,7 @@ namespace NewGarasAPI.Helper
 {
     public class Helper
     {
-        static readonly string key = "SalesGarasPass";
+        static readonly string key = "SalesGarasPass"; 
         public string GetConnectonString(string CompName)
         {
             var MyConfig = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
