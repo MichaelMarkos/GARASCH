@@ -451,6 +451,7 @@ namespace NewGaras.Infrastructure
         IBaseRepository<HremployeeAttachment, long> HREmployeeAttachments {  get; }
         IBaseRepository<FamilyStatus, int> FamilyStatus { get; }
         IBaseRepository<Family, long> Families { get; }
+        IBaseRepository<HrUserFamily, long> HrUserFamilies { get; }
         //-----------------------------------------------------Hany-------------------------------------------------
         IBaseRepository<LaboratoryMessagesReport , long> LaboratoryMessagesReports { get; }
         IBaseRepository<MaritalStatus , int> MaritalStatus { get; }

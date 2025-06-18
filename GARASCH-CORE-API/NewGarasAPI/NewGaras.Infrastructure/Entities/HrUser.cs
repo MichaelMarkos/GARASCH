@@ -186,6 +186,10 @@ public partial class HrUser
     [InverseProperty("HrUserModifiedBies")]
     public virtual User ModifiedBy { get; set; }
 
+    [ForeignKey("NationalityId")]
+    [InverseProperty("HrUsers")]
+    public virtual Nationality Nationality { get; set; }
+
     [InverseProperty("HrUser")]
     public virtual ICollection<Payroll> Payrolls { get; set; } = new List<Payroll>();
 

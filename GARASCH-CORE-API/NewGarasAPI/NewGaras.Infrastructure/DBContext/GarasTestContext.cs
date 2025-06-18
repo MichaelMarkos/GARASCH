@@ -24,6 +24,7 @@ public partial class GarasTestContext : DbContext
         TenantId = _tenantService.GetTenant()?.TID;
     }
 
+
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<AccountCategory> AccountCategories { get; set; }
@@ -1216,7 +1217,6 @@ public partial class GarasTestContext : DbContext
             }
         }
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Arabic_CI_AS");
@@ -2735,6 +2735,8 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.ModifiedBy).WithMany(p => p.HrUserModifiedBies).OnDelete(DeleteBehavior.ClientSetNull);
 
+            entity.HasOne(d => d.Nationality).WithMany(p => p.HrUsers).HasConstraintName("FK_HrUser_Nationality");
+
             entity.HasOne(d => d.PlaceOfBirth).WithMany(p => p.HrUsers).HasConstraintName("FK_HrUser_Governorate");
 
             entity.HasOne(d => d.User).WithMany(p => p.HrUserUsers).HasConstraintName("FK_HrUser_HrUser_UserID");
@@ -3964,8 +3966,6 @@ public partial class GarasTestContext : DbContext
         modelBuilder.Entity<Nationality>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__National__3214EC27224522B5");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Notification>(entity =>

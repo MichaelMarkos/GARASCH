@@ -19,5 +19,11 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public BaseResponseWithData<List<GetFamiliesListDTO>> GetFamiliesList(GetFamiliesListFilters filters);
 
         public BaseResponseWithData<GetFamiliesListDTO> GetFamilyByID(long familyID);
+
+        public BaseResponseWithId<long> AddHrUserFamily(AddHrUserFamilyDTO dto, long userId);
+        public BaseResponseWithData<List<GetHrUserFamiliesListDTO>> GetHrUserFamiliesList(GetHrUserFamiliesListFilters filters);
+        public BaseResponseWithData<GetHrUserFamiliesListDTO> GetHrUserFamilyByID(long HrUserfamilyID);
+        public BaseResponseWithId<long> EditFamily(EditFamilyDTO dto);
+        public BaseResponseWithId<long> EditHrUserFamily(EditHrUserFamilyDTO dto, long userId);
     }
 }
