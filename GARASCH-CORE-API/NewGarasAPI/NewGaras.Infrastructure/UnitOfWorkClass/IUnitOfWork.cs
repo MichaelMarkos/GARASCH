@@ -448,6 +448,8 @@ namespace NewGaras.Infrastructure
         IBaseRepository<Product, long> product { get; }
         IBaseRepository<ClientExtraInfo, long> ClientExtraInfos { get; }
         IBaseRepository<HremployeeAttachment, long> HREmployeeAttachments {  get; }
+        IBaseRepository<FamilyStatus, int> FamilyStatus { get; }
+        IBaseRepository<Family, long> Families { get; }
         //-----------------------------------------------------Hany-------------------------------------------------
         IBaseRepository<LaboratoryMessagesReport , long> LaboratoryMessagesReports { get; }
         IBaseRepository<MaritalStatus , int> MaritalStatus { get; }
