@@ -4,7 +4,6 @@ using NewGaras.Domain.Interfaces.Repositories;
 using NewGaras.Infrastructure.Entities;
 using NewGaras.Infrastructure.Interfaces.ServicesInterfaces;
 using NewGaras.Infrastructure.Models.Inventory.Requests;
-using NewGaras.Infrastructure.Models.Maintenance;
 using NewGaras.Infrastructure.Models.SalesOffer;
 using NewGarasAPI.Models.Inventory;
 using NewGarasAPI.Models.Purchase;

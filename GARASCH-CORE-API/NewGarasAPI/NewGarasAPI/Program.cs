@@ -107,7 +107,6 @@ builder.Services.AddScoped<IInventoryMatrialReleaseForBYService, InventoryMatria
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IAccountAndFinanceService, AccountAndFinanceService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
-builder.Services.AddScoped<IMaintenanceAndService, MaintenanceAndService>();
 builder.Services.AddScoped<IEmailToolService,  EmailToolService>();
 builder.Services.AddScoped<ITaskMangerProjectService, TaskMangerProjectService>();
 builder.Services.AddScoped<IInventoryOpeningBalanceService, InventoryOpeningBalanceService>();

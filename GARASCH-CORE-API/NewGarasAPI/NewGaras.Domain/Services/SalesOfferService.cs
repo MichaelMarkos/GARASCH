@@ -24,7 +24,6 @@ using NewGaras.Infrastructure.Helper;
 using NewGaras.Infrastructure.Models;
 using NewGaras.Infrastructure.Models.AccountAndFinance;
 using NewGaras.Infrastructure.Models.Inventory;
-using NewGaras.Infrastructure.Models.Maintenance;
 using NewGaras.Infrastructure.Models.SalesOffer;
 using NewGaras.Infrastructure.Models.SalesOffer.Filters;
 using NewGaras.Infrastructure.Models.SalesOffer.UsedInResponses;

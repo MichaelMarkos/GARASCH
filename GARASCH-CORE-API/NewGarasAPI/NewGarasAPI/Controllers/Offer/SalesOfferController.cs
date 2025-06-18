@@ -10,7 +10,6 @@ using NewGaras.Infrastructure.Helper.TenantService;
 using NewGaras.Infrastructure.Interfaces.ServicesInterfaces;
 using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Medical;
 using NewGaras.Infrastructure.Models.Inventory;
-using NewGaras.Infrastructure.Models.Maintenance;
 using NewGaras.Infrastructure.Models.SalesOffer;
 using NewGaras.Infrastructure.Models.SalesOffer.Filters;
 using NewGarasAPI.Models.Account;

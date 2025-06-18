@@ -11,7 +11,6 @@ using OfficeOpenXml;
 using NewGaras.Infrastructure.Entities;
 using NewGaras.Infrastructure.Models.SalesOffer.Filters;
 using NewGarasAPI.Models.Account;
-using NewGaras.Infrastructure.Models.Maintenance;
 
 namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
 {
