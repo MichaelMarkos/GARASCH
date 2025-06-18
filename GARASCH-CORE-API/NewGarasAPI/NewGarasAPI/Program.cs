@@ -123,7 +123,6 @@ builder.Services.AddScoped<IItemsPricingService, ItemsPricingService>();
 builder.Services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
 builder.Services.AddScoped<ICrmService, CrmService>();
 builder.Services.AddScoped<IInventoryStoreReportsService, InventoryStoreReportsService>();
-builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IInternalTicketService, InternalTicketService>();
 builder.Services.AddScoped<INotificationSubscriptionService, NotificationSubscriptionService>();
 builder.Services.AddSingleton<IGraphAuthService, GraphAuthService>();

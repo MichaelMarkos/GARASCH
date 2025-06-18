@@ -19,7 +19,6 @@ using NewGarasAPI.Models.Admin;
 using NewGaras.Domain.Models;
 using NewGaras.Infrastructure.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
-using NewGaras.Infrastructure.Models.Vehicle;
 using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace NewGaras.Domain.Services.Inventory
