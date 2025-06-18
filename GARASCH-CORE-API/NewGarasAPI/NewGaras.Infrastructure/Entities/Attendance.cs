@@ -103,9 +103,6 @@ public partial class Attendance
     [Column(TypeName = "decimal(8, 4)")]
     public decimal? HolidayHours { get; set; }
 
-    [Column(TypeName = "decimal(8, 4)")]
-    public decimal? VacationHours { get; set; }
-
     [ForeignKey("AbsenceTypeId")]
     [InverseProperty("Attendances")]
     public virtual ContractLeaveSetting AbsenceType { get; set; }

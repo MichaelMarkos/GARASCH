@@ -196,6 +196,7 @@ namespace NewGaras.Infrastructure
         IBaseRepository<ProjectProgressUser, long> ProjectProgressUsers { get; }
         IBaseRepository<DoctorRoom, long> DoctorRooms { get; }
         IBaseRepository<PosNumber, int> PosNumbers { get; }
+        IBaseRepository<HrUserAddress, long> HrUserAddresses { get; }
 
         /*IBaseRepository<HrContactInfo, int> ContactInfos { get; }
         IBaseRepository<HrUserAddress, int> UserAddresses { get; }

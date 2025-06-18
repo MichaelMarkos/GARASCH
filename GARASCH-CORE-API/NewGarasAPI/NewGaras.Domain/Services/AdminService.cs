@@ -7184,11 +7184,11 @@ namespace NewGaras.Domain.Services
                             DLLObj.Name = user.FirstName.Trim() + " " + user.MiddleName.Trim() + " " + user.LastName.Trim();
                             if (HrUserList.Count() > 0)
                             {
-                                var TeamObj = HrUserList.Where(x => x.UserId == user.Id).Select(x => x.Team).FirstOrDefault();
+                                var TeamObj = HrUserList.Where(x => x.UserId == user.Id).Select(x => x.BelongToChurch).FirstOrDefault();
                                 if (TeamObj != null)
                                 {
                                     DLLObj.TeamId = TeamObj.Id;
-                                    DLLObj.Name = TeamObj.Name;
+                                    DLLObj.Name = TeamObj.ChurchName;
                                 }
                             }
                             if (user.PhotoUrl != null)

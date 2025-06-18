@@ -234,7 +234,7 @@ namespace NewGaras.Domain.Services
                 response.Errors.Add(error);
                 return response;
             }
-            var users = _unitOfWork.HrUsers.FindAll(x => x.BranchId == BranchId).ToList();
+            var users = _unitOfWork.HrUsers.FindAll(x => 1 == BranchId).ToList();
             /*if(users != null && users.Count > 0)
             {
                 response.Result = false;

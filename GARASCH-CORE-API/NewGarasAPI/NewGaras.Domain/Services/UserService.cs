@@ -262,12 +262,12 @@ namespace NewGaras.Domain.Services
                             DLLObj.Name = user.FirstName.Trim() + " " + user.MiddleName + " " + user.LastName.Trim();
                             if (HrUserList.Count() > 0)
                             {
-                                var TeamObj = HrUserList.Where(x => x.UserId == user.Id).Select(x => x.Team).FirstOrDefault();
-                                if (TeamObj != null)
-                                {
-                                    DLLObj.TeamId = TeamObj.Id;
-                                    DLLObj.TeamName = TeamObj.Name;
-                                }
+                                //var TeamObj = HrUserList.Where(x => x.UserId == user.Id).Select(x => x.Team).FirstOrDefault();
+                                //if (TeamObj != null)
+                                //{
+                                //    DLLObj.TeamId = TeamObj.Id;
+                                //    DLLObj.TeamName = TeamObj.Name;
+                                //}
                             }
                             if (user.PhotoUrl != null)
                             {

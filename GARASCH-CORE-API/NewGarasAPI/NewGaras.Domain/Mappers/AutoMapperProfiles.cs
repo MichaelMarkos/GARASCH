@@ -70,9 +70,6 @@ namespace NewGaras.Domain.Mappers
                 .ForMember(HrUser => HrUser.HrNationalityId, GetDto => GetDto.MapFrom(a => a.NationalityId))
                 .ForMember(HrUser => HrUser.DateOfBirth, GetDto => GetDto.MapFrom(a => a.DateOfBirth != null ? ((DateTime)a.DateOfBirth).ToShortDateString() : null))
                 .ForMember(HrUser => HrUser.SystemEmail, GetDto => GetDto.MapFrom(a => a.User.Email))
-                .ForMember(HrUser => HrUser.DepName, GetDto => GetDto.MapFrom(a => a.Department.Name))
-                .ForMember(HrUser => HrUser.TeamName, GetDto => GetDto.MapFrom(a => a.Team.Name))
-                .ForMember(HrUser => HrUser.BranchName, GetDto => GetDto.MapFrom(a => a.Branch.Name))
                 .ForMember(HrUser => HrUser.JobTitle, GetDto => GetDto.MapFrom(a => a.JobTitle.Name))
                 .ForMember(HrUser => HrUser.ImgPath, GetDto => GetDto.MapFrom(a => a.ImgPath != null ? BaseURL + a.ImgPath : null)) ;
             CreateMap<HrUser, GetHrTeamUsersDto>();
@@ -90,6 +87,7 @@ namespace NewGaras.Domain.Mappers
             CreateMap<AddShiftDto,BranchSchedule>();
             CreateMap<BranchSchedule, BranchScheduleDto>();
             CreateMap<InsuranceDto, UserPatientInsurance>();
+            CreateMap<HrUserAddress, HrUserAddressDto>();
 
 
 

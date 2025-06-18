@@ -45,9 +45,6 @@ public partial class Team
     public virtual ICollection<DoctorSchedule> DoctorSchedules { get; set; } = new List<DoctorSchedule>();
 
     [InverseProperty("Team")]
-    public virtual ICollection<HrUser> HrUsers { get; set; } = new List<HrUser>();
-
-    [InverseProperty("Team")]
     public virtual ICollection<MedicalReservation> MedicalReservations { get; set; } = new List<MedicalReservation>();
 
     [ForeignKey("ModifiedBy")]

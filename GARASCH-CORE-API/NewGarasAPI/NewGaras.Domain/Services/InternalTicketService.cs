@@ -389,26 +389,26 @@ namespace NewGaras.Domain.Services
 
                 var list = salesOffers.ToList();
 
-                var departments = list.GroupBy(a => a.SalesPerson.HrUserUsers?.FirstOrDefault()?.Team?.Name).ToList();
+                //var departments = list.GroupBy(a => a.SalesPerson.HrUserUsers?.FirstOrDefault()?.Team?.Name).ToList();
 
-                var data = departments.Select(a => new InternalTicketDepartments()
-                {
-                    Name = a.Key,
-                    Count = a.Count(),
-                    Sum = a.Where(b => b.OfferType == "Internal Ticket").Sum(b => b.FinalOfferPrice ?? 0) - a.Where(b => b.OfferType == "Internal Ticket return").Sum(b => b.FinalOfferPrice ?? 0),
-                    GroupedById = a.FirstOrDefault()?.SalesPerson?.Department?.Id ?? 0,
-                    DoctorsOfDepartmentList = a.GroupBy(x => x.SalesPerson).Select(x => new DoctorsOfCriteria()
-                    {
-                        DoctorId = x.Key.Id,
-                        DoctorName = x.Key.FirstName + " " + (x.Key.MiddleName != null ? x.Key.MiddleName + " " : "") + x.Key.LastName,
-                        DoctorImg = x.Key.PhotoUrl != null ? Globals.baseURL + x.Key.PhotoUrl : null,
-                        TotalSum = x.Where(a => a.OfferType == "Internal Ticket").Sum(b => b.FinalOfferPrice ?? 0) - x.Where(a => a.OfferType == "Internal Ticket return").Sum(b => b.FinalOfferPrice ?? 0),
-                        TicketsCount = x.Count(),
-                        PatientsCount = x.Select(b => b.Client).Distinct().Count()
-                    }).ToList()
-                }).ToList();
+                //var data = departments.Select(a => new InternalTicketDepartments()
+                //{
+                //    Name = a.Key,
+                //    Count = a.Count(),
+                //    Sum = a.Where(b => b.OfferType == "Internal Ticket").Sum(b => b.FinalOfferPrice ?? 0) - a.Where(b => b.OfferType == "Internal Ticket return").Sum(b => b.FinalOfferPrice ?? 0),
+                //    GroupedById = a.FirstOrDefault()?.SalesPerson?.Department?.Id ?? 0,
+                //    DoctorsOfDepartmentList = a.GroupBy(x => x.SalesPerson).Select(x => new DoctorsOfCriteria()
+                //    {
+                //        DoctorId = x.Key.Id,
+                //        DoctorName = x.Key.FirstName + " " + (x.Key.MiddleName != null ? x.Key.MiddleName + " " : "") + x.Key.LastName,
+                //        DoctorImg = x.Key.PhotoUrl != null ? Globals.baseURL + x.Key.PhotoUrl : null,
+                //        TotalSum = x.Where(a => a.OfferType == "Internal Ticket").Sum(b => b.FinalOfferPrice ?? 0) - x.Where(a => a.OfferType == "Internal Ticket return").Sum(b => b.FinalOfferPrice ?? 0),
+                //        TicketsCount = x.Count(),
+                //        PatientsCount = x.Select(b => b.Client).Distinct().Count()
+                //    }).ToList()
+                //}).ToList();
 
-                response.Data.InternalTicketDepartmentList = data;
+                //response.Data.InternalTicketDepartmentList = data;
 
                 return response;
             }
@@ -1659,8 +1659,8 @@ namespace NewGaras.Domain.Services
                     var Hruser = _unitOfWork.HrUsers.FindAll(a => a.UserId == SalesOfferDb.SalesPersonId, includes: new[] { "Team" }).FirstOrDefault();
                     if (Hruser != null)
                     {
-                        SalesOfferObj.TeamId = Hruser?.TeamId; // Default 
-                        SalesOfferObj.TeamName = Hruser.Team?.Name;
+                        //SalesOfferObj.TeamId = Hruser?.TeamId; // Default 
+                        //SalesOfferObj.TeamName = Hruser.Team?.Name;
                     }
                 }
                 SalesOfferObj.SalesPersonName = SalesOfferDb.SalesPerson.FirstName + ' ' + SalesOfferDb.SalesPerson.MiddleName + ' ' + SalesOfferDb.SalesPerson.LastName;

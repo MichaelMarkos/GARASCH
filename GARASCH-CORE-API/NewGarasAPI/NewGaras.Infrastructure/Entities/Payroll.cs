@@ -89,7 +89,7 @@ public partial class Payroll
     public decimal? HolidayHours { get; set; }
 
     [Column(TypeName = "decimal(8, 4)")]
-    public decimal? VacationHours { get; set; }
+    public decimal? HolidayDaysCost { get; set; }
 
     [ForeignKey("BranchId")]
     [InverseProperty("Payrolls")]

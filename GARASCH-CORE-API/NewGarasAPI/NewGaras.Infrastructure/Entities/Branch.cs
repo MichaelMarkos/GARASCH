@@ -119,9 +119,6 @@ public partial class Branch
     public virtual Governorate Governorate { get; set; }
 
     [InverseProperty("Branch")]
-    public virtual ICollection<HrUser> HrUsers { get; set; } = new List<HrUser>();
-
-    [InverseProperty("Branch")]
     public virtual ICollection<JobInformation> JobInformations { get; set; } = new List<JobInformation>();
 
     [InverseProperty("Branch")]

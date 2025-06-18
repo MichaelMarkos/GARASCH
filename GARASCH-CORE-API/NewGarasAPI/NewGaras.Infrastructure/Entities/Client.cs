@@ -70,9 +70,6 @@ public partial class Client
     [Column(TypeName = "datetime")]
     public DateTime? LastReportDate { get; set; }
 
-    /// <summary>
-    /// (0 =&gt; Approved, 1 =&gt; NeedApproval, 2 =&gt; Rejected)
-    /// </summary>
     public int? NeedApproval { get; set; }
 
     public long? ClientSerialCounter { get; set; }

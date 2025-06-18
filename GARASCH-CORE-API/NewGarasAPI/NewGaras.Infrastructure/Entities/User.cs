@@ -1861,9 +1861,6 @@ public partial class User
     [InverseProperty("ModifiedByNavigation")]
     public virtual ICollection<TaskUserReply> TaskUserReplyModifiedByNavigations { get; set; } = new List<TaskUserReply>();
 
-    [InverseProperty("RecieverUser")]
-    public virtual ICollection<TaskUserReply> TaskUserReplyRecieverUsers { get; set; } = new List<TaskUserReply>();
-
     [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<Tax> TaxCreatedByNavigations { get; set; } = new List<Tax>();
 

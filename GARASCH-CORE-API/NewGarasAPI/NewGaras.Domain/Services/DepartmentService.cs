@@ -288,21 +288,21 @@ namespace NewGaras.Domain.Services
                         foreach(var t in unselectedTeams)
                         {
                             
-                            if (_unitOfWork.UserTeams.GetAll().Select(a => a.TeamId).Contains(t.Id) || _unitOfWork.HrUsers.GetAll().Select(a=>a.TeamId).Contains(t.Id))
-                            {
-                            _unitOfWork.RollbackTransaction();
-                            response.Result = false;
-                                Error error = new Error();
-                                error.ErrorCode = "Err107";
-                                error.ErrorMSG = "Team can't be removed because it has employees, Remove Them First";
-                                response.Errors.Add(error);
-                                return response;
-                            }
-                            else
-                            {
-                                _unitOfWork.Teams.Delete(t);
-                                _unitOfWork.Complete();
-                            }
+                            //if (_unitOfWork.UserTeams.GetAll().Select(a => a.TeamId).Contains(t.Id) || _unitOfWork.HrUsers.GetAll().Select(a=>a.TeamId).Contains(t.Id))
+                            //{
+                            //_unitOfWork.RollbackTransaction();
+                            //response.Result = false;
+                            //    Error error = new Error();
+                            //    error.ErrorCode = "Err107";
+                            //    error.ErrorMSG = "Team can't be removed because it has employees, Remove Them First";
+                            //    response.Errors.Add(error);
+                            //    return response;
+                            //}
+                            //else
+                            //{
+                            //    _unitOfWork.Teams.Delete(t);
+                            //    _unitOfWork.Complete();
+                            //}
                         }
                     
                 }
@@ -368,8 +368,8 @@ namespace NewGaras.Domain.Services
                 _unitOfWork.Complete();
 
                 var RemovedTeamUsers = _unitOfWork.UserTeams.FindAll(a => removedUsersIds.Contains(a.HrUserId) && a.TeamId==Team.Id).ToList();
-                var users = teamDto.HrUsersIds.Count > 0 ? _unitOfWork.HrUsers.FindAll(a => !teamDto.HrUsersIds.Contains(a.Id) && a.TeamId==teamDto.Id).ToList(): _unitOfWork.HrUsers.FindAll(a => a.TeamId == teamDto.Id).ToList();
-                users.ForEach(a => { a.TeamId = null; _unitOfWork.HrUsers.Update(a); _unitOfWork.Complete(); });
+                //var users = teamDto.HrUsersIds.Count > 0 ? _unitOfWork.HrUsers.FindAll(a => !teamDto.HrUsersIds.Contains(a.Id) && a.TeamId==teamDto.Id).ToList(): _unitOfWork.HrUsers.FindAll(a => a.TeamId == teamDto.Id).ToList();
+               // users.ForEach(a => { a.TeamId = null; _unitOfWork.HrUsers.Update(a); _unitOfWork.Complete(); });
                 _unitOfWork.UserTeams.DeleteRange(RemovedTeamUsers);
 
                 _unitOfWork.Complete();

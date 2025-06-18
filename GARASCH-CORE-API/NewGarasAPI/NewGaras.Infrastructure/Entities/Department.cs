@@ -48,9 +48,6 @@ public partial class Department
     public virtual User CreatedByNavigation { get; set; }
 
     [InverseProperty("Department")]
-    public virtual ICollection<HrUser> HrUsers { get; set; } = new List<HrUser>();
-
-    [InverseProperty("Department")]
     public virtual ICollection<JobInformation> JobInformations { get; set; } = new List<JobInformation>();
 
     [InverseProperty("Department")]

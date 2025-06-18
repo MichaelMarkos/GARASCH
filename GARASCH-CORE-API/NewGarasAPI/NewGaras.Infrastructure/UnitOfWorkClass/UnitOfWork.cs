@@ -182,6 +182,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<ClientConsultantFax, long> ClientConsultantFaxes { get; private set;}
         public IBaseRepository<VNotificationsDetail, long> VNotificationsDetails { get; private set;}
         public IBaseRepository<DoctorRoom, long> DoctorRooms { get; private set;}
+        public IBaseRepository<HrUserAddress, long> HrUserAddresses { get; private set;}
 
 
 
@@ -730,6 +731,7 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             ClientAccounts = new BaseRepository<ClientAccount,long>(_context);
             Invoices = new BaseRepository<Invoice,long>(_context);
             AdvanciedSettingAccounts = new BaseRepository<AdvanciedSettingAccount,long>(_context);
+            HrUserAddresses = new BaseRepository<HrUserAddress, long>(_context);
             /*HrWeekDay = new BaseRepository<HrWeekDay, int>(_context);
             Shift = new BaseRepository<Shift, int>(_context);
             Vacation = new BaseRepository<Vacation, int>(_context);

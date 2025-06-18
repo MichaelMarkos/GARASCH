@@ -791,26 +791,26 @@ namespace NewGaras.Domain.Services.Medical
 
                 var list = salesOffers.ToList();
 
-                var departments = list.GroupBy(a => a.SalesPerson.HrUserUsers?.FirstOrDefault()?.Team?.Name).ToList();
+                //var departments = list.GroupBy(a => a.SalesPerson.HrUserUsers?.FirstOrDefault()?.Team?.Name).ToList();
 
-                var data = departments.Select(a => new InternalTicketDepartments()
-                {
-                    Name = a.Key,
-                    Count = a.Count(),
-                    Sum = a.Where(b => b.OfferType == OfferType).Sum(b => b.FinalOfferPrice ?? 0) - a.Where(b => b.OfferType == OfferTypeReturn).Sum(b => b.FinalOfferPrice ?? 0),
-                    GroupedById = a.FirstOrDefault()?.SalesPerson?.Department?.Id ?? 0,
-                    DoctorsOfDepartmentList = a.GroupBy(x => x.SalesPerson).Select(x => new DoctorsOfCriteria()
-                    {
-                        DoctorId = x.Key.Id,
-                        DoctorName = x.Key.FirstName + " " + (x.Key.MiddleName != null ? x.Key.MiddleName + " " : "") + x.Key.LastName,
-                        DoctorImg = x.Key.PhotoUrl != null ? Globals.baseURL + x.Key.PhotoUrl : null,
-                        TotalSum = x.Where(a => a.OfferType == OfferType).Sum(b => b.FinalOfferPrice ?? 0) - x.Where(a => a.OfferType == OfferTypeReturn).Sum(b => b.FinalOfferPrice ?? 0),
-                        TicketsCount = x.Count(),
-                        PatientsCount = x.Select(b => b.Client).Distinct().Count()
-                    }).ToList()
-                }).ToList();
+                //var data = departments.Select(a => new InternalTicketDepartments()
+                //{
+                //    Name = a.Key,
+                //    Count = a.Count(),
+                //    Sum = a.Where(b => b.OfferType == OfferType).Sum(b => b.FinalOfferPrice ?? 0) - a.Where(b => b.OfferType == OfferTypeReturn).Sum(b => b.FinalOfferPrice ?? 0),
+                //    GroupedById = a.FirstOrDefault()?.SalesPerson?.Department?.Id ?? 0,
+                //    DoctorsOfDepartmentList = a.GroupBy(x => x.SalesPerson).Select(x => new DoctorsOfCriteria()
+                //    {
+                //        DoctorId = x.Key.Id,
+                //        DoctorName = x.Key.FirstName + " " + (x.Key.MiddleName != null ? x.Key.MiddleName + " " : "") + x.Key.LastName,
+                //        DoctorImg = x.Key.PhotoUrl != null ? Globals.baseURL + x.Key.PhotoUrl : null,
+                //        TotalSum = x.Where(a => a.OfferType == OfferType).Sum(b => b.FinalOfferPrice ?? 0) - x.Where(a => a.OfferType == OfferTypeReturn).Sum(b => b.FinalOfferPrice ?? 0),
+                //        TicketsCount = x.Count(),
+                //        PatientsCount = x.Select(b => b.Client).Distinct().Count()
+                //    }).ToList()
+                //}).ToList();
 
-                response.Data.InternalTicketDepartmentList = data;
+                //response.Data.InternalTicketDepartmentList = data;
 
                 return response;
             }
@@ -3229,16 +3229,16 @@ namespace NewGaras.Domain.Services.Medical
 
                     if (NewHrUser.Mobile != "0")
                     {
-                        var allHrUsersMobileNumbers = allHrUsers.Select(a => a.Mobile);
-                        if (allHrUsersMobileNumbers.Contains(NewHrUser.Mobile))
-                        {
-                            response.Result = false;
-                            //Error err = new Error();
-                            //err.ErrorCode = "E-1";
-                            notRepatingMessage = notRepatingMessage + " This Mobile is already Exists please, Enter a valid Mobile ";
-                            //response.Errors.Add(err);
-                            //return response;
-                        }
+                        //var allHrUsersMobileNumbers = allHrUsers.Select(a => a.Mobile);
+                        //if (allHrUsersMobileNumbers.Contains(NewHrUser.Mobile))
+                        //{
+                        //    response.Result = false;
+                        //    //Error err = new Error();
+                        //    //err.ErrorCode = "E-1";
+                        //    notRepatingMessage = notRepatingMessage + " This Mobile is already Exists please, Enter a valid Mobile ";
+                        //    //response.Errors.Add(err);
+                        //    //return response;
+                        //}
                     }
                 }
 
@@ -3350,12 +3350,12 @@ namespace NewGaras.Domain.Services.Medical
                     ArfirstName = NewHrUser.ARFirstName,
                     ArlastName = NewHrUser.ARLastName,
                     ArmiddleName = NewHrUser.ARMiddleName,
-                    BranchId = NewHrUser.BranchID,
-                    DepartmentId = NewHrUser.DepartmentID,
+                    //BranchId = NewHrUser.BranchID,
+                    //DepartmentId = NewHrUser.DepartmentID,
                     LandLine = NewHrUser.LandLine,
-                    TeamId = NewHrUser.TeamId,
+                    //TeamId = NewHrUser.TeamId,
                     IsUser = true,
-                    Mobile = NewHrUser.Mobile,
+                    //Mobile = NewHrUser.Mobile,
                     Gender = NewHrUser.Gender,
                     CreationDate = DateTime.Now,
                     CreatedById = UserId,

@@ -48,6 +48,9 @@ public partial class Country
     [InverseProperty("Country")]
     public virtual ICollection<Governorate> Governorates { get; set; } = new List<Governorate>();
 
+    [InverseProperty("Country")]
+    public virtual ICollection<HrUserAddress> HrUserAddresses { get; set; } = new List<HrUserAddress>();
+
     [ForeignKey("ModifiedBy")]
     [InverseProperty("CountryModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }
