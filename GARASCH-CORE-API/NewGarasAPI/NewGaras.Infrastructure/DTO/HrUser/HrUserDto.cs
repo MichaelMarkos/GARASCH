@@ -9,43 +9,75 @@ namespace NewGaras.Infrastructure.DTO.HrUser
 {
     public class HrUserDto
     {
-        public string FirstName { get; set; }
-
+        [FromForm]
+        public long Id { get; set; }
+        [FromForm]
         public string ARFirstName { get; set; }
-
-        public string MiddleName { get; set; } = string.Empty;
-
-        public string ARMiddleName { get; set; }
-
-        public string LastName { get; set; }
-
+        [FromForm]
+        public string FirstName { get; set; }
+        [FromForm]
+        public bool Active { get; set; }
+        [FromForm]
+        public DateTime CreationDate { get; set; }
+        [FromForm]
+        public long ModifiedById { get; set; }
+        [FromForm]
+        public DateTime Modified { get; set; }
+        [FromForm]
         public string ARLastName { get; set; }
-
-        public string Email { get; set; }
-
-        public string Mobile { get; set; }
-
-        public bool? Active { get; set; }
-
-        public IFormFile? Photo { get; set; }
-
-        //public DateTime CreationDate { get; set; }
-
-        //public int? Age { get; set; }
-
-        public string? Gender { get; set; }
-
-        public string DateOfBirth { get; set; }
-
-        public string LandLine { get; set; }
-
-        public long? NationalityId { get; set; }
-
-        public int? BranchID { get; set; }
-        public int? DepartmentID { get; set; }
-        public long? TeamId { get; set; }
+        [FromForm]
+        public string LastName { get; set; }
+        [FromForm]
+        public string? ARMiddleName { get; set; }
+        [FromForm]
+        public string MiddleName { get; set; } = string.Empty;
+        [FromForm]
+        public long CreatedById { get; set; }
+        [FromForm]
         public int? JobTitleID { get; set; }
-
-        public bool IsDeleted { get; set; } = false;
+        [FromForm]
+        public string DateOfBirth { get; set; }
+        [FromForm]
+        public string LandLine { get; set; }
+        [FromForm]
+        public long? NationalityId { get; set; }
+        [FromForm]
+        public int? MaritalStatusId { get; set; }
+        [FromForm]
+        public int? MilitaryStatusId { get; set; }
+        [FromForm]
+        public bool IsUser { get; set; }
+        [FromForm]
+        public long? UserID { get; set; }
+        [FromForm]
+        public string Email { get; set; }
+        [FromForm]
+        public string ImgPath { get; set; }
+        [FromForm]
+        public string Gender { get; set; }
+        [FromForm]
+        public bool? IsDeleted { get; set; }
+        [FromForm]
+        public string NationalID { get; set; }
+        [FromForm]
+        public int? PlaceOfBirthID { get; set; }
+        [FromForm]
+        public bool IsALive { get; set; }
+        [FromForm]
+        public DateTime? DateOfDeath { get; set; }
+        [FromForm]
+        public string Employer { get; set; }
+        [FromForm]
+        public long? ChurchOfPresenceID { get; set; }
+        [FromForm]
+        public long? BelongToChurchID { get; set; }
+        [FromForm]
+        public string AcademicYearName { get; set; }
+        [FromForm]
+        public DateTime? AcademicYearDate { get; set; }
+        [FromForm]
+        public IFormFile Photo { get; set; }
+        //[FromForm]
+        //public
     }
 }

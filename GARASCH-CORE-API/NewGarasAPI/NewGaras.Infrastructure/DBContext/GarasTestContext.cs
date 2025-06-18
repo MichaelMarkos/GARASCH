@@ -42,13 +42,13 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<AdvanciedType> AdvanciedTypes { get; set; }
 
-    public virtual DbSet<AdvanciedTypeSettingCsv> AdvanciedTypeSettingCsvs { get; set; }
-
     public virtual DbSet<AllowncesType> AllowncesTypes { get; set; }
 
     public virtual DbSet<Area> Areas { get; set; }
 
     public virtual DbSet<AttachmentCategory> AttachmentCategories { get; set; }
+
+    public virtual DbSet<AttachmentType> AttachmentTypes { get; set; }
 
     public virtual DbSet<Attendance> Attendances { get; set; }
 
@@ -103,6 +103,8 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<ChequeCashingStatus> ChequeCashingStatuses { get; set; }
 
     public virtual DbSet<Childern> Childerns { get; set; }
+
+    public virtual DbSet<Church> Churches { get; set; }
 
     public virtual DbSet<City> Cities { get; set; }
 
@@ -232,6 +234,8 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<Department> Departments { get; set; }
 
+    public virtual DbSet<District> Districts { get; set; }
+
     public virtual DbSet<DoctorRoom> DoctorRooms { get; set; }
 
     public virtual DbSet<DoctorSchedule> DoctorSchedules { get; set; }
@@ -256,8 +260,6 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<EmailCc> EmailCcs { get; set; }
 
-    public virtual DbSet<EmailReceiver> EmailReceivers { get; set; }
-
     public virtual DbSet<EmailType> EmailTypes { get; set; }
 
     public virtual DbSet<ExchangeRate> ExchangeRates { get; set; }
@@ -272,11 +274,17 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<Facility> Facilities { get; set; }
 
+    public virtual DbSet<Family> Families { get; set; }
+
+    public virtual DbSet<FamilyStatus> FamilyStatuses { get; set; }
+
     public virtual DbSet<GarasClientInfo> GarasClientInfos { get; set; }
 
     public virtual DbSet<Gender> Genders { get; set; }
 
     public virtual DbSet<GeneralActiveCostCenter> GeneralActiveCostCenters { get; set; }
+
+    public virtual DbSet<GeographicalName> GeographicalNames { get; set; }
 
     public virtual DbSet<GfUser> GfUsers { get; set; }
 
@@ -291,6 +299,22 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<Holiday> Holidays { get; set; }
 
     public virtual DbSet<HrUser> HrUsers { get; set; }
+
+    public virtual DbSet<HrUserAddress> HrUserAddresses { get; set; }
+
+    public virtual DbSet<HrUserAttachment> HrUserAttachments { get; set; }
+
+    public virtual DbSet<HrUserFamily> HrUserFamilies { get; set; }
+
+    public virtual DbSet<HrUserLandLine> HrUserLandLines { get; set; }
+
+    public virtual DbSet<HrUserMobile> HrUserMobiles { get; set; }
+
+    public virtual DbSet<HrUserPriest> HrUserPriests { get; set; }
+
+    public virtual DbSet<HrUserSocialMedium> HrUserSocialMedia { get; set; }
+
+    public virtual DbSet<HrUserStatus> HrUserStatuses { get; set; }
 
     public virtual DbSet<Hrcustody> Hrcustodies { get; set; }
 
@@ -448,8 +472,6 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<MilitaryStatus> MilitaryStatuses { get; set; }
 
-    public virtual DbSet<MissedPayroll> MissedPayrolls { get; set; }
-
     public virtual DbSet<Module> Modules { get; set; }
 
     public virtual DbSet<MovementReport> MovementReports { get; set; }
@@ -482,6 +504,8 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<PermissionLevel> PermissionLevels { get; set; }
 
+    public virtual DbSet<PersonStatus> PersonStatuses { get; set; }
+
     public virtual DbSet<PoapprovalSetting> PoapprovalSettings { get; set; }
 
     public virtual DbSet<PoapprovalStatus> PoapprovalStatuses { get; set; }
@@ -512,9 +536,9 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<PricingTerm> PricingTerms { get; set; }
 
-    public virtual DbSet<Priority> Priorities { get; set; }
+    public virtual DbSet<Priest> Priests { get; set; }
 
-    public virtual DbSet<ProAutoAccountTreeTemp> ProAutoAccountTreeTemps { get; set; }
+    public virtual DbSet<Priority> Priorities { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
@@ -1179,6 +1203,8 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<WorkingHourseTracking> WorkingHourseTrackings { get; set; }
 
     public virtual DbSet<WorkshopStation> WorkshopStations { get; set; }
+
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var tenantConnectionString = _tenantService.GetConnectionString();
@@ -1605,7 +1631,9 @@ public partial class GarasTestContext : DbContext
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
 
-            entity.HasOne(d => d.Branch).WithMany(p => p.BranchProducts).HasConstraintName("FK_BranchProduct_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.BranchProducts)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_BranchProduct_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BranchProducts)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -1618,9 +1646,7 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<BranchSchedule>(entity =>
         {
-            entity.HasOne(d => d.Branch).WithMany(p => p.BranchSchedules)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_BranchSchedule_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.BranchSchedules).HasConstraintName("FK_BranchSchedule_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BranchScheduleCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -1635,9 +1661,13 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<BranchSetting>(entity =>
         {
-            entity.HasOne(d => d.Branch).WithMany(p => p.BranchSettings).HasConstraintName("FK_BranchSettings_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.BranchSettings)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_BranchSettings_Branch");
 
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BranchSettingCreatedByNavigations).HasConstraintName("FK_BranchSettings_User");
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BranchSettingCreatedByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_BranchSettings_User");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BranchSettingModifiedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -1685,17 +1715,13 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<Client>(entity =>
         {
-            entity.Property(e => e.ClassificationComment).UseCollation("SQL_Latin1_General_CP1_CI_AS");
             entity.Property(e => e.HasLogo).HasDefaultValue(false);
-            entity.Property(e => e.NeedApproval).HasComment("(0 => Approved, 1 => NeedApproval, 2 => Rejected)");
             entity.Property(e => e.OtherDelivaryAndShippingMethodName).IsFixedLength();
             entity.Property(e => e.Rate).HasDefaultValue(0);
 
             entity.HasOne(d => d.ApprovedByNavigation).WithMany(p => p.ClientApprovedByNavigations).HasConstraintName("FK_Client_User3");
 
-            entity.HasOne(d => d.Branch).WithMany(p => p.Clients)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_Client_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.Clients).HasConstraintName("FK_Client_Branch");
 
             entity.HasOne(d => d.ClientClassification).WithMany(p => p.Clients).HasConstraintName("FK_Client_ClientClassification");
 
@@ -1722,7 +1748,9 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.AccountOfJe).WithMany(p => p.ClientAccounts).HasConstraintName("FK_ClientAccounts_AccountOfJournalEntry");
 
-            entity.HasOne(d => d.Client).WithMany(p => p.ClientAccounts).HasConstraintName("FK_ClientAccounts_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.ClientAccounts)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ClientAccounts_Client");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ClientAccountCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -1732,18 +1760,20 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.Offer).WithMany(p => p.ClientAccounts).HasConstraintName("FK_ClientAccounts_SalesOffer");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ClientAccounts)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_ClientAccounts_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ClientAccounts).HasConstraintName("FK_ClientAccounts_Project");
         });
 
         modelBuilder.Entity<ClientAddress>(entity =>
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
+            entity.Property(e => e.BuildingNumber).HasDefaultValueSql("((0))");
+            entity.Property(e => e.Floor).HasDefaultValueSql("((0))");
 
             entity.HasOne(d => d.Area).WithMany(p => p.ClientAddresses).HasConstraintName("FK_ClientAddress_Area");
 
-            entity.HasOne(d => d.Client).WithMany(p => p.ClientAddresses).HasConstraintName("FK_ClientAddress_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.ClientAddresses)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ClientAddress_Client");
 
             entity.HasOne(d => d.Country).WithMany(p => p.ClientAddresses)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -1764,7 +1794,9 @@ public partial class GarasTestContext : DbContext
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
 
-            entity.HasOne(d => d.Client).WithMany(p => p.ClientAttachments).HasConstraintName("FK_ClientAttachment_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.ClientAttachments)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ClientAttachment_Client");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ClientAttachmentCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -1777,7 +1809,9 @@ public partial class GarasTestContext : DbContext
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
 
-            entity.HasOne(d => d.Client).WithMany(p => p.ClientBankAccounts).HasConstraintName("FK_ClientBankAccount_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.ClientBankAccounts)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ClientBankAccount_Client");
         });
 
         modelBuilder.Entity<ClientConsultant>(entity =>
@@ -1875,7 +1909,9 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<ClientContactPerson>(entity =>
         {
-            entity.HasOne(d => d.Client).WithMany(p => p.ClientContactPeople).HasConstraintName("FK_ClientContactPerson_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.ClientContactPeople)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ClientContactPerson_Client");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ClientContactPersonCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -1916,7 +1952,9 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<ClientMobile>(entity =>
         {
-            entity.HasOne(d => d.Client).WithMany(p => p.ClientMobiles).HasConstraintName("FK_ClientMobile_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.ClientMobiles)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ClientMobile_Client");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ClientMobileCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -1944,12 +1982,16 @@ public partial class GarasTestContext : DbContext
 
             entity.Property(e => e.Active).HasDefaultValue(true);
 
-            entity.HasOne(d => d.Client).WithMany(p => p.ClientPaymentTerms).HasConstraintName("FK_ClientPaymentTerm_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.ClientPaymentTerms)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ClientPaymentTerm_Client");
         });
 
         modelBuilder.Entity<ClientPhone>(entity =>
         {
-            entity.HasOne(d => d.Client).WithMany(p => p.ClientPhones).HasConstraintName("FK_ClientPhone_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.ClientPhones)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ClientPhone_Client");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ClientPhoneCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -1960,7 +2002,9 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<ClientSalesPerson>(entity =>
         {
-            entity.HasOne(d => d.Client).WithMany(p => p.ClientSalesPeople).HasConstraintName("FK_ClientSalesPerson_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.ClientSalesPeople)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ClientSalesPerson_Client");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ClientSalesPersonCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -1977,12 +2021,16 @@ public partial class GarasTestContext : DbContext
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
 
-            entity.HasOne(d => d.Client).WithMany(p => p.ClientSessions).HasConstraintName("FK_ClientSession_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.ClientSessions)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ClientSession_Client");
         });
 
         modelBuilder.Entity<ClientSpeciality>(entity =>
         {
-            entity.HasOne(d => d.Client).WithMany(p => p.ClientSpecialities).HasConstraintName("FK_ClientSpeciality_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.ClientSpecialities)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ClientSpeciality_Client");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ClientSpecialityCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -2064,7 +2112,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ContractLeaveEmployee_ContractDetails");
 
-            entity.HasOne(d => d.ContractLeaveSetting).WithMany(p => p.ContractLeaveEmployees).HasConstraintName("FK_ContractLeaveEmployee_ContractLeaveSetting");
+            entity.HasOne(d => d.ContractLeaveSetting).WithMany(p => p.ContractLeaveEmployees)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ContractLeaveEmployee_ContractLeaveSetting");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ContractLeaveEmployeeCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -2152,13 +2202,17 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<Crmreport>(entity =>
         {
-            entity.HasOne(d => d.Branch).WithMany(p => p.Crmreports).HasConstraintName("FK_CRMReport_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.Crmreports)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CRMReport_Branch");
 
             entity.HasOne(d => d.ClientContactPerson).WithMany(p => p.Crmreports)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CRMReport_ClientContactPerson");
 
-            entity.HasOne(d => d.Client).WithMany(p => p.Crmreports).HasConstraintName("FK_CRMReport_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.Crmreports)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CRMReport_Client");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.CrmreportCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -2288,9 +2342,7 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<DailyReportLine>(entity =>
         {
-            entity.HasOne(d => d.Client).WithMany(p => p.DailyReportLines)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_DailyReportLine_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.DailyReportLines).HasConstraintName("FK_DailyReportLine_Client");
 
             entity.HasOne(d => d.DailyReport).WithMany(p => p.DailyReportLines)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -2379,7 +2431,9 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.DailyTransactionCostCenterModifiedByNavigations).HasConstraintName("FK_DailyTransactionCostCenter_User1");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.DailyTransactionCostCenters).HasConstraintName("FK_DailyTransactionCostCenter_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.DailyTransactionCostCenters)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_DailyTransactionCostCenter_Project");
         });
 
         modelBuilder.Entity<DeductionType>(entity =>
@@ -2531,13 +2585,6 @@ public partial class GarasTestContext : DbContext
                 .HasConstraintName("FK_EmailCc_Email");
         });
 
-        modelBuilder.Entity<EmailReceiver>(entity =>
-        {
-            entity.HasOne(d => d.EmailNavigation).WithMany(p => p.EmailReceivers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_EmailReceivers_Email");
-        });
-
         modelBuilder.Entity<ExchangeRate>(entity =>
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
@@ -2579,6 +2626,13 @@ public partial class GarasTestContext : DbContext
                 .HasConstraintName("FK_ExtraCostLibrary_Currency");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ExtraCostLibraryModifiedByNavigations).HasConstraintName("FK_ExtraCostLibrary_User1");
+        });
+
+        modelBuilder.Entity<Family>(entity =>
+        {
+            entity.HasOne(d => d.FamilyStatus).WithMany(p => p.Families)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Family_FamilyStatus");
         });
 
         modelBuilder.Entity<GarasClientInfo>(entity =>
@@ -2666,30 +2720,114 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<HrUser>(entity =>
         {
-            entity.ToTable("HrUser", tb => tb.HasTrigger("Trig_log"));
-
             entity.Property(e => e.ArmiddleName).HasDefaultValue("");
             entity.Property(e => e.NationalityId).HasDefaultValue(0L);
 
-            entity.HasOne(d => d.Branch).WithMany(p => p.HrUsers)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_HrUser_BranchID");
+            entity.HasOne(d => d.BelongToChurch).WithMany(p => p.HrUserBelongToChurches).HasConstraintName("FK_HrUser_ChurchBelongTo");
+
+            entity.HasOne(d => d.ChurchOfPresence).WithMany(p => p.HrUserChurchOfPresences).HasConstraintName("FK_HrUser_ChurchOfPresence");
 
             entity.HasOne(d => d.CreatedBy).WithMany(p => p.HrUserCreatedBies).OnDelete(DeleteBehavior.ClientSetNull);
 
-            entity.HasOne(d => d.Department).WithMany(p => p.HrUsers)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_HrUser_DepartmentID");
-
-            entity.HasOne(d => d.JobTitle).WithMany(p => p.HrUsers)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_HrUser_JobTitleID");
+            entity.HasOne(d => d.JobTitle).WithMany(p => p.HrUsers).HasConstraintName("FK_HrUser_JobTitleID");
 
             entity.HasOne(d => d.MaritalStatus).WithMany(p => p.HrUsers).HasConstraintName("FK_HrUser_MaritalStatus_HrMaritalStatusId");
 
             entity.HasOne(d => d.ModifiedBy).WithMany(p => p.HrUserModifiedBies).OnDelete(DeleteBehavior.ClientSetNull);
 
+            entity.HasOne(d => d.PlaceOfBirth).WithMany(p => p.HrUsers).HasConstraintName("FK_HrUser_Governorate");
+
             entity.HasOne(d => d.User).WithMany(p => p.HrUserUsers).HasConstraintName("FK_HrUser_HrUser_UserID");
+        });
+
+        modelBuilder.Entity<HrUserAddress>(entity =>
+        {
+            entity.HasOne(d => d.Area).WithMany(p => p.HrUserAddresses).HasConstraintName("FK_HrUserAddress_Area");
+
+            entity.HasOne(d => d.City).WithMany(p => p.HrUserAddresses).HasConstraintName("FK_HrUserAddress_City");
+
+            entity.HasOne(d => d.Country).WithMany(p => p.HrUserAddresses)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserAddress_Country");
+
+            entity.HasOne(d => d.District).WithMany(p => p.HrUserAddresses).HasConstraintName("FK_HrUserAddress_District");
+
+            entity.HasOne(d => d.GeographicalName).WithMany(p => p.HrUserAddresses).HasConstraintName("FK_HrUserAddress_GeographicalName");
+
+            entity.HasOne(d => d.Governorate).WithMany(p => p.HrUserAddresses)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserAddress_Governorate");
+
+            entity.HasOne(d => d.HrUser).WithMany(p => p.HrUserAddresses)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserAddress_HrUser");
+        });
+
+        modelBuilder.Entity<HrUserAttachment>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+            entity.HasOne(d => d.AttachmentType).WithMany(p => p.HrUserAttachments)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserAttachment_AttachmentType");
+
+            entity.HasOne(d => d.IdNavigation).WithOne(p => p.HrUserAttachment)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserAttachment_HrUser");
+        });
+
+        modelBuilder.Entity<HrUserFamily>(entity =>
+        {
+            entity.HasOne(d => d.Family).WithMany(p => p.HrUserFamilies)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserFamily_Family");
+
+            entity.HasOne(d => d.HrUser).WithMany(p => p.HrUserFamilies)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserFamily_HrUser");
+        });
+
+        modelBuilder.Entity<HrUserLandLine>(entity =>
+        {
+            entity.HasOne(d => d.HrUser).WithMany(p => p.HrUserLandLines)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserLandLine_HrUser");
+        });
+
+        modelBuilder.Entity<HrUserMobile>(entity =>
+        {
+            entity.HasOne(d => d.HrUser).WithMany(p => p.HrUserMobiles)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserMobile_HrUser");
+        });
+
+        modelBuilder.Entity<HrUserPriest>(entity =>
+        {
+            entity.HasOne(d => d.HrUser).WithMany(p => p.HrUserPriests)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserPriest_HrUser");
+
+            entity.HasOne(d => d.Priest).WithMany(p => p.HrUserPriests)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserPriest_Priest");
+        });
+
+        modelBuilder.Entity<HrUserSocialMedium>(entity =>
+        {
+            entity.HasOne(d => d.HrUser).WithMany(p => p.HrUserSocialMedia)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserSocialMedia_HrUser");
+        });
+
+        modelBuilder.Entity<HrUserStatus>(entity =>
+        {
+            entity.HasOne(d => d.HrUser).WithMany(p => p.HrUserStatuses)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserStatus_HrUser");
+
+            entity.HasOne(d => d.PersonStatus).WithMany(p => p.HrUserStatuses)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HrUserStatus_PersonStatus");
         });
 
         modelBuilder.Entity<Hrcustody>(entity =>
@@ -2865,7 +3003,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Interview_User");
 
-            entity.HasOne(d => d.JobTitle).WithMany(p => p.Interviews).HasConstraintName("FK_Interview_JobTitle");
+            entity.HasOne(d => d.JobTitle).WithMany(p => p.Interviews)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Interview_JobTitle");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InterviewModifiedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -3121,9 +3261,7 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_InventoryMatrialReleasePrintInfo_InventoryMatrialRelease");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.InventoryMatrialReleasePrintInfos)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_InventoryMatrialReleasePrintInfo_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.InventoryMatrialReleasePrintInfos).HasConstraintName("FK_InventoryMatrialReleasePrintInfo_Project");
         });
 
         modelBuilder.Entity<InventoryMatrialRequest>(entity =>
@@ -3163,9 +3301,7 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_InventoryMatrialRequestItems_InventoryMatrialRequest");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.InventoryMatrialRequestItems)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_InventoryMatrialRequestItems_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.InventoryMatrialRequestItems).HasConstraintName("FK_InventoryMatrialRequestItems_Project");
 
             entity.HasOne(d => d.Uom).WithMany(p => p.InventoryMatrialRequestItems)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -3346,7 +3482,9 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InvoiceExtraModificationModifiedByNavigations).HasConstraintName("FK_InvoiceExtraModification_User1");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.InvoiceExtraModifications).HasConstraintName("FK_InvoiceExtraModification_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.InvoiceExtraModifications)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_InvoiceExtraModification_Project");
         });
 
         modelBuilder.Entity<InvoiceNewClient>(entity =>
@@ -3358,7 +3496,9 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<InvoiceOfProject>(entity =>
         {
-            entity.HasOne(d => d.Project).WithMany(p => p.InvoiceOfProjects).HasConstraintName("FK_InvoiceOfProject_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.InvoiceOfProjects)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_InvoiceOfProject_Project");
         });
 
         modelBuilder.Entity<InvoiceTax>(entity =>
@@ -3372,20 +3512,26 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<InvoiceType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__InvoiceT__3214EC278A784FA8");
+            entity.HasKey(e => e.Id).HasName("PK__InvoiceT__3214EC2715E4BA9D");
         });
 
         modelBuilder.Entity<JobInformation>(entity =>
         {
-            entity.HasOne(d => d.Branch).WithMany(p => p.JobInformations).HasConstraintName("FK_JobInformation_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.JobInformations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_JobInformation_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.JobInformationCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_JobInformation_User2");
 
-            entity.HasOne(d => d.Department).WithMany(p => p.JobInformations).HasConstraintName("FK_JobInformation_Department");
+            entity.HasOne(d => d.Department).WithMany(p => p.JobInformations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_JobInformation_Department");
 
-            entity.HasOne(d => d.JobTitle).WithMany(p => p.JobInformations).HasConstraintName("FK_JobInformation_JobTitle");
+            entity.HasOne(d => d.JobTitle).WithMany(p => p.JobInformations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_JobInformation_JobTitle");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.JobInformationModifiedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -3417,11 +3563,11 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<LaboratoryMessagesReport>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Laborato__3214EC07FEC7D665");
+            entity.HasKey(e => e.Id).HasName("PK__Laborato__3214EC07EA76564C");
 
             entity.HasOne(d => d.CreateByNavigation).WithMany(p => p.LaboratoryMessagesReports)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Laborator__Creat__2F53F050");
+                .HasConstraintName("FK__Laborator__Creat__5D034A62");
         });
 
         modelBuilder.Entity<LeaveRequest>(entity =>
@@ -3442,18 +3588,24 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.SecondApprovedByNavigation).WithMany(p => p.LeaveRequestSecondApprovedByNavigations).HasConstraintName("FK_LeaveRequest_User1");
 
-            entity.HasOne(d => d.VacationType).WithMany(p => p.LeaveRequests).HasConstraintName("FK_LeaveRequest_ContractLeaveSetting");
+            entity.HasOne(d => d.VacationType).WithMany(p => p.LeaveRequests)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_LeaveRequest_ContractLeaveSetting");
         });
 
         modelBuilder.Entity<MaintenanceFor>(entity =>
         {
             entity.HasOne(d => d.Category).WithMany(p => p.MaintenanceFors).HasConstraintName("FK_MaintenanceFor_InventoryItemCategory");
 
-            entity.HasOne(d => d.Client).WithMany(p => p.MaintenanceFors).HasConstraintName("FK_MaintenanceFor_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.MaintenanceFors)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MaintenanceFor_Client");
 
             entity.HasOne(d => d.InventoryItem).WithMany(p => p.MaintenanceFors).HasConstraintName("FK_MaintenanceFor_InventoryItem");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.MaintenanceFors).HasConstraintName("FK_MaintenanceFor_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.MaintenanceFors)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MaintenanceFor_Project");
 
             entity.HasOne(d => d.SalesOffer).WithMany(p => p.MaintenanceFors)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -3537,15 +3689,21 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<MaintenanceReportUser>(entity =>
         {
-            entity.HasOne(d => d.Branch).WithMany(p => p.MaintenanceReportUsers).HasConstraintName("FK_MaintenanceReportUsers_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.MaintenanceReportUsers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MaintenanceReportUsers_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.MaintenanceReportUserCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MaintenanceReportUsers_User");
 
-            entity.HasOne(d => d.Department).WithMany(p => p.MaintenanceReportUsers).HasConstraintName("FK_MaintenanceReportUsers_Department");
+            entity.HasOne(d => d.Department).WithMany(p => p.MaintenanceReportUsers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MaintenanceReportUsers_Department");
 
-            entity.HasOne(d => d.JobTitle).WithMany(p => p.MaintenanceReportUsers).HasConstraintName("FK_MaintenanceReportUsers_JobTitle");
+            entity.HasOne(d => d.JobTitle).WithMany(p => p.MaintenanceReportUsers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MaintenanceReportUsers_JobTitle");
 
             entity.HasOne(d => d.MaintenanceReport).WithMany(p => p.MaintenanceReportUsers)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -3593,7 +3751,9 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ManagementOfMaintenanceOrderModifiedByNavigations).HasConstraintName("FK_ManagementOfMaintenanceOrder_User1");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ManagementOfMaintenanceOrders).HasConstraintName("FK_ManagementOfMaintenanceOrder_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ManagementOfMaintenanceOrders)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ManagementOfMaintenanceOrder_Project");
         });
 
         modelBuilder.Entity<ManagementOfRentOrder>(entity =>
@@ -3604,7 +3764,9 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ManagementOfRentOrderModifiedByNavigations).HasConstraintName("FK_ManagementOfRentOrder_User1");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ManagementOfRentOrders).HasConstraintName("FK_ManagementOfRentOrder_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ManagementOfRentOrders)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ManagementOfRentOrder_Project");
 
             entity.HasOne(d => d.RentOffer).WithMany(p => p.ManagementOfRentOrders)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -3745,7 +3907,7 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<Nationality>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__National__3214EC27FAC3B724");
+            entity.HasKey(e => e.Id).HasName("PK__National__3214EC27224522B5");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
         });
@@ -3777,7 +3939,9 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<OverTimeAndDeductionRate>(entity =>
         {
-            entity.HasOne(d => d.Branch).WithMany(p => p.OverTimeAndDeductionRates).HasConstraintName("FK_OverTimeAndDeductionRate_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.OverTimeAndDeductionRates)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OverTimeAndDeductionRate_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.OverTimeAndDeductionRateCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -3790,9 +3954,7 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<Payroll>(entity =>
         {
-            entity.HasOne(d => d.Branch).WithMany(p => p.Payrolls)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_Payroll_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.Payrolls).HasConstraintName("FK_Payroll_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PayrollCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -3893,7 +4055,9 @@ public partial class GarasTestContext : DbContext
             entity.Property(e => e.QuantityTotal).HasDefaultValue(0.0);
             entity.Property(e => e.Total).HasDefaultValue(0m);
 
-            entity.HasOne(d => d.Branch).WithMany(p => p.Pricings).HasConstraintName("FK_Pricing_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.Pricings)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Pricing_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PricingCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -4065,7 +4229,9 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.BillingType).WithMany(p => p.Projects).HasConstraintName("FK_Project_BillingType");
 
-            entity.HasOne(d => d.Branch).WithMany(p => p.Projects).HasConstraintName("FK_Project_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.Projects)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Project_Branch");
 
             entity.HasOne(d => d.CostType).WithMany(p => p.Projects).HasConstraintName("FK_Project_ProjectCostingType");
 
@@ -4102,7 +4268,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectAssignUser_User2");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectAssignUsers).HasConstraintName("FK_ProjectAssignUser_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectAssignUsers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectAssignUser_Project");
 
             entity.HasOne(d => d.Role).WithMany(p => p.ProjectAssignUsers).HasConstraintName("FK_ProjectAssignUser_Role");
 
@@ -4115,7 +4283,9 @@ public partial class GarasTestContext : DbContext
         {
             entity.Property(e => e.FileExtenssion).IsFixedLength();
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectAttachments).HasConstraintName("FK_ProjectAttachment_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectAttachments)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectAttachment_Project");
         });
 
         modelBuilder.Entity<ProjectCheque>(entity =>
@@ -4138,9 +4308,7 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectCheque_User1");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectCheques)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_ProjectCheque_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectCheques).HasConstraintName("FK_ProjectCheque_Project");
 
             entity.HasOne(d => d.WithdrawedByNavigation).WithMany(p => p.ProjectChequeWithdrawedByNavigations).HasConstraintName("FK_ProjectCheque_User2");
         });
@@ -4163,7 +4331,9 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectContactPersonModifiedByNavigations).HasConstraintName("FK_ProjectContactPerson_User1");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectContactPeople).HasConstraintName("FK_ProjectContactPerson_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectContactPeople)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectContactPerson_Project");
         });
 
         modelBuilder.Entity<ProjectFabrication>(entity =>
@@ -4174,7 +4344,9 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectFabricationModifiedByNavigations).HasConstraintName("FK_ProjectFabrication_User1");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectFabrications).HasConstraintName("FK_ProjectFabrication_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectFabrications)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectFabrication_Project");
         });
 
         modelBuilder.Entity<ProjectFabricationAttachment>(entity =>
@@ -4204,7 +4376,7 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectFabricationBOQ_ProjectFabrication");
 
-            entity.HasOne(d => d.SalesOfferProduct).WithMany(p => p.ProjectFabricationBoqs).HasConstraintName("FK__ProjectFa__Sales__014ACC79");
+            entity.HasOne(d => d.SalesOfferProduct).WithMany(p => p.ProjectFabricationBoqs).HasConstraintName("FK__ProjectFa__Sales__60A8F2BD");
         });
 
         modelBuilder.Entity<ProjectFabricationJobTitle>(entity =>
@@ -4215,7 +4387,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectFabricationJobTitle_User");
 
-            entity.HasOne(d => d.JobTitle).WithMany(p => p.ProjectFabricationJobTitles).HasConstraintName("FK_ProjectFabricationJobTitle_JobTitle");
+            entity.HasOne(d => d.JobTitle).WithMany(p => p.ProjectFabricationJobTitles)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectFabricationJobTitle_JobTitle");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectFabricationJobTitleModifiedByNavigations).HasConstraintName("FK_ProjectFabricationJobTitle_User1");
         });
@@ -4297,15 +4471,21 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<ProjectFabricationReportUser>(entity =>
         {
-            entity.HasOne(d => d.Branch).WithMany(p => p.ProjectFabricationReportUsers).HasConstraintName("FK_ProjectFabricationReportUsers_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.ProjectFabricationReportUsers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectFabricationReportUsers_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectFabricationReportUserCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectFabricationReportUsers_User1");
 
-            entity.HasOne(d => d.Department).WithMany(p => p.ProjectFabricationReportUsers).HasConstraintName("FK_ProjectFabricationReportUsers_Department");
+            entity.HasOne(d => d.Department).WithMany(p => p.ProjectFabricationReportUsers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectFabricationReportUsers_Department");
 
-            entity.HasOne(d => d.JobTitle).WithMany(p => p.ProjectFabricationReportUsers).HasConstraintName("FK_ProjectFabricationReportUsers_JobTitle");
+            entity.HasOne(d => d.JobTitle).WithMany(p => p.ProjectFabricationReportUsers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectFabricationReportUsers_JobTitle");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectFabricationReportUserModifiedByNavigations).HasConstraintName("FK_ProjectFabricationReportUsers_User2");
 
@@ -4364,7 +4544,9 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInstallAttachmentModifiedByNavigations).HasConstraintName("FK_ProjectInstallAttachment_User1");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectInstallAttachments).HasConstraintName("FK_ProjectInstallAttachment_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectInstallAttachments)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectInstallAttachment_Project");
         });
 
         modelBuilder.Entity<ProjectInstallation>(entity =>
@@ -4407,7 +4589,7 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectInstallationBOQ_ProjectInstallation");
 
-            entity.HasOne(d => d.SalesOfferProduct).WithMany(p => p.ProjectInstallationBoqs).HasConstraintName("FK__ProjectIn__Sales__023EF0B2");
+            entity.HasOne(d => d.SalesOfferProduct).WithMany(p => p.ProjectInstallationBoqs).HasConstraintName("FK__ProjectIn__Sales__619D16F6");
         });
 
         modelBuilder.Entity<ProjectInstallationJobTitle>(entity =>
@@ -4418,7 +4600,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectInstallationJobTitle_User");
 
-            entity.HasOne(d => d.JobTitle).WithMany(p => p.ProjectInstallationJobTitles).HasConstraintName("FK_ProjectInstallationJobTitle_JobTitle");
+            entity.HasOne(d => d.JobTitle).WithMany(p => p.ProjectInstallationJobTitles)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectInstallationJobTitle_JobTitle");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInstallationJobTitleModifiedByNavigations).HasConstraintName("FK_ProjectInstallationJobTitle_User1");
         });
@@ -4483,15 +4667,21 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<ProjectInstallationReportUser>(entity =>
         {
-            entity.HasOne(d => d.Branch).WithMany(p => p.ProjectInstallationReportUsers).HasConstraintName("FK_ProjectInstallationReportUsers_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.ProjectInstallationReportUsers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectInstallationReportUsers_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInstallationReportUserCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectInstallationReportUsers_User1");
 
-            entity.HasOne(d => d.Department).WithMany(p => p.ProjectInstallationReportUsers).HasConstraintName("FK_ProjectInstallationReportUsers_Department");
+            entity.HasOne(d => d.Department).WithMany(p => p.ProjectInstallationReportUsers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectInstallationReportUsers_Department");
 
-            entity.HasOne(d => d.JobTitle).WithMany(p => p.ProjectInstallationReportUsers).HasConstraintName("FK_ProjectInstallationReportUsers_JobTitle");
+            entity.HasOne(d => d.JobTitle).WithMany(p => p.ProjectInstallationReportUsers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectInstallationReportUsers_JobTitle");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInstallationReportUserModifiedByNavigations).HasConstraintName("FK_ProjectInstallationReportUsers_User2");
 
@@ -4527,7 +4717,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectInvoice_User1");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectInvoices).HasConstraintName("FK_ProjectInvoice_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectInvoices)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectInvoice_Project");
         });
 
         modelBuilder.Entity<ProjectInvoiceCollected>(entity =>
@@ -4542,7 +4734,9 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.PaymentMethod).WithMany(p => p.ProjectInvoiceCollecteds).HasConstraintName("FK_ProjectInvoiceCollected_PaymentMethod");
 
-            entity.HasOne(d => d.ProjectInvoice).WithMany(p => p.ProjectInvoiceCollecteds).HasConstraintName("FK_ProjectInvoiceCollected_ProjectInvoice");
+            entity.HasOne(d => d.ProjectInvoice).WithMany(p => p.ProjectInvoiceCollecteds)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectInvoiceCollected_ProjectInvoice");
         });
 
         modelBuilder.Entity<ProjectInvoiceItem>(entity =>
@@ -4555,7 +4749,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectInvoiceItem_User1");
 
-            entity.HasOne(d => d.ProjectInvoice).WithMany(p => p.ProjectInvoiceItems).HasConstraintName("FK_ProjectInvoiceItem_ProjectInvoice");
+            entity.HasOne(d => d.ProjectInvoice).WithMany(p => p.ProjectInvoiceItems)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectInvoiceItem_ProjectInvoice");
 
             entity.HasOne(d => d.Uom).WithMany(p => p.ProjectInvoiceItems).HasConstraintName("FK_ProjectInvoiceItem_InventoryUOM");
         });
@@ -4570,7 +4766,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectLetterOfCredit_LetterOfCreditType");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectLetterOfCredits).HasConstraintName("FK_ProjectLetterOfCredit_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectLetterOfCredits)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectLetterOfCredit_Project");
         });
 
         modelBuilder.Entity<ProjectLetterOfCreditComment>(entity =>
@@ -4613,7 +4811,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectPaymentTerms_PaymentTerms");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectPaymentTerms).HasConstraintName("FK_ProjectPaymentTerms_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectPaymentTerms)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectPaymentTerms_Project");
         });
 
         modelBuilder.Entity<ProjectProgress>(entity =>
@@ -4638,7 +4838,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectProgress_ProgressType");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectProgresses).HasConstraintName("FK_ProjectProgress_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectProgresses)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectProgress_Project");
         });
 
         modelBuilder.Entity<ProjectProgressUser>(entity =>
@@ -4674,7 +4876,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectSprint_User1");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectSprints).HasConstraintName("FK_ProjectSprint_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectSprints)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectSprint_Project");
         });
 
         modelBuilder.Entity<ProjectTm>(entity =>
@@ -4682,9 +4886,13 @@ public partial class GarasTestContext : DbContext
             entity.Property(e => e.Status).HasDefaultValue(true);
             entity.Property(e => e.TimeTracking).HasDefaultValue(true);
 
-            entity.HasOne(d => d.Branch).WithMany(p => p.ProjectTms).HasConstraintName("FK_ProjectTM_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.ProjectTms)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectTM_Branch");
 
-            entity.HasOne(d => d.Client).WithMany(p => p.ProjectTms).HasConstraintName("FK_ProjectTM_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.ProjectTms)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectTM_Client");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectTmCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -4753,7 +4961,9 @@ public partial class GarasTestContext : DbContext
             entity.Property(e => e.Billable).HasDefaultValue(false);
             entity.Property(e => e.TimeTracking).HasDefaultValue(false);
 
-            entity.HasOne(d => d.Client).WithMany(p => p.ProjectTmrevisions).HasConstraintName("FK_ProjectTMRevision_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.ProjectTmrevisions)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectTMRevision_Client");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectTmrevisionCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -4795,14 +5005,18 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectWorkFlow_User1");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectWorkFlows).HasConstraintName("FK_ProjectWorkFlow_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectWorkFlows)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectWorkFlow_Project");
         });
 
         modelBuilder.Entity<ProjectWorkshopStation>(entity =>
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
 
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectWorkshopStations).HasConstraintName("FK_ProjectWorkshopStation_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectWorkshopStations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectWorkshopStation_Project");
 
             entity.HasOne(d => d.WorkshopStation).WithMany(p => p.ProjectWorkshopStations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -4838,7 +5052,7 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PRSupplierOfferItem_User");
 
-            entity.HasOne(d => d.Currency).WithMany(p => p.PrsupplierOfferItems).HasConstraintName("FK__PRSupplie__Curre__0A7FFC4F");
+            entity.HasOne(d => d.Currency).WithMany(p => p.PrsupplierOfferItems).HasConstraintName("FK__PRSupplie__Curre__0758AB8A");
 
             entity.HasOne(d => d.InventoryItem).WithMany(p => p.PrsupplierOfferItems)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -4896,9 +5110,9 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<PurchasePo>(entity =>
         {
-            entity.HasOne(d => d.AssignedAccountant).WithMany(p => p.PurchasePoAssignedAccountants).HasConstraintName("FK__PurchaseP__Assig__0B742088");
+            entity.HasOne(d => d.AssignedAccountant).WithMany(p => p.PurchasePoAssignedAccountants).HasConstraintName("FK__PurchaseP__Assig__33B5855E");
 
-            entity.HasOne(d => d.AssignedPurchasingPerson).WithMany(p => p.PurchasePoAssignedPurchasingPeople).HasConstraintName("FK__PurchaseP__Assig__0C6844C1");
+            entity.HasOne(d => d.AssignedPurchasingPerson).WithMany(p => p.PurchasePoAssignedPurchasingPeople).HasConstraintName("FK__PurchaseP__Assig__40DA7652");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePoCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -4906,17 +5120,17 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PurchasePoModifiedByNavigations).HasConstraintName("FK_PurchasePO_User1");
 
-            entity.HasOne(d => d.Potype).WithMany(p => p.PurchasePos).HasConstraintName("FK__PurchaseP__POTyp__0D5C68FA");
+            entity.HasOne(d => d.Potype).WithMany(p => p.PurchasePos).HasConstraintName("FK__PurchaseP__POTyp__2DFCAC08");
 
-            entity.HasOne(d => d.SentToSupplierContactPerson).WithMany(p => p.PurchasePos).HasConstraintName("FK__PurchaseP__SentT__0E508D33");
+            entity.HasOne(d => d.SentToSupplierContactPerson).WithMany(p => p.PurchasePos).HasConstraintName("FK__PurchaseP__SentT__41CE9A8B");
 
             entity.HasOne(d => d.ToSupplier).WithMany(p => p.PurchasePos)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PurchasePO_Supplier");
 
-            entity.HasOne(d => d.UserIdforFinalApproveNavigation).WithMany(p => p.PurchasePoUserIdforFinalApproveNavigations).HasConstraintName("FK__PurchaseP__UserI__1038D5A5");
+            entity.HasOne(d => d.UserIdforFinalApproveNavigation).WithMany(p => p.PurchasePoUserIdforFinalApproveNavigations).HasConstraintName("FK__PurchaseP__UserI__359DCDD0");
 
-            entity.HasOne(d => d.UserIdforTechApproveNavigation).WithMany(p => p.PurchasePoUserIdforTechApproveNavigations).HasConstraintName("FK__PurchaseP__UserI__0F44B16C");
+            entity.HasOne(d => d.UserIdforTechApproveNavigation).WithMany(p => p.PurchasePoUserIdforTechApproveNavigations).HasConstraintName("FK__PurchaseP__UserI__34A9A997");
         });
 
         modelBuilder.Entity<PurchasePoamountPaymentMethod>(entity =>
@@ -5148,9 +5362,7 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PurchasePOItem_InventoryMatrialRequestItems");
 
-            entity.HasOne(d => d.Project).WithMany(p => p.PurchasePoitems)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_PurchasePOItem_Project");
+            entity.HasOne(d => d.Project).WithMany(p => p.PurchasePoitems).HasConstraintName("FK_PurchasePOItem_Project");
 
             entity.HasOne(d => d.PurchasePo).WithMany(p => p.PurchasePoitems)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -5380,7 +5592,7 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<ReservationInvoice>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Reservat__3214EC275C33CEDB");
+            entity.HasKey(e => e.Id).HasName("PK__Reservat__3214EC276071060E");
 
             entity.HasOne(d => d.Client).WithMany(p => p.ReservationInvoices)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -5446,7 +5658,9 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<SalaryAllownce>(entity =>
         {
-            entity.HasOne(d => d.AllowncesType).WithMany(p => p.SalaryAllownces).HasConstraintName("FK_SalaryAllownces_AllowncesType");
+            entity.HasOne(d => d.AllowncesType).WithMany(p => p.SalaryAllownces)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SalaryAllownces_AllowncesType");
 
             entity.HasOne(d => d.Salary).WithMany(p => p.SalaryAllownces)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -5471,9 +5685,7 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_SalaryDeductionTax_Salary");
 
-            entity.HasOne(d => d.SalaryTax).WithMany(p => p.SalaryDeductionTaxes)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_SalaryDeductionTax_SalaryTax");
+            entity.HasOne(d => d.SalaryTax).WithMany(p => p.SalaryDeductionTaxes).HasConstraintName("FK_SalaryDeductionTax_SalaryTax");
         });
 
         modelBuilder.Entity<SalaryInsurance>(entity =>
@@ -5497,9 +5709,7 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<SalaryTax>(entity =>
         {
-            entity.HasOne(d => d.Branch).WithMany(p => p.SalaryTaxes)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_SalaryTax_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.SalaryTaxes).HasConstraintName("FK_SalaryTax_Branch");
 
             entity.HasOne(d => d.CreationByNavigation).WithMany(p => p.SalaryTaxes).HasConstraintName("FK_SalaryTax_User");
 
@@ -5512,7 +5722,9 @@ public partial class GarasTestContext : DbContext
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
 
-            entity.HasOne(d => d.Branch).WithMany(p => p.SalesBranchProductTargets).HasConstraintName("FK_SalesBranchProductTarget_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.SalesBranchProductTargets)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SalesBranchProductTarget_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.SalesBranchProductTargetCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -5537,7 +5749,9 @@ public partial class GarasTestContext : DbContext
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
 
-            entity.HasOne(d => d.Branch).WithMany(p => p.SalesBranchTargets).HasConstraintName("FK_SalesBranchTarget_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.SalesBranchTargets)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SalesBranchTarget_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.SalesBranchTargetCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -5556,7 +5770,9 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<SalesBranchUserProductTarget>(entity =>
         {
-            entity.HasOne(d => d.Branch).WithMany(p => p.SalesBranchUserProductTargets).HasConstraintName("FK_SalesBranchUserProductTarget_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.SalesBranchUserProductTargets)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SalesBranchUserProductTarget_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.SalesBranchUserProductTargetCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -5583,7 +5799,9 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<SalesBranchUserTarget>(entity =>
         {
-            entity.HasOne(d => d.Branch).WithMany(p => p.SalesBranchUserTargets).HasConstraintName("FK_SalesBranchUserTarget_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.SalesBranchUserTargets)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SalesBranchUserTarget_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.SalesBranchUserTargetCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -5624,11 +5842,11 @@ public partial class GarasTestContext : DbContext
             entity.Property(e => e.Active).HasDefaultValue(true);
             entity.Property(e => e.ClientApprove).HasDefaultValue(false);
 
-            entity.HasOne(d => d.Branch).WithMany(p => p.SalesOffers).HasConstraintName("FK_SalesOffer_SalesOffer1");
+            entity.HasOne(d => d.Branch).WithMany(p => p.SalesOffers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SalesOffer_SalesOffer1");
 
-            entity.HasOne(d => d.Client).WithMany(p => p.SalesOffers)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_SalesOffer_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.SalesOffers).HasConstraintName("FK_SalesOffer_Client");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.SalesOfferCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -5710,9 +5928,7 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.DiscountApprovedByNavigation).WithMany(p => p.SalesOfferDiscountDiscountApprovedByNavigations).HasConstraintName("FK_SalesOfferDiscount_User1");
 
-            entity.HasOne(d => d.InvoicePayerClient).WithMany(p => p.SalesOfferDiscounts)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_SalesOfferDiscount_Client");
+            entity.HasOne(d => d.InvoicePayerClient).WithMany(p => p.SalesOfferDiscounts).HasConstraintName("FK_SalesOfferDiscount_Client");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.SalesOfferDiscountModifiedByNavigations).HasConstraintName("FK_SalesOfferDiscount_User2");
 
@@ -5749,9 +5965,7 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_SalesOfferExtraCosts_SalesExtraCostType");
 
-            entity.HasOne(d => d.InvoicePayerClient).WithMany(p => p.SalesOfferExtraCosts)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_SalesOfferExtraCosts_Client");
+            entity.HasOne(d => d.InvoicePayerClient).WithMany(p => p.SalesOfferExtraCosts).HasConstraintName("FK_SalesOfferExtraCosts_Client");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.SalesOfferExtraCostModifiedByNavigations).HasConstraintName("FK_SalesOfferExtraCosts_User1");
 
@@ -5800,9 +6014,7 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_SalesOfferInvoiceTax_User");
 
-            entity.HasOne(d => d.InvoicePayerClient).WithMany(p => p.SalesOfferInvoiceTaxes)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_SalesOfferInvoiceTax_Client");
+            entity.HasOne(d => d.InvoicePayerClient).WithMany(p => p.SalesOfferInvoiceTaxes).HasConstraintName("FK_SalesOfferInvoiceTax_Client");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.SalesOfferInvoiceTaxModifiedByNavigations).HasConstraintName("FK_SalesOfferInvoiceTax_User1");
 
@@ -5888,9 +6100,7 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.InventoryItem).WithMany(p => p.SalesOfferProducts).HasConstraintName("FK__SalesOffe__Inven__0678CA93");
 
-            entity.HasOne(d => d.InvoicePayerClient).WithMany(p => p.SalesOfferProducts)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_SalesOfferProduct_Client");
+            entity.HasOne(d => d.InvoicePayerClient).WithMany(p => p.SalesOfferProducts).HasConstraintName("FK_SalesOfferProduct_Client");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.SalesOfferProductModifiedByNavigations).HasConstraintName("FK_SalesOfferProduct_User1");
 
@@ -6263,9 +6473,7 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.ProjectSprint).WithMany(p => p.Tasks).HasConstraintName("FK_Task_ProjectSprint");
 
-            entity.HasOne(d => d.ProjectWorkFlow).WithMany(p => p.Tasks)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_Task_ProjectWorkFlow");
+            entity.HasOne(d => d.ProjectWorkFlow).WithMany(p => p.Tasks).HasConstraintName("FK_Task_ProjectWorkFlow");
 
             entity.HasOne(d => d.TaskType).WithMany(p => p.Tasks)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -6388,7 +6596,9 @@ public partial class GarasTestContext : DbContext
         {
             entity.ToTable(tb => tb.HasTrigger("Trig_TaskDetails_log"));
 
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskDetails).HasConstraintName("FK_Task_TaskDetails");
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskDetails)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Task_TaskDetails");
         });
 
         modelBuilder.Entity<TaskExpensi>(entity =>
@@ -6410,12 +6620,16 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<TaskFlagsOwnerReciever>(entity =>
         {
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskFlagsOwnerRecievers).HasConstraintName("FK_Task_TaskFlagsOwnerReciever");
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskFlagsOwnerRecievers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Task_TaskFlagsOwnerReciever");
         });
 
         modelBuilder.Entity<TaskHistory>(entity =>
         {
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskHistories).HasConstraintName("FK_TaskHistory_Task");
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskHistories)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TaskHistory_Task");
         });
 
         modelBuilder.Entity<TaskInfo>(entity =>
@@ -6469,7 +6683,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TaskPermission_PermissionLevel");
 
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskPermissions).HasConstraintName("FK_TaskPermission_Task");
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskPermissions)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TaskPermission_Task");
         });
 
         modelBuilder.Entity<TaskPrimarySubCategory>(entity =>
@@ -6497,11 +6713,11 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TaskRequirement_User1");
 
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskRequirements).HasConstraintName("FK_TaskRequirement_Task");
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskRequirements)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TaskRequirement_Task");
 
-            entity.HasOne(d => d.WorkingHourTracking).WithMany(p => p.TaskRequirements)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_TaskRequirement_WorkingHourseTracking");
+            entity.HasOne(d => d.WorkingHourTracking).WithMany(p => p.TaskRequirements).HasConstraintName("FK_TaskRequirement_WorkingHourseTracking");
         });
 
         modelBuilder.Entity<TaskScreenShot>(entity =>
@@ -6566,7 +6782,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TaskUnitRateService_User1");
 
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskUnitRateServices).HasConstraintName("FK_TaskUnitRateService_Task");
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskUnitRateServices)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TaskUnitRateService_Task");
 
             entity.HasOne(d => d.Uom).WithMany(p => p.TaskUnitRateServices)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -6575,7 +6793,9 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<TaskUserMonitor>(entity =>
         {
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskUserMonitors).HasConstraintName("FK_TaskUserMonitor_Task");
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskUserMonitors)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TaskUserMonitor_Task");
 
             entity.HasOne(d => d.User).WithMany(p => p.TaskUserMonitors)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -6592,11 +6812,9 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskUserReplyModifiedByNavigations).HasConstraintName("FK_TaskUserReply_User1");
 
-            entity.HasOne(d => d.RecieverUser).WithMany(p => p.TaskUserReplyRecieverUsers)
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskUserReplies)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskUserReply_User2");
-
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskUserReplies).HasConstraintName("FK_TaskUserReply_Task");
+                .HasConstraintName("FK_TaskUserReply_Task");
         });
 
         modelBuilder.Entity<Tax>(entity =>
@@ -6669,17 +6887,13 @@ public partial class GarasTestContext : DbContext
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
 
-            entity.HasOne(d => d.Branch).WithMany(p => p.Users)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_User_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.Users).HasConstraintName("FK_User_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InverseCreatedByNavigation).HasConstraintName("FK_User_User");
 
             entity.HasOne(d => d.Department).WithMany(p => p.Users).HasConstraintName("FK_User_Department");
 
-            entity.HasOne(d => d.JobTitle).WithMany(p => p.Users)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_User_JobTitle");
+            entity.HasOne(d => d.JobTitle).WithMany(p => p.Users).HasConstraintName("FK_User_JobTitle");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InverseModifiedByNavigation).HasConstraintName("FK_User_User1");
         });
@@ -6857,7 +7071,6 @@ public partial class GarasTestContext : DbContext
         {
             entity.ToView("V_Client_Useer");
 
-            entity.Property(e => e.ClassificationComment).UseCollation("SQL_Latin1_General_CP1_CI_AS");
             entity.Property(e => e.OtherDelivaryAndShippingMethodName).IsFixedLength();
         });
 
@@ -7294,7 +7507,9 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<VacationDay>(entity =>
         {
-            entity.HasOne(d => d.Branch).WithMany(p => p.VacationDays).HasConstraintName("FK_VacationDay_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.VacationDays)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_VacationDay_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.VacationDayCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -7315,7 +7530,9 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_VacationOverTimeAndDeductionRates_User1");
 
-            entity.HasOne(d => d.VacationDay).WithMany(p => p.VacationOverTimeAndDeductionRates).HasConstraintName("FK_VacationOverTimeAndDeductionRates_VacationDay");
+            entity.HasOne(d => d.VacationDay).WithMany(p => p.VacationOverTimeAndDeductionRates)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_VacationOverTimeAndDeductionRates_VacationDay");
         });
 
         modelBuilder.Entity<VacationPaymentStrategy>(entity =>
@@ -7444,11 +7661,13 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.Brand).WithMany(p => p.VehiclePerClients)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ClientVehicle_VehicleBrand");
+                .HasConstraintName("FK_VehiclePerClient_VehicleBrand");
 
             entity.HasOne(d => d.City).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_ClientVehicle_Governorate");
 
-            entity.HasOne(d => d.Client).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_ClientVehicle_Client");
+            entity.HasOne(d => d.Client).WithMany(p => p.VehiclePerClients)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_VehiclePerClient_Client");
 
             entity.HasOne(d => d.Color).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_ClientVehicle_VehicleColor");
 
@@ -7456,7 +7675,7 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.Issuer).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_ClientVehicle_VehicleIssuer");
 
-            entity.HasOne(d => d.Model).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_ClientVehicle_VehicleModel");
+            entity.HasOne(d => d.Model).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_VehiclePerClient_VehicleModel");
 
             entity.HasOne(d => d.Transmission).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_ClientVehicle_VehicleTransmission");
 
@@ -7526,9 +7745,7 @@ public partial class GarasTestContext : DbContext
         {
             entity.HasOne(d => d.ApprovedByNavigation).WithMany(p => p.WorkingHourseTrackingApprovedByNavigations).HasConstraintName("FK_WorkingHourseTracking_User");
 
-            entity.HasOne(d => d.Branch).WithMany(p => p.WorkingHourseTrackings)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_WorkingHourseTracking_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.WorkingHourseTrackings).HasConstraintName("FK_WorkingHourseTracking_Branch");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.WorkingHourseTrackingCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -7548,18 +7765,14 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.Shift).WithMany(p => p.WorkingHourseTrackings).HasConstraintName("FK_WorkingHourseTracking_BranchSchedule");
 
-            entity.HasOne(d => d.Task).WithMany(p => p.WorkingHourseTrackings)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_WorkingHourseTracking_Task");
+            entity.HasOne(d => d.Task).WithMany(p => p.WorkingHourseTrackings).HasConstraintName("FK_WorkingHourseTracking_Task");
         });
 
         modelBuilder.Entity<WorkshopStation>(entity =>
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
 
-            entity.HasOne(d => d.Branch).WithMany(p => p.WorkshopStations)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_WorkshopStation_Branch");
+            entity.HasOne(d => d.Branch).WithMany(p => p.WorkshopStations).HasConstraintName("FK_WorkshopStation_Branch");
 
             entity.HasOne(d => d.Team).WithMany(p => p.WorkshopStations).HasConstraintName("FK_WorkshopStation_Team");
         });

@@ -167,7 +167,7 @@ namespace NewGarasAPI.Controllers
                          login.CompanyName.ToLower() != "shi" &&
                          login.CompanyName.ToLower() != "shc" &&
                          login.CompanyName.ToLower() != "graffiti" &&
-                         login.CompanyName.ToLower() != "GARASCH" &&
+                         login.CompanyName.ToLower() != "garasch" &&
                          login.CompanyName.ToLower() != "libroyes" &&
                          login.CompanyName.ToLower() != "royaltent")
                 {

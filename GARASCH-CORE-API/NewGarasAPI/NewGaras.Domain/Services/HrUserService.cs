@@ -97,7 +97,7 @@ namespace NewGaras.Domain.Services
                     }
 
                 }
-                if (NewHrUser.FirstName == null || NewHrUser.FirstName == "")
+                if (string.IsNullOrWhiteSpace(NewHrUser.FirstName))
                 {
                     response.Result = false;
                     //Error err = new Error();
@@ -106,7 +106,16 @@ namespace NewGaras.Domain.Services
                     //response.Errors.Add(err);
                     //return response;
                 }
-                if (NewHrUser.ARLastName == null || NewHrUser.ARLastName == "")
+                if (string.IsNullOrWhiteSpace(NewHrUser.ARFirstName))
+                {
+                    response.Result = false;
+                    //Error err = new Error();
+                    //err.ErrorCode = "E-1";
+                    errorMessage = errorMessage + "ArFirstName - ";
+                    //response.Errors.Add(err);
+                    //return response;
+                }
+                if (string.IsNullOrWhiteSpace(NewHrUser.ARLastName))
                 {
                     response.Result = false;
                     //Error err = new Error();
@@ -115,7 +124,7 @@ namespace NewGaras.Domain.Services
                     //response.Errors.Add(err);
                     //return response;
                 }
-                if (NewHrUser.LastName == null || NewHrUser.LastName == "")
+                if (string.IsNullOrWhiteSpace(NewHrUser.LastName))
                 {
                     response.Result = false;
                     //Error err = new Error();
@@ -129,34 +138,31 @@ namespace NewGaras.Domain.Services
                 {
                     MiddleName = NewHrUser.MiddleName;
                 }
+                string AMiddleName = "";
+                if (!string.IsNullOrWhiteSpace(NewHrUser.ARMiddleName))
+                {
+                    AMiddleName = NewHrUser.ARMiddleName;
+                }
 
-                if (NewHrUser.Email == null || NewHrUser.Email == "")
-                {
-                    response.Result = false;
-                    //Error err = new Error();
-                    //err.ErrorCode = "E-1";
-                    errorMessage = errorMessage + "Email - ";
-                    //response.Errors.Add(err);
-                    //return response;
-                }
-                if (string.IsNullOrWhiteSpace(NewHrUser.Mobile))
-                {
-                    response.Result = false;
-                    //Error err = new Error();
-                    //err.ErrorCode = "E-1";
-                    errorMessage = errorMessage + "Mobile ";
-                    //response.Errors.Add(err);
-                    //return response;
-                }
-                //if (NewHrData.Gender == null || NewHrData.Gender == "")
+                //if (string.IsNullOrWhiteSpace(NewHrUser.Email))
                 //{
                 //    response.Result = false;
-                //    Error err = new Error();
-                //    err.ErrorCode = "E-1";
-                //    err.errorMSG = "please, Enter a valid Gender :";
-                //    response.Errors.Add(err);
-                //    return response;
+                //    //Error err = new Error();
+                //    //err.ErrorCode = "E-1";
+                //    errorMessage = errorMessage + "Email - ";
+                //    //response.Errors.Add(err);
+                //    //return response;
                 //}
+
+                if (string.IsNullOrWhiteSpace(NewHrUser.Gender))
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E-1";
+                    err.errorMSG = "please, Enter a valid Gender :";
+                    response.Errors.Add(err);
+                    return response;
+                }
                 if (!string.IsNullOrWhiteSpace(errorMessage))
                 {
                     errorMessage = errorMessage.Insert(0, "Please add( ");
@@ -165,15 +171,93 @@ namespace NewGaras.Domain.Services
                     error.ErrorMSG = finalErrorMessage;
                     response.Errors.Add(error);
                 }
+
+                if (NewHrUser.NationalityId == null)
+                {
+                    Error error = new Error();
+                    error.ErrorMSG = "Nationality is required.";
+                    response.Errors.Add(error);
+                }
+
+                if (NewHrUser.MaritalStatusId == null)
+                {
+                    Error error = new Error();
+                    error.ErrorMSG = "Marital status is required.";
+                    response.Errors.Add(error);
+                }
+
+                if (NewHrUser.PlaceOfBirthID == null)
+                {
+                    Error error = new Error();
+                    error.ErrorMSG = "Place of birth is required.";
+                    response.Errors.Add(error);
+                }
+
+                if (NewHrUser.ChurchOfPresenceID == null)
+                {
+                    Error error = new Error();
+                    error.ErrorMSG = "Church of presence is required.";
+                    response.Errors.Add(error);
+                }
+
+                if (NewHrUser.BelongToChurchID == null)
+                {
+                    Error error = new Error();
+                    error.ErrorMSG = "Belong to church is required.";
+                    response.Errors.Add(error);
+                }
+
+                if (string.IsNullOrWhiteSpace(NewHrUser.AcademicYearName))
+                {
+                    Error error = new Error();
+                    error.ErrorMSG = "Academic Year Name is required.";
+                    response.Errors.Add(error);
+                }
+
+                if (NewHrUser.AcademicYearName?.Length > 250)
+                {
+                    Error error = new Error();
+                    error.ErrorMSG = "Academic Year Name must not exceed 250 characters.";
+                    response.Errors.Add(error);
+                }
+
+                if (NewHrUser.AcademicYearDate == null)
+                {
+                    Error error = new Error();
+                    error.ErrorMSG = "Academic Year Date is required.";
+                    response.Errors.Add(error);
+                }
+
+                if (!NewHrUser.IsALive && NewHrUser.DateOfDeath == null)
+                {
+                    Error error = new Error();
+                    error.ErrorMSG = "Date of death is required when the person is not alive.";
+                    response.Errors.Add(error);
+                }
+
+                if (NewHrUser.IsALive && NewHrUser.DateOfDeath != null)
+                {
+                    Error error = new Error();
+                    error.ErrorMSG = "Date of death must be empty when the person is alive.";
+                    response.Errors.Add(error);
+                }
+
                 #endregion
 
                 var allHrUsers = await _unitOfWork.HrUsers.GetAllAsync();
                 var allHrUsersFullName = allHrUsers.Select(a => a.FirstName.ToLower() + a.MiddleName.ToLower() + a.LastName.ToLower()).ToList();
+                var allHrUsersFullAName = allHrUsers.Select(a => a.ArfirstName.ToLower() + a.ArmiddleName.ToLower() + a.ArlastName.ToLower()).ToList();
 
                 var newUserName = "";
                 if (!string.IsNullOrWhiteSpace(NewHrUser.FirstName) && !string.IsNullOrWhiteSpace(NewHrUser.LastName))
                 {
                     newUserName = NewHrUser.FirstName.Replace(" ", "") + MiddleName.Replace(" ", "") + NewHrUser.LastName.Replace(" ", "");
+                }
+
+                var newUserAName = "";
+                if (!string.IsNullOrWhiteSpace(NewHrUser.ARFirstName) && !string.IsNullOrWhiteSpace(NewHrUser.ARLastName))
+                {
+                    newUserAName = NewHrUser.ARFirstName.Replace(" ", "") + AMiddleName.Replace(" ", "") + NewHrUser.ARLastName.Replace(" ", "");
                 }
 
                 #region not repeating
@@ -184,6 +268,15 @@ namespace NewGaras.Domain.Services
                     //Error err = new Error();
                     //err.ErrorCode = "E-1";
                     notRepatingMessage = notRepatingMessage + " This FullName is already Exists please, Choose another one -";
+                    //response.Errors.Add(err);
+                    //return response;
+                }
+                if (allHrUsersFullAName.Contains(newUserAName.ToLower()))
+                {
+                    response.Result = false;
+                    //Error err = new Error();
+                    //err.ErrorCode = "E-1";
+                    notRepatingMessage = notRepatingMessage + " This Arabic FullName is already Exists please, Choose another one -";
                     //response.Errors.Add(err);
                     //return response;
                 }
@@ -207,19 +300,8 @@ namespace NewGaras.Domain.Services
                     //response.Errors.Add(err);
                     //return response;
                 }
-                if (NewHrUser.Mobile != "0")
-                {
-                    var allHrUsersMobileNumbers = allHrUsers.Select(a => a.Mobile);
-                    if (allHrUsersMobileNumbers.Contains(NewHrUser.Mobile))
-                    {
-                        response.Result = false;
-                        //Error err = new Error();
-                        //err.ErrorCode = "E-1";
-                        notRepatingMessage = notRepatingMessage + " This Mobile is already Exists please, Enter a valid Mobile ";
-                        //response.Errors.Add(err);
-                        //return response;
-                    }
-                }
+
+                
 
                 if (!string.IsNullOrWhiteSpace(notRepatingMessage))
                 {
@@ -233,19 +315,6 @@ namespace NewGaras.Domain.Services
                 #endregion
 
                 #region check in DB
-                if (NewHrUser.BranchID != null)
-                {
-                    var branch = _unitOfWork.Branches.FindAll(a => a.Id == NewHrUser.BranchID).FirstOrDefault();
-                    if (branch == null)
-                    {
-                        response.Result = false;
-                        Error err = new Error();
-                        err.ErrorCode = "E-1";
-                        err.errorMSG = "No Branch with this ID :";
-                        response.Errors.Add(err);
-                        return response;
-                    }
-                }
                 if (NewHrUser.JobTitleID != null)
                 {
                     var branch = _unitOfWork.JobTitles.FindAll(a => a.Id == NewHrUser.JobTitleID).FirstOrDefault();
@@ -259,32 +328,7 @@ namespace NewGaras.Domain.Services
                         return response;
                     }
                 }
-                if (NewHrUser.DepartmentID != null)
-                {
-                    var branch = _unitOfWork.Departments.FindAll(a => a.Id == NewHrUser.DepartmentID).FirstOrDefault();
-                    if (branch == null)
-                    {
-                        response.Result = false;
-                        Error err = new Error();
-                        err.ErrorCode = "E-1";
-                        err.errorMSG = "No Department with this ID :";
-                        response.Errors.Add(err);
-                        return response;
-                    }
-                }
-                if (NewHrUser.TeamId != null)
-                {
-                    var branch = _unitOfWork.Teams.FindAll(a => a.Id == NewHrUser.TeamId).FirstOrDefault();
-                    if (branch == null)
-                    {
-                        response.Result = false;
-                        Error err = new Error();
-                        err.ErrorCode = "E-1";
-                        err.errorMSG = "No Team with this ID :";
-                        response.Errors.Add(err);
-                        return response;
-                    }
-                }
+                
                 #endregion
 
 
@@ -300,9 +344,14 @@ namespace NewGaras.Domain.Services
                 user.FirstName = user.FirstName.Trim();
                 user.MiddleName = MiddleName.Trim();
                 user.LastName = user.LastName.Trim();
+                //--------------Trim() spaces from arabic full name-------------------------
+                user.FirstName = user.ArfirstName.Trim();
+                user.MiddleName = AMiddleName.Trim();
+                user.LastName = user.ArlastName.Trim();
                 //-------------------------------------------------------------------
                 user.ImgPath = null; //Common.SaveFileIFF(virtualPath, file, FileName, fileExtension, _host);
                 user.CreationDate = DateTime.Now;
+                user.Active =true;
                 user.ModifiedById = UserId;
                 user.CreatedById = UserId;
                 user.Modified = DateTime.Now;
@@ -321,22 +370,6 @@ namespace NewGaras.Domain.Services
                     HrUser.ImgPath = Common.SaveFileIFF(virtualPath, ImgInMemory, FileName, fileExtension, _host);
                 }
                 _unitOfWork.Complete();
-
-                if (NewHrUser.TeamId != null)
-                {
-
-                    var newTeamUser = new UserTeam();
-                    newTeamUser.TeamId = NewHrUser.TeamId ?? 0;
-                    newTeamUser.HrUserId = HrUser.Id;
-                    newTeamUser.CreatedBy = UserId;
-                    newTeamUser.CreatedDate = DateTime.Now;
-                    newTeamUser.ModifiedBy = UserId;
-                    newTeamUser.ModifiedDate = DateTime.Now;
-
-                    var teamUser = await _unitOfWork.UserTeams.AddAsync(newTeamUser);
-                    _unitOfWork.Complete();
-
-                }
 
                 return response;
             }
@@ -372,26 +405,26 @@ namespace NewGaras.Domain.Services
                     //var data = await _unitOfWork.HrUsers.FindAllAsync((a => a.Active == true), new[] { "JobTitle" });
                     var data = _unitOfWork.HrUsers.FindAllQueryable(a => true, new[] { "JobTitle", "User" }) ;
 
-                    if (!string.IsNullOrEmpty(searchKey))
-                    {
-                        data = data.Where(a => (a.FirstName + a.MiddleName + a.LastName).Contains(searchKey.Replace(" ", "")) || (a.Email).Contains(searchKey) || (a.Mobile).Contains(searchKey));
-                    }
+                    //if (!string.IsNullOrEmpty(searchKey))
+                    //{
+                    //    data = data.Where(a => (a.FirstName + a.MiddleName + a.LastName).Contains(searchKey.Replace(" ", "")) || (a.Email).Contains(searchKey) || (a.Mobile).Contains(searchKey));
+                    //}
                     if(active != null)
                     {
                         data = data.Where(a => a.Active == active).AsQueryable();
                     }
-                    if (DepId != null)
-                    {
-                        data = data.Where(a => a.DepartmentId == DepId).AsQueryable();
-                    }
+                    //if (DepId != null)
+                    //{
+                    //    data = data.Where(a => a.DepartmentId == DepId).AsQueryable();
+                    //}
                     if (jobTilteId != null)
                     {
                         data = data.Where(a => a.JobTitleId == jobTilteId).AsQueryable();
                     }
-                    if (BranchId != null)
-                    {
-                        data = data.Where(a => a.BranchId == BranchId).AsQueryable();
-                    }
+                    //if (BranchId != null)
+                    //{
+                    //    data = data.Where(a => a.BranchId == BranchId).AsQueryable();
+                    //}
                     if (isUser != null)
                     {
                         data = data.Where(a => a.IsUser == isUser).AsQueryable();
@@ -415,7 +448,7 @@ namespace NewGaras.Domain.Services
                         MiddleName = x.MiddleName,
                         LastName = x.LastName,
                         Email = x.Email,
-                        Mobile = x.Mobile,
+                        //Mobile = x.Mobile,
                         JobTitle = x.JobTitle?.Name,
                         IsUser = x.IsUser,
                         ImgPath = x.ImgPath != null ? BaseURL + x.ImgPath : null
@@ -648,15 +681,15 @@ namespace NewGaras.Domain.Services
                         usr.FirstName = HrUser.FirstName;
                         usr.LastName = HrUser.LastName;
                         usr.MiddleName = HrUser.MiddleName;
-                        usr.Mobile = HrUser.Mobile;
+                        //usr.Mobile = HrUser.Mobile;
                         usr.Active = HrUser.Active;
                         usr.CreationDate = DateTime.Now;
                         usr.CreatedBy = userId;
                         usr.ModifiedBy = userId;
                         usr.Modified = DateTime.Now;
                         usr.Gender = HrUser.Gender;
-                        usr.BranchId = HrUser.BranchId;
-                        usr.DepartmentId = HrUser.DepartmentId;
+                        //usr.BranchId = HrUser.BranchId;
+                        //usr.DepartmentId = HrUser.DepartmentId;
                         usr.JobTitleId = HrUser.JobTitleId;
                         usr.PhotoUrl = HrUser.ImgPath;
                         #endregion
@@ -790,15 +823,15 @@ namespace NewGaras.Domain.Services
                 response.Errors.Add(err);
                 return response;
             }
-            if (string.IsNullOrWhiteSpace(NewHrData.Mobile))
-            {
-                response.Result = false;
-                Error err = new Error();
-                err.ErrorCode = "E-1";
-                err.errorMSG = "please, Enter a valid Mobile:";
-                response.Errors.Add(err);
-                return response;
-            }
+            //if (string.IsNullOrWhiteSpace(NewHrData.Mobile))
+            //{
+            //    response.Result = false;
+            //    Error err = new Error();
+            //    err.ErrorCode = "E-1";
+            //    err.errorMSG = "please, Enter a valid Mobile:";
+            //    response.Errors.Add(err);
+            //    return response;
+            //}
             //if (NewHrData.Gender == null || NewHrData.Gender == "")
             //{
             //    response.Result = false;
@@ -851,19 +884,19 @@ namespace NewGaras.Domain.Services
             #endregion
 
             #region check in DB
-            if (NewHrData.BranchID != null)
-            {
-                var branch = _unitOfWork.Branches.FindAll(a => a.Id == NewHrData.BranchID).FirstOrDefault();
-                if (branch == null)
-                {
-                    response.Result = false;
-                    Error err = new Error();
-                    err.ErrorCode = "E-1";
-                    err.errorMSG = "No Branch with this ID :";
-                    response.Errors.Add(err);
-                    return response;
-                }
-            }
+            //if (NewHrData.BranchID != null)
+            //{
+            //    var branch = _unitOfWork.Branches.FindAll(a => a.Id == NewHrData.BranchID).FirstOrDefault();
+            //    if (branch == null)
+            //    {
+            //        response.Result = false;
+            //        Error err = new Error();
+            //        err.ErrorCode = "E-1";
+            //        err.errorMSG = "No Branch with this ID :";
+            //        response.Errors.Add(err);
+            //        return response;
+            //    }
+            //}
             if (NewHrData.JobTitleID != null)
             {
                 var branch = _unitOfWork.JobTitles.FindAll(a => a.Id == NewHrData.JobTitleID).FirstOrDefault();
@@ -877,32 +910,32 @@ namespace NewGaras.Domain.Services
                     return response;
                 }
             }
-            if (NewHrData.DepartmentID != null)
-            {
-                var branch = _unitOfWork.Departments.FindAll(a => a.Id == NewHrData.DepartmentID).FirstOrDefault();
-                if (branch == null)
-                {
-                    response.Result = false;
-                    Error err = new Error();
-                    err.ErrorCode = "E-1";
-                    err.errorMSG = "No Department with this ID :";
-                    response.Errors.Add(err);
-                    return response;
-                }
-            }
-            if (NewHrData.TeamId != null)
-            {
-                var branch = _unitOfWork.Teams.FindAll(a => a.Id == NewHrData.TeamId).FirstOrDefault();
-                if (branch == null)
-                {
-                    response.Result = false;
-                    Error err = new Error();
-                    err.ErrorCode = "E-1";
-                    err.errorMSG = "No Team with this ID :";
-                    response.Errors.Add(err);
-                    return response;
-                }
-            }
+            //if (NewHrData.DepartmentID != null)
+            //{
+            //    var branch = _unitOfWork.Departments.FindAll(a => a.Id == NewHrData.DepartmentID).FirstOrDefault();
+            //    if (branch == null)
+            //    {
+            //        response.Result = false;
+            //        Error err = new Error();
+            //        err.ErrorCode = "E-1";
+            //        err.errorMSG = "No Department with this ID :";
+            //        response.Errors.Add(err);
+            //        return response;
+            //    }
+            //}
+            //if (NewHrData.TeamId != null)
+            //{
+            //    var branch = _unitOfWork.Teams.FindAll(a => a.Id == NewHrData.TeamId).FirstOrDefault();
+            //    if (branch == null)
+            //    {
+            //        response.Result = false;
+            //        Error err = new Error();
+            //        err.ErrorCode = "E-1";
+            //        err.errorMSG = "No Team with this ID :";
+            //        response.Errors.Add(err);
+            //        return response;
+            //    }
+            //}
             #endregion
 
             var allHrUsersFullName = allHrUsers.Select(a => a.FirstName.ToLower() + a.MiddleName?.ToLower() ?? "" + a.LastName.ToLower()).ToList();
@@ -952,19 +985,19 @@ namespace NewGaras.Domain.Services
                 }
             }
 
-            if (HrUser.Mobile != NewHrData.Mobile && NewHrData.Mobile != "0")
-            {
-                var allHrUsersMobileNumbers = allHrUsers.Select(a => a.Mobile);
-                if (allHrUsersMobileNumbers.Contains(NewHrData.Mobile))
-                {
-                    response.Result = false;
-                    Error err = new Error();
-                    err.ErrorCode = "E-1";
-                    err.errorMSG = "This Mobile is already Exists please, Enter a valid Mobile :";
-                    response.Errors.Add(err);
-                    return response;
-                }
-            }
+            //if (HrUser.Mobile != NewHrData.Mobile && NewHrData.Mobile != "0")
+            //{
+            //    var allHrUsersMobileNumbers = allHrUsers.Select(a => a.Mobile);
+            //    if (allHrUsersMobileNumbers.Contains(NewHrData.Mobile))
+            //    {
+            //        response.Result = false;
+            //        Error err = new Error();
+            //        err.ErrorCode = "E-1";
+            //        err.errorMSG = "This Mobile is already Exists please, Enter a valid Mobile :";
+            //        response.Errors.Add(err);
+            //        return response;
+            //    }
+            //}
 
             #endregion
 
@@ -1030,15 +1063,15 @@ namespace NewGaras.Domain.Services
                             response.Errors.Add(err);
                             return response;
                         }
-                        if (string.IsNullOrWhiteSpace(NewHrData.Mobile))
-                        {
-                            response.Result = false;
-                            Error err = new Error();
-                            err.ErrorCode = "E-1";
-                            err.errorMSG = "please, Enter a valid Mobile:";
-                            response.Errors.Add(err);
-                            return response;
-                        }
+                        //if (string.IsNullOrWhiteSpace(NewHrData.Mobile))
+                        //{
+                        //    response.Result = false;
+                        //    Error err = new Error();
+                        //    err.ErrorCode = "E-1";
+                        //    err.errorMSG = "please, Enter a valid Mobile:";
+                        //    response.Errors.Add(err);
+                        //    return response;
+                        //}
                         //if (NewHrData.Gender == null || NewHrData.Gender == "")
                         //{
                         //    response.Result = false;
@@ -1096,7 +1129,7 @@ namespace NewGaras.Domain.Services
                         HrUser.FirstName = NewHrData.FirstName;
                         if (NewHrData.Active != null)
                         {
-                            HrUser.Active = NewHrData.Active ?? false;
+                            //HrUser.Active = NewHrData.Active ?? false;
                         }
                         HrUser.ModifiedById = userId;
                         HrUser.Modified = DateTime.Now;
@@ -1104,15 +1137,15 @@ namespace NewGaras.Domain.Services
                         HrUser.LastName = NewHrData.LastName;
                         HrUser.MiddleName = MiddleName;
                         //HrUser.IsUser = NewHrData
-                        HrUser.Mobile = NewHrData.Mobile;
+                        //HrUser.Mobile = NewHrData.Mobile;
                         HrUser.Email = NewHrData.Email.ToLower();
                         HrUser.Gender = NewHrData.Gender;
                         //------------------------------CanBeNull-------------------
                         HrUser.ArfirstName = NewHrData.ARFirstName;
                         HrUser.ArmiddleName = NewHrData.ARMiddleName;
-                        HrUser.BranchId = NewHrData.BranchID;
-                        HrUser.DepartmentId = NewHrData.DepartmentID;
-                        HrUser.TeamId = NewHrData.TeamId;
+                        //HrUser.BranchId = NewHrData.BranchID;
+                        //HrUser.DepartmentId = NewHrData.DepartmentID;
+                        //HrUser.TeamId = NewHrData.TeamId;
                         HrUser.JobTitleId = NewHrData.JobTitleID;
                         HrUser.IsUser = NewHrData.IsUser;
                         HrUser.LandLine = NewHrData.LandLine;
@@ -1145,41 +1178,41 @@ namespace NewGaras.Domain.Services
                             var FileName = System.IO.Path.GetFileNameWithoutExtension(NewHrData.Photo.FileName.Trim().Replace(" ", ""));
                             HrUser.ImgPath = Common.SaveFileIFF(virtualPath, NewHrData.Photo, FileName, fileExtension, _host);
                         }
-                        if (NewHrData.TeamId != null)
-                        {
-                            var alreadyAtTisTeam = _unitOfWork.UserTeams.FindAll(a => a.HrUserId == HrUser.Id).FirstOrDefault();
+                        //if (NewHrData.TeamId != null)
+                        //{
+                        //    var alreadyAtTisTeam = _unitOfWork.UserTeams.FindAll(a => a.HrUserId == HrUser.Id).FirstOrDefault();
 
-                            if (HrUser.TeamId != null)
-                            {
-                                if (alreadyAtTisTeam == null)
-                                {
-                                    var newTeamUser = new UserTeam();
-                                    newTeamUser.TeamId = NewHrData.TeamId ?? 0;
-                                    newTeamUser.HrUserId = HrUser.Id;
-                                    newTeamUser.CreatedBy = userId;
-                                    newTeamUser.CreatedDate = DateTime.Now;
-                                    newTeamUser.ModifiedBy = userId;
-                                    newTeamUser.ModifiedDate = DateTime.Now;
+                        //    //if (HrUser.TeamId != null)
+                        //    //{
+                        //    //    if (alreadyAtTisTeam == null)
+                        //    //    {
+                        //    //        var newTeamUser = new UserTeam();
+                        //    //        newTeamUser.TeamId = NewHrData.TeamId ?? 0;
+                        //    //        newTeamUser.HrUserId = HrUser.Id;
+                        //    //        newTeamUser.CreatedBy = userId;
+                        //    //        newTeamUser.CreatedDate = DateTime.Now;
+                        //    //        newTeamUser.ModifiedBy = userId;
+                        //    //        newTeamUser.ModifiedDate = DateTime.Now;
 
-                                    var teamUser = await _unitOfWork.UserTeams.AddAsync(newTeamUser);
-                                }
-                                else
-                                {
-                                    _unitOfWork.UserTeams.Delete(alreadyAtTisTeam);
+                        //    //        var teamUser = await _unitOfWork.UserTeams.AddAsync(newTeamUser);
+                        //    //    }
+                        //    //    else
+                        //    //    {
+                        //    //        _unitOfWork.UserTeams.Delete(alreadyAtTisTeam);
 
-                                    var newTeamUser = new UserTeam();
-                                    newTeamUser.TeamId = NewHrData.TeamId ?? 0;
-                                    newTeamUser.HrUserId = HrUser.Id;
-                                    newTeamUser.CreatedBy = userId;
-                                    newTeamUser.CreatedDate = DateTime.Now;
-                                    newTeamUser.ModifiedBy = userId;
-                                    newTeamUser.ModifiedDate = DateTime.Now;
+                        //    //        var newTeamUser = new UserTeam();
+                        //    //        newTeamUser.TeamId = NewHrData.TeamId ?? 0;
+                        //    //        newTeamUser.HrUserId = HrUser.Id;
+                        //    //        newTeamUser.CreatedBy = userId;
+                        //    //        newTeamUser.CreatedDate = DateTime.Now;
+                        //    //        newTeamUser.ModifiedBy = userId;
+                        //    //        newTeamUser.ModifiedDate = DateTime.Now;
 
-                                    var teamUser = await _unitOfWork.UserTeams.AddAsync(newTeamUser);
-                                }
-                                _unitOfWork.Complete();
-                            }
-                        }
+                        //    //        var teamUser = await _unitOfWork.UserTeams.AddAsync(newTeamUser);
+                        //    //    }
+                        //    //    _unitOfWork.Complete();
+                        //    //}
+                        //}
 
                         if (HrUser.User != null)
                         {
@@ -1200,7 +1233,7 @@ namespace NewGaras.Domain.Services
                             }
                             if (NewHrData.Active != null)
                             {
-                                HrUser.User.Active = NewHrData.Active ?? false;
+                                //HrUser.User.Active = NewHrData.Active ?? false;
                                 if (!HrUser.IsUser)
                                 {
                                     HrUser.User.Active = false;
@@ -1222,18 +1255,12 @@ namespace NewGaras.Domain.Services
                             {
                                 HrUser.User.LastName = NewHrData.LastName;
                             }
-                            if (!string.IsNullOrWhiteSpace(NewHrData.Mobile))
-                            {
-                                HrUser.User.Mobile = NewHrData.Mobile;
-                            }
+                           
 
                             if (!string.IsNullOrWhiteSpace(NewHrData.Gender))
                             {
                                 HrUser.User.Gender = NewHrData.Gender;
                             }
-
-                            HrUser.User.BranchId = NewHrData.BranchID;
-                            HrUser.User.DepartmentId = NewHrData.DepartmentID;
                             HrUser.User.JobTitleId = NewHrData.JobTitleID;
                             HrUser.User.ModifiedBy = userId;
                             HrUser.User.Modified = DateTime.Now;
@@ -1257,15 +1284,15 @@ namespace NewGaras.Domain.Services
                                     usr.FirstName = HrUser.FirstName;
                                     usr.LastName = HrUser.LastName;
                                     usr.MiddleName = HrUser.MiddleName;
-                                    usr.Mobile = HrUser.Mobile;
+                                    //usr.Mobile = HrUser.Mobile;
                                     usr.Active = HrUser.Active;
                                     usr.CreationDate = DateTime.Now;
                                     usr.CreatedBy = userId;
                                     usr.ModifiedBy = userId;
                                     usr.Modified = DateTime.Now;
                                     usr.Gender = HrUser.Gender;
-                                    usr.BranchId = HrUser.BranchId;
-                                    usr.DepartmentId = HrUser.DepartmentId;
+                                    //usr.BranchId = HrUser.BranchId;
+                                    //usr.DepartmentId = HrUser.DepartmentId;
                                     usr.JobTitleId = HrUser.JobTitleId;
                                     usr.PhotoUrl = HrUser.ImgPath;
                                     #endregion
@@ -1307,9 +1334,9 @@ namespace NewGaras.Domain.Services
             var response = new BaseResponseWithData<List<GetHrTeamUsersDto>>();
             response.Result = true;
             response.Errors = new List<Error>();
-            var users = _unitOfWork.HrUsers.FindAll(a => a.TeamId == TeamId);
-            var teamUsers = _mapper.Map<List<GetHrTeamUsersDto>>(users);
-            response.Data = teamUsers;
+            //var users = _unitOfWork.HrUsers.FindAll(a => a.TeamId == TeamId);
+            //var teamUsers = _mapper.Map<List<GetHrTeamUsersDto>>(users);
+            //response.Data = teamUsers;
             return response;
         }
 
@@ -1433,20 +1460,20 @@ namespace NewGaras.Domain.Services
                             response.Errors.Add(err);
                             return response;
                         }
-                        if (user.Mobile != "0")
-                        {
-                            var allHrUsersMobileNumbers = allUsers.Where(a => a.Id != id).Select(a => a.Mobile);
-                            if (allHrUsersMobileNumbers.Contains(user.Mobile))
-                            {
-                                response.Result = false;
-                                Error err = new Error();
-                                err.ErrorCode = "E-1";
-                                err.errorMSG = "This Mobile is already Exists .";
-                                response.Errors.Add(err);
-                                return response;
-                            }
+                        //if (user.Mobile != "0")
+                        //{
+                        //    var allHrUsersMobileNumbers = allUsers.Where(a => a.Id != id).Select(a => a.Mobile);
+                        //    if (allHrUsersMobileNumbers.Contains(user.Mobile))
+                        //    {
+                        //        response.Result = false;
+                        //        Error err = new Error();
+                        //        err.ErrorCode = "E-1";
+                        //        err.errorMSG = "This Mobile is already Exists .";
+                        //        response.Errors.Add(err);
+                        //        return response;
+                        //    }
 
-                        }
+                        //}
                         #endregion
                         user.IsDeleted = false;
                         _unitOfWork.Complete();
@@ -1633,14 +1660,14 @@ namespace NewGaras.Domain.Services
                 {
                     HrUsersQueryable = HrUsersQueryable.Where(x => x.Active == Active);
                 }
-                if (DeptID != null)
-                {
-                    HrUsersQueryable = HrUsersQueryable.Where(x => x.DepartmentId == DeptID);
-                }
-                if (teamID != null)
-                {
-                    HrUsersQueryable = HrUsersQueryable.Where(x => x.TeamId == teamID);
-                }
+                //if (DeptID != null)
+                //{
+                //    HrUsersQueryable = HrUsersQueryable.Where(x => x.DepartmentId == DeptID);
+                //}
+                //if (teamID != null)
+                //{
+                //    HrUsersQueryable = HrUsersQueryable.Where(x => x.TeamId == teamID);
+                //}
 
                 if (IsUser != null)
                 {
@@ -1699,17 +1726,17 @@ namespace NewGaras.Domain.Services
                     sheet.Cells[rowCount, 4].Value = HrUser.Active;
                     sheet.Cells[rowCount, 5].Value = HrUser.CreationDate.ToString("yyyy-MM-dd");
                     sheet.Cells[rowCount, 6].Value = HrUser.CreatedBy.FirstName + " " + HrUser.CreatedBy.LastName;
-                    sheet.Cells[rowCount, 7].Value = HrUser.Branch != null ? HrUser.Branch.Name : "";
-                    sheet.Cells[rowCount, 8].Value = HrUser.Department != null ? HrUser.Department.Name : "";
+                    //sheet.Cells[rowCount, 7].Value = HrUser.Branch != null ? HrUser.Branch.Name : "";
+                    //sheet.Cells[rowCount, 8].Value = HrUser.Department != null ? HrUser.Department.Name : "";
                     sheet.Cells[rowCount, 9].Value = HrUser.JobTitle != null ? HrUser.JobTitle.Name : "";
                     sheet.Cells[rowCount, 10].Value = HrUser.DateOfBirth != null ? ((DateTime)HrUser.DateOfBirth).ToString("yyyy-MM-dd") : "";
                     sheet.Cells[rowCount, 11].Value = HrUser.LandLine;
                     sheet.Cells[rowCount, 12].Value = nationalities.Where(a => a.Id == HrUser.NationalityId).FirstOrDefault() != null ? nationalities.Where(a => a.Id == HrUser.NationalityId).FirstOrDefault().Nationality1 : "";
                     sheet.Cells[rowCount, 13].Value = HrUser.MaritalStatus != null ? HrUser.MaritalStatus.Name : "";
                     sheet.Cells[rowCount, 14].Value = HrUser.MilitaryStatus != null ? HrUser.MilitaryStatus.Name : "";
-                    sheet.Cells[rowCount, 15].Value = HrUser.Team != null ? HrUser.Team.Name : "";
+                    //sheet.Cells[rowCount, 15].Value = HrUser.Team != null ? HrUser.Team.Name : "";
                     sheet.Cells[rowCount, 16].Value = HrUser.IsUser;
-                    sheet.Cells[rowCount, 17].Value = HrUser.Mobile;
+                    //sheet.Cells[rowCount, 17].Value = HrUser.Mobile;
                     sheet.Cells[rowCount, 18].Value = HrUser.Email;
                     sheet.Cells[rowCount, 19].Value = HrUser.Gender;
                     //sheet.Cells[rowCount, 20].Value = HrUser.IsDeleted;
@@ -2681,11 +2708,11 @@ namespace NewGaras.Domain.Services
                                     Modified = DateTime.Now,
                                     CreatedById = userID,
                                     ModifiedById = userID,
-                                    BranchId = EmployeeDB.BranchId,
-                                    DepartmentId = EmployeeDB.DepartmentId,
+                                    //BranchId = EmployeeDB.BranchId,
+                                    //DepartmentId = EmployeeDB.DepartmentId,
                                     JobTitleId = EmployeeDB.JobTitleId,
                                     LandLine = EmployeeDB.Mobile,
-                                    Mobile = EmployeeDB.Mobile,
+                                    //Mobile = EmployeeDB.Mobile,
                                     Email = EmployeeDB.Email,
                                     UserId = EmployeeDB.Id,
                                     IsUser = true
@@ -2709,11 +2736,11 @@ namespace NewGaras.Domain.Services
                                     HrUser.Modified = DateTime.Now;
                                     HrUser.CreatedById = userID;
                                     HrUser.ModifiedById = userID;
-                                    HrUser.BranchId = EmployeeDB.BranchId;
-                                    HrUser.DepartmentId = EmployeeDB.DepartmentId;
+                                    //HrUser.BranchId = EmployeeDB.BranchId;
+                                    //HrUser.DepartmentId = EmployeeDB.DepartmentId;
                                     HrUser.JobTitleId = EmployeeDB.JobTitleId;
                                     HrUser.LandLine = EmployeeDB.Mobile;
-                                    HrUser.Mobile = EmployeeDB.Mobile;
+                                    //HrUser.Mobile = EmployeeDB.Mobile;
                                     HrUser.Email = EmployeeDB.Email;
                                     HrUser.IsUser = true;
                                     HrUser.UserId = EmployeeDB.Id;
@@ -2795,11 +2822,11 @@ namespace NewGaras.Domain.Services
                                     Modified = DateTime.Now,
                                     CreatedById = userID,
                                     ModifiedById = userID,
-                                    BranchId = user.BranchId,
-                                    DepartmentId = user.DepartmentId,
+                                    //BranchId = user.BranchId,
+                                    //DepartmentId = user.DepartmentId,
                                     JobTitleId = user.JobTitleId,
                                     LandLine = user.Mobile,
-                                    Mobile = user.Mobile,
+                                    //Mobile = user.Mobile,
                                     Email = user.Email,
                                     UserId = user.Id,
                                     IsUser = true
@@ -4807,7 +4834,7 @@ namespace NewGaras.Domain.Services
                         FirstName = Worker.FirstName,
                         LastName = Worker.LastName,
                         MiddleName = string.IsNullOrEmpty(Worker.MiddleName) == false ? Worker.MiddleName : string.Empty,
-                        Mobile = "0",
+                        //Mobile = "0",
                         Email = "@",
                         ArlastName = Worker.LastName,
                         Active = true,

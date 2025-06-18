@@ -1100,7 +1100,7 @@ namespace NewGarasAPI.Controllers.HR
                     }
                     #endregion
 
-                    var headersForMonthAttendance = _attendanceService.GetHeadersOfAttendaceSummaryForHrUser(user.BranchId ?? 0, Month, Year, HrUser);
+                    var headersForMonthAttendance = _attendanceService.GetHeadersOfAttendaceSummaryForHrUser(1, Month, Year, HrUser);
                     if (!headersForMonthAttendance.Result)
                     {
                         response.Errors.AddRange(headersForMonthAttendance.Errors);

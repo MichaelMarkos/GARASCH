@@ -157,25 +157,25 @@ namespace NewGaras.Domain.Services.Medical
                 if (offer.SpecialityID != null)
                 {
 
-                    var doctorsList = _unitOfWork.HrUsers.FindAll(a => a.TeamId == offer.SpecialityID);
+                    //var doctorsList = _unitOfWork.HrUsers.FindAll(a => a.TeamId == offer.SpecialityID);
 
                     var offersList = new List<MedicalExaminationOffer>();
 
-                    foreach (var DocOffer in doctorsList)
-                    {
-                        var newOffer = _mapper.Map<MedicalExaminationOffer>(offer);
+                    //foreach (var DocOffer in doctorsList)
+                    //{
+                    //    var newOffer = _mapper.Map<MedicalExaminationOffer>(offer);
 
-                        newOffer.DoctorId = DocOffer.Id;
-                        newOffer.CreationDate = DateTime.Now;
-                        newOffer.CreatedBy = validation.userID;
-                        newOffer.ModifiedBy = validation.userID;
-                        newOffer.ModificationDate = DateTime.Now;
+                    //    newOffer.DoctorId = DocOffer.Id;
+                    //    newOffer.CreationDate = DateTime.Now;
+                    //    newOffer.CreatedBy = validation.userID;
+                    //    newOffer.ModifiedBy = validation.userID;
+                    //    newOffer.ModificationDate = DateTime.Now;
 
-                        offersList.Add(newOffer);
-                    }
+                    //    offersList.Add(newOffer);
+                    //}
 
-                    _unitOfWork.MedicalExaminationOffers.AddRange(offersList);
-                    _unitOfWork.Complete();
+                    //_unitOfWork.MedicalExaminationOffers.AddRange(offersList);
+                    //_unitOfWork.Complete();
                 }
 
                 return response;
@@ -1042,7 +1042,7 @@ namespace NewGaras.Domain.Services.Medical
                 newDocSchedule.ModifiedBy = userID;
                 newDocSchedule.ModificationDate = DateTime.Now;
                 newDocSchedule.WeekDayId = DocSchedule.WeekDayId;
-                newDocSchedule.HoldQuantity = DocSchedule.HoldQuantity;
+                //newDocSchedule.HoldQuantity = DocSchedule.HoldQuantity;
 
 
                 var newSchedule = _unitOfWork.DoctorSchedules.Add(newDocSchedule);

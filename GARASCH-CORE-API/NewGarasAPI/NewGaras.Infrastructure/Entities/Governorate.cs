@@ -51,6 +51,12 @@ public partial class Governorate
     [InverseProperty("Governorates")]
     public virtual Country Country { get; set; }
 
+    [InverseProperty("Governorate")]
+    public virtual ICollection<HrUserAddress> HrUserAddresses { get; set; } = new List<HrUserAddress>();
+
+    [InverseProperty("PlaceOfBirth")]
+    public virtual ICollection<HrUser> HrUsers { get; set; } = new List<HrUser>();
+
     [ForeignKey("ModifiedBy")]
     [InverseProperty("Governorates")]
     public virtual User ModifiedByNavigation { get; set; }

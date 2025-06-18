@@ -1118,7 +1118,7 @@ namespace NewGaras.Domain.Services
                             emailData.CreationDate = DateTime.Now;
                             emailData.CreatedBy = UserID;
                             emailData.EmailType = 1;
-                            emailData.EmailReceivers = new List<EmailReceiver>();
+                            //emailData.EmailReceivers = new List<EmailReceiver>();
 
                             foreach (var cc in email.CcRecipients)
                             {
@@ -1139,7 +1139,7 @@ namespace NewGaras.Domain.Services
                                 emailReceiver.EmailId = emailData.Id;
                                 emailReceiver.Active = true;
 
-                                emailData.EmailReceivers.Add(emailReceiver);
+                                //emailData.EmailReceivers.Add(emailReceiver);
                             }
 
                             //Attachment to be add here 
@@ -1219,7 +1219,7 @@ namespace NewGaras.Domain.Services
                             emailData.CreationDate = DateTime.Now;
                             emailData.CreatedBy = UserID;
                             emailData.EmailType = 2;
-                            emailData.EmailReceivers = new List<EmailReceiver>();
+                            //emailData.EmailReceivers = new List<EmailReceiver>();
 
                             foreach (var cc in email.CcRecipients)
                             {
@@ -1240,7 +1240,7 @@ namespace NewGaras.Domain.Services
                                 emailReceiver.EmailId = emailData.Id;
                                 emailReceiver.Active = true;
 
-                                emailData.EmailReceivers.Add(emailReceiver);
+                                //emailData.EmailReceivers.Add(emailReceiver);
                             }
 
                             //Attachment to be add here 
@@ -1411,7 +1411,7 @@ namespace NewGaras.Domain.Services
                             emailData.ReceivedDate = email.ReceivedDateTime;
                             emailData.CreationDate = DateTime.Now;
                             emailData.CreatedBy = UserID;
-                            emailData.EmailReceivers = new List<EmailReceiver>();
+                            //emailData.EmailReceivers = new List<EmailReceiver>();
 
 
                             
@@ -1435,7 +1435,7 @@ namespace NewGaras.Domain.Services
                                 emailReceiver.EmailId = emailData.Id;
                                 emailReceiver.Active = true;
 
-                                emailData.EmailReceivers.Add(emailReceiver);
+                                //emailData.EmailReceivers.Add(emailReceiver);
                             }
 
                             //Attachment to be add here 
@@ -1511,7 +1511,7 @@ namespace NewGaras.Domain.Services
                             emailData.ReceivedDate = email.ReceivedDateTime;
                             emailData.CreationDate = DateTime.Now;
                             emailData.CreatedBy = UserID;
-                            emailData.EmailReceivers = new List<EmailReceiver>();
+                            //emailData.EmailReceivers = new List<EmailReceiver>();
 
                             foreach (var cc in email.CcRecipients)
                             {
@@ -1532,7 +1532,7 @@ namespace NewGaras.Domain.Services
                                 emailReceiver.EmailId = emailData.Id;
                                 emailReceiver.Active = true;
 
-                                emailData.EmailReceivers.Add(emailReceiver);
+                                //emailData.EmailReceivers.Add(emailReceiver);
                             }
 
                             //Attachment to be add here 

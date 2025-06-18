@@ -6,17 +6,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NewGaras.Infrastructure.Entities;
 
-[Table("City")]
-public partial class City
+[Table("Priest")]
+public partial class Priest
 {
     [Key]
     [Column("ID")]
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     [Required]
-    [StringLength(50)]
-    public string Name { get; set; }
+    [StringLength(250)]
+    public string PriestName { get; set; }
 
-    [InverseProperty("City")]
-    public virtual ICollection<HrUserAddress> HrUserAddresses { get; set; } = new List<HrUserAddress>();
+    [InverseProperty("Priest")]
+    public virtual ICollection<HrUserPriest> HrUserPriests { get; set; } = new List<HrUserPriest>();
 }

@@ -63,7 +63,6 @@ public partial class MaintenanceFor
     public string ContractNumber { get; set; }
 
     [Column("PRNumber")]
-    [StringLength(250)]
     public string Prnumber { get; set; }
 
     [StringLength(100)]

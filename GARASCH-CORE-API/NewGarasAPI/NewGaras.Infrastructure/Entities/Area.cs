@@ -46,6 +46,9 @@ public partial class Area
     [InverseProperty("Areas")]
     public virtual Governorate Governorate { get; set; }
 
+    [InverseProperty("Area")]
+    public virtual ICollection<HrUserAddress> HrUserAddresses { get; set; } = new List<HrUserAddress>();
+
     [ForeignKey("ModifiedBy")]
     [InverseProperty("AreaModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }

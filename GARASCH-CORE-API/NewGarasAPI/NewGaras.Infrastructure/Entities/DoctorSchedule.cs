@@ -57,8 +57,6 @@ public partial class DoctorSchedule
 
     public int WeekDayId { get; set; }
 
-    public int? HoldQuantity { get; set; }
-
     [Column("BranchID")]
     public int? BranchId { get; set; }
 

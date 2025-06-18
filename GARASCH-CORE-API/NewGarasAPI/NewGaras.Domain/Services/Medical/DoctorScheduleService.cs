@@ -321,7 +321,7 @@ namespace NewGaras.Domain.Services.Medical
                     docSchedule.CreatedBy = validation.userID;
                     docSchedule.ModifiedBy = validation.userID;
                     docSchedule.ModificationDate = DateTime.Now;
-                    if (dto.HoldQuantity == null) docSchedule.HoldQuantity = 5;         //default value if user do not sent it
+                    //if (dto.HoldQuantity == null) docSchedule.HoldQuantity = 5;         //default value if user do not sent it
 
                     _unitOfWork.DoctorSchedules.Add(docSchedule);
                     _unitOfWork.Complete();
@@ -339,7 +339,7 @@ namespace NewGaras.Domain.Services.Medical
                         CurrentSchedule.CreatedBy = validation.userID;
                         CurrentSchedule.ModifiedBy = validation.userID;
                         CurrentSchedule.ModificationDate = DateTime.Now;
-                        if (dto.HoldQuantity == null) CurrentSchedule.HoldQuantity = 5;         //default value if user do not sent it
+                        //if (dto.HoldQuantity == null) CurrentSchedule.HoldQuantity = 5;         //default value if user do not sent it
 
                         CurrentSchedule.IntervalFrom = loopTime;
                         CurrentSchedule.IntervalTo = loopTime.AddMinutes(dto.Period??0);        //add the period to the intervalTo 
@@ -551,7 +551,7 @@ namespace NewGaras.Domain.Services.Medical
                 if (dto.ExaminationPrice != null) docSchedule.ExaminationPrice = dto.ExaminationPrice ?? 0;
                 //if (dto.SpecialityId != null) docSchedule.DoctorSpecialityId = dto.SpecialityId ?? 0;
                 if (dto.WeekDayID != null) docSchedule.WeekDayId = dto.WeekDayID ?? 0;
-                if (dto.HoldQuantity != null) docSchedule.HoldQuantity = dto.HoldQuantity;
+                //if (dto.HoldQuantity != null) docSchedule.HoldQuantity = dto.HoldQuantity;
 
                 docSchedule.ModifiedBy = validation.userID;
                 docSchedule.ModificationDate = DateTime.Now;
@@ -701,7 +701,7 @@ namespace NewGaras.Domain.Services.Medical
                     newDoctorSchedule.WeekDayName = schedule.WeekDay.Day;
                     newDoctorSchedule.StartDate = schedule.StartDate.ToString("yyyy-MM-dd");
                     newDoctorSchedule.EndDate = schedule.EndDate?.ToString("yyyy-MM-dd"); 
-                    newDoctorSchedule.HoldQuantity = schedule.HoldQuantity??0;
+                    //newDoctorSchedule.HoldQuantity = schedule.HoldQuantity??0;
                     newDoctorSchedule.BranchID = schedule.BranchId;
                     newDoctorSchedule.BranchName = schedule.Branch?.Name;
 
@@ -991,7 +991,7 @@ namespace NewGaras.Domain.Services.Medical
                         newDoctorSchedule.WeekDayName = schedule.WeekDay.Day;
                         newDoctorSchedule.StartDate = schedule.StartDate.ToString("yyyy-MM-dd");
                         newDoctorSchedule.EndDate = schedule.EndDate?.ToString("yyyy-MM-dd");
-                        newDoctorSchedule.HoldQuantity = schedule.HoldQuantity??0;
+                        //newDoctorSchedule.HoldQuantity = schedule.HoldQuantity??0;
                         newDoctorSchedule.BranchID = schedule.BranchId;
                         newDoctorSchedule.BranchName = schedule.Branch?.Name;
 

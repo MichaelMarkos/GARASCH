@@ -87,7 +87,7 @@ namespace NewGarasAPI.Helper
                 case "graffiti":
                     result = "Data Source=" + ServerName + ";Initial Catalog=GRAFFITI;Integrated Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True;";
                     break;
-                case "GARASCH":
+                case "garasch":
                     result = "Data Source=" + ServerName + ";Initial Catalog=GARASCH;Integrated Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True;";
                     break;
                 case "libroyes":
@@ -214,7 +214,7 @@ namespace NewGarasAPI.Helper
                     headers["CompanyName"].ToString().ToLower() != "shi" &&
                     headers["CompanyName"].ToString().ToLower() != "shc" &&
                     headers["CompanyName"].ToString().ToLower() != "graffiti" &&
-                    headers["CompanyName"].ToString().ToLower() != "GARASCH" &&
+                    headers["CompanyName"].ToString().ToLower() != "garasch" &&
                     headers["CompanyName"].ToString().ToLower() != "libroyes" &&
                     headers["CompanyName"].ToString().ToLower() != "royaltent")
                 {

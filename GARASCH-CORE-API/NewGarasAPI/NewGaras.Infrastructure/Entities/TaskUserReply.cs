@@ -51,10 +51,6 @@ public partial class TaskUserReply
     [InverseProperty("TaskUserReplyModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }
 
-    [ForeignKey("RecieverUserId")]
-    [InverseProperty("TaskUserReplyRecieverUsers")]
-    public virtual User RecieverUser { get; set; }
-
     [ForeignKey("TaskId")]
     [InverseProperty("TaskUserReplies")]
     public virtual Task Task { get; set; }

@@ -137,4 +137,9 @@ public partial class VPurchasePoItemPo
 
     [Column("SentToSupplierContactPersonID")]
     public long? SentToSupplierContactPersonId { get; set; }
+
+    public bool? IsChecked { get; set; }
+
+    [StringLength(450)]
+    public string SupplierInvoiceSerial { get; set; }
 }

@@ -326,7 +326,7 @@ namespace NewGaras.Domain.Services.Medical
                         DoctorStatusName = a.Status.DoctorScheduleStatusType,
                         StartDate = a.StartDate.ToString("yyyy-MM-dd HH:mm:ss"),
                         EndDate = a.EndDate?.ToString("yyyy-MM-dd HH:mm:ss"),
-                        HoldQuantity = a.HoldQuantity??2,
+                        //HoldQuantity = a.HoldQuantity??2,
                         BranchID = a.BranchId,
                         BranchName = a.Branch?.Name
                     }).ToList()

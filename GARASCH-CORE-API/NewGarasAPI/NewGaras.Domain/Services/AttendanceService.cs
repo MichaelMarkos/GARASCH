@@ -160,8 +160,6 @@ namespace NewGaras.Domain.Services
                         {
                             UserName = item.FirstName + " " + item.LastName,
                             UserID = item.Id,
-                            DepartmentId = item.DepartmentId,
-                            DepartmentName = item.Department?.Name,
                             TeamList = UserTeamsList.Where(x => x.UserId == item.Id).Select(UT => new TeamModel { TeamId = UT.TeamId, TeamName = UT.Team.Name }).ToList(),
                             AttendanceId = a.Id,
                             CheckInHour = a.CheckInHour,
@@ -181,8 +179,6 @@ namespace NewGaras.Domain.Services
                         {
                             UserName = item.FirstName + " " + item.LastName,
                             UserID = item.Id,
-                            DepartmentId = item.DepartmentId,
-                            DepartmentName = item.Department?.Name,
                             TeamList = UserTeamsList.Where(x => x.UserId == item.Id).Select(UT => new TeamModel { TeamId = UT.TeamId, TeamName = UT.Team.Name }).ToList(),
                             IsOffDay = OffDaysList.Where(x => (x.Day.Date == header.AttendanceDate || x.WeekEndDay.Trim().ToLower() == DayName.ToLower())).FirstOrDefault() != null ? true : false,
                             OffDayName = OffDaysList.Where(x => (x.Day.Date == header.AttendanceDate || x.WeekEndDay.Trim().ToLower() == DayName.ToLower())).FirstOrDefault() != null ? OffDaysList.Where(x => (x.Day.Date == header.AttendanceDate || x.WeekEndDay.Trim().ToLower() == DayName.ToLower())).FirstOrDefault().Holiday.Name : null,
@@ -228,8 +224,6 @@ namespace NewGaras.Domain.Services
                             {
                                 UserName = employee.FirstName + " " + employee.LastName,
                                 UserID = employee.Id,
-                                DepartmentId = employee.DepartmentId,
-                                DepartmentName = employee.Department?.Name,
                                 TeamList = _unitOfWork.UserTeams.FindAll(x => x.HrUserId == item.Id).Select(UT => new TeamModel { TeamId = UT.TeamId, TeamName = UT.Team.Name }).ToList(),
                                 AttendanceId = item.Id,
                                 CheckInHour = item.CheckInHour,
@@ -343,7 +337,7 @@ namespace NewGaras.Domain.Services
                     Response.Errors.Add(error);
                     return Response;
                 }
-                var branch = _unitOfWork.Branches.GetById(user.BranchId ?? 0);
+                var branch = _unitOfWork.Branches.GetById(1);
                 if (branch == null)
                 {
                     Response.Result = false;
@@ -399,7 +393,7 @@ namespace NewGaras.Domain.Services
                         }
                     }
                 }
-                var data = GetDayTypeIdbyKnowingTheDate(request.Date, user.BranchId ?? 0);
+                var data = GetDayTypeIdbyKnowingTheDate(request.Date,1);
                 var weekdayId = data[0];
                 var daytypeId = data[1];
                 var salary = _unitOfWork.Salaries.FindAll(a => a.HrUserId == user.Id).LastOrDefault();
@@ -487,7 +481,7 @@ namespace NewGaras.Domain.Services
                 WorkingTracking.CheckInTime = request.CheckIn;
                 //WorkingTracking.CheckOutTime = request.checkOut;
                 //WorkingTracking.TotalHours = (decimal)((request.checkOut - request.CheckIn).TotalMinutes / 60);
-                WorkingTracking.BranchId = user.BranchId;
+                WorkingTracking.BranchId = 1;
                 WorkingTracking.HrUserId = request.UserId;
                 WorkingTracking.Date = request.Date;
                 WorkingTracking.WorkingHourRate = (salary.TotalGross * 12) / (52 * 40);
@@ -805,7 +799,7 @@ namespace NewGaras.Domain.Services
         public CheckOverTimeAndDeduction checkOverTimeAndDeduction(HrUser user, ContractDetail contract, DateTime date, /*BranchSchedule shift,*/ TimeOnly checkin)
         {
             CheckOverTimeAndDeduction data = new CheckOverTimeAndDeduction();
-            var branch = _unitOfWork.BranchSetting.FindAll(a => a.BranchId == user.BranchId).FirstOrDefault();
+            var branch = _unitOfWork.BranchSetting.FindAll(a => a.BranchId ==1).FirstOrDefault();
             if (branch == null)
             {
                 data.Error = true;
@@ -894,7 +888,7 @@ namespace NewGaras.Domain.Services
         public CheckOverTimeAndDeduction checkVacationOverTimeAndDeduction(HrUser user, ContractDetail contract, DateTime date, /*BranchSchedule shift,*/ TimeOnly checkin)
         {
             CheckOverTimeAndDeduction data = new CheckOverTimeAndDeduction();
-            var branch = _unitOfWork.BranchSetting.FindAll(a => a.BranchId == user.BranchId).FirstOrDefault();
+            var branch = _unitOfWork.BranchSetting.FindAll(a => a.BranchId == 1).FirstOrDefault();
             if (branch == null)
             {
                 data.Error = true;
@@ -1082,7 +1076,7 @@ namespace NewGaras.Domain.Services
                     Response.Errors.Add(error);
                     return Response;
                 }
-                var data = GetDayTypeIdbyKnowingTheDate(request.Date, user.BranchId ?? 0);
+                var data = GetDayTypeIdbyKnowingTheDate(request.Date, 1);
                 var weekdayId = data[0];
                 var daytypeId = data[1];
                 var salary = _unitOfWork.Salaries.FindAll(a => a.HrUserId == user.Id).LastOrDefault();
@@ -1768,7 +1762,7 @@ namespace NewGaras.Domain.Services
                 sumAttendance.HrUserId = UserId;
                 if (WorkingTrackings.FirstOrDefault() != null)
                 {
-                    sumAttendance.DepartmentId = WorkingTrackings.FirstOrDefault().HrUser?.DepartmentId ?? 0;
+                    sumAttendance.DepartmentId = 1;
                     if (sumAttendance.DepartmentId == 0)
                     {
                         var department = _unitOfWork.Departments.GetAll().FirstOrDefault();
@@ -1778,7 +1772,7 @@ namespace NewGaras.Domain.Services
                     var checkoutValue = WorkingTrackings.Where(a => a.CheckInTime != null).OrderByDescending(a => a.Id).FirstOrDefault()?.CheckOutTime;
                     TimeOnly? checkout = checkoutValue != null ? checkoutValue.Value : null;
                     sumAttendance.AttendanceDate = DateOnly.FromDateTime(WorkingTrackings.FirstOrDefault().Date);
-                    sumAttendance.BranchId = user.BranchId;
+                    sumAttendance.BranchId = 1;
                     sumAttendance.CheckInHour = checkin.Value.Hour;
                     sumAttendance.CheckInMin = checkin.Value.Minute;
 
@@ -1806,11 +1800,11 @@ namespace NewGaras.Domain.Services
                 }
                 if (shiftHours != 0)
                 {
-                    var overRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.Rate > 0 && a.BranchId == user.BranchId).Select(a => a.Rate).FirstOrDefault();
-                    var delayRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.Rate < 0 && a.BranchId == user.BranchId).Select(a => a.Rate).FirstOrDefault();
+                    var overRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.Rate > 0 && a.BranchId == 1).Select(a => a.Rate).FirstOrDefault();
+                    var delayRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.Rate < 0 && a.BranchId == 1).Select(a => a.Rate).FirstOrDefault();
                     if (sumAttendance.DayTypeId == 2)
                     {
-                        var vacation = _unitOfWork.VacationDays.FindAll(a => date.Date >= a.From.Date && date.Date <= a.To.Date && a.BranchId == user.BranchId).FirstOrDefault();
+                        var vacation = _unitOfWork.VacationDays.FindAll(a => date.Date >= a.From.Date && date.Date <= a.To.Date && a.BranchId == 1).FirstOrDefault();
                         if (vacation == null)
                         {
                             Response.Result = false;
@@ -1838,7 +1832,7 @@ namespace NewGaras.Domain.Services
                         }
                     }
                 }
-                sumAttendance.DayTypeId = GetDayTypeIdbyKnowingTheDate(date, (int)user.BranchId)[1];
+                sumAttendance.DayTypeId = GetDayTypeIdbyKnowingTheDate(date, 1)[1];
 
                 sumAttendance.ShiftHours = shiftHours;
                 sumAttendance.TaskHours = WorkingTrackings.Where(a => a.TaskId != null).Select(a => a.TotalHours).Sum();
@@ -1953,7 +1947,7 @@ namespace NewGaras.Domain.Services
                 Response.Errors.Add(error);
                 return Response;
             }
-            UserNum = _unitOfWork.HrUsers.FindAll(a => a.Active && a.BranchId == branchId).Count();
+            UserNum = _unitOfWork.HrUsers.FindAll(a => a.Active && 1 == branchId).Count();
             if (departmentId != null)
             {
                 var department = _unitOfWork.Departments.GetById((int)departmentId);
@@ -1966,7 +1960,7 @@ namespace NewGaras.Domain.Services
                     Response.Errors.Add(error);
                     return Response;
                 }
-                UserNum = _unitOfWork.HrUsers.FindAll(a => a.Active && a.BranchId == branchId && a.DepartmentId == departmentId).Count();
+                UserNum = _unitOfWork.HrUsers.FindAll(a => a.Active && 1 == branchId && 1 == departmentId).Count();
             }
 
             if (month == 0)
@@ -2228,11 +2222,11 @@ namespace NewGaras.Domain.Services
                         var end = LeaveRequest.To.Date;
                         while (start <= end)
                         {
-                            var daytypeId = GetDayTypeIdbyKnowingTheDate(start, user.BranchId ?? 0)[1];
+                            var daytypeId = GetDayTypeIdbyKnowingTheDate(start, 1 )[1];
                             if (daytypeId != 1)
                             {
                                 var attendance = new Attendance();
-                                attendance.DepartmentId = user.DepartmentId ?? _unitOfWork.Departments.GetAll().FirstOrDefault()?.Id ?? 0;
+                                attendance.DepartmentId = 1;
                                 attendance.AttendanceDate = DateOnly.FromDateTime(start);
                                 attendance.AbsenceCause = LeaveRequest.AbsenceCause;
                                 attendance.AbsenceTypeId = LeaveRequest.VacationTypeId;
@@ -2241,12 +2235,12 @@ namespace NewGaras.Domain.Services
                                 attendance.DayTypeId = daytypeId;
                                 attendance.Active = true;
                                 attendance.HrUserId = LeaveRequest.HrUserId;
-                                attendance.BranchId = user.BranchId;
+                                attendance.BranchId = 1;
                                 attendance.CreatedBy = creator;
                                 attendance.ModifiedBy = creator;
                                 attendance.CreationDate = DateOnly.FromDateTime(DateTime.Now);
                                 attendance.ModificationDate = DateOnly.FromDateTime(DateTime.Now);
-                                attendance.VacationHours = contract.WorkingHours ?? 0;
+                                //attendance.VacationHours = contract.WorkingHours ?? 0;
                                 _unitOfWork.Attendances.Add(attendance);
                                 _unitOfWork.Complete();
                                 SumAttendanceForPayroll(user.Id, creator, start);
@@ -2285,21 +2279,21 @@ namespace NewGaras.Domain.Services
             //-------------------------------send Email------------------------------------------------
             double totalNumOfRequestedDays = (request.To - request.From).TotalDays + 1;
             int numOfOffDays = 0;
-            var branchId = _unitOfWork.Branches.Find(a => a.Id == user.BranchId);
-            var vacationsDays = _unitOfWork.VacationDays.FindAll(a => a.BranchId == user.BranchId && (a.From > request.From && a.To < request.To));
+            var branchId = _unitOfWork.Branches.Find(a => a.Id == 1);
+            var vacationsDays = _unitOfWork.VacationDays.FindAll(a => a.BranchId == 1 && (a.From > request.From && a.To < request.To));
             var startDate = request.From;
             var weekDays = _unitOfWork.WeekDays.GetAll();
 
             var firstNameOfReportingto = string.Empty;
             var lastNameOfReportingto = string.Empty;
 
-            var generalVacationDays = _unitOfWork.VacationDays.FindAll(a => a.BranchId == user.BranchId);
+            var generalVacationDays = _unitOfWork.VacationDays.FindAll(a => a.BranchId ==1);
 
 
             while (startDate <= request.To)     //calaculate weekend days in the vacation intervel in this  loop
             {
                 string dayName = startDate.ToString("dddd");
-                var day = weekDays.Where(a => a.Day.ToLower() == dayName.ToLower() && a.BranchId == user.BranchId).FirstOrDefault();
+                var day = weekDays.Where(a => a.Day.ToLower() == dayName.ToLower() && a.BranchId == 1).FirstOrDefault();
                 var vacationInBranch = generalVacationDays.Where(a => a.From.Date <= startDate.Date && a.To.Date >= startDate.Date).FirstOrDefault();
                 if ((day.IsWeekEnd ?? false) || vacationInBranch != null)
                 {
@@ -2449,7 +2443,7 @@ namespace NewGaras.Domain.Services
                 {
                     var leaveEmployee = _unitOfWork.ContractLeaveEmployees.FindAll(a => a.ContractLeaveSettingId == leaveRequest.VacationTypeId && a.HrUserId == leaveRequest.HrUserId && a.ContractId == contract.Id).FirstOrDefault();
                     var user = _unitOfWork.HrUsers.GetById(leaveRequest.HrUserId);
-                    var absencePeriod = CalculateAbsenceDays(leaveRequest.From.Date, leaveRequest.To.Date, user.BranchId ?? 0);
+                    var absencePeriod = CalculateAbsenceDays(leaveRequest.From.Date, leaveRequest.To.Date, 1);
                     if (leaveEmployee != null && leaveEmployee.Remain >= absencePeriod)
                     {
                         leaveEmployee.Used = leaveEmployee.Used + absencePeriod;
@@ -2482,11 +2476,11 @@ namespace NewGaras.Domain.Services
                 var daytype = 0;
                 while (start <= end)
                 {
-                    daytype = GetDayTypeIdbyKnowingTheDate(start, user.BranchId ?? 0)[1];
+                    daytype = GetDayTypeIdbyKnowingTheDate(start, 1)[1];
                     if (daytype == 3)
                     {
                         var attendance = new Attendance();
-                        attendance.DepartmentId = user.DepartmentId ?? _unitOfWork.Departments.GetAll().FirstOrDefault()?.Id ?? 0;
+                        attendance.DepartmentId = 1;
                         attendance.AttendanceDate = DateOnly.FromDateTime(start);
                         attendance.AbsenceCause = updatedRequest.AbsenceCause;
                         attendance.AbsenceTypeId = updatedRequest.VacationTypeId;
@@ -2495,12 +2489,12 @@ namespace NewGaras.Domain.Services
                         attendance.DayTypeId = daytype;
                         attendance.Active = true;
                         attendance.HrUserId = updatedRequest.HrUserId;
-                        attendance.BranchId = user.BranchId;
+                        attendance.BranchId = 1;
                         attendance.CreatedBy = creator;
                         attendance.ModifiedBy = creator;
                         attendance.CreationDate = DateOnly.FromDateTime(DateTime.Now);
                         attendance.ModificationDate = DateOnly.FromDateTime(DateTime.Now);
-                        attendance.VacationHours = contract?.WorkingHours ?? 0;
+                        //attendance.VacationHours = contract?.WorkingHours ?? 0;
                         _unitOfWork.Attendances.Add(attendance);
                         _unitOfWork.Complete();
                         SumAttendanceForPayroll(updatedRequest.HrUserId, creator, start);
@@ -2991,43 +2985,43 @@ namespace NewGaras.Domain.Services
                 Response.Errors.Add(error);
                 return Response;
             }
-            if (HrUser.Branch == null)
-            {
-                Response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err102";
-                error.ErrorMSG = "Branch is not found";
-                Response.Errors.Add(error);
-                return Response;
-            }
-            if (HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom == null && HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollTo == null)
-            {
-                Response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err102";
-                error.ErrorMSG = "Branch should have Payroll from and to";
-                Response.Errors.Add(error);
-                return Response;
-            }
+            //if (HrUser.Branch == null)
+            //{
+            //    Response.Result = false;
+            //    Error error = new Error();
+            //    error.ErrorCode = "Err102";
+            //    error.ErrorMSG = "Branch is not found";
+            //    Response.Errors.Add(error);
+            //    return Response;
+            //}
+            //if (HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom == null && HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollTo == null)
+            //{
+            //    Response.Result = false;
+            //    Error error = new Error();
+            //    error.ErrorCode = "Err102";
+            //    error.ErrorMSG = "Branch should have Payroll from and to";
+            //    Response.Errors.Add(error);
+            //    return Response;
+            //}
             DateOnly fromDate = new DateOnly(); // default in last month
             DateOnly ToDate = new DateOnly();
-            if (date.Day >= (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom)
-            {
-                fromDate = new DateOnly(date.Year, date.Month, (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom); // default in last month
-                ToDate = new DateOnly(date.Year, date.Month, (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollTo).AddMonths(1);
-            }
-            else
-            {
-                fromDate = new DateOnly(date.Year, date.Month, (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom).AddMonths(-1);
-                ToDate = new DateOnly(date.Year, date.Month, (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollTo);
-            }
+            //if (date.Day >= (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom)
+            //{
+            //    fromDate = new DateOnly(date.Year, date.Month, (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom); // default in last month
+            //    ToDate = new DateOnly(date.Year, date.Month, (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollTo).AddMonths(1);
+            //}
+            //else
+            //{
+            //    fromDate = new DateOnly(date.Year, date.Month, (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom).AddMonths(-1);
+            //    ToDate = new DateOnly(date.Year, date.Month, (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollTo);
+            //}
 
 
-            int diffrence = (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom - (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom;
-            if (diffrence >= 15) // the same month
-            {
-                fromDate = new DateOnly(date.Year, date.Month, (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom); // in the same month
-            }
+            //int diffrence = (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom - (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom;
+            //if (diffrence >= 15) // the same month
+            //{
+            //    fromDate = new DateOnly(date.Year, date.Month, (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom); // in the same month
+            //}
 
 
             var Attendances = _unitOfWork.Attendances.FindAll(a => a.HrUserId == UserId && a.AttendanceDate >= fromDate && a.AttendanceDate <= ToDate).OrderBy(a => a.AttendanceDate);
@@ -3046,13 +3040,13 @@ namespace NewGaras.Domain.Services
                 }
                 //var summary = MonthAttendaceSummaryForHrUser(UserId,date.Month, DateTime.Now.Year).Data;
                 sumPayroll.HrUserId = UserId;
-                sumPayroll.BranchId = HrUser.BranchId;
+                sumPayroll.BranchId = 1;
                 sumPayroll.TotalWorkingDays = Attendances.Where(a => a.DayTypeId == 3 || (a.DayTypeId != 3 && a.NoHours > 0 || a.NoMin > 0)).Count();
                 sumPayroll.TotalWorkingHours = (decimal)(Attendances.Select(a => a.NoHours).Sum() + (Attendances.Select(a => a.NoMin).Sum() / (decimal)60));
                 sumPayroll.TotalOvertimeHours = (decimal)(Attendances.Select(a => a.OverTimeHour).Sum() + (Attendances.Select(a => a.OverTimeMin).Sum() / (decimal)60));
                 sumPayroll.TotalDelayHours = (decimal)(Attendances.Select(a => a.DelayHours).Sum() + (Attendances.Select(a => a.DelayMin).Sum() / (decimal)60));
                 sumPayroll.HolidayHours = (decimal)(Attendances.Sum(a => a.HolidayHours ?? 0));
-                sumPayroll.VacationHours = (decimal)(Attendances.Sum(a => a.VacationHours ?? 0));
+                //sumPayroll.VacationHours = (decimal)(Attendances.Sum(a => a.VacationHours ?? 0));
                 sumPayroll.OvertimeCost = Math.Round((decimal)Attendances.Select(a => a.OvertimeCost).Sum(), 2);
                 sumPayroll.DeductionCost = (decimal)Attendances.Select(a => a.DeductionCost).Sum();
                 sumPayroll.TotalAbsenceDays = Attendances.Where(a => a.DayTypeId == 3 && a.NoHours == 0 && a.NoMin == 0).Count();
@@ -3170,7 +3164,7 @@ namespace NewGaras.Domain.Services
                     attandenceDay.From = (attendance.IsApprovedAbsence == true || attendance.CheckInHour == null) ? "" : new TimeOnly(attendance.CheckInHour ?? 0, attendance.CheckInMin ?? 0, 0).ToString();
                     attandenceDay.To = (attendance.IsApprovedAbsence == true || (attendance.HolidayHours > 0 && attendance.CheckInHour == null)) ? "" : attendance.CheckOutHour != null ? new TimeOnly(attendance.CheckOutHour ?? 0, attendance.CheckOutMin ?? 0, 0).ToString() : "Pending";
                     attandenceDay.HolidayHours = attendance.HolidayHours != null ? (int)attendance.HolidayHours + " H " + (int)((attendance.HolidayHours - (int)attendance.HolidayHours) * 60) + " M" : "0 H 0 M";
-                    attandenceDay.VacationHours = attendance.VacationHours != null ? (int)attendance.VacationHours + " H " + (int)((attendance.VacationHours - (int)attendance.VacationHours) * 60) + " M" : "0 H 0 M";
+                    //attandenceDay.VacationHours = attendance.VacationHours != null ? (int)attendance.VacationHours + " H " + (int)((attendance.VacationHours - (int)attendance.VacationHours) * 60) + " M" : "0 H 0 M";
                     attandenceDay.Longitude = attendance.Longitude;
                     attandenceDay.Latitude = attendance.Latitude;
 
@@ -3190,7 +3184,7 @@ namespace NewGaras.Domain.Services
                         var dayTypeName = dayTypesList.Where(a => a.Id == attendance.DayTypeId).FirstOrDefault();
                         //if (dayTypeName != null) attandenceDay.DayTypeName = dayTypeName.DayType1;
                     }
-                    var dayName = GetDayTypeIdbyKnowingTheDate(Date, hrUser.BranchId ?? 0)[1];
+                    //var dayName = GetDayTypeIdbyKnowingTheDate(Date, hrUser.BranchId ?? 0)[1];
                     attandenceDay.DayTypeName = attendance.IsApprovedAbsence == true ? $"Leave, Approved By {attendance.ApprovedByUser.FirstName + ' ' + attendance.ApprovedByUser.LastName} in {attendance.ModificationDate}" : attendance.CheckInHour == null && attendance.CheckInMin == null && attendance.DayTypeId != 2 ? "Absence" : attendance.DayType.DayType1.ToString();
 
                 }
@@ -3202,7 +3196,7 @@ namespace NewGaras.Domain.Services
                     attandenceDay.TotalHours = "0 H 0 M";
                     attandenceDay.OverTime = "0 H 0 M";
                     attandenceDay.Delay = "0 H 0 M";
-                    var dayName = GetDayTypeIdbyKnowingTheDate(Date, hrUser.BranchId ?? 0)[1];
+                    var dayName = GetDayTypeIdbyKnowingTheDate(Date, 1)[1];
                     attandenceDay.DayTypeName = dayName == 3 ? "Absent" : dayTypesList.Where(a => a.Id == dayName).FirstOrDefault().DayType1;
 
                 }
@@ -3403,7 +3397,7 @@ namespace NewGaras.Domain.Services
                     Response.Errors.Add(error);
                     return Response;
                 }
-                users = users.Where(a => a.BranchId == branchId).ToList();
+                users = users.Where(a =>1 == branchId).ToList();
             }
             if (DepartmentId != null)
             {
@@ -3417,7 +3411,7 @@ namespace NewGaras.Domain.Services
                     Response.Errors.Add(error);
                     return Response;
                 }
-                users = users.Where(a => a.DepartmentId == DepartmentId).ToList();
+                users = users.Where(a => 1 == DepartmentId).ToList();
             }
             var userIds = users.Select(a => a.Id).ToList();
             Response.Data.UsersNumber = users.Count;
@@ -3436,8 +3430,8 @@ namespace NewGaras.Domain.Services
                         Id = attenadance.Id,
                         HrUserId = user.Id,
                         Name = user.FirstName + " " + user.LastName,
-                        DepartmentName = user.Department?.Name,
-                        TeamName = user.Team?.Name,
+                        //DepartmentName = user.Department?.Name,
+                        //TeamName = user.Team?.Name,
                         JobtitleName = user.JobTitle?.Name,
                         Date = attenadance.AttendanceDate.ToString(),
                         From = (attenadance.IsApprovedAbsence == true || attenadance.CheckInHour == null) ? "-" : new TimeOnly(attenadance.CheckInHour ?? 0, attenadance.CheckInMin ?? 0, 0).ToString(),
@@ -3452,7 +3446,7 @@ namespace NewGaras.Domain.Services
                         CheckOutDate = attenadance.CheckOutHour == null ? "-" : attenadance.CheckOutDate != null ? attenadance.CheckOutDate?.ToString("yyyy-MM-dd") :
                         attenadance.AttendanceDate.ToDateTime(new TimeOnly(attenadance.CheckInHour ?? 0, attenadance.CheckInMin ?? 0, 0)).AddHours((double)((attenadance.NoHours ?? 0) + ((double)(attenadance.NoMin ?? 0) / (double)60))).ToString("yyyy-MM-dd"),
                         HolidayHours = attenadance.HolidayHours != null ? (int)attenadance.HolidayHours + " H " + (int)((attenadance.HolidayHours - (int)attenadance.HolidayHours) * 60) + " M" : "0 H 0 M",
-                        VacationHours = attenadance.VacationHours != null ? (int)attenadance.VacationHours + " H " + (int)((attenadance.VacationHours - (int)attenadance.VacationHours) * 60) + " M" : "0 H 0 M",
+                        //VacationHours = attenadance.VacationHours != null ? (int)attenadance.VacationHours + " H " + (int)((attenadance.VacationHours - (int)attenadance.VacationHours) * 60) + " M" : "0 H 0 M",
                         Longitude = attenadance.Longitude,
                         Latitude = attenadance.Latitude
                     });
@@ -3465,8 +3459,8 @@ namespace NewGaras.Domain.Services
                         Id = null,
                         HrUserId = user.Id,
                         Name = user.FirstName + " " + user.LastName,
-                        DepartmentName = user.Department?.Name,
-                        TeamName = user.Team?.Name,
+                        //DepartmentName = user.Department?.Name,
+                        //TeamName = user.Team?.Name,
                         JobtitleName = user.JobTitle?.Name,
                         Date = DateOnly.FromDateTime(date).ToString(),
                         From = "-",
@@ -3565,24 +3559,24 @@ namespace NewGaras.Domain.Services
                 Response.Errors.Add(error);
                 return Response;
             }
-            if (HrUser.Branch == null)
-            {
-                Response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err102";
-                error.ErrorMSG = "Branch is not found";
-                Response.Errors.Add(error);
-                return Response;
-            }
-            if (HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom == null && HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollTo == null)
-            {
-                Response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err103";
-                error.ErrorMSG = "Branch Should Have Payroll From and To";
-                Response.Errors.Add(error);
-                return Response;
-            }
+            //if (HrUser.Branch == null)
+            //{
+            //    Response.Result = false;
+            //    Error error = new Error();
+            //    error.ErrorCode = "Err102";
+            //    error.ErrorMSG = "Branch is not found";
+            //    Response.Errors.Add(error);
+            //    return Response;
+            //}
+            //if (HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom == null && HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollTo == null)
+            //{
+            //    Response.Result = false;
+            //    Error error = new Error();
+            //    error.ErrorCode = "Err103";
+            //    error.ErrorMSG = "Branch Should Have Payroll From and To";
+            //    Response.Errors.Add(error);
+            //    return Response;
+            //}
             int month = 0;
             int year = 0;
             var dateFilter = DateTime.Now;
@@ -3602,12 +3596,12 @@ namespace NewGaras.Domain.Services
             }
 
 
-            DateOnly start = new DateOnly(dateFilter.Year, dateFilter.Month, (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom); // default in last month
-            DateOnly end = new DateOnly(dateFilter.Year, dateFilter.Month, (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollTo).AddMonths(1);
-            int diffrence = (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom - (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollTo;
+            DateOnly start = new DateOnly(dateFilter.Year, dateFilter.Month, 1); // default in last month
+            DateOnly end = new DateOnly(dateFilter.Year, dateFilter.Month, 1).AddMonths(1);
+            int diffrence = 1 - 1;
             if (diffrence >= 15) // the same month
-            {
-                start = new DateOnly(dateFilter.Year, dateFilter.Month, (int)HrUser.Branch.BranchSettings.FirstOrDefault()?.PayrollFrom); // in the same month
+            {   
+                start = new DateOnly(dateFilter.Year, dateFilter.Month, 1); // in the same month
             }
 
             var sumPayroll = _unitOfWork.Payrolls.FindAll(a => a.HrUserId == HrUserId && a.From == start && a.To == end && a.IsPaid == false, includes: new[] { "HrUser.JobTitle", "HrUser.Department", "HrUser.ContractDetails.Salaries", "HrUser.ContractDetails.Salaries.SalaryAllownces", "HrUser.ContractDetails.Salaries.SalaryDeductionTaxes", "HrUser.ContractDetails.Salaries.Currency", "HrUser.Branch.OverTimeAndDeductionRates", "HrUser.ContractDetails.ContractLeaveEmployees.ContractLeaveSetting", "HrUser.ContractDetails.Salaries.PaymentMethod", "HrUser.ContractDetails.Salaries.PaymentStrategy" }).FirstOrDefault();
@@ -3615,54 +3609,54 @@ namespace NewGaras.Domain.Services
             if (sumPayroll != null)
             {
 
-                var overTimeRate = sumPayroll.HrUser.Branch.OverTimeAndDeductionRates.Where(a => a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
-                var deductionRate = sumPayroll.HrUser.Branch.OverTimeAndDeductionRates.Where(a => a.Rate < 0).Select(a => a.Rate).FirstOrDefault();
-                var contract = sumPayroll.HrUser.ContractDetails.Where(a => a.IsCurrent).FirstOrDefault();
-                var leavetypes = contract?.ContractLeaveEmployees;
-                var Client = _unitOfWork.Clients.FindAll(a => a.OwnerCoProfile == true).FirstOrDefault();
-                data.CompanyName = Client?.Name;
-                data.CompanyPhone = Client?.ClientMobiles.FirstOrDefault()?.Mobile;
-                data.CompanyEmail = Client?.Email;
-                data.UserName = sumPayroll.HrUser.FirstName + " " + sumPayroll.HrUser.MiddleName + " " + sumPayroll.HrUser.LastName;
-                data.UserEmail = sumPayroll.HrUser.Email;
-                data.DepartmentName = sumPayroll.HrUser.Department?.Name;
-                data.JobtitleName = sumPayroll.HrUser.JobTitle?.Name;
-                data.Date = DateTime.Now.ToShortDateString();
-                data.FromDate = start.ToShortDateString();
-                data.ToDate = end.ToShortDateString();
-                data.WorkingHours = sumPayroll.TotalWorkingHours - sumPayroll.TotalOvertimeHours;
-                data.WorkingHourRate = ((contract?.Salaries?.Where(a => a.IsCurrent == true).FirstOrDefault()?.TotalGross ?? 0) * 12) / (52 * 40);
-                data.BasicRateTotal = data.WorkingHourRate * data.WorkingHours;
-                data.WorkingDays = sumPayroll.TotalWorkingDays;
-                data.OverTimeHours = sumPayroll.TotalOvertimeHours;
-                data.DelayHours = sumPayroll.TotalDelayHours;
-                data.OverTimeRate = overTimeRate * data.WorkingHourRate;
-                data.DeductionRate = deductionRate * data.WorkingHourRate;
-                data.OverTimeTotal = data.OverTimeRate * data.OverTimeHours;
-                data.BranchName = HrUser.Branch.Name;
-                data.DeductionTotal = Math.Abs(data.DeductionRate * data.DelayHours);
-                data.SalaryDetais = _mapper.Map<GetSalaryDto>(contract?.Salaries.Where(a => a.IsCurrent == true).FirstOrDefault());
-                data.SalaryAllownces = _mapper.Map<List<EditSalaryAllownce>>(contract?.Salaries?.FirstOrDefault()?.SalaryAllownces);
-                data.Taxes = contract?.Salaries?.FirstOrDefault()?.SalaryDeductionTaxes?.Select(a => new PayslipTaxModel { Amount = a.Amount, TaxName = a.TaxName }).ToList();
-                data.TotalDeductions = data.Taxes?.Select(a => a.Amount).Sum() ?? 0;
-                data.TotalNetAmount = data.TotalGrossAmount - data.TotalDeductions;
-                data.CurrencyName = contract?.Salaries?.FirstOrDefault()?.Currency.Name;
-                data.Status = sumPayroll.IsPaid == true ? "Paid " + sumPayroll.ModifiedDate.ToShortDateString() : "not paid";
-                data.LeaveTypes = leavetypes?.Select(a => new PayslipLeaveModel() { LeaveName = a.ContractLeaveSetting.HolidayName, Balance = a.BalancePerMonth ?? 0, Used = a.Used ?? 0, Remain = a.Remain ?? 0 }).ToList();
-                data.Paymethod = contract?.Salaries?.FirstOrDefault()?.PaymentMethod?.Name;
-                var daysnumbers = CalculateDayTypesOfMonth(dateFilter.Month, HrUser.BranchId ?? 0);
-                data.WorkingDaysNum = daysnumbers[0];
-                data.HoliyDaysNum = daysnumbers[1];
-                data.WeekEndDaysNum = daysnumbers[2];
-                data.HolidayHours = sumPayroll.HolidayHours ?? 0;
-                data.HoliDaysHoursTotal = (sumPayroll.HolidayHours ?? 0) * data.WorkingHourRate;
-                data.HolidayHourRate = data.WorkingHourRate;
-                data.VacationHours = sumPayroll.VacationHours ?? 0;
-                data.VacationHoursTotal = (sumPayroll.VacationHours ?? 0) * data.WorkingHourRate;
-                data.VacationHourRate = data.WorkingHourRate;
-                data.VacationDaysNum = _unitOfWork.Attendances.FindAll(a => a.AttendanceDate.Month == start.Month && a.AttendanceDate.Year == start.Year && a.IsApprovedAbsence == true && a.HrUserId == HrUserId).Count();
-                data.TotalGrossAmount = data.BasicRateTotal + data.OverTimeTotal - data.DeductionTotal + data.HoliDaysHoursTotal + data.VacationHoursTotal;
-                data.TotalNetAmount = data.TotalGrossAmount - data.TotalDeductions;
+                //var overTimeRate = sumPayroll.HrUser.Branch.OverTimeAndDeductionRates.Where(a => a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
+                //var deductionRate = sumPayroll.HrUser.Branch.OverTimeAndDeductionRates.Where(a => a.Rate < 0).Select(a => a.Rate).FirstOrDefault();
+                //var contract = sumPayroll.HrUser.ContractDetails.Where(a => a.IsCurrent).FirstOrDefault();
+                //var leavetypes = contract?.ContractLeaveEmployees;
+                //var Client = _unitOfWork.Clients.FindAll(a => a.OwnerCoProfile == true).FirstOrDefault();
+                //data.CompanyName = Client?.Name;
+                //data.CompanyPhone = Client?.ClientMobiles.FirstOrDefault()?.Mobile;
+                //data.CompanyEmail = Client?.Email;
+                //data.UserName = sumPayroll.HrUser.FirstName + " " + sumPayroll.HrUser.MiddleName + " " + sumPayroll.HrUser.LastName;
+                //data.UserEmail = sumPayroll.HrUser.Email;
+                //data.DepartmentName = sumPayroll.HrUser.Department?.Name;
+                //data.JobtitleName = sumPayroll.HrUser.JobTitle?.Name;
+                //data.Date = DateTime.Now.ToShortDateString();
+                //data.FromDate = start.ToShortDateString();
+                //data.ToDate = end.ToShortDateString();
+                //data.WorkingHours = sumPayroll.TotalWorkingHours - sumPayroll.TotalOvertimeHours;
+                //data.WorkingHourRate = ((contract?.Salaries?.Where(a => a.IsCurrent == true).FirstOrDefault()?.TotalGross ?? 0) * 12) / (52 * 40);
+                //data.BasicRateTotal = data.WorkingHourRate * data.WorkingHours;
+                //data.WorkingDays = sumPayroll.TotalWorkingDays;
+                //data.OverTimeHours = sumPayroll.TotalOvertimeHours;
+                //data.DelayHours = sumPayroll.TotalDelayHours;
+                //data.OverTimeRate = overTimeRate * data.WorkingHourRate;
+                //data.DeductionRate = deductionRate * data.WorkingHourRate;
+                //data.OverTimeTotal = data.OverTimeRate * data.OverTimeHours;
+                //data.BranchName = HrUser.Branch.Name;
+                //data.DeductionTotal = Math.Abs(data.DeductionRate * data.DelayHours);
+                //data.SalaryDetais = _mapper.Map<GetSalaryDto>(contract?.Salaries.Where(a => a.IsCurrent == true).FirstOrDefault());
+                //data.SalaryAllownces = _mapper.Map<List<EditSalaryAllownce>>(contract?.Salaries?.FirstOrDefault()?.SalaryAllownces);
+                //data.Taxes = contract?.Salaries?.FirstOrDefault()?.SalaryDeductionTaxes?.Select(a => new PayslipTaxModel { Amount = a.Amount, TaxName = a.TaxName }).ToList();
+                //data.TotalDeductions = data.Taxes?.Select(a => a.Amount).Sum() ?? 0;
+                //data.TotalNetAmount = data.TotalGrossAmount - data.TotalDeductions;
+                //data.CurrencyName = contract?.Salaries?.FirstOrDefault()?.Currency.Name;
+                //data.Status = sumPayroll.IsPaid == true ? "Paid " + sumPayroll.ModifiedDate.ToShortDateString() : "not paid";
+                //data.LeaveTypes = leavetypes?.Select(a => new PayslipLeaveModel() { LeaveName = a.ContractLeaveSetting.HolidayName, Balance = a.BalancePerMonth ?? 0, Used = a.Used ?? 0, Remain = a.Remain ?? 0 }).ToList();
+                //data.Paymethod = contract?.Salaries?.FirstOrDefault()?.PaymentMethod?.Name;
+                //var daysnumbers = CalculateDayTypesOfMonth(dateFilter.Month, HrUser.BranchId ?? 0);
+                //data.WorkingDaysNum = daysnumbers[0];
+                //data.HoliyDaysNum = daysnumbers[1];
+                //data.WeekEndDaysNum = daysnumbers[2];
+                //data.HolidayHours = sumPayroll.HolidayHours ?? 0;
+                //data.HoliDaysHoursTotal = (sumPayroll.HolidayHours ?? 0) * data.WorkingHourRate;
+                //data.HolidayHourRate = data.WorkingHourRate;
+                //data.VacationHours = sumPayroll.VacationHours ?? 0;
+                //data.VacationHoursTotal = (sumPayroll.VacationHours ?? 0) * data.WorkingHourRate;
+                //data.VacationHourRate = data.WorkingHourRate;
+                //data.VacationDaysNum = _unitOfWork.Attendances.FindAll(a => a.AttendanceDate.Month == start.Month && a.AttendanceDate.Year == start.Year && a.IsApprovedAbsence == true && a.HrUserId == HrUserId).Count();
+                //data.TotalGrossAmount = data.BasicRateTotal + data.OverTimeTotal - data.DeductionTotal + data.HoliDaysHoursTotal + data.VacationHoursTotal;
+                //data.TotalNetAmount = data.TotalGrossAmount - data.TotalDeductions;
             }
             //else
             //{
@@ -3692,7 +3686,7 @@ namespace NewGaras.Domain.Services
             }
             if (!AllUsers && branchId != 0)
             {
-                users = users.Where(a => a.BranchId == branchId).ToList();
+                users = users.Where(a => 1 == branchId).ToList();
             }
 
             var usersIds = users.Select(a => a.Id).ToList();
@@ -3750,7 +3744,7 @@ namespace NewGaras.Domain.Services
                 Response.Errors.Add(error);
                 return Response;
             }
-            var department = _unitOfWork.Departments.GetById(hruser.DepartmentId ?? 0) ?? _unitOfWork.Departments.GetAll().FirstOrDefault();
+            var department = _unitOfWork.Departments.GetById(1) ?? _unitOfWork.Departments.GetAll().FirstOrDefault();
             if (department == null)
             {
                 Response.Result = false;
@@ -3780,7 +3774,7 @@ namespace NewGaras.Domain.Services
                 Response.Errors.Add(error);
                 return Response;
             }
-            var data = GetDayTypeIdbyKnowingTheDate(request.Checkin.Date, hruser.BranchId ?? 0);
+            var data = GetDayTypeIdbyKnowingTheDate(request.Checkin.Date, 1);
             var weekdayId = data[0];
             var daytypeId = data[1];
             var shift = _unitOfWork.BranchSchedules.FindAll(a => TimeOnly.FromDateTime(request.Checkin) >= a.From && TimeOnly.FromDateTime(request.Checkin) <= a.To && a.WeekDayId == weekdayId).FirstOrDefault();
@@ -3795,7 +3789,7 @@ namespace NewGaras.Domain.Services
             Attendance.CheckOutMin = request.CheckOut.Minute;
             var period = request.CheckOut.Subtract(request.Checkin);
             Attendance.NoHours = period.Hours;
-            Attendance.BranchId = hruser.BranchId;
+            //Attendance.BranchId = hruser.BranchId;
             var minDifference = period.Minutes;
             Attendance.NoMin = minDifference;
             if (minDifference < 0)
@@ -3806,11 +3800,11 @@ namespace NewGaras.Domain.Services
             var totalhours = Attendance.NoHours + (Attendance.NoMin / 60);
             var overtimeHours = totalhours > shiftHours ? totalhours - shiftHours : 0;
             var delayHours = shiftHours > totalhours ? shiftHours - totalhours : 0;
-            var overtimeRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.BranchId == hruser.BranchId && a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
-            var delayRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.BranchId == hruser.BranchId && a.Rate < 0).Select(a => a.Rate).FirstOrDefault();
+            var overtimeRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.BranchId == 1 && a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
+            var delayRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.BranchId ==1 && a.Rate < 0).Select(a => a.Rate).FirstOrDefault();
             if (daytypeId == 2)
             {
-                var vacation = _unitOfWork.VacationDays.FindAll(a => DateOnly.FromDateTime(request.Checkin) >= DateOnly.FromDateTime(a.From) && DateOnly.FromDateTime(request.Checkin) <= DateOnly.FromDateTime(a.To) && a.BranchId == hruser.BranchId).FirstOrDefault();
+                var vacation = _unitOfWork.VacationDays.FindAll(a => DateOnly.FromDateTime(request.Checkin) >= DateOnly.FromDateTime(a.From) && DateOnly.FromDateTime(request.Checkin) <= DateOnly.FromDateTime(a.To) && a.BranchId == 1).FirstOrDefault();
                 if (vacation != null)
                 {
                     overtimeRate = _unitOfWork.VacationOverTimeAndDeductionRates.FindAll(a => a.VacationDayId == vacation.Id && a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
@@ -3882,11 +3876,11 @@ namespace NewGaras.Domain.Services
             var totalhours = Attendance.NoHours + (Attendance.NoMin / 60);
             var overtimeHours = totalhours > Attendance.ShiftHours ? totalhours - Attendance.ShiftHours : 0;
             var delayHours = Attendance.ShiftHours > totalhours ? Attendance.ShiftHours - totalhours : 0;
-            var overtimeRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.BranchId == hruser.BranchId && a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
-            var delayRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.BranchId == hruser.BranchId && a.Rate < 0).Select(a => a.Rate).FirstOrDefault();
+            var overtimeRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => 1 == 1 && a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
+            var delayRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a =>    1 == 1 && a.Rate < 0).Select(a => a.Rate).FirstOrDefault();
             if (Attendance.DayTypeId == 2)
             {
-                var vacation = _unitOfWork.VacationDays.FindAll(a => DateOnly.FromDateTime(request.Checkin) >= DateOnly.FromDateTime(a.From) && DateOnly.FromDateTime(request.Checkin) <= DateOnly.FromDateTime(a.To) && a.BranchId == hruser.BranchId).FirstOrDefault();
+                var vacation = _unitOfWork.VacationDays.FindAll(a => DateOnly.FromDateTime(request.Checkin) >= DateOnly.FromDateTime(a.From) && DateOnly.FromDateTime(request.Checkin) <= DateOnly.FromDateTime(a.To) && a.BranchId == 1).FirstOrDefault();
                 overtimeRate = _unitOfWork.VacationOverTimeAndDeductionRates.FindAll(a => a.VacationDayId == vacation.Id && a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
                 delayRate = _unitOfWork.VacationOverTimeAndDeductionRates.FindAll(a => a.VacationDayId == vacation.Id && a.Rate < 0).Select(a => a.Rate).FirstOrDefault();
                 overtimeHours = (decimal)period.TotalHours;
@@ -4007,8 +4001,8 @@ namespace NewGaras.Domain.Services
 
             try
             {
-                var activeHruserNumber = _unitOfWork.HrUsers.FindAll(a => a.Active == true && a.BranchId == filters.BranchID).Count();
-                var branchSettings = _unitOfWork.BranchSetting.FindAll(a => a.BranchId == filters.BranchID).FirstOrDefault();
+                var activeHruserNumber = _unitOfWork.HrUsers.FindAll(a => a.Active == true && 1 == filters.BranchID).Count();
+                var branchSettings = _unitOfWork.BranchSetting.FindAll(a => 1 == filters.BranchID).FirstOrDefault();
                 //var paymentMethods = _unitOfWork.PaymentMethods.GetAll();
                 if (branchSettings?.PayrollFrom == null)
                 {
@@ -4035,8 +4029,8 @@ namespace NewGaras.Domain.Services
 
                 criteria = a =>
                 (
-                (filters.BranchID != null ? a.BranchId == filters.BranchID : true) &&
-                (filters.DepartmentID != null ? a.DepartmentId == filters.DepartmentID : true) &&
+                (filters.BranchID != null ? 1 == filters.BranchID : true) &&
+                (filters.DepartmentID != null ? 1 == filters.DepartmentID : true) &&
                 (filters.HrUserID != null ? a.Id == filters.HrUserID : true)
                 );
 
@@ -4081,48 +4075,48 @@ namespace NewGaras.Domain.Services
                     var contract = a.HrUser.ContractDetails.Where(x => x.IsCurrent).FirstOrDefault();
                     var WorkingHourRate = ((contract?.Salaries?.Where(a => a.IsCurrent == true).FirstOrDefault()?.TotalGross ?? 0) * 12) / (52 * 40);
                     var BasicRateTotal = WorkingHourRate * (a.TotalWorkingHours - a.TotalOvertimeHours);
-                    var overTimeRate = a.HrUser.Branch.OverTimeAndDeductionRates.Where(a => a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
-                    var OverTimeRate = overTimeRate * WorkingHourRate;
-                    var OverTimeTotal = OverTimeRate * a.TotalOvertimeHours;
-                    var deductionRate = a.HrUser.Branch.OverTimeAndDeductionRates.Where(a => a.Rate < 0).Select(a => a.Rate).FirstOrDefault();
-                    var DeductionRate = deductionRate * WorkingHourRate;
-                    var DeductionTotal = Math.Abs(DeductionRate * a.TotalDelayHours);
-                    var HoliDaysHoursTotal = (a.HolidayHours ?? 0) * WorkingHourRate;
-                    var VacationHoursTotal = (a.VacationHours ?? 0) * WorkingHourRate;
-                    var payrollResponse = new GetMonthlyPayrollReportDto();
-                    var Taxes = contract?.Salaries.Where(a => a.IsCurrent == true)?.FirstOrDefault()?.SalaryDeductionTaxes?.Select(a => new PayslipTaxModel { Amount = a.Amount, TaxName = a.TaxName }).ToList();
-                    var TotalDeductions = Taxes?.Select(a => a.Amount).Sum() ?? 0;
-                    payrollResponse.PayrollID = a.Id;
-                    payrollResponse.HrUserID = a.HrUserId;
-                    payrollResponse.UserFullName = $"{a.HrUser?.FirstName} {a.HrUser?.MiddleName} {a.HrUser?.LastName}".Trim();
-                    payrollResponse.DepartmentID = a.HrUser?.DepartmentId ?? 0;
-                    payrollResponse.DepartmentName = a.HrUser?.Department?.Name;
-                    payrollResponse.TeamID = a.HrUser?.TeamId ?? 0;
-                    payrollResponse.TeamName = a.HrUser?.Team?.Name;
-                    payrollResponse.JobtitleID = a.HrUser?.JobTitleId ?? 0;
-                    payrollResponse.JobTitleName = a.HrUser?.JobTitle?.Name;
-                    payrollResponse.TotalWorkingdays = a.TotalWorkingDays;
-                    payrollResponse.TotalOverTimeHours = a.TotalOvertimeHours; // This will always be 0. Is this intentional?
-                    payrollResponse.TotalWorkingHours = a.TotalWorkingHours - a.TotalOvertimeHours;
-                    payrollResponse.TotalDelayHours = a.TotalDelayHours;
-                    payrollResponse.VacationDaysNumber = a.VacationDaysNumber;
-                    payrollResponse.PaidVacationHours = a.VacationHours ?? 0;
-                    payrollResponse.HolidayHours = a.HolidayHours ?? 0;
-                    payrollResponse.TotalAbsenceDays = a.TotalAbsenceDays;
-                    payrollResponse.Allowances = a.Allowances;
-                    payrollResponse.Tax = a.Taxs;
-                    payrollResponse.Insurance = a.Insurance;
-                    payrollResponse.IsPaid = a.IsPaid;
-                    payrollResponse.OtherDeductions = a.OtherDeductions;
-                    payrollResponse.OtherIncome = a.OtherIncome;
-                    payrollResponse.PaymentMethodID = a.HrUser?.Salaries.Where(s => s.ContractId == a.HrUser.ContractDetails.FirstOrDefault(c => c.IsCurrent)?.Id).FirstOrDefault()?.PaymentMethodId;
-                    payrollResponse.PaymentMethodName = a.HrUser?.Salaries.Where(s => s.ContractId == a.HrUser.ContractDetails.FirstOrDefault(c => c.IsCurrent)?.Id).Select(s => s.PaymentMethod?.Name).FirstOrDefault();
-                    payrollResponse.TotalGross = BasicRateTotal + OverTimeTotal - DeductionTotal + HoliDaysHoursTotal + VacationHoursTotal;
-                    payrollResponse.TotalNet = payrollResponse.TotalGross - TotalDeductions;
+                    //var overTimeRate = a.HrUser.Branch.OverTimeAndDeductionRates.Where(a => a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
+                    //var OverTimeRate = overTimeRate * WorkingHourRate;
+                    //var OverTimeTotal = OverTimeRate * a.TotalOvertimeHours;
+                    //var deductionRate = a.HrUser.Branch.OverTimeAndDeductionRates.Where(a => a.Rate < 0).Select(a => a.Rate).FirstOrDefault();
+                    //var DeductionRate = deductionRate * WorkingHourRate;
+                    //var DeductionTotal = Math.Abs(DeductionRate * a.TotalDelayHours);
+                    //var HoliDaysHoursTotal = (a.HolidayHours ?? 0) * WorkingHourRate;
+                    //var VacationHoursTotal = (a.VacationHours ?? 0) * WorkingHourRate;
+                    //var payrollResponse = new GetMonthlyPayrollReportDto();
+                    //var Taxes = contract?.Salaries.Where(a => a.IsCurrent == true)?.FirstOrDefault()?.SalaryDeductionTaxes?.Select(a => new PayslipTaxModel { Amount = a.Amount, TaxName = a.TaxName }).ToList();
+                    //var TotalDeductions = Taxes?.Select(a => a.Amount).Sum() ?? 0;
+                    //payrollResponse.PayrollID = a.Id;
+                    //payrollResponse.HrUserID = a.HrUserId;
+                    //payrollResponse.UserFullName = $"{a.HrUser?.FirstName} {a.HrUser?.MiddleName} {a.HrUser?.LastName}".Trim();
+                    //payrollResponse.DepartmentID = a.HrUser?.DepartmentId ?? 0;
+                    //payrollResponse.DepartmentName = a.HrUser?.Department?.Name;
+                    //payrollResponse.TeamID = a.HrUser?.TeamId ?? 0;
+                    //payrollResponse.TeamName = a.HrUser?.Team?.Name;
+                    //payrollResponse.JobtitleID = a.HrUser?.JobTitleId ?? 0;
+                    //payrollResponse.JobTitleName = a.HrUser?.JobTitle?.Name;
+                    //payrollResponse.TotalWorkingdays = a.TotalWorkingDays;
+                    //payrollResponse.TotalOverTimeHours = a.TotalOvertimeHours; // This will always be 0. Is this intentional?
+                    //payrollResponse.TotalWorkingHours = a.TotalWorkingHours - a.TotalOvertimeHours;
+                    //payrollResponse.TotalDelayHours = a.TotalDelayHours;
+                    //payrollResponse.VacationDaysNumber = a.VacationDaysNumber;
+                    //payrollResponse.PaidVacationHours = a.VacationHours ?? 0;
+                    //payrollResponse.HolidayHours = a.HolidayHours ?? 0;
+                    //payrollResponse.TotalAbsenceDays = a.TotalAbsenceDays;
+                    //payrollResponse.Allowances = a.Allowances;
+                    //payrollResponse.Tax = a.Taxs;
+                    //payrollResponse.Insurance = a.Insurance;
+                    //payrollResponse.IsPaid = a.IsPaid;
+                    //payrollResponse.OtherDeductions = a.OtherDeductions;
+                    //payrollResponse.OtherIncome = a.OtherIncome;
+                    //payrollResponse.PaymentMethodID = a.HrUser?.Salaries.Where(s => s.ContractId == a.HrUser.ContractDetails.FirstOrDefault(c => c.IsCurrent)?.Id).FirstOrDefault()?.PaymentMethodId;
+                    //payrollResponse.PaymentMethodName = a.HrUser?.Salaries.Where(s => s.ContractId == a.HrUser.ContractDetails.FirstOrDefault(c => c.IsCurrent)?.Id).Select(s => s.PaymentMethod?.Name).FirstOrDefault();
+                    //payrollResponse.TotalGross = BasicRateTotal + OverTimeTotal - DeductionTotal + HoliDaysHoursTotal + VacationHoursTotal;
+                    //payrollResponse.TotalNet = payrollResponse.TotalGross - TotalDeductions;
 
 
 
-                    payrollResponseList.Add(payrollResponse);
+                    //payrollResponseList.Add(payrollResponse);
                 }
                 //data.BasicRateTotal + data.OverTimeTotal - data.DeductionTotal + data.HoliDaysHoursTotal + data.VacationHoursTotal;
                 response.Data.Year = filters.Year;
@@ -4414,7 +4408,7 @@ namespace NewGaras.Domain.Services
             }
             if (!AllUsers && branchId != 0)
             {
-                users = users.Where(a => a.BranchId == branchId).ToList();
+                users = users.Where(a => 1 == branchId).ToList();
             }
             var path = $"Attachments\\{CompanyName}\\Templates\\EmployeeAttendance.xlsx";
             var sheetpath = Path.Combine(_host.WebRootPath, path);
@@ -4429,9 +4423,9 @@ namespace NewGaras.Domain.Services
                     worksheet.Cells[firstrow + i, 1].Value = i + 1;
                     worksheet.Cells[firstrow + i, 2].Value = users[i].Id;
                     worksheet.Cells[firstrow + i, 3].Value = users[i].FirstName + " " + users[i].LastName;
-                    worksheet.Cells[firstrow + i, 4].Value = users[i].Branch?.Name;
-                    worksheet.Cells[firstrow + i, 5].Value = users[i].Department?.Name;
-                    worksheet.Cells[firstrow + i, 6].Value = users[i].Team?.Name;
+                    //worksheet.Cells[firstrow + i, 4].Value = users[i].Branch?.Name;
+                    //worksheet.Cells[firstrow + i, 5].Value = users[i].Department?.Name;
+                    //worksheet.Cells[firstrow + i, 6].Value = users[i].Team?.Name;
                     worksheet.Row(firstrow + i).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 }
                 worksheet.Column(1).AutoFit();
@@ -4532,7 +4526,7 @@ namespace NewGaras.Domain.Services
                                     }
                                     else
                                     {
-                                        var data = GetDayTypeIdbyKnowingTheDate(date, hruser.BranchId ?? 0);
+                                        var data = GetDayTypeIdbyKnowingTheDate(date, 1);
                                         var weekdayId = data[0];
                                         var daytypeId = data[1];
                                         /*if (worksheet.Cells[i + 3, 8].Value == null || worksheet.Cells[i + 3, 9].Value == null ||
@@ -4573,14 +4567,14 @@ namespace NewGaras.Domain.Services
                                                     decimal shiftHours = shift != null ? (decimal)(((TimeOnly)shift.To - (TimeOnly)shift.From).TotalMinutes / 60) : 0;
                                                     var Attendance = new Attendance();
                                                     Attendance.HrUserId = hruser.Id;
-                                                    Attendance.DepartmentId = hruser.Department?.Id ?? backupDepartment.Id;
+                                                    //Attendance.DepartmentId = hruser.Department?.Id ?? backupDepartment.Id;
                                                     Attendance.DayTypeId = daytypeId;
                                                     Attendance.CheckInHour = Checkin.Hour;
                                                     Attendance.CheckInMin = Checkin.Minute;
                                                     Attendance.CheckOutHour = CheckOut.Hour;
                                                     Attendance.CheckOutMin = CheckOut.Minute;
                                                     Attendance.NoHours = Attendance.CheckOutHour - Attendance.CheckInHour;
-                                                    Attendance.BranchId = hruser.BranchId;
+                                                    //Attendance.BranchId = hruser.BranchId;
                                                     var minDifference = Attendance.CheckOutMin - Attendance.CheckInMin;
                                                     Attendance.NoMin = minDifference;
                                                     if (minDifference < 0)
@@ -4591,21 +4585,21 @@ namespace NewGaras.Domain.Services
                                                     var totalhours = Attendance.NoHours + (Attendance.NoMin / 60);
                                                     var overtimeHours = totalhours > shiftHours ? totalhours - shiftHours : 0;
                                                     var delayHours = shiftHours > totalhours ? shiftHours - totalhours : 0;
-                                                    var overtimeRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.BranchId == hruser.BranchId && a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
-                                                    var delayRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.BranchId == hruser.BranchId && a.Rate < 0).Select(a => a.Rate).FirstOrDefault();
+                                                    //var overtimeRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.BranchId == hruser.BranchId && a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
+                                                    //var delayRate = _unitOfWork.OverTimeAndDeductionRates.FindAll(a => a.BranchId == hruser.BranchId && a.Rate < 0).Select(a => a.Rate).FirstOrDefault();
                                                     if (daytypeId == 2)
                                                     {
-                                                        var vacation = _unitOfWork.VacationDays.FindAll(a => date >= a.From && date <= a.To && a.BranchId == hruser.BranchId).FirstOrDefault();
-                                                        overtimeRate = _unitOfWork.VacationOverTimeAndDeductionRates.FindAll(a => a.VacationDayId == vacation.Id && a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
-                                                        delayRate = _unitOfWork.VacationOverTimeAndDeductionRates.FindAll(a => a.VacationDayId == vacation.Id && a.Rate < 0).Select(a => a.Rate).FirstOrDefault();
+                                                        var vacation = _unitOfWork.VacationDays.FindAll(a => date >= a.From && date <= a.To && a.BranchId == 1).FirstOrDefault();
+                                                        //overtimeRate = _unitOfWork.VacationOverTimeAndDeductionRates.FindAll(a => a.VacationDayId == vacation.Id && a.Rate > 0).Select(a => a.Rate).FirstOrDefault();
+                                                        //delayRate = _unitOfWork.VacationOverTimeAndDeductionRates.FindAll(a => a.VacationDayId == vacation.Id && a.Rate < 0).Select(a => a.Rate).FirstOrDefault();
                                                     }
                                                     Attendance.OverTimeHour = (int)overtimeHours;
                                                     Attendance.DelayHours = (int)delayHours;
                                                     Attendance.OverTimeMin = (int)(((decimal)overtimeHours - Attendance.OverTimeHour) * 60);
                                                     Attendance.DelayMin = (int)(((decimal)delayHours - Attendance.DelayHours) * 60);
                                                     Attendance.AttendanceDate = DateOnly.FromDateTime(date);
-                                                    Attendance.OvertimeCost = overtimeHours * overtimeRate;
-                                                    Attendance.DeductionCost = delayHours * delayRate;
+                                                    //Attendance.OvertimeCost = overtimeHours * overtimeRate;
+                                                    //Attendance.DeductionCost = delayHours * delayRate;
                                                     Attendance.ShiftHours = shiftHours;
                                                     Attendance.CreatedBy = creator;
                                                     Attendance.CreationDate = DateOnly.FromDateTime(DateTime.Now);
@@ -4775,9 +4769,9 @@ namespace NewGaras.Domain.Services
 
                     var HolidayHours = (int)Holidays + " Hours And " + (int)(Holidays - ((int)Holidays)) + " Minutes";
 
-                    var Vacations = item.Sum(a => a.VacationHours);
+                    //var Vacations = item.Sum(a => a.VacationHours);
 
-                    var VacationHours = (int)Vacations + " Hours And " + (int)(Vacations - ((int)Vacations)) + " Minutes";
+                    //var VacationHours = (int)Vacations + " Hours And " + (int)(Vacations - ((int)Vacations)) + " Minutes";
 
                     var checkin = item.FirstOrDefault().CheckInHour!=null? new TimeSpan(item.FirstOrDefault().CheckInHour??0,item.FirstOrDefault().CheckInMin??0,0) : TimeSpan.Zero;
                     DateTime? checkinD = checkin!=TimeSpan.Zero? DateTime.Today.Add(checkin):null;
@@ -4795,8 +4789,8 @@ namespace NewGaras.Domain.Services
                     checkoutD!=null?checkoutD?.ToString("h:m:s tt"):"Pending",
                     NoHours,
                     OverHours,
-                    HolidayHours,
-                    VacationHours
+                    HolidayHours
+                    //VacationHours
                     );
                 }
                 
@@ -4896,7 +4890,7 @@ namespace NewGaras.Domain.Services
 
             try
             {
-                var hruserList = _unitOfWork.HrUsers.FindAll(a => a.BranchId == data.branchID && a.Active == true, new[] { "ContractDetails" }).ToList();
+                var hruserList = _unitOfWork.HrUsers.FindAll(a => 1 == data.branchID && a.Active == true, new[] { "ContractDetails" }).ToList();
 
                 var DaysInVacation = vacationDay.To - vacationDay.From;
                 var numberOfDaysInVacation = DaysInVacation.Days;
@@ -4935,16 +4929,16 @@ namespace NewGaras.Domain.Services
                             {
                                 var newAttendance = new Attendance();
 
-                                if (hruser.DepartmentId == null)
-                                {
-                                    var department = _unitOfWork.Departments.GetAll().FirstOrDefault();
-                                    newAttendance.DepartmentId = department.Id;
-                                }
-                                else
-                                {
-                                    newAttendance.DepartmentId = hruser.DepartmentId ?? 0;
+                                //if (hruser.DepartmentId == null)
+                                //{
+                                //    var department = _unitOfWork.Departments.GetAll().FirstOrDefault();
+                                //    newAttendance.DepartmentId = department.Id;
+                                //}
+                                //else
+                                //{
+                                //    newAttendance.DepartmentId = hruser.DepartmentId ?? 0;
 
-                                }
+                                //}
                                 newAttendance.AttendanceDate = DateOnly.FromDateTime(day.Date);
                                 newAttendance.CreatedBy = userId;
                                 newAttendance.CreationDate = DateOnly.FromDateTime(DateTime.Now);
