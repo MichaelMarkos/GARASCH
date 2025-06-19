@@ -597,7 +597,7 @@ namespace NewGarasAPI.Controllers.HR
 
 
         [HttpGet("GetHrUser")]  //services Added
-        public async Task<BaseResponseWithData<GetHrUserDto>> GetHrUser([FromHeader] long HrUserId, [FromHeader] long systemUserId)
+        public async Task<BaseResponseWithData<GetHrUserDto>> GetHrUser([FromHeader] long HrUserId)
         {
             var response = new BaseResponseWithData<GetHrUserDto>()
             {
@@ -615,7 +615,7 @@ namespace NewGarasAPI.Controllers.HR
             {
                 if (response.Result)
                 {
-                    response = await _hrUserService.GetHrUser(HrUserId, systemUserId);
+                    response = await _hrUserService.GetHrUser(HrUserId);
                 }
                 return response;
             }
@@ -836,7 +836,7 @@ namespace NewGarasAPI.Controllers.HR
             {
                 if (response.Result)
                 {
-                    var UserCheck = await _hrUserService.GetHrUser(NewHrData.HrUserId, 0);
+                    var UserCheck = await _hrUserService.GetHrUser(NewHrData.HrUserId);
                     if (!UserCheck.Result)
                     {
                         response.Result = false;
@@ -892,7 +892,7 @@ namespace NewGarasAPI.Controllers.HR
             {
                 if (response.Result)
                 {
-                    var UserCheck = await _hrUserService.GetHrUser(userId, 0);
+                    var UserCheck = await _hrUserService.GetHrUser(userId);
                     if (!UserCheck.Result)
                     {
                         response.Result = false;

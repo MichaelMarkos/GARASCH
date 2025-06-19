@@ -63,11 +63,12 @@ namespace NewGaras.Domain.Mappers
             CreateMap<Branch, AddBranchDto>();
 
             CreateMap<HrUser, GetHrUserDto>()
-                .ForMember(HrUser => HrUser.HrNationalityId, GetDto => GetDto.MapFrom(a => a.NationalityId))
-                .ForMember(HrUser => HrUser.DateOfBirth, GetDto => GetDto.MapFrom(a => a.DateOfBirth != null ? ((DateTime)a.DateOfBirth).ToShortDateString() : null))
-                .ForMember(HrUser => HrUser.SystemEmail, GetDto => GetDto.MapFrom(a => a.User.Email))
-                .ForMember(HrUser => HrUser.JobTitle, GetDto => GetDto.MapFrom(a => a.JobTitle.Name))
-                .ForMember(HrUser => HrUser.ImgPath, GetDto => GetDto.MapFrom(a => a.ImgPath != null ? BaseURL + a.ImgPath : null)) ;
+                .ForMember(HrUser => HrUser.NationalityName, GetDto => GetDto.MapFrom(a => a.Nationality.Nationality1))
+                .ForMember(HrUser => HrUser.JobTitleName, GetDto => GetDto.MapFrom(a => a.JobTitle.Name))
+                .ForMember(HrUser => HrUser.MilitaryStatusName, GetDto => GetDto.MapFrom(a => a.MilitaryStatus.Name))
+                .ForMember(HrUser => HrUser.MaritalStatusName, GetDto => GetDto.MapFrom(a => a.MaritalStatus.Name))
+                .ForMember(HrUser => HrUser.ChurchOfPresenceName, GetDto => GetDto.MapFrom(a => a.ChurchOfPresence.ChurchName))
+                .ForMember(HrUser => HrUser.BelongToChurchName, GetDto => GetDto.MapFrom(a => a.BelongToChurch.ChurchName));
             CreateMap<HrUser, GetHrTeamUsersDto>();
             CreateMap<AddDepartmentDto, Department>();
             CreateMap<Department,GetDepartmentDto>().ForMember(dto=>dto.Teams,o=>o.Ignore());

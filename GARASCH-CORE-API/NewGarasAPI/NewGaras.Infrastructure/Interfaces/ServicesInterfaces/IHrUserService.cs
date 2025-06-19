@@ -19,7 +19,7 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
     {
         public HearderVaidatorOutput Validation { get; set; }
         public Task<BaseResponseWithData<UserEmployeeResponse>> AddHrEmployeeToUserAsync(AddHrEmployeeToUserDTO InData, long userId, string key);
-        public Task<BaseResponseWithData<GetHrUserDto>> GetHrUser(long HrUserId, long systemUserId);
+        public Task<BaseResponseWithData<GetHrUserDto>> GetHrUser(long HrUserId);
 
         public Task<BaseResponseWithDataAndHeader<List<HrUserCardDto>>> GetAll(int CurrentPage, int NumberOfItemsPerPage, string? name,
             bool? active, int? DepId, int? jobTilteId, int? BranchId, bool? isUser, string? Email, string? mobile, bool? isDeleted
