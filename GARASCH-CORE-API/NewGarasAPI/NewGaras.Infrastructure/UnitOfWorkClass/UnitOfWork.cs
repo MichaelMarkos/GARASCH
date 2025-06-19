@@ -474,6 +474,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<ClientNational , int> clientNationals { get; private set; }
         public IBaseRepository<ClientInformation , int> clientInformations { get; private set; }
         public IBaseRepository<CostType, long> CostTypes { get; private set; }
+        public IBaseRepository<MilitaryStatus, int> MilitaryStatuses { get; private set; }
 
 
 
@@ -700,6 +701,7 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             ProjectProgressUsers = new BaseRepository<ProjectProgressUser, long>(_context);
             CostTypes = new BaseRepository<CostType, long>(_context);
             HrUserAttachments = new BaseRepository<HrUserAttachment, long>(_context);
+            MilitaryStatuses = new BaseRepository<MilitaryStatus, int>(_context);
 
             /*UserDeviceConnections = new BaseRepository<UserDeviceConnection, long>(_context);
             InventoryItems = new InventoryItemRepository(_context);

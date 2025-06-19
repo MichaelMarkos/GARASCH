@@ -59,7 +59,8 @@ namespace NewGaras.Domain.Mappers
         {
             CreateMap<AddSalaryDto, Salary>();
             CreateMap<AddContractDto, ContractDetail>();
-            CreateMap<HrUserDto, HrUser>().ReverseMap();
+            CreateMap<HrUserDto, HrUser>();
+                
             CreateMap<AddBranchDto, Branch>();
             CreateMap<Branch, AddBranchDto>();
 

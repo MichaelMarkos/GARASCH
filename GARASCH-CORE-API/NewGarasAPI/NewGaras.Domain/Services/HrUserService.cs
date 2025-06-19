@@ -193,19 +193,6 @@ namespace NewGaras.Domain.Services
                     response.Errors.Add(error);
                 }
 
-                if (NewHrUser.ChurchOfPresenceID == null)
-                {
-                    Error error = new Error();
-                    error.ErrorMSG = "Church of presence is required.";
-                    response.Errors.Add(error);
-                }
-
-                if (NewHrUser.BelongToChurchID == null)
-                {
-                    Error error = new Error();
-                    error.ErrorMSG = "Belong to church is required.";
-                    response.Errors.Add(error);
-                }
 
                 if (string.IsNullOrWhiteSpace(NewHrUser.AcademicYearName))
                 {
@@ -244,9 +231,9 @@ namespace NewGaras.Domain.Services
 
                 #endregion
 
-                var allHrUsers = await _unitOfWork.HrUsers.GetAllAsync();
-                var allHrUsersFullName = allHrUsers.Select(a => a.FirstName.ToLower() + a.MiddleName.ToLower() + a.LastName.ToLower()).ToList();
-                var allHrUsersFullAName = allHrUsers.Select(a => a.ArfirstName.ToLower() + a.ArmiddleName.ToLower() + a.ArlastName.ToLower()).ToList();
+                //var allHrUsers = await _unitOfWork.HrUsers.GetAllAsync();
+                //var allHrUsersFullName = allHrUsers.Select(a => a.FirstName.ToLower() + a.MiddleName.ToLower() + a.LastName.ToLower()).ToList();
+                //var allHrUsersFullAName = allHrUsers.Select(a => a.ArfirstName.ToLower() + a.ArmiddleName.ToLower() + a.ArlastName.ToLower()).ToList();
 
                 var newUserName = "";
                 if (!string.IsNullOrWhiteSpace(NewHrUser.FirstName) && !string.IsNullOrWhiteSpace(NewHrUser.LastName))
@@ -262,7 +249,7 @@ namespace NewGaras.Domain.Services
 
                 #region not repeating
                 var notRepatingMessage = "";
-                if (allHrUsersFullName.Contains(newUserName.ToLower()))
+                if (await _unitOfWork.HrUsers.AnyAsync(a=>newUserName.ToLower()== a.FirstName.ToLower() + a.MiddleName.ToLower() + a.LastName.ToLower()))
                 {
                     response.Result = false;
                     //Error err = new Error();
@@ -271,7 +258,7 @@ namespace NewGaras.Domain.Services
                     //response.Errors.Add(err);
                     //return response;
                 }
-                if (allHrUsersFullAName.Contains(newUserAName.ToLower()))
+                if (await _unitOfWork.HrUsers.AnyAsync(a=>newUserAName.ToLower()== a.ArfirstName.ToLower() + a.ArmiddleName.ToLower() + a.ArlastName.ToLower()))
                 {
                     response.Result = false;
                     //Error err = new Error();
@@ -280,8 +267,7 @@ namespace NewGaras.Domain.Services
                     //response.Errors.Add(err);
                     //return response;
                 }
-                var allHrUsersEmails = allHrUsers.Select(a => a.Email);
-                if (allHrUsersEmails.Contains(NewHrUser.Email) || allHrUsersEmails.Contains(NewHrUser.Email.ToLower()))
+                if (await _unitOfWork.HrUsers.AnyAsync(a=>a.Email.ToLower()== NewHrUser.Email.ToLower()))
                 {
                     response.Result = false;
                     //Error err = new Error();
@@ -290,8 +276,7 @@ namespace NewGaras.Domain.Services
                     //response.Errors.Add(err);
                     //return response;
                 }
-                var allHrUsersLandLines = allHrUsers.Where(a => a.LandLine != null).Select(a => a.LandLine);
-                if (allHrUsersLandLines.Contains(NewHrUser.LandLine))
+                if (await _unitOfWork.HrUsers.AnyAsync(a => a.LandLine.ToLower() == NewHrUser.LandLine.ToLower()))
                 {
                     response.Result = false;
                     //Error err = new Error();
@@ -345,9 +330,9 @@ namespace NewGaras.Domain.Services
                 user.MiddleName = MiddleName.Trim();
                 user.LastName = user.LastName.Trim();
                 //--------------Trim() spaces from arabic full name-------------------------
-                user.FirstName = user.ArfirstName.Trim();
-                user.MiddleName = AMiddleName.Trim();
-                user.LastName = user.ArlastName.Trim();
+                user.ArfirstName = user.ArfirstName.Trim();
+                user.ArmiddleName = AMiddleName.Trim();
+                user.ArlastName = user.ArlastName.Trim();
                 //-------------------------------------------------------------------
                 user.ImgPath = null; //Common.SaveFileIFF(virtualPath, file, FileName, fileExtension, _host);
                 user.CreationDate = DateTime.Now;
@@ -461,6 +446,62 @@ namespace NewGaras.Domain.Services
                         Error err = new Error();
                         err.ErrorCode = "E101";
                         err.errorMSG = $"Attachments file is null at {Attachments.IndexOf(Attachment)+1}";
+                        response.Errors.Add(err);
+                    }
+                    var fileExtension = Attachment.AttachmentFile.FileName.Split('.').Last();
+                    var virtualPath = $"Attachments\\{validation.CompanyName}\\HrUser\\{Attachment.HrUserID}\\";
+                    var FileName = System.IO.Path.GetFileNameWithoutExtension(Attachment.AttachmentFile.FileName.Trim().Replace(" ", ""));
+                    Attach.AttachmentPath = Common.SaveFileIFF(virtualPath, Attachment.AttachmentFile, FileName, fileExtension, _host);
+
+                    await _unitOfWork.HrUserAttachments.AddAsync(Attach);
+                }
+                _unitOfWork.Complete();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+
+        }
+
+        public async Task<BaseResponse> AddContactsToHrUser(HrUserContactsDto dto)
+        {
+            var response = new BaseResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+            try
+            {
+                if (Attachments.Count < 0)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.errorMSG = "Attachments List is Empty";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                foreach (var Attachment in Attachments)
+                {
+                    var Attach = _mapper.Map<HrUserAttachment>(Attachment);
+                    Attach.HrUserId = Attachment.HrUserID;
+                    Attach.CreatedBy = validation.userID;
+                    Attach.ModifiedBy = validation.userID;
+                    Attach.CreationDate = DateTime.Now;
+                    Attach.ModifiedDate = DateTime.Now;
+                    if (Attachment.AttachmentFile == null)
+                    {
+                        response.Result = false;
+                        Error err = new Error();
+                        err.ErrorCode = "E101";
+                        err.errorMSG = $"Attachments file is null at {Attachments.IndexOf(Attachment) + 1}";
                         response.Errors.Add(err);
                     }
                     var fileExtension = Attachment.AttachmentFile.FileName.Split('.').Last();
