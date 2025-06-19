@@ -453,6 +453,7 @@ namespace NewGaras.Infrastructure
         IBaseRepository<HrUserFamily, long> HrUserFamilies { get; }
         IBaseRepository<Priest, long> Priests { get; }
         IBaseRepository<Church, long> Churches { get; }
+        IBaseRepository<Eparchy, int> Eparchies { get; }
         //-----------------------------------------------------Hany-------------------------------------------------
         IBaseRepository<LaboratoryMessagesReport , long> LaboratoryMessagesReports { get; }
         IBaseRepository<MaritalStatus , int> MaritalStatus { get; }

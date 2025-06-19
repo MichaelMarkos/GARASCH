@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace NewGaras.Infrastructure.DTO.ChurchAndPriest
 {
-    public class AddNewPriestDTO
+    public class EditChurchDTO
     {
-        public string PriestName { get; set; }
-        public long ChurchID { get; set; }
+        public long ID { get; set; }
+        public string ChurchName { get; set; }
+        public int? EparchyID { get; set; }
     }
 }

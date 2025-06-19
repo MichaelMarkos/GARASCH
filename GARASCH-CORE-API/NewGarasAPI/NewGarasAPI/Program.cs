@@ -27,6 +27,8 @@ using NewGaras.Domain.Services.Medical;
 using NewGaras.Infrastructure.Interfaces.Library;
 using NewGaras.Domain.Services.Library;
 using NewGaras.Domain.Services.Family;
+using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Church;
+using NewGaras.Domain.Services.ChurchAndPriest;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -127,6 +129,7 @@ builder.Services.AddScoped<IDDLService,  DDLService>();
 builder.Services.AddScoped<ISupplierService,  SupplierService>();
 builder.Services.AddScoped<IApplicationVersionService,  ApplicationVersionService>();
 builder.Services.AddScoped<IFamilyService, FamilyService>();
+builder.Services.AddScoped<IChurchAndPriestService, ChurchAndPriestService>();
 
 builder.Services.AddScoped<IWeekDayService , WeekDayService>();
 //-----------------------------------------------Medical------------------------------
