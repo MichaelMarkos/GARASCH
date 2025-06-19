@@ -24,7 +24,6 @@ public partial class GarasTestContext : DbContext
         TenantId = _tenantService.GetTenant()?.TID;
     }
 
-
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<AccountCategory> AccountCategories { get; set; }
@@ -262,6 +261,8 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<EmailCc> EmailCcs { get; set; }
 
     public virtual DbSet<EmailType> EmailTypes { get; set; }
+
+    public virtual DbSet<Eparchy> Eparchies { get; set; }
 
     public virtual DbSet<ExchangeRate> ExchangeRates { get; set; }
 
@@ -1217,6 +1218,7 @@ public partial class GarasTestContext : DbContext
             }
         }
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Arabic_CI_AS");
@@ -1711,6 +1713,11 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.ModifedByNavigation).WithMany(p => p.CategoryTypeModifedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CategoryType_User1");
+        });
+
+        modelBuilder.Entity<Church>(entity =>
+        {
+            entity.HasOne(d => d.Eparchy).WithMany(p => p.Churches).HasConstraintName("FK_Church_Eparchy");
         });
 
         modelBuilder.Entity<Client>(entity =>
@@ -4246,6 +4253,10 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<Priest>(entity =>
         {
+            entity.HasOne(d => d.Church).WithMany(p => p.Priests)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Priest_Church");
+
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PriestCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Priest_User");
