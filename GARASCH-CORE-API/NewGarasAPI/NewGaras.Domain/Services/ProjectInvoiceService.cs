@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using NewGaras.Domain.Models;
 using NewGaras.Infrastructure;
 using NewGaras.Infrastructure.DTO.ProjectInvoiceCollected;
-using NewGaras.Infrastructure.DTO.TaskMangerProject;
 using NewGaras.Infrastructure.Entities;
 using NewGaras.Infrastructure.Models;
 using NewGaras.Infrastructure.Models.ProjectInvoice;

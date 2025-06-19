@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using NewGaras.Infrastructure.Entities;
 using NewGaras.Domain.Models;
-using NewGaras.Infrastructure.Models.TaskMangerProject;
 using Org.BouncyCastle.Bcpg;
 using NewGaras.Infrastructure.DTO.InventoryItem;
 using NewGaras.Infrastructure.Models.InventoryItem;

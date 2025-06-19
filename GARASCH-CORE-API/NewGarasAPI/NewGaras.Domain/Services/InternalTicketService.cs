@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using NewGaras.Domain.Models;
 using NewGaras.Infrastructure.Models.InternalTicket;
-using NewGarasAPI.Models.TaskManager;
 using NewGaras.Infrastructure.Entities;
 using NewGaras.Infrastructure.Models.SalesOffer;
 using NewGaras.Infrastructure.Helper;

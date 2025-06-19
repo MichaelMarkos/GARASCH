@@ -4,7 +4,6 @@ using NewGaras.Infrastructure.DBContext;
 using NewGaras.Infrastructure;
 using NewGaras.Infrastructure.Helper.TenantService;
 using NewGaras.Domain.Models;
-using NewGaras.Infrastructure.Models.TaskMangerProject;
 using NewGaras.Infrastructure.Models.InventoryItem;
 using NewGaras.Infrastructure.Models.Inventory;
 using NewGaras.Infrastructure.Models.Inventory.Responses;

@@ -2,7 +2,6 @@
 using NewGaras.Infrastructure.Models;
 using NewGaras.Infrastructure.Models.InventoryItem;
 using NewGaras.Infrastructure.Models.InventoryItemOpeningBalance.Responses;
-using NewGaras.Infrastructure.Models.TaskMangerProject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
