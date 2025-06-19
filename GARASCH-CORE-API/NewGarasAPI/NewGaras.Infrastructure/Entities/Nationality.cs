@@ -19,4 +19,7 @@ public partial class Nationality
 
     [InverseProperty("Nationality")]
     public virtual ICollection<ClientExtraInfo> ClientExtraInfos { get; set; } = new List<ClientExtraInfo>();
+
+    [InverseProperty("Nationality")]
+    public virtual ICollection<HrUser> HrUsers { get; set; } = new List<HrUser>();
 }

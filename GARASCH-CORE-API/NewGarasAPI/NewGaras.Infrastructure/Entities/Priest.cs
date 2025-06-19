@@ -27,6 +27,12 @@ public partial class Priest
     [Column(TypeName = "datetime")]
     public DateTime ModifiedDate { get; set; }
 
+    public long ChurchId { get; set; }
+
+    [ForeignKey("ChurchId")]
+    [InverseProperty("Priests")]
+    public virtual Church Church { get; set; }
+
     [ForeignKey("CreatedBy")]
     [InverseProperty("PriestCreatedByNavigations")]
     public virtual User CreatedByNavigation { get; set; }

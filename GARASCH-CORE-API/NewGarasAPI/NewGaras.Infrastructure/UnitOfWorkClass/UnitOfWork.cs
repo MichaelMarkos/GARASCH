@@ -365,6 +365,9 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<HremployeeAttachment, long> HREmployeeAttachments { get; set; }
         public IBaseRepository<FamilyStatus, int> FamilyStatus { get; set; }
         public IBaseRepository<Family , long> Families { get; set; }
+        public IBaseRepository<HrUserFamily, long> HrUserFamilies { get; set; }
+        public IBaseRepository<Church, long> Churches { get; set; }
+        public IBaseRepository<Priest , long> Priests { get; set; }
         //-------------------------------------------------------------------------------------------------
 
         public IBaseRepository<OverTimeAndDeductionRate, long> OverTimeAndDeductionRates { get; private set; }
@@ -473,6 +476,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<ClientNational , int> clientNationals { get; private set; }
         public IBaseRepository<ClientInformation , int> clientInformations { get; private set; }
         public IBaseRepository<CostType, long> CostTypes { get; private set; }
+        public IBaseRepository<MilitaryStatus, int> MilitaryStatuses { get; private set; }
 
 
 
@@ -699,6 +703,7 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             ProjectProgressUsers = new BaseRepository<ProjectProgressUser, long>(_context);
             CostTypes = new BaseRepository<CostType, long>(_context);
             HrUserAttachments = new BaseRepository<HrUserAttachment, long>(_context);
+            MilitaryStatuses = new BaseRepository<MilitaryStatus, int>(_context);
 
             /*UserDeviceConnections = new BaseRepository<UserDeviceConnection, long>(_context);
             InventoryItems = new InventoryItemRepository(_context);
@@ -906,6 +911,9 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             HREmployeeAttachments = new BaseRepository<HremployeeAttachment, long>(_context);
             Families = new BaseRepository<Family, long>(_context);
             FamilyStatus = new BaseRepository<FamilyStatus, int>(_context);
+            HrUserFamilies = new BaseRepository<HrUserFamily, long>(_context);
+            Priests = new BaseRepository<Priest , long>(_context);
+            Churches = new BaseRepository<Church, long>(_context);
             //-----------------------------------------------------HANY----------------------------------------------
             LaboratoryMessagesReports =new BaseRepository<LaboratoryMessagesReport , long>(_context);
             MaritalStatus=new BaseRepository<MaritalStatus , int>(_context);

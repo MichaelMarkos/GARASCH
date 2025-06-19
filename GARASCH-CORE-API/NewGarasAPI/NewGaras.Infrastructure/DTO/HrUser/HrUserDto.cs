@@ -68,10 +68,6 @@ namespace NewGaras.Infrastructure.DTO.HrUser
         [FromForm]
         public string Employer { get; set; }
         [FromForm]
-        public long? ChurchOfPresenceID { get; set; }
-        [FromForm]
-        public long? BelongToChurchID { get; set; }
-        [FromForm]
         public string AcademicYearName { get; set; }
         [FromForm]
         public DateTime? AcademicYearDate { get; set; }

@@ -24,5 +24,7 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
 
         public BaseResponseWithData<List<GetPriorityModel>> GetPriority();
         public SelectDDLResponse GetNationalityDDL();
+
+        public SelectDDLResponse GetMilitaryStatusDDL();
     }
 }

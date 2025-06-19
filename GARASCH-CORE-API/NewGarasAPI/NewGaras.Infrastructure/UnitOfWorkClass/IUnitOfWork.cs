@@ -197,6 +197,7 @@ namespace NewGaras.Infrastructure
         IBaseRepository<PosNumber, int> PosNumbers { get; }
         IBaseRepository<HrUserAddress, long> HrUserAddresses { get; }
         IBaseRepository<HrUserAttachment, long> HrUserAttachments { get; }
+        IBaseRepository<MilitaryStatus, int> MilitaryStatuses { get; }
 
         /*IBaseRepository<HrContactInfo, int> ContactInfos { get; }
         IBaseRepository<HrUserAddress, int> UserAddresses { get; }
@@ -450,6 +451,9 @@ namespace NewGaras.Infrastructure
         IBaseRepository<HremployeeAttachment, long> HREmployeeAttachments {  get; }
         IBaseRepository<FamilyStatus, int> FamilyStatus { get; }
         IBaseRepository<Family, long> Families { get; }
+        IBaseRepository<HrUserFamily, long> HrUserFamilies { get; }
+        IBaseRepository<Priest, long> Priests { get; }
+        IBaseRepository<Church, long> Churches { get; }
         //-----------------------------------------------------Hany-------------------------------------------------
         IBaseRepository<LaboratoryMessagesReport , long> LaboratoryMessagesReports { get; }
         IBaseRepository<MaritalStatus , int> MaritalStatus { get; }

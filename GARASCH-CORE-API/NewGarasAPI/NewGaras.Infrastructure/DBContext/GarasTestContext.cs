@@ -262,6 +262,8 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<EmailType> EmailTypes { get; set; }
 
+    public virtual DbSet<Eparchy> Eparchies { get; set; }
+
     public virtual DbSet<ExchangeRate> ExchangeRates { get; set; }
 
     public virtual DbSet<ExpensessStatus> ExpensessStatuses { get; set; }
@@ -1713,6 +1715,11 @@ public partial class GarasTestContext : DbContext
                 .HasConstraintName("FK_CategoryType_User1");
         });
 
+        modelBuilder.Entity<Church>(entity =>
+        {
+            entity.HasOne(d => d.Eparchy).WithMany(p => p.Churches).HasConstraintName("FK_Church_Eparchy");
+        });
+
         modelBuilder.Entity<Client>(entity =>
         {
             entity.Property(e => e.HasLogo).HasDefaultValue(false);
@@ -2734,6 +2741,8 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.MaritalStatus).WithMany(p => p.HrUsers).HasConstraintName("FK_HrUser_MaritalStatus_HrMaritalStatusId");
 
             entity.HasOne(d => d.ModifiedBy).WithMany(p => p.HrUserModifiedBies).OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.Nationality).WithMany(p => p.HrUsers).HasConstraintName("FK_HrUser_Nationality");
 
             entity.HasOne(d => d.PlaceOfBirth).WithMany(p => p.HrUsers).HasConstraintName("FK_HrUser_Governorate");
 
@@ -3964,8 +3973,6 @@ public partial class GarasTestContext : DbContext
         modelBuilder.Entity<Nationality>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__National__3214EC27224522B5");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Notification>(entity =>
@@ -4246,6 +4253,10 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<Priest>(entity =>
         {
+            entity.HasOne(d => d.Church).WithMany(p => p.Priests)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Priest_Church");
+
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PriestCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Priest_User");
