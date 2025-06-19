@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace NewGaras.Infrastructure.DTO.HrUser
 {
-    public class HrUserAttachmentDto
+    public class HrUserSocialMediaDto
     {
         public long? ID { get; set; }
-        public long HrUserID { get; set; }
-        public long AttachmentTypeID { get; set; }
+
+        public string Link { get; set; } = string.Empty;
+
+        public string Type { get; set; }
         public bool Active { get; set; }
 
-        public string AttachmentNumber { get; set; }
-        public IFormFile AttachmentFile { get; set; }
     }
 }

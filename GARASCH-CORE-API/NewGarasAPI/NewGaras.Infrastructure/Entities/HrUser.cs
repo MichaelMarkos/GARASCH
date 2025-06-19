@@ -140,8 +140,8 @@ public partial class HrUser
     [InverseProperty("HrUser")]
     public virtual ICollection<HrUserAddress> HrUserAddresses { get; set; } = new List<HrUserAddress>();
 
-    [InverseProperty("IdNavigation")]
-    public virtual HrUserAttachment HrUserAttachment { get; set; }
+    [InverseProperty("HrUser")]
+    public virtual ICollection<HrUserAttachment> HrUserAttachments { get; set; } = new List<HrUserAttachment>();
 
     [InverseProperty("HrUser")]
     public virtual ICollection<HrUserFamily> HrUserFamilies { get; set; } = new List<HrUserFamily>();

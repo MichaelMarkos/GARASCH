@@ -193,19 +193,6 @@ namespace NewGaras.Domain.Services
                     response.Errors.Add(error);
                 }
 
-                if (NewHrUser.ChurchOfPresenceID == null)
-                {
-                    Error error = new Error();
-                    error.ErrorMSG = "Church of presence is required.";
-                    response.Errors.Add(error);
-                }
-
-                if (NewHrUser.BelongToChurchID == null)
-                {
-                    Error error = new Error();
-                    error.ErrorMSG = "Belong to church is required.";
-                    response.Errors.Add(error);
-                }
 
                 if (string.IsNullOrWhiteSpace(NewHrUser.AcademicYearName))
                 {
@@ -244,9 +231,9 @@ namespace NewGaras.Domain.Services
 
                 #endregion
 
-                var allHrUsers = await _unitOfWork.HrUsers.GetAllAsync();
-                var allHrUsersFullName = allHrUsers.Select(a => a.FirstName.ToLower() + a.MiddleName.ToLower() + a.LastName.ToLower()).ToList();
-                var allHrUsersFullAName = allHrUsers.Select(a => a.ArfirstName.ToLower() + a.ArmiddleName.ToLower() + a.ArlastName.ToLower()).ToList();
+                //var allHrUsers = await _unitOfWork.HrUsers.GetAllAsync();
+                //var allHrUsersFullName = allHrUsers.Select(a => a.FirstName.ToLower() + a.MiddleName.ToLower() + a.LastName.ToLower()).ToList();
+                //var allHrUsersFullAName = allHrUsers.Select(a => a.ArfirstName.ToLower() + a.ArmiddleName.ToLower() + a.ArlastName.ToLower()).ToList();
 
                 var newUserName = "";
                 if (!string.IsNullOrWhiteSpace(NewHrUser.FirstName) && !string.IsNullOrWhiteSpace(NewHrUser.LastName))
@@ -262,7 +249,7 @@ namespace NewGaras.Domain.Services
 
                 #region not repeating
                 var notRepatingMessage = "";
-                if (allHrUsersFullName.Contains(newUserName.ToLower()))
+                if (await _unitOfWork.HrUsers.AnyAsync(a => newUserName.ToLower() == a.FirstName.ToLower() + a.MiddleName.ToLower() + a.LastName.ToLower()))
                 {
                     response.Result = false;
                     //Error err = new Error();
@@ -271,7 +258,7 @@ namespace NewGaras.Domain.Services
                     //response.Errors.Add(err);
                     //return response;
                 }
-                if (allHrUsersFullAName.Contains(newUserAName.ToLower()))
+                if (await _unitOfWork.HrUsers.AnyAsync(a => newUserAName.ToLower() == a.ArfirstName.ToLower() + a.ArmiddleName.ToLower() + a.ArlastName.ToLower()))
                 {
                     response.Result = false;
                     //Error err = new Error();
@@ -280,8 +267,7 @@ namespace NewGaras.Domain.Services
                     //response.Errors.Add(err);
                     //return response;
                 }
-                var allHrUsersEmails = allHrUsers.Select(a => a.Email);
-                if (allHrUsersEmails.Contains(NewHrUser.Email) || allHrUsersEmails.Contains(NewHrUser.Email.ToLower()))
+                if (await _unitOfWork.HrUsers.AnyAsync(a => a.Email.ToLower() == NewHrUser.Email.ToLower()))
                 {
                     response.Result = false;
                     //Error err = new Error();
@@ -290,8 +276,7 @@ namespace NewGaras.Domain.Services
                     //response.Errors.Add(err);
                     //return response;
                 }
-                var allHrUsersLandLines = allHrUsers.Where(a => a.LandLine != null).Select(a => a.LandLine);
-                if (allHrUsersLandLines.Contains(NewHrUser.LandLine))
+                if (await _unitOfWork.HrUsers.AnyAsync(a => a.LandLine.ToLower() == NewHrUser.LandLine.ToLower()))
                 {
                     response.Result = false;
                     //Error err = new Error();
@@ -301,7 +286,7 @@ namespace NewGaras.Domain.Services
                     //return response;
                 }
 
-                
+
 
                 if (!string.IsNullOrWhiteSpace(notRepatingMessage))
                 {
@@ -328,7 +313,7 @@ namespace NewGaras.Domain.Services
                         return response;
                     }
                 }
-                
+
                 #endregion
 
 
@@ -345,13 +330,13 @@ namespace NewGaras.Domain.Services
                 user.MiddleName = MiddleName.Trim();
                 user.LastName = user.LastName.Trim();
                 //--------------Trim() spaces from arabic full name-------------------------
-                user.FirstName = user.ArfirstName.Trim();
-                user.MiddleName = AMiddleName.Trim();
-                user.LastName = user.ArlastName.Trim();
+                user.ArfirstName = user.ArfirstName.Trim();
+                user.ArmiddleName = AMiddleName.Trim();
+                user.ArlastName = user.ArlastName.Trim();
                 //-------------------------------------------------------------------
                 user.ImgPath = null; //Common.SaveFileIFF(virtualPath, file, FileName, fileExtension, _host);
                 user.CreationDate = DateTime.Now;
-                user.Active =true;
+                user.Active = true;
                 user.ModifiedById = UserId;
                 user.CreatedById = UserId;
                 user.Modified = DateTime.Now;
@@ -371,7 +356,7 @@ namespace NewGaras.Domain.Services
                 }
                 _unitOfWork.Complete();
 
-                
+
 
                 return response;
             }
@@ -395,7 +380,7 @@ namespace NewGaras.Domain.Services
             };
             try
             {
-                if (dtos.Count < 0) 
+                if (dtos.Count < 0)
                 {
                     response.Result = false;
                     Error err = new Error();
@@ -417,7 +402,271 @@ namespace NewGaras.Domain.Services
                 _unitOfWork.Complete();
                 return response;
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+
+        }
+
+        public async Task<BaseResponseWithId<long>> EditHrUserAddress(HrUserAddressDto dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+            try
+            {
+
+                if (dto == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.errorMSG = "Adress Data is not sent";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                if(dto.ID==0 || dto.ID == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E102";
+                    err.errorMSG = "Id Is Required!";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                var address = await _unitOfWork.HrUserAddresses.GetByIdAsync((long)dto.ID);
+                if (address == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E103";
+                    err.errorMSG = "addres you are trying to edit Is not found!";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                if (dto.Active == false)
+                {
+                    _unitOfWork.HrUserAddresses.Delete(address);
+                }
+                else
+                {
+                    var ad = _mapper.Map<HrUserAddressDto, HrUserAddress>(dto, address);
+                    ad.ModifiedBy = validation.userID;
+                    ad.ModifiedDate = DateTime.Now;
+                    _unitOfWork.HrUserAddresses.Update(ad);
+                }
+
+                _unitOfWork.Complete();
+                response.ID = (long)dto.ID;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+
+        }
+
+        public async Task<BaseResponseWithId<long>> EditHrUserSocialMedia(HrUserSocialMediaDto dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+            try
+            {
+
+                if (dto == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.errorMSG = "Adress Data is not sent";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                if (dto.ID == 0 || dto.ID == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E102";
+                    err.errorMSG = "Id Is Required!";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                var link = await _unitOfWork.HrUserSocialMedias.GetByIdAsync((long)dto.ID);
+                if (link == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E103";
+                    err.errorMSG = "Link you are trying to edit Is not found!";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                if (dto.Active == false)
+                {
+                    _unitOfWork.HrUserSocialMedias.Delete(link);
+                }
+                else
+                {
+                    var Lin = _mapper.Map<HrUserSocialMediaDto, HrUserSocialMedium>(dto, link);
+                    Lin.ModifiedBy = validation.userID;
+                    Lin.ModifiedDate = DateTime.Now;
+                    _unitOfWork.HrUserSocialMedias.Update(Lin);
+                }
+
+                _unitOfWork.Complete();
+                response.ID = (long)dto.ID;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+
+        }
+
+        public async Task<BaseResponseWithId<long>> EditHrUserMobile(HrUserMobileDto dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+            try
+            {
+
+                if (dto == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.errorMSG = "Adress Data is not sent";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                if (dto.ID == 0 || dto.ID == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E102";
+                    err.errorMSG = "Id Is Required!";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                var Mobile = await _unitOfWork.HrUserMobiles.GetByIdAsync((long)dto.ID);
+                if (Mobile == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E103";
+                    err.errorMSG = "Mobile you are trying to edit Is not found!";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                if (dto.Active == false)
+                {
+                    _unitOfWork.HrUserMobiles.Delete(Mobile);
+                }
+                else
+                {
+                    var mob = _mapper.Map<HrUserMobileDto, HrUserMobile>(dto, Mobile);
+                    mob.ModifiedBy = validation.userID;
+                    mob.ModifiedDate = DateTime.Now;
+                    _unitOfWork.HrUserMobiles.Update(mob);
+                }
+
+                _unitOfWork.Complete();
+                response.ID = (long)dto.ID;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+
+        }
+
+        public async Task<BaseResponseWithId<long>> EditHrUserLandLine(HrUserLandLineDto dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+            try
+            {
+
+                if (dto == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.errorMSG = "Adress Data is not sent";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                if (dto.ID == 0 || dto.ID == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E102";
+                    err.errorMSG = "Id Is Required!";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                var LandLine = await _unitOfWork.HrUserLandLines.GetByIdAsync((long)dto.ID);
+                if (LandLine == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E103";
+                    err.errorMSG = "LandLine you are trying to edit Is not found!";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                if (dto.Active == false)
+                {
+                    _unitOfWork.HrUserLandLines.Delete(LandLine);
+                }
+                else
+                {
+                    var land = _mapper.Map<HrUserLandLineDto, HrUserLandLine>(dto, LandLine);
+                    land.ModifiedBy = validation.userID;
+                    land.ModifiedDate = DateTime.Now;
+                    _unitOfWork.HrUserLandLines.Update(land);
+                }
+
+                _unitOfWork.Complete();
+                response.ID = (long)dto.ID;
+                return response;
+            }
+            catch (Exception ex)
             {
                 response.Result = false;
                 Error err = new Error();
@@ -449,27 +698,140 @@ namespace NewGaras.Domain.Services
                 }
                 foreach (var Attachment in Attachments)
                 {
-                    var Attach = _mapper.Map<HrUserAttachment>(Attachment);
-                    Attach.HrUserId = Attachment.HrUserID;
-                    Attach.CreatedBy = validation.userID;
-                    Attach.ModifiedBy = validation.userID;
-                    Attach.CreationDate = DateTime.Now;
-                    Attach.ModifiedDate = DateTime.Now;
-                    if (Attachment.AttachmentFile == null)
+                    if (Attachment.ID != null)
                     {
-                        response.Result = false;
-                        Error err = new Error();
-                        err.ErrorCode = "E101";
-                        err.errorMSG = $"Attachments file is null at {Attachments.IndexOf(Attachment)+1}";
-                        response.Errors.Add(err);
+                        if (Attachment.Active == false)
+                        {
+                            var attach = await _unitOfWork.HrUserAttachments.GetByIdAsync((long)Attachment.ID);
+                            if (attach != null)
+                            {
+                                _unitOfWork.HrUserAttachments.Delete(attach);
+                            }
+                        }
                     }
-                    var fileExtension = Attachment.AttachmentFile.FileName.Split('.').Last();
-                    var virtualPath = $"Attachments\\{validation.CompanyName}\\HrUser\\{Attachment.HrUserID}\\";
-                    var FileName = System.IO.Path.GetFileNameWithoutExtension(Attachment.AttachmentFile.FileName.Trim().Replace(" ", ""));
-                    Attach.AttachmentPath = Common.SaveFileIFF(virtualPath, Attachment.AttachmentFile, FileName, fileExtension, _host);
+                    else
+                    {
+                        var Attach = _mapper.Map<HrUserAttachment>(Attachment);
+                        Attach.HrUserId = Attachment.HrUserID;
+                        Attach.CreatedBy = validation.userID;
+                        Attach.ModifiedBy = validation.userID;
+                        Attach.CreationDate = DateTime.Now;
+                        Attach.ModifiedDate = DateTime.Now;
+                        if (Attachment.AttachmentFile == null)
+                        {
+                            response.Result = false;
+                            Error err = new Error();
+                            err.ErrorCode = "E101";
+                            err.errorMSG = $"Attachments file is null at {Attachments.IndexOf(Attachment) + 1}";
+                            response.Errors.Add(err);
+                        }
+                        var fileExtension = Attachment.AttachmentFile.FileName.Split('.').Last();
+                        var virtualPath = $"Attachments\\{validation.CompanyName}\\HrUser\\{Attachment.HrUserID}\\";
+                        var FileName = System.IO.Path.GetFileNameWithoutExtension(Attachment.AttachmentFile.FileName.Trim().Replace(" ", ""));
+                        Attach.AttachmentPath = Common.SaveFileIFF(virtualPath, Attachment.AttachmentFile, FileName, fileExtension, _host);
 
-                    await _unitOfWork.HrUserAttachments.AddAsync(Attach);
+                        await _unitOfWork.HrUserAttachments.AddAsync(Attach);
+                    }
                 }
+                _unitOfWork.Complete();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+
+        }
+
+        public async Task<BaseResponse> AddContactsToHrUser(HrUserContactsDto dto)
+        {
+            var response = new BaseResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+            try
+            {
+                if (dto == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.errorMSG = "Contact data is required";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                if (dto.HrUserId <= 0)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E102";
+                    err.errorMSG = "User Id Is Required";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                var user = await _unitOfWork.HrUsers.GetByIdAsync(dto.HrUserId);
+                if (user == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E103";
+                    err.errorMSG = "User not found!";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                if (!string.IsNullOrWhiteSpace(dto.Email))
+                {
+                    user.Email = dto.Email;
+                }
+                if (dto.SocialMediaList.Count > 0)
+                {
+                    foreach (var social in dto.SocialMediaList)
+                    {
+                        var Media = _mapper.Map<HrUserSocialMedium>(social);
+                        Media.HrUserId = dto.HrUserId;
+                        Media.CreatedBy = validation.userID;
+                        Media.ModifiedBy = validation.userID;
+                        Media.CreationDate = DateTime.Now;
+                        Media.ModifiedDate = DateTime.Now;
+                        _unitOfWork.HrUserSocialMedias.Add(Media);
+                        //_unitOfWork.Complete();
+                    }
+                }
+                if (dto.HrUserMobiles.Count > 0)
+                {
+                    foreach (var mobile in dto.HrUserMobiles)
+                    {
+                        var mob = _mapper.Map<HrUserMobile>(mobile);
+                        mob.HrUserId = dto.HrUserId;
+                        mob.CreatedBy = validation.userID;
+                        mob.ModifiedBy = validation.userID;
+                        mob.CreationDate = DateTime.Now;
+                        mob.ModifiedDate = DateTime.Now;
+                        _unitOfWork.HrUserMobiles.Add(mob);
+                        //_unitOfWork.Complete();
+                    }
+                }
+                if (dto.HrUserLandlines.Count > 0)
+                {
+                    foreach (var landline in dto.HrUserLandlines)
+                    {
+                        var land = _mapper.Map<HrUserLandLine>(landline);
+                        land.HrUserId = dto.HrUserId;
+                        land.CreatedBy = validation.userID;
+                        land.ModifiedBy = validation.userID;
+                        land.CreationDate = DateTime.Now;
+                        land.ModifiedDate = DateTime.Now;
+                        _unitOfWork.HrUserLandLines.Add(land);
+                        //_unitOfWork.Complete();
+                    }
+                }
+
                 _unitOfWork.Complete();
                 return response;
             }
@@ -498,20 +860,20 @@ namespace NewGaras.Domain.Services
             ////string BaseURL = "https://garascore.garassolutions.com\\";
             //string BaseURL = "https://byapi.garassolutions.com\\";
 
-           
+
 
             try
             {
                 if (response.Result)
                 {
                     //var data = await _unitOfWork.HrUsers.FindAllAsync((a => a.Active == true), new[] { "JobTitle" });
-                    var data = _unitOfWork.HrUsers.FindAllQueryable(a => true, new[] { "JobTitle", "User" }) ;
+                    var data = _unitOfWork.HrUsers.FindAllQueryable(a => true, new[] { "JobTitle", "User" });
 
                     //if (!string.IsNullOrEmpty(searchKey))
                     //{
                     //    data = data.Where(a => (a.FirstName + a.MiddleName + a.LastName).Contains(searchKey.Replace(" ", "")) || (a.Email).Contains(searchKey) || (a.Mobile).Contains(searchKey));
                     //}
-                    if(active != null)
+                    if (active != null)
                     {
                         data = data.Where(a => a.Active == active).AsQueryable();
                     }
@@ -584,14 +946,14 @@ namespace NewGaras.Domain.Services
             try
             {
                 var userIDsOfTeam = new List<long>();
-                if(DoctorSpecialtyId != null)
+                if (DoctorSpecialtyId != null)
                 {
                     var userTeamDB = _unitOfWork.UserTeams.FindAll(a => a.TeamId == DoctorSpecialtyId);
                     var usersIDs = userTeamDB.Select(a => a.UserId).ToList();
 
                     foreach (var id in usersIDs)
                     {
-                        userIDsOfTeam.Add(id??0);
+                        userIDsOfTeam.Add(id ?? 0);
                     }
                 }
 
@@ -602,9 +964,9 @@ namespace NewGaras.Domain.Services
                     searchKey = HttpUtility.UrlDecode(searchKey);
                     AllHrUsers = AllHrUsers.Where(a => (a.FirstName + a.LastName).Contains(searchKey)).AsQueryable();
                 }
-                if(DoctorSpecialtyId != null)
+                if (DoctorSpecialtyId != null)
                 {
-                    AllHrUsers = AllHrUsers.Where(a => userIDsOfTeam.Contains(a.UserId??0)).AsQueryable();
+                    AllHrUsers = AllHrUsers.Where(a => userIDsOfTeam.Contains(a.UserId ?? 0)).AsQueryable();
                 }
                 var finalList = PagedList<HrUser>.Create(AllHrUsers, CurrentPage, NumberOfItemsPerPage);
                 var ModelList = _mapper.Map<List<HrUserListDDLModel>>(finalList.ToList());
@@ -621,7 +983,7 @@ namespace NewGaras.Domain.Services
                 };
                 return response;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Result = false;
                 Error err = new Error();
@@ -1357,7 +1719,7 @@ namespace NewGaras.Domain.Services
                             {
                                 HrUser.User.LastName = NewHrData.LastName;
                             }
-                           
+
 
                             if (!string.IsNullOrWhiteSpace(NewHrData.Gender))
                             {
@@ -2909,7 +3271,7 @@ namespace NewGaras.Domain.Services
                                 error.ErrorMSG = "Faild To Insert this Employee !!";
                                 Response.Errors.Add(error);
                             }
-                            if (request.AddHrUser==true)
+                            if (request.AddHrUser == true)
                             {
                                 HrUser HrUser = new HrUser()
                                 {
@@ -2946,7 +3308,8 @@ namespace NewGaras.Domain.Services
                         }
 
 
-                    };
+                    }
+                    ;
 
 
 
@@ -4900,7 +5263,7 @@ namespace NewGaras.Domain.Services
             }
         }
 
-        public async Task<BaseResponseWithId<long>> CreateHrUserWorker(AddHrUserWorker Worker, long UserId) 
+        public async Task<BaseResponseWithId<long>> CreateHrUserWorker(AddHrUserWorker Worker, long UserId)
         {
             var response = new BaseResponseWithId<long>()
             {
@@ -4947,7 +5310,7 @@ namespace NewGaras.Domain.Services
                         IsUser = false
                     };
 
-                    var newHruser =  _unitOfWork.HrUsers.Add(newHrUser);
+                    var newHruser = _unitOfWork.HrUsers.Add(newHrUser);
                     _unitOfWork.Complete();
 
                     response.ID = newHrUser.Id;
@@ -4966,6 +5329,6 @@ namespace NewGaras.Domain.Services
             }
         }
 
-       
+
     }
 }

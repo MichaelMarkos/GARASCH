@@ -87,5 +87,15 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public  Task<BaseResponse> AddAddressToHrUser(List<HrUserAddressDto> dtos);
 
         public Task<BaseResponse> AddAttachmentsToHrUser([FromForm] List<HrUserAttachmentDto> Attachments);
+
+        public Task<BaseResponse> AddContactsToHrUser(HrUserContactsDto dto);
+
+        public Task<BaseResponseWithId<long>> EditHrUserAddress(HrUserAddressDto dto);
+
+        public Task<BaseResponseWithId<long>> EditHrUserSocialMedia(HrUserSocialMediaDto dto);
+
+        public Task<BaseResponseWithId<long>> EditHrUserMobile(HrUserMobileDto dto);
+
+        public Task<BaseResponseWithId<long>> EditHrUserLandLine(HrUserLandLineDto dto);
     }
 }

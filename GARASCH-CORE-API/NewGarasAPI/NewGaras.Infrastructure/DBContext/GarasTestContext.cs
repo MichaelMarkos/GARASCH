@@ -23,7 +23,6 @@ public partial class GarasTestContext : DbContext
         _tenantService = tenantService;
         TenantId = _tenantService.GetTenant()?.TID;
     }
-
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<AccountCategory> AccountCategories { get; set; }
@@ -2782,8 +2781,6 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<HrUserAttachment>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
             entity.HasOne(d => d.AttachmentType).WithMany(p => p.HrUserAttachments)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_HrUserAttachment_AttachmentType");
@@ -2792,7 +2789,7 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_HrUserAttachment_User");
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.HrUserAttachment)
+            entity.HasOne(d => d.HrUser).WithMany(p => p.HrUserAttachments)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_HrUserAttachment_HrUser");
 

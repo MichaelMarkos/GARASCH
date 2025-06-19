@@ -1,5 +1,4 @@
 ﻿using NewGaras.Infrastructure.Models.Inventory;
-using NewGaras.Infrastructure.Models.TaskMangerProject;
 using System;
 using System.Collections.Generic;
 using System.Linq;

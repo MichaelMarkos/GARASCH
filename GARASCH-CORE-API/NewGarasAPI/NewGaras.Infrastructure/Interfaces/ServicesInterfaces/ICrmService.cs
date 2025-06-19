@@ -3,7 +3,6 @@ using NewGaras.Infrastructure.Models;
 using NewGaras.Infrastructure.Models.CRM;
 using NewGaras.Infrastructure.Models.CRM.Filters;
 using NewGaras.Infrastructure.Models.SalesOffer;
-using NewGaras.Infrastructure.Models.Task.Filters;
 using NewGarasAPI.Models.User;
 using System;
 using System.Collections.Generic;

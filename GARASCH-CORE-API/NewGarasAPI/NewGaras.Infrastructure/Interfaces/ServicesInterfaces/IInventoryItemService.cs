@@ -6,7 +6,6 @@ using NewGaras.Infrastructure.Models.Inventory.Requests;
 using NewGaras.Infrastructure.Models.Inventory.Responses;
 using NewGaras.Infrastructure.Models.InventoryItem;
 using NewGaras.Infrastructure.Models.InventoryItem.Filters;
-using NewGaras.Infrastructure.Models.TaskMangerProject;
 using NewGaras.Infrastructure.Models.User.Filters;
 using NewGaras.Infrastructure.Models.User.Response;
 using NewGarasAPI.Models.Account;
