@@ -1,5 +1,4 @@
-﻿using NewGaras.Infrastructure.Models.TaskMangerProject;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,9 +17,7 @@ namespace NewGaras.Infrastructure.Models.EmailTool
         [FromForm]
         public string EmailSender { get; set; }
         //[FromForm]
-        //public long UserID { get; set; }
-        [FromForm]
-        public List<AddAttachment> AttachmentList { get; set;}
+
         [FromForm]
         public List<AddEmailCc> EmailCcList { get; set; }
     }

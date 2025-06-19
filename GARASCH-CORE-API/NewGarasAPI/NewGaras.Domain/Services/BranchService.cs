@@ -24,13 +24,11 @@ namespace NewGaras.Domain.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IDepartmentService _departmentService;
-        private readonly ITaskMangerProjectService _taskMangerProjectService;
-        public BranchService(IUnitOfWork unitOfWork, IMapper mapper, IDepartmentService departmentService, ITaskMangerProjectService taskMangerProjectService)
+        public BranchService(IUnitOfWork unitOfWork, IMapper mapper, IDepartmentService departmentService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _departmentService = departmentService;
-            _taskMangerProjectService = taskMangerProjectService;
         }
         public BaseResponseWithId<long> AddBranch(AddBranchDto branchDto, long creator)
         {
@@ -318,14 +316,7 @@ namespace NewGaras.Domain.Services
                 }
             }
 
-            var projects = _unitOfWork.Projects.FindAll(a => a.BranchId == BranchId).ToList();
-            if (projects.Count > 0)
-            {
-                for (int i = 0; i < projects.Count; i++)
-                {
-                    _taskMangerProjectService.DeleteProject(projects[i].Id);
-                }
-            }
+
             _unitOfWork.Branches.Delete(Branch);
             _unitOfWork.Complete();
 

@@ -22,12 +22,10 @@ using NewGaras.Infrastructure.DTO.VacationType;
 using NewGaras.Infrastructure.DTO.Salary.SalaryDeduction;
 using NewGaras.Infrastructure.DTO.Salary.SalaryDeductionTax;
 using NewGaras.Infrastructure.DTO.BranchSetting;
-using NewGaras.Infrastructure.DTO.TaskExpensis;
 using NewGaras.Infrastructure.DTO.OverTimeAndDeductionRate;
 using Microsoft.Extensions.Configuration;
 using NewGaras.Infrastructure.DTO.VacationOverTimeAndDeductionRates;
 using NewGaras.Infrastructure.DTO.VacationDay;
-using NewGaras.Infrastructure.DTO.TaskMangerProject;
 using NewGaras.Infrastructure.DTO.WorkFlow;
 using NewGaras.Infrastructure.DTO.ProjectSprint;
 using NewGaras.Infrastructure.DTO.Salary.AllowncesType;
@@ -36,9 +34,6 @@ using NewGaras.Infrastructure.Models.SalaryAllownce;
 using NewGaras.Infrastructure.DTO.TaskUnitRateService;
 using NewGaras.Infrastructure.Models.ProjectInvoice;
 using NewGaras.Infrastructure.DTO.ProjectInvoiceCollected;
-using NewGaras.Infrastructure.Models.ProjectManagement;
-using NewGaras.Infrastructure.DTO.ProjectPayment;
-using NewGaras.Infrastructure.DTO.ProjectLetterOfCredit;
 using NewGaras.Infrastructure.Models;
 using NewGaras.Infrastructure.DTO.Medical.DoctorSchedule;
 using NewGaras.Infrastructure.DTO.Medical.MedicalReservation;
@@ -111,18 +106,6 @@ namespace NewGaras.Domain.Mappers
             CreateMap<EditDeductionTypeDto, DeductionType>().ReverseMap();
             CreateMap<SalaryDeductionTax,AddSalaryDeductionTaxDto>().ReverseMap();
             CreateMap<EditSalaryDeductionTaxDto, SalaryDeductionTax>().ReverseMap();
-            CreateMap<AddTaskExpensisDto,TaskExpensi>().ReverseMap();
-            CreateMap<TaskExpensi, GetTaskExpensisDto>()
-                .ForMember(TE => TE.Imgpath, GetDto => GetDto.MapFrom(a => a.ImgPath != null ? BaseURL + a.ImgPath : null))
-                .ForMember(TE => TE.UserName, GetDto => GetDto.MapFrom(a => a.CreatedByNavigation.FirstName + " " + a.CreatedByNavigation.LastName))
-                .ForMember(TE => TE.ExpensisTypeName, GetDto => GetDto.MapFrom(a => a.ExpensisType.ExpensisTypeName))
-                .ForMember(TE => TE.UserImgPath, GetDto => GetDto.MapFrom(a => a.CreatedByNavigation.PhotoUrl != null ? BaseURL + a.CreatedByNavigation.PhotoUrl : null))
-                .ForMember(TE => TE.CreationDate , GetDto => GetDto.MapFrom(a => a.CreationDate.ToString()))
-                .ForMember(Te => Te.ApprovedByName , GetDto => GetDto.MapFrom(a => a.ApprovedByNavigation != null ? a.ApprovedByNavigation.FirstName + a.ApprovedByNavigation.MiddleName + a.ApprovedByNavigation.LastName : null))
-                .ForMember(Te => Te.ApprovedByImg , GetDto => GetDto.MapFrom(a => a.ApprovedByNavigation.PhotoUrl != null ? BaseURL + a.ApprovedByNavigation.PhotoUrl : null))
-                .ForMember(Te => Te.JobTitleID, GetDto => GetDto.MapFrom(a => a.CreatedByNavigation.JobTitleId))
-                .ForMember(Te => Te.JobTitleName, GetDto => GetDto.MapFrom(a => a.CreatedByNavigation.JobTitle.Name));
-            CreateMap<Project, GetTaskMangerProjectDto>().ReverseMap();
             CreateMap<AddJobTitleDto, JobTitle>().ForMember(JT => JT.Name, dto => dto.MapFrom(a => a.JobTitleName));
             CreateMap<ProjectWorkFlow, GetWorkFlowDto>().ReverseMap();
             CreateMap<ProjectSprint, GetProjectsprintDto>();
@@ -143,18 +126,6 @@ namespace NewGaras.Domain.Mappers
             CreateMap<ProjectInvoiceCollected, GetProjectInvoiceCollectedDto>()
                 .ForMember(a => a.AttachmentPath, dto => dto.MapFrom(a => a.AttachmentPath != null ? BaseURL + a.AttachmentPath : null))
                 .ForMember(a => a.PaymentMethodName, dto => dto.MapFrom(a => a.PaymentMethod != null ? a.PaymentMethod.Name : null));
-            CreateMap<ProjectPaymentTerm, GetProjectPaymentTermsDto>()
-                .ForMember(Pay => Pay.CollectionDate, dto => dto.MapFrom(a => a.Collected == 0 ? null : a.CollectionDate.ToShortDateString()))
-                .ForMember(Pay => Pay.PaymentTermName, dto => dto.MapFrom(a => a.PaymentTerm.PaymentTermName))
-                .ForMember(pay => pay.CurrencyName, dto => dto.MapFrom(a =>a.Currency.Name))
-                .ForMember(PAy => PAy.ProjectName, dto => dto.MapFrom(a => a.Project.SalesOffer.ProjectName));
-            CreateMap<ProjectLetterOfCredit, GetProjectLetterOfCreditDto>().ForMember(LOF => LOF.Amount, dto => dto.MapFrom(a => a.Amout))
-                .ForMember(loc => loc.LetterOfCreditTypeName, dto => dto.MapFrom(a => a.LetterOfCreditType.LoctypeName))
-                .ForMember(loc => loc.CurrencyName, dto => dto.MapFrom(a => a.Currency.Name))
-                .ForMember(loc => loc.ProjectName, dto => dto.MapFrom(a => a.Project.SalesOffer.ProjectName));
-            CreateMap<ProjectLetterOfCreditComment, GetProjectLetterOfCreditCommentDto>()
-                .ForMember(com => com.CreatedByName, dto => dto.MapFrom(a => a.CreatedByNavigation != null ? a.CreatedByNavigation.FirstName + " " + a.CreatedByNavigation.MiddleName + " " + a.CreatedByNavigation.LastName : null))
-                .ForMember(com => com.CreatedByImgPath, dto => dto.MapFrom(a => a.CreatedByNavigation != null ? BaseURL + a.CreatedByNavigation.PhotoUrl : null));
 
             CreateMap<DoctorScheduleDTO, DoctorSchedule>()
                 .ForMember(dto => dto.DoctorSpecialityId, DocSch => DocSch.MapFrom(a => a.TeamID));
@@ -201,8 +172,6 @@ namespace NewGaras.Domain.Mappers
                 .ForMember(d => d.CountryId, s => s.MapFrom(a => a.Country.Id)).ForMember(d => d.GovernorateId, s => s.MapFrom(a => a.Governorate.Id));
 
             CreateMap<VacationTypesForUser, ContractLeaveEmployee>().ForMember(a=>a.Used,b=>b.Ignore()).ForMember(a => a.Remain, b => b.Ignore());
-            CreateMap<ProjectProgressUser, ProgressUsers>();
-            CreateMap<ProgressUsers, ProjectProgressUser>();
 
             CreateMap<ContractLeaveEmployee, VacationTypesForUser>()
                 .ForMember(v => v.HolidayName, dto => dto.MapFrom(a => a.ContractLeaveSetting.HolidayName))
@@ -218,15 +187,6 @@ namespace NewGaras.Domain.Mappers
             
 
 
-            CreateMap<ProgressTypeDto, ProgressType>().ReverseMap();
-            CreateMap<DeliveryTypeDto, DeliveryType>().ReverseMap();
-            CreateMap<ProgressStatusDto, ProgressStatus>().ReverseMap();
-            CreateMap<ProjectChequeDto, ProjectCheque>().ForMember(a=>a.WithdrawDate,b=>b.MapFrom(a=>a.WithdrawDate));
-            CreateMap<ProjectCheque, GetProjectChequeDto>().ForMember(a=>a.ChequeCashingStatus,db=>db.MapFrom(a=>a.ChequeChashingStatus.Status)).ForMember(a=>a.Currency,db=>db.MapFrom(a=>a.Currency.Name)).ForMember(a=>a.AttachmentPath,db=>db.MapFrom(a=>a.AttachmentPath!=null? Globals.baseURL+'/'+a.AttachmentPath:""))
-                .ForMember(a=>a.ChequeDate,db=>db.MapFrom(a=>a.ChequeDate.ToShortDateString())).ForMember(a=>a.WithDrawDate,db=>db.MapFrom(a=>a.WithdrawDate!=null?((DateTime)a.WithdrawDate).ToShortDateString():"")).
-                ForMember(a=>a.WithDrawedByName,db=>db.MapFrom(a=>a.WithdrawedBy!=null?a.WithdrawedByNavigation.FirstName+" "+ a.WithdrawedByNavigation.LastName : "")).ForMember(a=>a.ChequeCashingStatusID,db=>db.MapFrom(a=>a.ChequeChashingStatusId)).ForMember(a=>a.ClientId,db=>db.MapFrom(a=>a.Project.SalesOffer.Client.Id)).ForMember(a=>a.CreatedBy,db=>db.MapFrom(a=>a.CreatedByNavigation.FirstName+" "+a.CreatedByNavigation.LastName)).ForMember(a=>a.CreationDate,db=>db.MapFrom(a=>a.CreationDate.ToShortDateString())).ForMember(a=>a.WithDrawedById,db=>db.MapFrom(a=>a.WithdrawedBy));
-
-            CreateMap<ProjectProgressUser, GetProgressUsers>().ForMember(a => a.HrUserName, model => model.MapFrom(c => c.HrUser.FirstName + " " + c.HrUser.LastName)).ForMember(a => a.HrUserImg, model => model.MapFrom(c => c.HrUser.ImgPath != null ? Globals.baseURL +"/"+ c.HrUser.ImgPath : null)).ForMember(a => a.DateFrom, model => model.MapFrom(c => c.DateFrom.ToString())).ForMember(a => a.DateTo, model => model.MapFrom(c => c.DateTo.ToString())).ForMember(a=>a.InventoryItemCategoryName,model=>model.MapFrom(x=>x.InventoryItemCategory.Name??null));
 
             CreateMap<HrUser, HrUserListDDLModel>().ForMember(a => a.Name, db => db.MapFrom(x => x.FirstName + " " + x.LastName)).ForMember(a => a.ImgPath, db => db.MapFrom(a => a.ImgPath != null ? Globals.baseURL + "/" + a.ImgPath : null));
 

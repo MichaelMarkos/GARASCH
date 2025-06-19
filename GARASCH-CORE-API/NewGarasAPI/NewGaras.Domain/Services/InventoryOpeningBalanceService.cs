@@ -12,7 +12,6 @@ using NewGaras.Infrastructure.Models.InventoryItem;
 using NewGaras.Infrastructure.Models.InventoryItemOpeningBalance;
 using NewGaras.Infrastructure.Models.InventoryItemOpeningBalance.Responses;
 using NewGaras.Infrastructure.Models.InventoryItemOpeningBalance.UsedInResponse;
-using NewGaras.Infrastructure.Models.TaskMangerProject;
 using NewGarasAPI.Models.Inventory;
 using OfficeOpenXml;
 using Org.BouncyCastle.Math;
