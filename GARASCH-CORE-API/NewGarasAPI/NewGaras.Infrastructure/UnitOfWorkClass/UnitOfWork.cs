@@ -366,6 +366,8 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<FamilyStatus, int> FamilyStatus { get; set; }
         public IBaseRepository<Family , long> Families { get; set; }
         public IBaseRepository<HrUserFamily, long> HrUserFamilies { get; set; }
+        public IBaseRepository<Church, long> Churches { get; set; }
+        public IBaseRepository<Priest , long> Priests { get; set; }
         //-------------------------------------------------------------------------------------------------
 
         public IBaseRepository<OverTimeAndDeductionRate, long> OverTimeAndDeductionRates { get; private set; }
@@ -908,6 +910,8 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             Families = new BaseRepository<Family, long>(_context);
             FamilyStatus = new BaseRepository<FamilyStatus, int>(_context);
             HrUserFamilies = new BaseRepository<HrUserFamily, long>(_context);
+            Priests = new BaseRepository<Priest , long>(_context);
+            Churches = new BaseRepository<Church, long>(_context);
             //-----------------------------------------------------HANY----------------------------------------------
             LaboratoryMessagesReports =new BaseRepository<LaboratoryMessagesReport , long>(_context);
             MaritalStatus=new BaseRepository<MaritalStatus , int>(_context);
