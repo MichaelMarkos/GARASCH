@@ -2081,5 +2081,220 @@ namespace NewGarasAPI.Controllers.HR
             }
         }
 
+        [HttpPost("AddContactsToHrUser")]
+        public async Task<BaseResponse> AddContactsToHrUser(HrUserContactsDto dto)
+        {
+            var response = new BaseResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+
+                    _hrUserService.Validation = validation;
+                    var worker = await _hrUserService.AddContactsToHrUser(dto);
+                    if (!worker.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(worker.Errors);
+                        return response;
+                    }
+                    response = worker;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("EditHrUserAddress")]
+        public async Task<BaseResponseWithId<long>> EditHrUserAddress(HrUserAddressDto dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+
+                    _hrUserService.Validation = validation;
+                    var worker = await _hrUserService.EditHrUserAddress(dto);
+                    if (!worker.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(worker.Errors);
+                        return response;
+                    }
+                    response = worker;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("EditHrUserSocialMedia")]
+        public async Task<BaseResponseWithId<long>> EditHrUserSocialMedia(HrUserSocialMediaDto dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+
+                    _hrUserService.Validation = validation;
+                    var worker = await _hrUserService.EditHrUserSocialMedia(dto);
+                    if (!worker.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(worker.Errors);
+                        return response;
+                    }
+                    response = worker;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("EditHrUserMobile")]
+        public async Task<BaseResponseWithId<long>> EditHrUserMobile(HrUserMobileDto dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+
+                    _hrUserService.Validation = validation;
+                    var worker = await _hrUserService.EditHrUserMobile(dto);
+                    if (!worker.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(worker.Errors);
+                        return response;
+                    }
+                    response = worker;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("EditHrUserLandLine")]
+        public async Task<BaseResponseWithId<long>> EditHrUserLandLine(HrUserLandLineDto dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+
+                    _hrUserService.Validation = validation;
+                    var worker = await _hrUserService.EditHrUserLandLine(dto);
+                    if (!worker.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(worker.Errors);
+                        return response;
+                    }
+                    response = worker;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
     }
 }

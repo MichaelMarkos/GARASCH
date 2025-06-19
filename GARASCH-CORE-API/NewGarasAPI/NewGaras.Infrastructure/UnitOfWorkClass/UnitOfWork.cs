@@ -182,6 +182,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<DoctorRoom, long> DoctorRooms { get; private set;}
         public IBaseRepository<HrUserAddress, long> HrUserAddresses { get; private set;}
         public IBaseRepository<HrUserAttachment, long> HrUserAttachments { get; private set;}
+        public IBaseRepository<HrUserSocialMedium, long> HrUserSocialMedias { get; private set;}
 
 
 
@@ -272,6 +273,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<ClientMobile, long> ClientMobiles { get; private set; }
         public IBaseRepository<ClientContactPerson, long> ClientContactPersons {  get; private set; }
         public IBaseRepository<VPurchaseRequestItemsPo, long> VPurchaseRequestItemsPo {  get; private set; }
+        public IBaseRepository<HrUserMobile, long> HrUserMobiles {  get; private set; }
         //public IBaseRepository<PrSupplierOfferItem, long> PRSupplierOfferItems {  get; private set; }
         public IBaseRepository<PrsupplierOfferItem, long> PRSupplierOfferItems { get; private set; }
 
@@ -368,6 +370,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<HrUserFamily, long> HrUserFamilies { get; set; }
         public IBaseRepository<Church, long> Churches { get; set; }
         public IBaseRepository<Priest , long> Priests { get; set; }
+        public IBaseRepository<HrUserLandLine, long> HrUserLandLines { get; set; }
         //-------------------------------------------------------------------------------------------------
 
         public IBaseRepository<OverTimeAndDeductionRate, long> OverTimeAndDeductionRates { get; private set; }
@@ -704,6 +707,8 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             CostTypes = new BaseRepository<CostType, long>(_context);
             HrUserAttachments = new BaseRepository<HrUserAttachment, long>(_context);
             MilitaryStatuses = new BaseRepository<MilitaryStatus, int>(_context);
+            HrUserSocialMedias = new BaseRepository<HrUserSocialMedium, long>(_context);
+            HrUserLandLines = new BaseRepository<HrUserLandLine, long>(_context);
 
             /*UserDeviceConnections = new BaseRepository<UserDeviceConnection, long>(_context);
             InventoryItems = new InventoryItemRepository(_context);
@@ -739,6 +744,7 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             Invoices = new BaseRepository<Invoice,long>(_context);
             AdvanciedSettingAccounts = new BaseRepository<AdvanciedSettingAccount,long>(_context);
             HrUserAddresses = new BaseRepository<HrUserAddress, long>(_context);
+            HrUserMobiles = new BaseRepository<HrUserMobile, long>(_context);
             /*HrWeekDay = new BaseRepository<HrWeekDay, int>(_context);
             Shift = new BaseRepository<Shift, int>(_context);
             Vacation = new BaseRepository<Vacation, int>(_context);

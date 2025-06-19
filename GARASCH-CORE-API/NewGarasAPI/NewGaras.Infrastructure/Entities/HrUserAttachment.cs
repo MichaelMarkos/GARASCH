@@ -43,9 +43,9 @@ public partial class HrUserAttachment
     [InverseProperty("HrUserAttachmentCreatedByNavigations")]
     public virtual User CreatedByNavigation { get; set; }
 
-    [ForeignKey("Id")]
-    [InverseProperty("HrUserAttachment")]
-    public virtual HrUser IdNavigation { get; set; }
+    [ForeignKey("HrUserId")]
+    [InverseProperty("HrUserAttachments")]
+    public virtual HrUser HrUser { get; set; }
 
     [ForeignKey("ModifiedBy")]
     [InverseProperty("HrUserAttachmentModifiedByNavigations")]

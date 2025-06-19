@@ -198,6 +198,9 @@ namespace NewGaras.Infrastructure
         IBaseRepository<HrUserAddress, long> HrUserAddresses { get; }
         IBaseRepository<HrUserAttachment, long> HrUserAttachments { get; }
         IBaseRepository<MilitaryStatus, int> MilitaryStatuses { get; }
+        IBaseRepository<HrUserSocialMedium, long> HrUserSocialMedias { get; }
+        IBaseRepository<HrUserMobile, long> HrUserMobiles { get; }
+        IBaseRepository<HrUserLandLine, long> HrUserLandLines { get; }
 
         /*IBaseRepository<HrContactInfo, int> ContactInfos { get; }
         IBaseRepository<HrUserAddress, int> UserAddresses { get; }

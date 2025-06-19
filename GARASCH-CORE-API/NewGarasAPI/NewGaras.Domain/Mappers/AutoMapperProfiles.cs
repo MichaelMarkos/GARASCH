@@ -60,6 +60,9 @@ namespace NewGaras.Domain.Mappers
             CreateMap<AddSalaryDto, Salary>();
             CreateMap<AddContractDto, ContractDetail>();
             CreateMap<HrUserDto, HrUser>();
+            CreateMap<HrUserSocialMediaDto, HrUserSocialMedium>();
+            CreateMap<HrUserMobileDto, HrUserMobile>();
+            CreateMap<HrUserLandLineDto, HrUserLandLine>();
                 
             CreateMap<AddBranchDto, Branch>();
             CreateMap<Branch, AddBranchDto>();
