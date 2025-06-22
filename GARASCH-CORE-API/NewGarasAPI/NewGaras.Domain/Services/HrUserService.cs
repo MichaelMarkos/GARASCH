@@ -267,23 +267,29 @@ namespace NewGaras.Domain.Services
                     //response.Errors.Add(err);
                     //return response;
                 }
-                if (await _unitOfWork.HrUsers.AnyAsync(a => a.Email.ToLower() == NewHrUser.Email.ToLower()))
+                if (NewHrUser.Email != null)
                 {
-                    response.Result = false;
-                    //Error err = new Error();
-                    //err.ErrorCode = "E-1";
-                    notRepatingMessage = notRepatingMessage + " This Email is already Exists please, Enter a valid Email -";
-                    //response.Errors.Add(err);
-                    //return response;
+                    if (await _unitOfWork.HrUsers.AnyAsync(a => a.Email.ToLower() == NewHrUser.Email.ToLower()))
+                    {
+                        response.Result = false;
+                        //Error err = new Error();
+                        //err.ErrorCode = "E-1";
+                        notRepatingMessage = notRepatingMessage + " This Email is already Exists please, Enter a valid Email -";
+                        //response.Errors.Add(err);
+                        //return response;
+                    }
                 }
-                if (await _unitOfWork.HrUsers.AnyAsync(a => a.LandLine.ToLower() == NewHrUser.LandLine.ToLower()))
+                if (NewHrUser.LandLine != null)
                 {
-                    response.Result = false;
-                    //Error err = new Error();
-                    //err.ErrorCode = "E-1";
-                    notRepatingMessage = notRepatingMessage + " This Home is already Exists please, Enter a valid Home -";
-                    //response.Errors.Add(err);
-                    //return response;
+                    if (await _unitOfWork.HrUsers.AnyAsync(a => a.LandLine.ToLower() == NewHrUser.LandLine.ToLower()))
+                    {
+                        response.Result = false;
+                        //Error err = new Error();
+                        //err.ErrorCode = "E-1";
+                        notRepatingMessage = notRepatingMessage + " This Home is already Exists please, Enter a valid Home -";
+                        //response.Errors.Add(err);
+                        //return response;
+                    }
                 }
 
 
@@ -323,7 +329,7 @@ namespace NewGaras.Domain.Services
                     ImgInMemory = NewHrUser.Photo;
                 }
                 var user = _mapper.Map<HrUser>(NewHrUser);
-                user.Email = user.Email.ToLower();
+                user.Email = user.Email?.ToLower();
                 if (NewHrUser.DateOfBirth != null) user.DateOfBirth = DoB;
                 //--------------Trim() spaces from full name-------------------------
                 user.FirstName = user.FirstName.Trim();
@@ -334,14 +340,13 @@ namespace NewGaras.Domain.Services
                 user.ArmiddleName = AMiddleName.Trim();
                 user.ArlastName = user.ArlastName.Trim();
                 //-------------------------------------------------------------------
-                user.ImgPath = null; //Common.SaveFileIFF(virtualPath, file, FileName, fileExtension, _host);
+                user.ImgPath = null;
                 user.CreationDate = DateTime.Now;
                 user.Active = true;
                 user.ModifiedById = UserId;
                 user.CreatedById = UserId;
                 user.Modified = DateTime.Now;
                 user.IsDeleted = false;
-                //user.OldId = 0;
                 var HrUser = await _unitOfWork.HrUsers.AddAsync(user);
                 _unitOfWork.Complete();
                 response.ID = HrUser.Id;
@@ -433,7 +438,7 @@ namespace NewGaras.Domain.Services
                     response.Errors.Add(err);
                     return response;
                 }
-                if(dto.ID==0 || dto.ID == null)
+                if (dto.ID == 0 || dto.ID == null)
                 {
                     response.Result = false;
                     Error err = new Error();
@@ -994,7 +999,7 @@ namespace NewGaras.Domain.Services
             }
         }
 
-        public async Task<BaseResponseWithData<GetHrUserDto>> GetHrUser(long HrUserId, long systemUserId)
+        public async Task<BaseResponseWithData<GetHrUserDto>> GetHrUser(long HrUserId)
         {
             var response = new BaseResponseWithData<GetHrUserDto>();
             response.Result = true;
@@ -1019,21 +1024,7 @@ namespace NewGaras.Domain.Services
                         //_context.Database.SetConnectionString(conn);
                         //unitOfWork = new UnitOfWork(_context);
 
-                        var UserDtoData = await _unitOfWork.HrUsers.FindAsync((HU => HU.Id == HrUserId), new[] { "User", "Department", "JobTitle", "Branch", "Team" });
-                        if (UserDtoData == null)
-                        {
-                            response.Result = false;
-                            Error err = new Error();
-                            err.ErrorCode = "E-1";
-                            err.errorMSG = "This HR User Id is not found ";
-                            response.Errors.Add(err);
-                            return response;
-                        }
-                        response.Data = _mapper.Map<GetHrUserDto>(UserDtoData);
-                    }
-                    if (systemUserId != 0)
-                    {
-                        var UserDtoData = await _unitOfWork.HrUsers.FindAsync((HU => HU.UserId == systemUserId), new[] { "User", "Department", "JobTitle", "Branch", "Team" });
+                        var UserDtoData = await _unitOfWork.HrUsers.FindAsync((HU => HU.Id == HrUserId), new[] { "JobTitle", "Nationality", "MilitaryStatus", "MaritalStatus", "ChurchOfPresence", "BelongToChurch", "PlaceOfBirth" });
                         if (UserDtoData == null)
                         {
                             response.Result = false;
@@ -1046,6 +1037,255 @@ namespace NewGaras.Domain.Services
                         response.Data = _mapper.Map<GetHrUserDto>(UserDtoData);
                     }
 
+
+
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+
+        public async Task<BaseResponseWithData<List<GetHrUserAddressDto>>> GetHrUserAddress(long HrUserId)
+        {
+            var response = new BaseResponseWithData<List<GetHrUserAddressDto>>();
+            response.Result = true;
+            response.Errors = new List<Error>();
+
+            //#region user Auth
+            //HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            //response.Errors = validation.errors;
+            //response.Result = validation.result;
+            //#endregion
+
+
+            try
+            {
+                if (response.Result)
+                {
+                    if (HrUserId != 0)
+                    {
+                        //using (GarasTestContext _context = new GarasTestContext())
+                        //    Helper _helper = new Helper();
+                        //string conn=_helper.GetConnectonString("garastest");
+                        //_context.Database.SetConnectionString(conn);
+                        //unitOfWork = new UnitOfWork(_context);
+
+                        var User = await _unitOfWork.HrUsers.GetByIdAsync(HrUserId);
+                        if (User == null)
+                        {
+                            response.Result = false;
+                            Error err = new Error();
+                            err.ErrorCode = "E-1";
+                            err.errorMSG = "This HR User Id is not found ";
+                            response.Errors.Add(err);
+                            return response;
+                        }
+                        var addresses = await _unitOfWork.HrUserAddresses.FindAllAsync((a => a.HrUserId == HrUserId), includes: new[] { "Country", "City", "Area", "HrUser", "District", "Governorate", "GeographicalName" });
+                        response.Data = _mapper.Map<List<GetHrUserAddressDto>>(addresses);
+                    }
+
+
+
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public async Task<BaseResponseWithData<List<HrUserMobileDto>>> GetHrUserMobiles(long HrUserId)
+        {
+            var response = new BaseResponseWithData<List<HrUserMobileDto>>();
+            response.Result = true;
+            response.Errors = new List<Error>();
+            try
+            {
+                if (response.Result)
+                {
+                    if (HrUserId != 0)
+                    {
+                        var User = await _unitOfWork.HrUsers.GetByIdAsync(HrUserId);
+                        if (User == null)
+                        {
+                            response.Result = false;
+                            Error err = new Error();
+                            err.ErrorCode = "E-1";
+                            err.errorMSG = "This HR User Id is not found ";
+                            response.Errors.Add(err);
+                            return response;
+                        }
+                        var mobiles = await _unitOfWork.HrUserMobiles.FindAllAsync((a => a.HrUserId == HrUserId));
+                        response.Data = _mapper.Map<List<HrUserMobileDto>>(mobiles);
+                    }
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public async Task<BaseResponseWithData<List<HrUserLandLineDto>>> GetHrUserLandLines(long HrUserId)
+        {
+            var response = new BaseResponseWithData<List<HrUserLandLineDto>>();
+            response.Result = true;
+            response.Errors = new List<Error>();
+            try
+            {
+                if (response.Result)
+                {
+                    if (HrUserId != 0)
+                    {
+                        var User = await _unitOfWork.HrUsers.GetByIdAsync(HrUserId);
+                        if (User == null)
+                        {
+                            response.Result = false;
+                            Error err = new Error();
+                            err.ErrorCode = "E-1";
+                            err.errorMSG = "This HR User Id is not found ";
+                            response.Errors.Add(err);
+                            return response;
+                        }
+                        var lines = await _unitOfWork.HrUserLandLines.FindAllAsync((a => a.HrUserId == HrUserId));
+                        response.Data = _mapper.Map<List<HrUserLandLineDto>>(lines);
+                    }
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public async Task<BaseResponseWithData<List<HrUserSocialMediaDto>>> GetHrUserSocialMedia(long HrUserId)
+        {
+            var response = new BaseResponseWithData<List<HrUserSocialMediaDto>>();
+            response.Result = true;
+            response.Errors = new List<Error>();
+            try
+            {
+                if (response.Result)
+                {
+                    if (HrUserId != 0)
+                    {
+                        var User = await _unitOfWork.HrUsers.GetByIdAsync(HrUserId);
+                        if (User == null)
+                        {
+                            response.Result = false;
+                            Error err = new Error();
+                            err.ErrorCode = "E-1";
+                            err.errorMSG = "This HR User Id is not found ";
+                            response.Errors.Add(err);
+                            return response;
+                        }
+                        var socialMedia = await _unitOfWork.HrUserSocialMedias.FindAllAsync((a => a.HrUserId == HrUserId));
+                        response.Data = _mapper.Map<List<HrUserSocialMediaDto>>(socialMedia);
+                    }
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public async Task<BaseResponseWithId<long>> AddChurchesAndPriestToHrUser(AddChurchesAndPriestToHrUserDto dto)
+        {
+            var response = new BaseResponseWithId<long>();
+            response.Result = true;
+            response.Errors = new List<Error>();
+            try
+            {
+                if (response.Result)
+                {
+                    if (dto.HrUserId != 0)
+                    {
+                        var User = await _unitOfWork.HrUsers.GetByIdAsync(dto.HrUserId);
+                        if (User == null)
+                        {
+                            response.Result = false;
+                            Error err = new Error();
+                            err.ErrorCode = "E-1";
+                            err.errorMSG = "This HR User Id is not found ";
+                            response.Errors.Add(err);
+                            return response;
+                        }
+                        if (dto.ChurchOfPresenceId != null)
+                        {
+                            User.ChurchOfPresenceId = dto.ChurchOfPresenceId;
+                        }
+                        if (dto.BelongToChurchId != null)
+                        {
+                            User.BelongToChurchId = dto.BelongToChurchId;
+                        }
+                        if (dto.PriestId != null)
+                        {
+                            var lastPriest = await _unitOfWork.HrUserPriests.FindAsync(p => p.HrUserId == dto.HrUserId && p.IsCurrent == true && p.PriestId != dto.PriestId);
+                            if (lastPriest != null)
+                            {
+                                lastPriest.IsCurrent = false;
+                                lastPriest.ModifiedBy = validation.userID;
+                                lastPriest.ModifiedDate = DateTime.Now;
+                                lastPriest.DateTo = DateTime.Now;
+                                lastPriest.Reason = dto.Reason;
+                                _unitOfWork.HrUserPriests.Update(lastPriest);
+                            }
+                            var newPriest = new HrUserPriest()
+                            {
+
+                                PriestId = (long)dto.PriestId,
+                                HrUserId = User.Id,
+                                IsCurrent = true,
+                                DateFrom = DateTime.Now,
+                                CreatedBy = validation.userID,
+                                ModifiedBy = validation.userID,
+                                CreationDate = DateTime.Now,
+                                ModifiedDate = DateTime.Now
+                            };
+                            _unitOfWork.HrUserPriests.Add(newPriest);
+                        }
+                        _unitOfWork.Complete();
+                        response.ID = dto.HrUserId;
+                    }
                 }
 
                 return response;
@@ -1269,42 +1509,7 @@ namespace NewGaras.Domain.Services
             {
                 MiddleName = NewHrData.MiddleName;
             }
-            //if (NewHrData.Mobile == null || NewHrData.Mobile == "")
-            //{
-            //    response.Result = false;
-            //    Error err = new Error();
-            //    err.ErrorCode = "E-1";
-            //    err.errorMSG = "please, Enter a valid Mobile number :";
-            //    response.Errors.Add(err);
-            //    return response;
-            //}
-            if (NewHrData.Email == null || NewHrData.Email == "")
-            {
-                response.Result = false;
-                Error err = new Error();
-                err.ErrorCode = "E-1";
-                err.errorMSG = "please, Enter a valid Email:";
-                response.Errors.Add(err);
-                return response;
-            }
-            //if (string.IsNullOrWhiteSpace(NewHrData.Mobile))
-            //{
-            //    response.Result = false;
-            //    Error err = new Error();
-            //    err.ErrorCode = "E-1";
-            //    err.errorMSG = "please, Enter a valid Mobile:";
-            //    response.Errors.Add(err);
-            //    return response;
-            //}
-            //if (NewHrData.Gender == null || NewHrData.Gender == "")
-            //{
-            //    response.Result = false;
-            //    Error err = new Error();
-            //    err.ErrorCode = "E-1";
-            //    err.errorMSG = "please, Enter a valid Gender :";
-            //    response.Errors.Add(err);
-            //    return response;
-            //}
+           
             if (NewHrData.IsUser == true)
             {
                 if (string.IsNullOrWhiteSpace(NewHrData.systemEmail))
@@ -1421,7 +1626,7 @@ namespace NewGaras.Domain.Services
                 }
             }
 
-            if (HrUser.Email != NewHrData.Email)
+            if (NewHrData.Email!=null && HrUser.Email != NewHrData.Email)
             {
                 var allHrUsersEmails = allHrUsers.Select(a => a.Email);
                 if (allHrUsersEmails.Contains(NewHrData.Email) || allHrUsersEmails.Contains(NewHrData.Email.ToLower()))
@@ -1518,15 +1723,7 @@ namespace NewGaras.Domain.Services
                         //    response.Errors.Add(err);
                         //    return response;
                         //}
-                        if (NewHrData.Email == null || NewHrData.Email == "")
-                        {
-                            response.Result = false;
-                            Error err = new Error();
-                            err.ErrorCode = "E-1";
-                            err.errorMSG = "please, Enter a valid Email:";
-                            response.Errors.Add(err);
-                            return response;
-                        }
+                        
                         //if (string.IsNullOrWhiteSpace(NewHrData.Mobile))
                         //{
                         //    response.Result = false;

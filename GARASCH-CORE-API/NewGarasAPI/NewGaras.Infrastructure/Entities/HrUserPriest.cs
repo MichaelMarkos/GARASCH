@@ -25,7 +25,7 @@ public partial class HrUserPriest
     public DateTime DateFrom { get; set; }
 
     [Column(TypeName = "datetime")]
-    public DateTime DateTo { get; set; }
+    public DateTime? DateTo { get; set; }
 
     [StringLength(250)]
     public string Reason { get; set; }

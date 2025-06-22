@@ -157,6 +157,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<SalesOfferInvoiceTax, long> SalesOfferInvoiceTaxes { get; private set;}
         public IBaseRepository<SalesOfferExtraCost, long> SalesOfferExtraCosts { get; private set;}
         public IBaseRepository<Bom, long> Boms { get; private set;}
+        public IBaseRepository<HrUserPriest, long> HrUserPriests { get; private set;}
         public IBaseRepository<VBompartitionItemsInventoryItem, long> VBompartitionItemsInventoryItems { get; private set;}
         public IBaseRepository<VSalesOfferProductSalesOffer, long> VSalesOfferProductSalesOffers { get; private set;}
         public IBaseRepository<VInventoryInternalBackOrder, long> VInventoryInternalBackOrders { get; private set;}
@@ -710,6 +711,7 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             MilitaryStatuses = new BaseRepository<MilitaryStatus, int>(_context);
             HrUserSocialMedias = new BaseRepository<HrUserSocialMedium, long>(_context);
             HrUserLandLines = new BaseRepository<HrUserLandLine, long>(_context);
+            HrUserPriests = new BaseRepository<HrUserPriest, long>(_context);
 
             /*UserDeviceConnections = new BaseRepository<UserDeviceConnection, long>(_context);
             InventoryItems = new InventoryItemRepository(_context);

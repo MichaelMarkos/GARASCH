@@ -19,7 +19,7 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
     {
         public HearderVaidatorOutput Validation { get; set; }
         public Task<BaseResponseWithData<UserEmployeeResponse>> AddHrEmployeeToUserAsync(AddHrEmployeeToUserDTO InData, long userId, string key);
-        public Task<BaseResponseWithData<GetHrUserDto>> GetHrUser(long HrUserId, long systemUserId);
+        public Task<BaseResponseWithData<GetHrUserDto>> GetHrUser(long HrUserId);
 
         public Task<BaseResponseWithDataAndHeader<List<HrUserCardDto>>> GetAll(int CurrentPage, int NumberOfItemsPerPage, string? name,
             bool? active, int? DepId, int? jobTilteId, int? BranchId, bool? isUser, string? Email, string? mobile, bool? isDeleted
@@ -55,6 +55,10 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public ActionResult<GetTeamUserResponse> GetTeamUser([FromHeader] long TeamID = 0);
 
         public ActionResult<GetTeamResponse> GetTeamsIndex();
+
+        public Task<BaseResponseWithData<List<GetHrUserAddressDto>>> GetHrUserAddress(long HrUserId);
+        public  Task<BaseResponseWithData<List<HrUserLandLineDto>>> GetHrUserLandLines(long HrUserId);
+        public Task<BaseResponseWithData<List<HrUserSocialMediaDto>>> GetHrUserSocialMedia(long HrUserId);
 
         public Task<ActionResult<GetUserRolegAndRoleResponse>> GetUserRoleAndGroup(int UserID = 0);
 
@@ -97,5 +101,8 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public Task<BaseResponseWithId<long>> EditHrUserMobile(HrUserMobileDto dto);
 
         public Task<BaseResponseWithId<long>> EditHrUserLandLine(HrUserLandLineDto dto);
+
+        public Task<BaseResponseWithData<List<HrUserMobileDto>>> GetHrUserMobiles(long HrUserId);
+        public Task<BaseResponseWithId<long>> AddChurchesAndPriestToHrUser(AddChurchesAndPriestToHrUserDto dto);
     }
 }
