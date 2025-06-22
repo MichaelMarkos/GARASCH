@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NewGaras.Infrastructure.Entities;
 using NewGaras.Infrastructure.Helper.TenantService;
+using System;
+using System.Collections.Generic;
 using Task = NewGaras.Infrastructure.Entities.Task;
 
 namespace NewGaras.Infrastructure.DBContext;
@@ -23,6 +23,7 @@ public partial class GarasTestContext : DbContext
         _tenantService = tenantService;
         TenantId = _tenantService.GetTenant()?.TID;
     }
+
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<AccountCategory> AccountCategories { get; set; }

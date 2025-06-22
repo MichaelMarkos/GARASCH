@@ -40,6 +40,7 @@ using NewGaras.Infrastructure.DTO.Medical.MedicalReservation;
 using NewGaras.Infrastructure.DTO.Medical.MedicalFinance;
 using NewGaras.Infrastructure.Models.HrUser;
 using NewGaras.Infrastructure.Models.Medical;
+using NewGaras.Infrastructure.Models.HR;
 
 namespace NewGaras.Domain.Mappers
 {
@@ -55,9 +56,9 @@ namespace NewGaras.Domain.Mappers
             CreateMap<AddSalaryDto, Salary>();
             CreateMap<AddContractDto, ContractDetail>();
             CreateMap<HrUserDto, HrUser>();
-            CreateMap<HrUserSocialMediaDto, HrUserSocialMedium>();
-            CreateMap<HrUserMobileDto, HrUserMobile>();
-            CreateMap<HrUserLandLineDto, HrUserLandLine>();
+            CreateMap<HrUserSocialMediaDto, HrUserSocialMedium>().ReverseMap();
+            CreateMap<HrUserMobileDto, HrUserMobile>().ReverseMap();
+            CreateMap<HrUserLandLineDto, HrUserLandLine>().ReverseMap();
                 
             CreateMap<AddBranchDto, Branch>();
             CreateMap<Branch, AddBranchDto>();
@@ -68,7 +69,23 @@ namespace NewGaras.Domain.Mappers
                 .ForMember(HrUser => HrUser.MilitaryStatusName, GetDto => GetDto.MapFrom(a => a.MilitaryStatus.Name))
                 .ForMember(HrUser => HrUser.MaritalStatusName, GetDto => GetDto.MapFrom(a => a.MaritalStatus.Name))
                 .ForMember(HrUser => HrUser.ChurchOfPresenceName, GetDto => GetDto.MapFrom(a => a.ChurchOfPresence.ChurchName))
-                .ForMember(HrUser => HrUser.BelongToChurchName, GetDto => GetDto.MapFrom(a => a.BelongToChurch.ChurchName));
+                .ForMember(HrUser => HrUser.BelongToChurchName, GetDto => GetDto.MapFrom(a => a.BelongToChurch.ChurchName))
+                .ForMember(HrUser => HrUser.DateOfBirth, GetDto => GetDto.MapFrom(a => a.DateOfBirth.ToString()))
+                .ForMember(HrUser => HrUser.CreationDate, GetDto => GetDto.MapFrom(a => a.CreationDate.ToString()))
+                .ForMember(HrUser => HrUser.Modified, GetDto => GetDto.MapFrom(a => a.Modified.ToString()))
+                .ForMember(HrUser => HrUser.AcademicYearDate, GetDto => GetDto.MapFrom(a => a.AcademicYearDate.ToString()))
+                .ForMember(HrUser => HrUser.DateOfDeath, GetDto => GetDto.MapFrom(a => a.DateOfDeath.ToString()))
+                .ForMember(HrUser => HrUser.PlaceOfBirthName, GetDto => GetDto.MapFrom(a => a.PlaceOfBirth.Name));
+
+            CreateMap<HrUserAddress, GetHrUserAddressDto>()
+                .ForMember(HrUser => HrUser.CountryName, GetDto => GetDto.MapFrom(a => a.Country.Name))
+                .ForMember(HrUser => HrUser.GovernorateName, GetDto => GetDto.MapFrom(a => a.Governorate.Name))
+                .ForMember(HrUser => HrUser.CityName, GetDto => GetDto.MapFrom(a => a.City.Name))
+                .ForMember(HrUser => HrUser.DistrictName, GetDto => GetDto.MapFrom(a => a.District.DistrictName))
+                .ForMember(HrUser => HrUser.AreaName, GetDto => GetDto.MapFrom(a => a.Area.Name))
+                .ForMember(HrUser => HrUser.GeographicalName, GetDto => GetDto.MapFrom(a => a.GeographicalName.GeographicalName1))
+                .ForMember(HrUser => HrUser.HrUserName, GetDto => GetDto.MapFrom(a => a.HrUser.FirstName+" "+(a.HrUser.MiddleName!=null?a.HrUser.MiddleName+" ":"")+a.HrUser.LastName));
+
             CreateMap<HrUser, GetHrTeamUsersDto>();
             CreateMap<AddDepartmentDto, Department>();
             CreateMap<Department,GetDepartmentDto>().ForMember(dto=>dto.Teams,o=>o.Ignore());

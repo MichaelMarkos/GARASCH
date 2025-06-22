@@ -56,6 +56,10 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
 
         public ActionResult<GetTeamResponse> GetTeamsIndex();
 
+        public Task<BaseResponseWithData<List<GetHrUserAddressDto>>> GetHrUserAddress(long HrUserId);
+        public  Task<BaseResponseWithData<List<HrUserLandLineDto>>> GetHrUserLandLines(long HrUserId);
+        public Task<BaseResponseWithData<List<HrUserSocialMediaDto>>> GetHrUserSocialMedia(long HrUserId);
+
         public Task<ActionResult<GetUserRolegAndRoleResponse>> GetUserRoleAndGroup(int UserID = 0);
 
         public Task<GetUserRolegAndRoleResponse> GetUserRoleAndGroupNew(long UserID);
@@ -97,5 +101,8 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public Task<BaseResponseWithId<long>> EditHrUserMobile(HrUserMobileDto dto);
 
         public Task<BaseResponseWithId<long>> EditHrUserLandLine(HrUserLandLineDto dto);
+
+        public Task<BaseResponseWithData<List<HrUserMobileDto>>> GetHrUserMobiles(long HrUserId);
+        public Task<BaseResponseWithId<long>> AddChurchesAndPriestToHrUser(AddChurchesAndPriestToHrUserDto dto);
     }
 }
