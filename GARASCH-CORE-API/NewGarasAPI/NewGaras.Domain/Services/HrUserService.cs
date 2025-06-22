@@ -329,7 +329,7 @@ namespace NewGaras.Domain.Services
                     ImgInMemory = NewHrUser.Photo;
                 }
                 var user = _mapper.Map<HrUser>(NewHrUser);
-                user.Email = user.Email.ToLower();
+                user.Email = user.Email?.ToLower();
                 if (NewHrUser.DateOfBirth != null) user.DateOfBirth = DoB;
                 //--------------Trim() spaces from full name-------------------------
                 user.FirstName = user.FirstName.Trim();
