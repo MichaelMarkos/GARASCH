@@ -17,5 +17,6 @@ namespace NewGaras.Infrastructure.DTO.Family
         public string CreatorName { get; set; }
         public long ModifiedByID { get; set; }
         public string MOdifiedByName { get; set; }
+
     }
 }

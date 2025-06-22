@@ -6,16 +6,14 @@ using System.Threading.Tasks;
 
 namespace NewGaras.Infrastructure.DTO.Family.Filters
 {
-    public class GetHrUserFamiliesListFilters
+    public class GetFamilyCardsFilters
     {
         [FromHeader]
+        public string familyName { get; set; }
+        [FromHeader]
+        public long? ChurchOfHeadID { get; set; }
+        [FromHeader]
         public long? HrUserID { get; set; }
-        [FromHeader]
-        public long? FamilyID { get; set; }
-        [FromHeader]
-        public bool? IsHeadOfFamily { get; set; }
-        [FromHeader]
-        public bool? Active { get; set; }
         [FromHeader]
         public int currentPage { get; set; } = 1;
         [FromHeader]

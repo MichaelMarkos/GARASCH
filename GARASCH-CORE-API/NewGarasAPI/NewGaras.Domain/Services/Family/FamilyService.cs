@@ -4,6 +4,8 @@ using NewGaras.Infrastructure;
 using NewGaras.Infrastructure.DTO.Family;
 using NewGaras.Infrastructure.DTO.Family.Filters;
 using NewGaras.Infrastructure.Entities;
+using NewGaras.Infrastructure.Helper;
+using NewGaras.Infrastructure.Models;
 using NewGarasAPI.Models.User;
 using System;
 using System.Collections.Generic;
@@ -375,9 +377,9 @@ namespace NewGaras.Domain.Services.Family
             }
         }
 
-        public BaseResponseWithData<List<GetHrUserFamiliesListDTO>> GetHrUserFamiliesList(GetHrUserFamiliesListFilters filters)
+        public BaseResponseWithDataAndHeader<List<GetHrUserFamiliesListDTO>> GetHrUserFamiliesList(GetHrUserFamiliesListFilters filters)
         {
-            var response = new BaseResponseWithData<List<GetHrUserFamiliesListDTO>>()
+            var response = new BaseResponseWithDataAndHeader<List<GetHrUserFamiliesListDTO>>()
             {
                 Errors = new List<Error>(),
                 Result = true
@@ -407,8 +409,15 @@ namespace NewGaras.Domain.Services.Family
                     HrUserfamiliesQueryable = HrUserfamiliesQueryable.Where(a => a.Active == filters.Active);
                 }
 
-                var HrUSerfamiliesListDB = HrUserfamiliesQueryable.ToList();
+                var HrUSerfamiliesListDB = PagedList<HrUserFamily>.Create(HrUserfamiliesQueryable,filters.currentPage,filters.numberOfItemsPerPage);
 
+                var pagedheader = new PaginationHeader()
+                {
+                    CurrentPage = filters.currentPage,
+                    ItemsPerPage = filters.numberOfItemsPerPage,
+                    TotalItems = HrUSerfamiliesListDB.TotalCount,
+                    TotalPages = HrUSerfamiliesListDB.TotalPages
+                };
                 //var familiesList = new List<GetFamiliesListDTO>();
                 var HrUserfamiliesList = HrUSerfamiliesListDB.Select(a => new GetHrUserFamiliesListDTO()
                 {
@@ -424,6 +433,7 @@ namespace NewGaras.Domain.Services.Family
                 }).ToList();
 
                 response.Data = HrUserfamiliesList;
+                response.PaginationHeader = pagedheader;
                 return response;
             }
             catch (Exception ex)
@@ -567,5 +577,470 @@ namespace NewGaras.Domain.Services.Family
             }
         }
 
+        public BaseResponseWithId<long> AddNewFamilyWithMemebers(AddNewFamilyWithMembersDTO dto, long userID)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            try
+            {
+                #region validation
+                var familyStatus = _unitOfWork.FamilyStatus.GetById(dto.FamilyStatusID);
+                if (familyStatus == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "No family status with this ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                var familyName = _unitOfWork.Families.FindAll(a => a.FamilyName == dto.FamilyName).FirstOrDefault();
+                if (familyName != null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "There is a family with this name already";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                if(dto.HruserIDList.Count() == 0)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "Please add family members";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                if(dto.headOfFamilyID == 0)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "Please add Head of family member ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                if(!dto.HruserIDList.Contains(dto.headOfFamilyID))
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "The head of the family must be one of its members (head Id is not in the members list)";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                var hruserListDB = _unitOfWork.HrUsers.FindAll(a => dto.HruserIDList.Contains(a.Id)).ToList();
+                int count = 1;
+                foreach (var hruser in dto.HruserIDList)
+                {
+                    var currentHrUser  = hruserListDB.Where(a => a.Id ==  hruser).FirstOrDefault();
+                    if (currentHrUser == null)
+                    {
+                        response.Result = false;
+                        Error err = new Error();
+                        err.ErrorCode = "E101";
+                        err.ErrorMSG = $"There is no HrUser with this ID ({hruser}) , ID number {count}";
+                        response.Errors.Add(err);
+                        return response;
+                    }
+                    count++;
+                }
+                #endregion
+                var newFamily = new Infrastructure.Entities.Family()
+                {
+                    FamilyName = dto.FamilyName,
+                    FamilyStatusId = dto.FamilyStatusID
+                };
+                _unitOfWork.Families.Add(newFamily);
+                _unitOfWork.Complete();
+
+
+                //---------add list of HrUsers to the family-------------------
+                var newHruserFamilyMembrers = new List<HrUserFamily>();
+                foreach (var hruser in dto.HruserIDList)
+                {
+                    var newHrUserFanily = new HrUserFamily()
+                    {
+                        HrUserId = hruser,
+                        FamilyId = newFamily.Id,
+                        Active = true,
+                        CreatedBy = userID,
+                        CreationDate = DateTime.Now,
+                        ModifiedBy = userID,
+                        ModifiedDate = DateTime.Now,
+                    };
+
+                    if (hruser == dto.headOfFamilyID) newHrUserFanily.IsHeadOfTheFamily = true;
+                    newHruserFamilyMembrers.Add(newHrUserFanily);
+                }
+
+                _unitOfWork.HrUserFamilies.AddRange(newHruserFamilyMembrers);
+                _unitOfWork.Complete();
+                //-------------------------------------------------------------
+
+                response.ID = newFamily.Id;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public BaseResponseWithDataAndHeader<List<GetFamilyCardsDTO>> GetFamilyCards(GetFamilyCardsFilters filters)
+        {
+            var response = new BaseResponseWithDataAndHeader<List<GetFamilyCardsDTO>>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            try
+            {
+                var familiesQueryable = _unitOfWork.Families.FindAllQueryable(a => true, new[] { "FamilyStatus" });       //new[] { "HrUser", "Family", "Family.FamilyStatus" });
+
+                //if(!string.IsNullOrEmpty(filters.familyName))
+                //{
+                //    familiesQueryable = familiesQueryable.Where(a => a.Family.FamilyName.Contains(filters.familyName));
+                //}
+                //if(filters.HrUserID != null)
+                //{
+                //    familiesQueryable = familiesQueryable.Where(a => a.HrUserId == filters.HrUserID);
+                //}
+                //if(filters.ChurchOfHeadID != null)
+                //{
+                //    familiesQueryable = familiesQueryable.Where(a => a.HrUser.BelongToChurchId == filters.ChurchOfHeadID);
+                //}
+
+                var familiesList = PagedList<Infrastructure.Entities.Family>.Create(familiesQueryable, filters.currentPage, filters.numberOfItemsPerPage);
+
+                var familiesIDsList = familiesList.Select(a => a.Id).ToList();
+
+                var hruserFamiliesQueryable = _unitOfWork.HrUserFamilies.FindAll(a => familiesIDsList.Contains(a.FamilyId), new[] { "HrUser", "Family", "Family.FamilyStatus", "HrUser.BelongToChurch" });
+                //---------filters to be added here ----------------
+
+                //--------------------------------------------------
+
+                var hruserFamiliesList = hruserFamiliesQueryable.ToList();
+
+                var listOfFamilyCards = new List<GetFamilyCardsDTO>();
+                foreach (var family in familiesList)
+                {
+                    var headOfTheFamily = hruserFamiliesList.Where(a => a.FamilyId == family.Id && a.IsHeadOfTheFamily == true).FirstOrDefault()?.HrUser;
+                    var numberOFMembersInFamily = hruserFamiliesList.Where(a => a.FamilyId == family.Id).Count();
+                    var churchHeadBelongsTo = hruserFamiliesList.Where(a => a.FamilyId == family.Id && a.IsHeadOfTheFamily == true).FirstOrDefault()?.HrUser?.BelongToChurch;
+
+                    var currentFamily = new GetFamilyCardsDTO();
+
+                    currentFamily.familyId = family.Id;
+                    currentFamily.familyName = family.FamilyName;
+                    currentFamily.headOfFamilyID = headOfTheFamily?.Id;
+                    currentFamily.headOfFamilyName = headOfTheFamily?.FirstName + " " + headOfTheFamily?.LastName;
+                    currentFamily.familyStatusID = family.FamilyStatusId;
+                    currentFamily.familyStatusName = family.FamilyStatus.StatusName;
+                    currentFamily.NUmberOFMembersInFamily = numberOFMembersInFamily;
+                    currentFamily.churchOfHeadID = churchHeadBelongsTo?.Id;
+                    currentFamily.churchOfHeadName = churchHeadBelongsTo?.ChurchName;
+
+                    listOfFamilyCards.Add(currentFamily);
+                }
+
+                var paginationHeader = new PaginationHeader()
+                {
+                    TotalItems = familiesList.TotalCount,
+                    TotalPages = familiesList.TotalPages,
+                    CurrentPage = filters.currentPage,
+                    ItemsPerPage = filters.numberOfItemsPerPage
+                };
+
+                response.Data = listOfFamilyCards;
+                response.PaginationHeader = paginationHeader;
+                return response; 
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public BaseResponseWithId<long> DeleteHrUserFromFamily(DeleteHrUserFromFamilyDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            try
+            {
+                #region validation
+                var hruser = _unitOfWork.HrUsers.GetById(dto.HrUserID);
+                if (hruser == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "No Hruser with this ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                var family = _unitOfWork.Families.GetById(dto.FamilyID);
+                if (family == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "No family with this ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                var hruserFamily = _unitOfWork.HrUserFamilies.Find(a => a.HrUserId == dto.HrUserID && a.FamilyId == dto.FamilyID);
+                if (hruserFamily == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "The Hruser is Not in this family already";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                if(hruserFamily.IsHeadOfTheFamily == true)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "This Hruser is The head of the family can ot be deleted";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                #endregion
+
+                _unitOfWork.HrUserFamilies.Delete(hruserFamily);
+                _unitOfWork.Complete();
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public BaseResponseWithId<long> EditHrUserFamilyActive(EditHrUserFamilyActiveDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            try
+            {
+                #region validation
+                var hruser = _unitOfWork.HrUsers.GetById(dto.HruserId);
+                if (hruser == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "No Hruser with this ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                var family = _unitOfWork.Families.GetById(dto.FamilyID);
+                if (family == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "No family with this ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                var hruserFamily = _unitOfWork.HrUserFamilies.Find(a => a.HrUserId == dto.HruserId && a.FamilyId == dto.FamilyID);
+                if (hruserFamily == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "The Hruser is Not in this family already";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                if (hruserFamily.IsHeadOfTheFamily == true)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "This Hruser is The head of the family can ot be Edited";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                #endregion
+                hruserFamily.Active = dto.Active;
+
+                _unitOfWork.Complete();
+
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public BaseResponseWithId<long> EditTheHeadOfFamily(EditTheHeadOfFamilyDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            try
+            {
+                #region validation
+                var OldHruser = _unitOfWork.HrUsers.GetById(dto.OldHrUserHeadID);
+                if (OldHruser == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "No Hruser with this ID (OldHrUserHeadID)";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                var NewHruser = _unitOfWork.HrUsers.GetById(dto.NewHrUserHeadID);
+                if (NewHruser == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "No Hruser with this ID (NewHrUserHeadID)";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                var family = _unitOfWork.Families.GetById(dto.familyID);
+                if (family == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "No family with this ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                //old head validation
+                var OldhruserFamily = _unitOfWork.HrUserFamilies.Find(a => a.HrUserId == dto.OldHrUserHeadID && a.FamilyId == dto.familyID);
+                if (OldhruserFamily == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "The old Hruser is Not in this family ";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                
+                if (OldhruserFamily.IsHeadOfTheFamily != true)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "The old Hruser is Not the family Head";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                //-------------------------------------
+                //new head vallidation
+                var NewhruserFamily = _unitOfWork.HrUserFamilies.Find(a => a.HrUserId == dto.NewHrUserHeadID && a.FamilyId == dto.familyID);
+                if (NewhruserFamily == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "The New Hruser is Not in this family ";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+
+                if (NewhruserFamily.IsHeadOfTheFamily == true)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "The new Hruser is already the family Head";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                if (NewhruserFamily.Active == false)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "The new Hruser is not active";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                //-------------------------------------
+
+                #endregion
+                OldhruserFamily.IsHeadOfTheFamily = false;
+                NewhruserFamily.IsHeadOfTheFamily = true;
+                _unitOfWork.Complete();
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ using NewGaras.Domain.Models;
 using NewGaras.Infrastructure.DTO.HrUser;
 using NewGaras.Infrastructure.DTO.Family;
 using NewGaras.Infrastructure.DTO.Family.Filters;
+using NewGaras.Infrastructure.Models;
 
 namespace NewGarasAPI.Controllers.HR
 {
@@ -239,9 +240,9 @@ namespace NewGarasAPI.Controllers.HR
         }
 
         [HttpGet("GetHrUserFamiliesList")]
-        public BaseResponseWithData<List<GetHrUserFamiliesListDTO>> GetHrUserFamiliesList(GetHrUserFamiliesListFilters filters)
+        public BaseResponseWithDataAndHeader<List<GetHrUserFamiliesListDTO>> GetHrUserFamiliesList(GetHrUserFamiliesListFilters filters)
         {
-            var response = new BaseResponseWithData<List<GetHrUserFamiliesListDTO>>()
+            var response = new BaseResponseWithDataAndHeader<List<GetHrUserFamiliesListDTO>>()
             {
                 Result = true,
                 Errors = new List<Error>()
@@ -360,6 +361,176 @@ namespace NewGarasAPI.Controllers.HR
                 if (response.Result)
                 {
                     response = _familyService.EditHrUserFamily(dto, validation.userID);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("AddNewFamilyWithMemebers")]
+        public BaseResponseWithId<long> AddNewFamilyWithMemebers(AddNewFamilyWithMembersDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _familyService.AddNewFamilyWithMemebers(dto, validation.userID);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetFamilyCards")]
+        public BaseResponseWithDataAndHeader<List<GetFamilyCardsDTO>> GetFamilyCards(GetFamilyCardsFilters filters)
+        {
+            var response = new BaseResponseWithDataAndHeader<List<GetFamilyCardsDTO>>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _familyService.GetFamilyCards(filters);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("DeleteHrUserFromFamily")]
+        public BaseResponseWithId<long> DeleteHrUserFromFamily(DeleteHrUserFromFamilyDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _familyService.DeleteHrUserFromFamily(dto);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("EditHrUserFamilyActive")]
+        public BaseResponseWithId<long> EditHrUserFamilyActive(EditHrUserFamilyActiveDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _familyService.EditHrUserFamilyActive(dto);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("EditTheHeadOfFamily")]
+        public BaseResponseWithId<long> EditTheHeadOfFamily(EditTheHeadOfFamilyDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _familyService.EditTheHeadOfFamily(dto);
                 }
                 return response;
             }
