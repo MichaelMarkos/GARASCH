@@ -450,6 +450,65 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
             }
         }
 
+        public BaseResponseWithData<List<GetHrUserPriestHistoryDTO>> GetHrUserPriestHistory(GetHrUserPriestHistoryFilters filters)
+        {
+            var response = new BaseResponseWithData<List<GetHrUserPriestHistoryDTO>>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
 
+            try
+            {
+                #region validation
+                if(filters.HrUserId == 0)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "please enter a vaild HrUser ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                #endregion
+
+                var hrUserPriestsQueryable = _unitOfWork.HrUserPriests.FindAllQueryable(a => a.HrUserId == filters.HrUserId, new[] { "Priest"});
+
+                if (filters.PriestID != null)
+                {
+                    hrUserPriestsQueryable = hrUserPriestsQueryable.Where(a => a.PriestId == filters.PriestID);
+                }
+
+                
+
+                var hrUserPriestsListDB = hrUserPriestsQueryable.ToList();
+
+                //var familiesList = new List<GetFamiliesListDTO>();
+                var familiesList = hrUserPriestsListDB.Select(a => new GetHrUserPriestHistoryDTO()
+                {
+                    ID = a.Id,
+                    HrUserID = a.HrUserId,
+                    PriestID = a.PriestId,
+                    PriestName = a.Priest.PriestName,
+                    IsCurrent = a.IsCurrent,
+                    DateFrom = a.DateFrom.ToString("yyyy-MM-dd"),
+                    DateTo = a.DateTo?.ToString("yyyy-MM-dd"),
+                    Reason = a.Reason,
+
+                }).ToList();
+
+                response.Data = familiesList;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
     }
 }

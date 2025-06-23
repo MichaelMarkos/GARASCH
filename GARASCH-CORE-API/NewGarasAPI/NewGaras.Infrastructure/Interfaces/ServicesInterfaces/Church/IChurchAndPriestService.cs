@@ -22,5 +22,6 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Church
         public BaseResponseWithId<int> AddNewEparchy(AddEparchyDTO dto);
 
         public SelectDDLResponse GetEparchyDDL();
+        public BaseResponseWithData<List<GetHrUserPriestHistoryDTO>> GetHrUserPriestHistory(GetHrUserPriestHistoryFilters filters);
     }
 }
