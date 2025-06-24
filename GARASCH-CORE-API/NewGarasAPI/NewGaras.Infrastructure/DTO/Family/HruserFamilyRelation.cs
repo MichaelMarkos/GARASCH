@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace NewGaras.Infrastructure.DTO.Family
 {
-    public class AddHrUserFamilyDTO
+    public class HruserFamilyRelation
     {
-        public long HrUserID { get; set; }
-        public long FamilyID { get; set; }
-        public bool IsHeadOfFamily { get; set; }
+        public long ID { get; set; }
         public int RelationshipID { get; set; }
     }
 }

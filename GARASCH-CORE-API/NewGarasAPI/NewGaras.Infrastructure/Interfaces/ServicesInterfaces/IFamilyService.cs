@@ -31,5 +31,8 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public BaseResponseWithId<long> DeleteHrUserFromFamily(DeleteHrUserFromFamilyDTO dto);
         public BaseResponseWithId<long> EditHrUserFamilyActive(EditHrUserFamilyActiveDTO dto);
         public BaseResponseWithId<long> EditTheHeadOfFamily(EditTheHeadOfFamilyDTO dto);
+        public BaseResponseWithId<int> AddRelationship(AddNewRelationshipDTO dto);
+        public SelectDDLResponse GetRelationshipDDL();
+        public BaseResponseWithId<int> EditRelationshipName(EditRelationshipDTO dto);
     }
 }
