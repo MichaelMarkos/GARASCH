@@ -1,5 +1,6 @@
 ﻿using NewGaras.Infrastructure.DTO.ChurchAndPriest;
 using NewGaras.Infrastructure.DTO.ChurchAndPriest.Filters;
+using NewGaras.Infrastructure.DTO.Family;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +24,6 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Church
 
         public SelectDDLResponse GetEparchyDDL();
         public BaseResponseWithData<List<GetHrUserPriestHistoryDTO>> GetHrUserPriestHistory(GetHrUserPriestHistoryFilters filters);
+        public BaseResponseWithData<List<GetEparchyWithChurchDTO>> GetEparchyWithChurch();
     }
 }

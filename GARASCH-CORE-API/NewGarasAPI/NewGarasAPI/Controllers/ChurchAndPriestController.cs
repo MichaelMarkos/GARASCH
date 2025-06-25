@@ -341,5 +341,38 @@ namespace NewGarasAPI.Controllers
             }
         }
 
+        [HttpGet("GetEparchyWithChurch")]
+        public BaseResponseWithData<List<GetEparchyWithChurchDTO>> GetEparchyWithChurch()
+        {
+            var response = new BaseResponseWithData<List<GetEparchyWithChurchDTO>>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _churchAndPriestService.GetEparchyWithChurch();
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
     }
 }
