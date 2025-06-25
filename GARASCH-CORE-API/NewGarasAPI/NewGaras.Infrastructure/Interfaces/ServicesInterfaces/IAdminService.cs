@@ -3,7 +3,6 @@ using NewGaras.Domain.Models;
 using NewGaras.Infrastructure.Models;
 using NewGaras.Infrastructure.Models.Admin;
 using NewGaras.Infrastructure.Models.Admin.Responses;
-using NewGaras.Infrastructure.Models.Inventory.Requests;
 using NewGarasAPI.Models.Admin;
 using NewGarasAPI.Models.Admin.Responses;
 using NewGarasAPI.Models.HR;
@@ -36,8 +35,6 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public BaseResponseWithID AddEditCRMRecievedType(CRMRecievedTypeData request, long UserId);
         public Task<GetDailyReportThroughResponse> GetDailyReportThrough();
         public BaseResponseWithID AddEditDailyReportThrough(DailyReportThroughData request, long UserID);
-        public Task<GetInventoryUOMResponse> GetInventoryUOM();
-        public BaseResponseWithID AddEditInventoryUOM(InventoryUOMData request, long UserId);
         public Task<GetDeliveryAndShippingMethodResponse> GetDeliveryAndShippingMethod();
         public BaseResponseWithID AddEditDeliveryAndShippingMethod(DeliveryAndShippingMethodData request, long UserID);
         public Task<GetSalesExtraCostTypeResponse> GetSalesExtraCostType();
@@ -116,7 +113,6 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
 
         public BaseResponseWithId<long> AddEditRole(RoleData request);
 
-        public Task<BaseResponseWithId<int>> AddInventoryStore(AddInventoryStoreData Request);
 
         public Task<GoogleMapsRespone> MapPlaceDetails([FromHeader] string Url);
 

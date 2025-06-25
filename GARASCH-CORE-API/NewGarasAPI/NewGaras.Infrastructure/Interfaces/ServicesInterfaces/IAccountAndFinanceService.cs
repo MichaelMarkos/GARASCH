@@ -22,7 +22,6 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public AccountsAndFinanceClientReportResponse GetAccountAndFinanceClientReportList(long? ClientID,long? ProjectID, long? ProjectTypeID,DateTime? ProjectCreationFrom,DateTime? ProjectCreationTo);
         public AccountsAndFinanceSupplierReportResponse GetAccountAndFinanceSupplierReportList(long? SupplierID, long? POID, DateTime? POCreationFrom, DateTime? POCreationTo);
         public Task<BaseMessageResponse> AccountTreeExcel([FromHeader] AccountTreeExcelHeader header);
-        public Task<BaseMessageResponse> ProfitAndLossReportPDF([FromHeader] ProfitAndLossReportPDFHeader header);
         public Task<DailyJournalEntryGroupingResponse> GetDailyJournalEntryDateList([FromHeader] GetDailyJournalEntryDateListHeader header,long creator);
         public Task<DailyJournalEntryResponse> GetDailyJournalEntryPerDateList([FromHeader] GetDailyJournalEntryPerDateListHader header,long creator);
         public Task<GetCalcDetailsResponse> GetCalcProjectDetails([FromHeader] long ProjectId = 0);

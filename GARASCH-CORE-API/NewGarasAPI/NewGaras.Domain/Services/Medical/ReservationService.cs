@@ -14,7 +14,6 @@ using NewGaras.Infrastructure.Models.Inventory;
 using NewGaras.Infrastructure.Models.Medical;
 using NewGaras.Infrastructure.Models.Medical.Filters;
 using NewGaras.Infrastructure.Models.Medical.UsedInResponse;
-using NewGarasAPI.Models.Inventory;
 using NewGarasAPI.Models.User;
 using System;
 using System.Collections.Generic;
