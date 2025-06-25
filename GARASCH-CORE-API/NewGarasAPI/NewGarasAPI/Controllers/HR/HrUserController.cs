@@ -665,10 +665,10 @@ namespace NewGarasAPI.Controllers.HR
             }
         }
 
-        [HttpGet("GetHrUserMobiles")]  //services Added
-        public async Task<BaseResponseWithData<List<HrUserMobileDto>>> GetHrUserMobiles([FromHeader] long HrUserId)
+        [HttpGet("GetHrUserContacts")]  //services Added
+        public async Task<BaseResponseWithData<GetHrUserContactsDto>> GetHrUserContacts([FromHeader]long HrUserId)
         {
-            var response = new BaseResponseWithData<List<HrUserMobileDto>>()
+            var response = new BaseResponseWithData<GetHrUserContactsDto>()
             {
                 Result = true,
                 Errors = new List<Error>()
@@ -684,7 +684,7 @@ namespace NewGarasAPI.Controllers.HR
             {
                 if (response.Result)
                 {
-                    response = await _hrUserService.GetHrUserMobiles(HrUserId);
+                    response = await _hrUserService.GetHrUserContacts(HrUserId);
                 }
                 return response;
             }
@@ -699,73 +699,7 @@ namespace NewGarasAPI.Controllers.HR
             }
         }
 
-        [HttpGet("GetHrUserLandLines")]  //services Added
-        public async Task<BaseResponseWithData<List<HrUserLandLineDto>>> GetHrUserLandLines([FromHeader]long HrUserId)
-        {
-            var response = new BaseResponseWithData<List<HrUserLandLineDto>>()
-            {
-                Result = true,
-                Errors = new List<Error>()
-            };
-
-            #region user Auth
-            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
-            response.Errors = validation.errors;
-            response.Result = validation.result;
-            #endregion
-
-            try
-            {
-                if (response.Result)
-                {
-                    response = await _hrUserService.GetHrUserLandLines(HrUserId);
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                response.Result = false;
-                Error err = new Error();
-                err.ErrorCode = "E-1";
-                err.errorMSG = "Exception :" + ex.Message;
-                response.Errors.Add(err);
-                return response;
-            }
-        }
-
-        [HttpGet("GetHrUserSocialMedia")]  //services Added
-        public async Task<BaseResponseWithData<List<HrUserSocialMediaDto>>> GetHrUserSocialMedia([FromHeader] long HrUserId)
-        {
-            var response = new BaseResponseWithData<List<HrUserSocialMediaDto>>()
-            {
-                Result = true,
-                Errors = new List<Error>()
-            };
-
-            #region user Auth
-            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
-            response.Errors = validation.errors;
-            response.Result = validation.result;
-            #endregion
-
-            try
-            {
-                if (response.Result)
-                {
-                    response = await _hrUserService.GetHrUserSocialMedia(HrUserId);
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                response.Result = false;
-                Error err = new Error();
-                err.ErrorCode = "E-1";
-                err.errorMSG = "Exception :" + ex.Message;
-                response.Errors.Add(err);
-                return response;
-            }
-        }
+        
 
         [HttpPost("AddChurchesAndPriestToHrUser")]  //services Added
         public async Task<BaseResponseWithId<long>> AddChurchesAndPriestToHrUser(AddChurchesAndPriestToHrUserDto dto)
