@@ -56,10 +56,14 @@ namespace NewGaras.Domain.Mappers
             CreateMap<AddSalaryDto, Salary>();
             CreateMap<AddContractDto, ContractDetail>();
             CreateMap<HrUserDto, HrUser>();
-            CreateMap<HrUserSocialMediaDto, HrUserSocialMedium>().ReverseMap();
-            CreateMap<HrUserMobileDto, HrUserMobile>().ReverseMap();
-            CreateMap<HrUserLandLineDto, HrUserLandLine>().ReverseMap();
-                
+            CreateMap<HrUserSocialMediaDto, HrUserSocialMedium>();
+            CreateMap<HrUserSocialMedium, HrUserSocialMediaDto>().ForMember(a => a.Active, dto => dto.MapFrom(a => true));
+            CreateMap<HrUserMobileDto, HrUserMobile>();
+            CreateMap<HrUserMobile, HrUserMobileDto>().ForMember(a=>a.Active,dto=>dto.MapFrom(a=>true));
+            CreateMap<HrUserLandLineDto, HrUserLandLine>();
+            CreateMap<HrUserLandLine, HrUserLandLineDto>().ForMember(a => a.Active, dto => dto.MapFrom(a => true));
+
+
             CreateMap<AddBranchDto, Branch>();
             CreateMap<Branch, AddBranchDto>();
 
