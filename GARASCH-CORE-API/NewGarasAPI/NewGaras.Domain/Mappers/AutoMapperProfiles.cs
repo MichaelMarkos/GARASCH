@@ -135,7 +135,6 @@ namespace NewGaras.Domain.Mappers
             CreateMap<EditAllownceTypeDto, AllowncesType>();
             CreateMap<SalaryAllownce, EditSalaryAllownce>();
             CreateMap<SalaryDeductionTax, GetSalaryTaxDto>();
-            CreateMap<PosClosingDay, GetPosClosingDay>();
             CreateMap<BankDetail, GetPaymentForUserDto>().ForMember(BD => BD.BankDetailsID, dto=> dto.MapFrom(a => a.Id))
                 .ForMember(BD => BD.AccountHolderFullName, dto => dto.MapFrom(a =>a.AccountHolder));
             CreateMap<TaskUnitRateService, GetTaskUnitRateServiceDto>()

@@ -26,7 +26,7 @@ namespace NewGarasAPI.Controllers
         private readonly ISalesOfferService _salesOfferService;
         private readonly IInternalTicketService _internalTicketService;
 
-        public SalesOfferController(IUnitOfWork unitOfWork, IWebHostEnvironment host, ITenantService tenantService, IInventoryItemMatrialAddingAndExternalOrderService inventoryItemMatrialAddingAndExternalOrderService, IInventoryItemService inventoryItemService, ISalesOfferService salesOfferService, IInternalTicketService internalTicketService)
+        public SalesOfferController(IUnitOfWork unitOfWork, IWebHostEnvironment host, ITenantService tenantService, ISalesOfferService salesOfferService, IInternalTicketService internalTicketService)
         {
             _host = host;
             _unitOfWork = unitOfWork;

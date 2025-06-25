@@ -30,7 +30,6 @@ using NewGaras.Infrastructure.DBContext;
 using NewGaras.Infrastructure;
 using NewGaras.Infrastructure.Models.AccountAndFinance;
 using NewGaras.Infrastructure.Models.Inventory;
-using AccountsAndFinanceInventoryStoreItemResponse = NewGaras.Infrastructure.Models.Inventory.AccountsAndFinanceInventoryStoreItemResponse;
 using NewGaras.Infrastructure.Helper.TenantService;
 using System.IO;
 using MimeKit;
@@ -626,37 +625,6 @@ namespace NewGarasAPI.Controllers
                 Response.Errors.Add(error);
                 return Response;
             }
-        }
-
-        [HttpGet("ProfitAndLossReportPDF")]
-        public async Task<BaseMessageResponse> ProfitAndLossReportPDF([FromHeader] ProfitAndLossReportPDFHeader header)
-        {
-            BaseMessageResponse Response = new BaseMessageResponse();
-            Response.Result = true;
-            Response.Errors = new List<Error>();
-            try
-            {
-                //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
-                //WebHeaderCollection headers = request.Headers;
-                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
-                Response.Errors = validation.errors;
-                Response.Result = validation.result;
-                if (Response.Result)
-                {
-                    Response =await _accountAndFinance.ProfitAndLossReportPDF(header);
-                }
-                return Response;
-            }
-            catch (Exception ex)
-            {
-                Response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
-                Response.Errors.Add(error);
-                return Response;
-            }
-
         }
 
         [HttpGet("GetDailyJournalEntryDateList")]
