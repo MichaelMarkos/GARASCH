@@ -13,10 +13,12 @@ namespace NewGaras.Infrastructure.DTO.Family
         public long FamilyID { get; set; }
         public bool? IsHeadOfFamily { get; set; }
         public bool Active { get; set; }
+        public int? RelationshipID { get; set; }
+        public string RelationshipName { get; set; }
         public long CreatorID { get; set; }
         public string CreatorName { get; set; }
         public long ModifiedByID { get; set; }
-        public string MOdifiedByName { get; set; }
+        public string ModifiedByName { get; set; }
 
     }
 }

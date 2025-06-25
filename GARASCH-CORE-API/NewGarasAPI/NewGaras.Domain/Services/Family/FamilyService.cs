@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DocumentFormat.OpenXml.Spreadsheet;
 using NewGaras.Domain.Models;
 using NewGaras.Infrastructure;
 using NewGaras.Infrastructure.DTO.Family;
@@ -347,12 +348,23 @@ namespace NewGaras.Domain.Services.Family
                     return response;
                 }
 
+                var relationship = _unitOfWork.Relationships.GetById(dto.RelationshipID);
+                if (relationship == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "There is no relationship with this ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
                 #endregion
                 var newHrUserFamily = new HrUserFamily()
                 {
                     HrUserId = dto.HrUserID,
                     FamilyId = dto.FamilyID,
                     IsHeadOfTheFamily = dto.IsHeadOfFamily,
+                    RelationshipId = dto.RelationshipID,
                     CreatedBy = userId,
                     CreationDate = DateTime.Now,
                     ModifiedBy = userId,
@@ -387,7 +399,7 @@ namespace NewGaras.Domain.Services.Family
 
             try
             {
-                var HrUserfamiliesQueryable = _unitOfWork.HrUserFamilies.FindAllQueryable(a => true, new[] { "ModifiedByNavigation", "CreatedByNavigation" });
+                var HrUserfamiliesQueryable = _unitOfWork.HrUserFamilies.FindAllQueryable(a => true, new[] { "ModifiedByNavigation", "CreatedByNavigation", "Relationship" });
                 //var t1 = HrUserfamiliesQueryable.ToList();
                 if (filters.HrUserID != null)
                 {
@@ -429,7 +441,9 @@ namespace NewGaras.Domain.Services.Family
                     CreatorID = a.CreatedBy,
                     CreatorName = a.CreatedByNavigation.FirstName + " " +a.CreatedByNavigation.LastName,
                     ModifiedByID = a.ModifiedBy,
-                    MOdifiedByName = a.ModifiedByNavigation.FirstName + " " + a.ModifiedByNavigation.LastName,
+                    ModifiedByName = a.ModifiedByNavigation.FirstName + " " + a.ModifiedByNavigation.LastName,
+                    RelationshipID = a.RelationshipId,
+                    RelationshipName = a.Relationship?.RelationshipName
                 }).ToList();
 
                 response.Data = HrUserfamiliesList;
@@ -469,7 +483,7 @@ namespace NewGaras.Domain.Services.Family
 
             try
             {
-                var HrUserFamilyDB = _unitOfWork.HrUserFamilies.Find(a => a.Id == HrUserfamilyID, new[] { "ModifiedByNavigation", "CreatedByNavigation" });
+                var HrUserFamilyDB = _unitOfWork.HrUserFamilies.Find(a => a.Id == HrUserfamilyID, new[] { "ModifiedByNavigation", "CreatedByNavigation", "Relationship" });
 
 
                 //var familiesList = new List<GetFamiliesListDTO>();
@@ -483,7 +497,9 @@ namespace NewGaras.Domain.Services.Family
                     CreatorID = HrUserFamilyDB.CreatedBy,
                     CreatorName = HrUserFamilyDB.CreatedByNavigation.FirstName + " " + HrUserFamilyDB.CreatedByNavigation.LastName,
                     ModifiedByID = HrUserFamilyDB.ModifiedBy,
-                    MOdifiedByName = HrUserFamilyDB.ModifiedByNavigation.FirstName + " " + HrUserFamilyDB.ModifiedByNavigation.LastName,
+                    ModifiedByName = HrUserFamilyDB.ModifiedByNavigation.FirstName + " " + HrUserFamilyDB.ModifiedByNavigation.LastName,
+                    RelationshipID = HrUserFamilyDB.RelationshipId,
+                    RelationshipName = HrUserFamilyDB.Relationship?.RelationshipName
                 };
 
                 response.Data = familyData;
@@ -610,7 +626,7 @@ namespace NewGaras.Domain.Services.Family
                     return response;
                 }
 
-                if(dto.HruserIDList.Count() == 0)
+                if(dto.HrUserAndRelationsList.Count() == 0)
                 {
                     response.Result = false;
                     Error err = new Error();
@@ -629,7 +645,8 @@ namespace NewGaras.Domain.Services.Family
                     response.Errors.Add(err);
                     return response;
                 }
-                if(!dto.HruserIDList.Contains(dto.headOfFamilyID))
+                var hrusesIDList = dto.HrUserAndRelationsList.Select(a => a.ID).ToList();
+                if (!hrusesIDList.Contains(dto.headOfFamilyID))
                 {
                     response.Result = false;
                     Error err = new Error();
@@ -638,18 +655,30 @@ namespace NewGaras.Domain.Services.Family
                     response.Errors.Add(err);
                     return response;
                 }
+                var relationshipIDList = dto.HrUserAndRelationsList.Select(a =>a.RelationshipID).ToList();
+                var relationshipListData = _unitOfWork.Relationships.FindAll(a => relationshipIDList.Contains(a.Id));
 
-                var hruserListDB = _unitOfWork.HrUsers.FindAll(a => dto.HruserIDList.Contains(a.Id)).ToList();
+                var hruserListDB = _unitOfWork.HrUsers.FindAll(a => hrusesIDList.Contains(a.Id)).ToList();
                 int count = 1;
-                foreach (var hruser in dto.HruserIDList)
+                foreach (var hruserRelation in dto.HrUserAndRelationsList)
                 {
-                    var currentHrUser  = hruserListDB.Where(a => a.Id ==  hruser).FirstOrDefault();
+                    var currentHrUser  = hruserListDB.Where(a => a.Id == hruserRelation.ID).FirstOrDefault();
                     if (currentHrUser == null)
                     {
                         response.Result = false;
                         Error err = new Error();
                         err.ErrorCode = "E101";
-                        err.ErrorMSG = $"There is no HrUser with this ID ({hruser}) , ID number {count}";
+                        err.ErrorMSG = $"There is no HrUser with this ID ({hruserRelation.ID}) , recored number {count}";
+                        response.Errors.Add(err);
+                        return response;
+                    }
+                    var currentRelationship = relationshipListData.Where(a => a.Id == hruserRelation.RelationshipID).FirstOrDefault();
+                    if (currentRelationship == null)
+                    {
+                        response.Result = false;
+                        Error err = new Error();
+                        err.ErrorCode = "E101";
+                        err.ErrorMSG = $"There is no Relationship with this ID ({hruserRelation.RelationshipID}) , recored number {count}";
                         response.Errors.Add(err);
                         return response;
                     }
@@ -667,12 +696,13 @@ namespace NewGaras.Domain.Services.Family
 
                 //---------add list of HrUsers to the family-------------------
                 var newHruserFamilyMembrers = new List<HrUserFamily>();
-                foreach (var hruser in dto.HruserIDList)
+                foreach (var hrusRelation in dto.HrUserAndRelationsList)
                 {
                     var newHrUserFanily = new HrUserFamily()
                     {
-                        HrUserId = hruser,
+                        HrUserId = hrusRelation.ID,
                         FamilyId = newFamily.Id,
+                        RelationshipId = hrusRelation.RelationshipID,
                         Active = true,
                         CreatedBy = userID,
                         CreationDate = DateTime.Now,
@@ -680,7 +710,7 @@ namespace NewGaras.Domain.Services.Family
                         ModifiedDate = DateTime.Now,
                     };
 
-                    if (hruser == dto.headOfFamilyID) newHrUserFanily.IsHeadOfTheFamily = true;
+                    if (hrusRelation.ID == dto.headOfFamilyID) newHrUserFanily.IsHeadOfTheFamily = true;
                     newHruserFamilyMembrers.Add(newHrUserFanily);
                 }
 
@@ -1030,6 +1060,116 @@ namespace NewGaras.Domain.Services.Family
                 NewhruserFamily.IsHeadOfTheFamily = true;
                 _unitOfWork.Complete();
 
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public BaseResponseWithId<int> AddRelationship(AddNewRelationshipDTO dto)
+        {
+            var response = new BaseResponseWithId<int>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            try
+            {
+                var newRelationship = new Relationship()
+                {
+                    RelationshipName = dto.RelationshipName
+                };
+                _unitOfWork.Relationships.Add(newRelationship);
+                _unitOfWork.Complete();
+
+                response.ID = newRelationship.Id;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public SelectDDLResponse GetRelationshipDDL()
+        {
+            SelectDDLResponse Response = new SelectDDLResponse();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+
+                var DDLList = new List<SelectDDL>();
+                if (Response.Result)
+                {
+                    var ListDB = _unitOfWork.Relationships.FindAll(x => true).ToList();
+                    if (ListDB.Count > 0)
+                    {
+                        foreach (var item in ListDB)
+                        {
+                            var DLLObj = new SelectDDL();
+                            DLLObj.ID = item.Id;
+                            DLLObj.Name = item.RelationshipName;
+
+                            DDLList.Add(DLLObj);
+                        }
+                    }
+                }
+                Response.DDLList = DDLList;
+                return Response;
+
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message; ;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
+        public BaseResponseWithId<int> EditRelationshipName(EditRelationshipDTO dto) 
+        {
+            var response = new BaseResponseWithId<int>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            try
+            {
+                #region validation
+                var relationship = _unitOfWork.Relationships.GetById(dto.Id);
+                if (relationship == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "No Relationship with this ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                
+                #endregion
+                relationship.RelationshipName = dto.RelationshipName;
+                _unitOfWork.Complete();
+
+                response.ID = relationship.Id;
                 return response;
             }
             catch (Exception ex)

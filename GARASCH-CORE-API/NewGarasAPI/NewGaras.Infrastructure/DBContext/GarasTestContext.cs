@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using NewGaras.Infrastructure.Entities;
 using NewGaras.Infrastructure.Helper.TenantService;
-using System;
-using System.Collections.Generic;
 using Task = NewGaras.Infrastructure.Entities.Task;
 
 namespace NewGaras.Infrastructure.DBContext;
@@ -23,7 +23,6 @@ public partial class GarasTestContext : DbContext
         _tenantService = tenantService;
         TenantId = _tenantService.GetTenant()?.TID;
     }
-
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<AccountCategory> AccountCategories { get; set; }
@@ -720,6 +719,8 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<Region> Regions { get; set; }
 
+    public virtual DbSet<Relationship> Relationships { get; set; }
+
     public virtual DbSet<Report> Reports { get; set; }
 
     public virtual DbSet<ReportCcgroup> ReportCcgroups { get; set; }
@@ -1218,7 +1219,6 @@ public partial class GarasTestContext : DbContext
             }
         }
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Arabic_CI_AS");
@@ -2816,6 +2816,8 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.HrUserFamilyModifiedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_HrUserFamily_User1");
+
+            entity.HasOne(d => d.Relationship).WithMany(p => p.HrUserFamilies).HasConstraintName("FK_HrUserFamily_Relationship");
         });
 
         modelBuilder.Entity<HrUserLandLine>(entity =>

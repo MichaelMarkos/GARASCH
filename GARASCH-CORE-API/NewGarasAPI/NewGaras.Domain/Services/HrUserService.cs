@@ -37,6 +37,8 @@ using System.Web;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Azure;
+using NewGaras.Infrastructure.DTO.Family.Filters;
+using NewGaras.Infrastructure.DTO.Family;
 
 
 namespace NewGaras.Domain.Services
@@ -5520,6 +5522,275 @@ namespace NewGaras.Domain.Services
             }
         }
 
+        public BaseResponseWithId<long> AddPersonStatus(AddPersonStatusDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
 
+            try
+            {
+                
+                var newPersonStatus = new Infrastructure.Entities.PersonStatus()
+                {
+                    StatusName = dto.statusName,
+                    Description = dto.Description
+                };
+                _unitOfWork.PersonStatus.Add(newPersonStatus);
+                _unitOfWork.Complete();
+
+                response.ID = newPersonStatus.Id;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public BaseResponseWithId<long> EditPersonStatus(EditPersonStatusDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            try
+            {
+                #region validation
+                
+
+                var personStatus = _unitOfWork.PersonStatus.GetById(dto.Id);
+                if (personStatus == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "There is no person status with this ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                #endregion
+
+                if (!string.IsNullOrEmpty(dto.statusName)) personStatus.StatusName = dto.statusName;
+                if (!string.IsNullOrEmpty(dto.Description)) personStatus.Description = dto.Description;
+
+                _unitOfWork.Complete();
+
+                response.ID = personStatus.Id;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+        public BaseResponseWithData<List<GetPersonStatusListDTO>> GetPersonStatusList()
+        {
+            var response = new BaseResponseWithData<List<GetPersonStatusListDTO>>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            try
+            {
+                var PersonStatusListQueryable = _unitOfWork.PersonStatus.FindAllQueryable(a => true);
+
+                
+
+                var PersonStatusListDB = PersonStatusListQueryable.ToList();
+
+                //var familiesList = new List<GetFamiliesListDTO>();
+                var PersonStatusList = PersonStatusListDB.Select(a => new GetPersonStatusListDTO()
+                {
+                    ID = a.Id,
+                    statusName = a.StatusName,
+                    Description = a.Description,
+                }).ToList();
+
+                response.Data = PersonStatusList;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public BaseResponseWithId<long> AddHrUserStatus(AddHrUserStatusDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            try
+            {
+                #region validation
+                var hruser = _unitOfWork.HrUsers.GetById(dto.HrUserID);
+                if(hruser == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "There is no HrUser with this ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                var personStatus = _unitOfWork.PersonStatus.GetById(dto.PersonStatusID);
+                if (personStatus == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "There is no person status with this ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                #endregion
+                var HrUserStatus = new Infrastructure.Entities.HrUserStatus()
+                {
+                    HrUserId = dto.HrUserID,
+                    PersonStatusId = dto.PersonStatusID,
+                };
+                _unitOfWork.HrUserStatus.Add(HrUserStatus);
+                _unitOfWork.Complete();
+
+                response.ID = HrUserStatus.Id;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public BaseResponseWithId<long> EditHrUserStatus(EditHrUserStatusDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            try
+            {
+                #region validation
+                var hruserStatus = _unitOfWork.HrUserStatus.GetById(dto.ID);
+                if (hruserStatus == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "There is no HrUserStatus with this ID";
+                    response.Errors.Add(err);
+                    return response;
+                }
+
+                if (dto.HrUserID != null)
+                {
+                    var hruser = _unitOfWork.HrUsers.GetById(dto.HrUserID??0);
+                    if (hruser == null)
+                    {
+                        response.Result = false;
+                        Error err = new Error();
+                        err.ErrorCode = "E101";
+                        err.ErrorMSG = "There is no HrUser with this ID";
+                        response.Errors.Add(err);
+                        return response;
+                    }
+                }
+                if(dto.PersonStatusID != null){
+
+                    var personStatus = _unitOfWork.PersonStatus.GetById(dto.PersonStatusID??0);
+                    if (personStatus == null)
+                    {
+                        response.Result = false;
+                        Error err = new Error();
+                        err.ErrorCode = "E101";
+                        err.ErrorMSG = "There is no person status with this ID";
+                        response.Errors.Add(err);
+                        return response;
+                    }
+                }
+                #endregion
+                if (dto.HrUserID != null) hruserStatus.HrUserId = dto.HrUserID ?? 0;
+                if (dto.PersonStatusID != null) hruserStatus.PersonStatusId = dto.PersonStatusID ?? 0;
+                _unitOfWork.Complete();
+
+                response.ID = hruserStatus.Id;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public BaseResponseWithData<List<GetHruserStatusListDTO>> GetHruserStatusList(long HrUserID)
+        {
+            var response = new BaseResponseWithData<List<GetHruserStatusListDTO>>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            try
+            {
+                var PersonStatusListDB = _unitOfWork.HrUserStatus.FindAll(a => a.HrUserId == HrUserID, new[] { "PersonStatus" });
+
+                //var familiesList = new List<GetFamiliesListDTO>();
+                var PersonStatusList = PersonStatusListDB.Select(a => new GetHruserStatusListDTO()
+                {
+                    ID = a.Id,
+                    HrUserID = a.HrUserId,
+                    PersonStatusID = a.PersonStatusId,
+                    PersonStatusName = a.PersonStatus.StatusName,
+                }).ToList();
+
+                response.Data = PersonStatusList;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
     }
 }

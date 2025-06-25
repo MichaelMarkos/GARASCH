@@ -306,5 +306,40 @@ namespace NewGarasAPI.Controllers
                 return response;
             }
         }
+
+        [HttpGet("GetHrUserPriestHistory")]
+        public BaseResponseWithData<List<GetHrUserPriestHistoryDTO>> GetHrUserPriestHistory(GetHrUserPriestHistoryFilters filters)
+        {
+            var response = new BaseResponseWithData<List<GetHrUserPriestHistoryDTO>>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _churchAndPriestService.GetHrUserPriestHistory(filters);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
     }
 }

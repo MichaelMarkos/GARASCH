@@ -33,6 +33,9 @@ public partial class HrUserFamily
     [Column(TypeName = "datetime")]
     public DateTime ModifiedDate { get; set; }
 
+    [Column("RelationshipID")]
+    public int? RelationshipId { get; set; }
+
     [ForeignKey("CreatedBy")]
     [InverseProperty("HrUserFamilyCreatedByNavigations")]
     public virtual User CreatedByNavigation { get; set; }
@@ -48,4 +51,8 @@ public partial class HrUserFamily
     [ForeignKey("ModifiedBy")]
     [InverseProperty("HrUserFamilyModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }
+
+    [ForeignKey("RelationshipId")]
+    [InverseProperty("HrUserFamilies")]
+    public virtual Relationship Relationship { get; set; }
 }

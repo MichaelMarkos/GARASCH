@@ -5,8 +5,10 @@ using Microsoft.Extensions.Hosting;
 using NewGaras.Domain.DTO.HrUser;
 using NewGaras.Domain.Models;
 using NewGaras.Domain.Services;
+using NewGaras.Domain.Services.Family;
 using NewGaras.Infrastructure;
 using NewGaras.Infrastructure.DBContext;
+using NewGaras.Infrastructure.DTO.Family;
 using NewGaras.Infrastructure.DTO.HrUser;
 using NewGaras.Infrastructure.DTO.VacationType;
 using NewGaras.Infrastructure.Entities;
@@ -2388,6 +2390,224 @@ namespace NewGarasAPI.Controllers.HR
                         return response;
                     }
                     response = worker;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("AddPersonStatus")]
+        public BaseResponseWithId<long> AddPersonStatus(AddPersonStatusDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _hrUserService.AddPersonStatus(dto);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("EditPersonStatus")]
+        public BaseResponseWithId<long> EditPersonStatus(EditPersonStatusDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _hrUserService.EditPersonStatus(dto);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetPersonStatusList")]
+        public BaseResponseWithData<List<GetPersonStatusListDTO>> GetPersonStatusList()
+        {
+            var response = new BaseResponseWithData<List<GetPersonStatusListDTO>>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    var personStatusList =  _hrUserService.GetPersonStatusList();
+                    if (!personStatusList.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(personStatusList.Errors);
+                        return response;
+                    }
+                    response = personStatusList;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("AddHrUserStatus")]
+        public BaseResponseWithId<long> AddHrUserStatus(AddHrUserStatusDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _hrUserService.AddHrUserStatus(dto);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("EditHrUserStatus")]
+        public BaseResponseWithId<long> EditHrUserStatus(EditHrUserStatusDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _hrUserService.EditHrUserStatus(dto);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetHruserStatusList")]
+        public BaseResponseWithData<List<GetHruserStatusListDTO>> GetHruserStatusList([FromHeader]long hruserID)
+        {
+            var response = new BaseResponseWithData<List<GetHruserStatusListDTO>>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    var personStatusList = _hrUserService.GetHruserStatusList(hruserID);
+                    if (!personStatusList.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(personStatusList.Errors);
+                        return response;
+                    }
+                    response = personStatusList;
                 }
                 return response;
             }
