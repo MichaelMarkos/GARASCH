@@ -46,14 +46,8 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public GetSalesOfferDetailsResponse GetSalesOfferDetails(long SalesOfferId);
 
         public GetSalesOfferProductsDetailsResponse GetSalesOfferProductsDetails(long SalesOfferId);
-        public InventoryItemFullInfo GetInventoryItemFullInfo(long InventoryItemId);
-        public GetOfferInventoryItemResponse GetOfferInventoryItemInfo(long InventoryItemId);
 
-        public GetBOMInventoryItemsResponse GetBOMInventoryItemsInfo(long BOMId);
 
-        public GetSalesOfferItemSellingHistoryResponse GetSalesOfferItemSellingHistory(long InventoryItemId);
-
-        public GetOfferInventoryItemsListResponse GetOfferInventoryItemsList(GetOfferInventoryItemsListFilters filters);
 
         public GetOfferExtraCostTypesListResponse GetOfferExtraCostTypesList();
 

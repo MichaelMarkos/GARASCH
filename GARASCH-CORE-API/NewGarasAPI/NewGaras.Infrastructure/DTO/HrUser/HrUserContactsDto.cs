@@ -12,8 +12,8 @@ namespace NewGaras.Infrastructure.DTO.HrUser
 
         public string Email { get; set; }
 
-        public List<HrUserSocialMediaDto> SocialMediaList { get; set; }
-        public List<HrUserMobileDto> HrUserMobiles { get; set; }
-        public List<HrUserLandLineDto> HrUserLandlines { get; set; }
+        public List<HrUserSocialMediaDto> SocialMediaList { get; set; } = new List<HrUserSocialMediaDto>();
+        public List<HrUserMobileDto> HrUserMobiles { get; set; } = new List<HrUserMobileDto>();
+        public List<HrUserLandLineDto> HrUserLandlines { get; set; } = new List<HrUserLandLineDto>();
     }
 }

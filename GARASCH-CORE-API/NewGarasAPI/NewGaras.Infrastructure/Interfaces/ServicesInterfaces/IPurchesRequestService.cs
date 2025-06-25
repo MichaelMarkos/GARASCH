@@ -1,8 +1,6 @@
-﻿using NewGaras.Infrastructure.Models.Inventory.Responses;
-using NewGaras.Infrastructure.Models.PurchesRequest;
+﻿using NewGaras.Infrastructure.Models.PurchesRequest;
 using NewGaras.Infrastructure.Models.PurchesRequest.Filters;
 using NewGaras.Infrastructure.Models.PurchesRequest.Responses;
-using NewGarasAPI.Models.Inventory.Requests;
 using NewGarasAPI.Models.User;
 using System;
 using System.Collections.Generic;
@@ -29,8 +27,6 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public GetPurchasePOWebResponse GetMangePurchasePOWebList(GetMangePurchasePOWebListFilters filters);
         public Task<ViewPurchaseOrderResponse> ViewPurchaseOrder(long? PoId, string SupplierInvoiceSerial);
         public Task<GetPurchaseItemListResponse> GetPurchaseItemList(string SupplierInvoiceSerial);
-        public InventoryItemMatrialReleaseInfoResponse GetItemsForCreatePurchaseRequest(long MatrialRequestID, long UserID);
-        public BaseResponseWithID AddInventoryItemPurchaseRequest(AddInventoryItemMatrialReleaseRequest Request, long UserID);
         public Task<BaseResponseWithID> ManagePurchaseRequestItem(ManagePurchaseRequestItemRequest Request, long UserID);
     }
 }

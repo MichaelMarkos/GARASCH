@@ -35,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\TaskManger\" />
     <Folder Include="wwwroot\Attachments\garastest\TaskManger\" />
     <Folder Include="wwwroot\Attachments\garastest\TaskManger\10082\" />
     <Folder Include="wwwroot\Attachments\marinaplt\Maintenance\ManagementMaintenanceOrder_20035\" />

@@ -1113,9 +1113,9 @@ namespace NewGaras.Domain.Services
             }
         }
 
-        public async Task<BaseResponseWithData<List<HrUserMobileDto>>> GetHrUserMobiles(long HrUserId)
+        public async Task<BaseResponseWithData<GetHrUserContactsDto>> GetHrUserContacts(long HrUserId)
         {
-            var response = new BaseResponseWithData<List<HrUserMobileDto>>();
+            var response = new BaseResponseWithData<GetHrUserContactsDto>();
             response.Result = true;
             response.Errors = new List<Error>();
             try
@@ -1124,6 +1124,7 @@ namespace NewGaras.Domain.Services
                 {
                     if (HrUserId != 0)
                     {
+                        response.Data = new GetHrUserContactsDto();
                         var User = await _unitOfWork.HrUsers.GetByIdAsync(HrUserId);
                         if (User == null)
                         {
@@ -1134,11 +1135,12 @@ namespace NewGaras.Domain.Services
                             response.Errors.Add(err);
                             return response;
                         }
-                        var mobiles = await _unitOfWork.HrUserMobiles.FindAllAsync((a => a.HrUserId == HrUserId));
-                        response.Data = _mapper.Map<List<HrUserMobileDto>>(mobiles);
+                        response.Data.MobileNumbers = GetHrUserMobiles(HrUserId).Result;
+                        response.Data.LandLines = GetHrUserLandLines(HrUserId).Result;
+                        response.Data.SocialMedias = GetHrUserSocialMedia(HrUserId).Result;
+                        response.Data.Email = User.Email;
                     }
                 }
-
                 return response;
             }
             catch (Exception ex)
@@ -1152,80 +1154,72 @@ namespace NewGaras.Domain.Services
             }
         }
 
-        public async Task<BaseResponseWithData<List<HrUserLandLineDto>>> GetHrUserLandLines(long HrUserId)
+        public async Task<List<HrUserMobileDto>> GetHrUserMobiles(long HrUserId)
         {
-            var response = new BaseResponseWithData<List<HrUserLandLineDto>>();
-            response.Result = true;
-            response.Errors = new List<Error>();
+            var response = new List<HrUserMobileDto>();
             try
             {
-                if (response.Result)
+
+                if (HrUserId != 0)
                 {
-                    if (HrUserId != 0)
-                    {
-                        var User = await _unitOfWork.HrUsers.GetByIdAsync(HrUserId);
-                        if (User == null)
-                        {
-                            response.Result = false;
-                            Error err = new Error();
-                            err.ErrorCode = "E-1";
-                            err.errorMSG = "This HR User Id is not found ";
-                            response.Errors.Add(err);
-                            return response;
-                        }
-                        var lines = await _unitOfWork.HrUserLandLines.FindAllAsync((a => a.HrUserId == HrUserId));
-                        response.Data = _mapper.Map<List<HrUserLandLineDto>>(lines);
-                    }
+                    var mobiles = await _unitOfWork.HrUserMobiles.FindAllAsync((a => a.HrUserId == HrUserId));
+                    response = _mapper.Map<List<HrUserMobileDto>>(mobiles);
                 }
 
                 return response;
             }
             catch (Exception ex)
             {
-                response.Result = false;
                 Error err = new Error();
                 err.ErrorCode = "E-1";
                 err.errorMSG = "Exception :" + ex.Message;
-                response.Errors.Add(err);
                 return response;
             }
         }
 
-        public async Task<BaseResponseWithData<List<HrUserSocialMediaDto>>> GetHrUserSocialMedia(long HrUserId)
+        public async Task<List<HrUserLandLineDto>> GetHrUserLandLines(long HrUserId)
         {
-            var response = new BaseResponseWithData<List<HrUserSocialMediaDto>>();
-            response.Result = true;
-            response.Errors = new List<Error>();
+            var response = new List<HrUserLandLineDto>();
             try
             {
-                if (response.Result)
+
+                if (HrUserId != 0)
                 {
-                    if (HrUserId != 0)
-                    {
-                        var User = await _unitOfWork.HrUsers.GetByIdAsync(HrUserId);
-                        if (User == null)
-                        {
-                            response.Result = false;
-                            Error err = new Error();
-                            err.ErrorCode = "E-1";
-                            err.errorMSG = "This HR User Id is not found ";
-                            response.Errors.Add(err);
-                            return response;
-                        }
-                        var socialMedia = await _unitOfWork.HrUserSocialMedias.FindAllAsync((a => a.HrUserId == HrUserId));
-                        response.Data = _mapper.Map<List<HrUserSocialMediaDto>>(socialMedia);
-                    }
+
+                    var lines = await _unitOfWork.HrUserLandLines.FindAllAsync((a => a.HrUserId == HrUserId));
+                    response = _mapper.Map<List<HrUserLandLineDto>>(lines);
+                }
+
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                return response;
+            }
+        }
+
+        public async Task<List<HrUserSocialMediaDto>> GetHrUserSocialMedia(long HrUserId)
+        {
+            var response = new List<HrUserSocialMediaDto>();
+            try
+            {
+                if (HrUserId != 0)
+                {
+                    var socialMedia = await _unitOfWork.HrUserSocialMedias.FindAllAsync((a => a.HrUserId == HrUserId));
+                    response = _mapper.Map<List<HrUserSocialMediaDto>>(socialMedia);
                 }
 
                 return response;
             }
             catch (Exception ex)
             {
-                response.Result = false;
                 Error err = new Error();
                 err.ErrorCode = "E-1";
                 err.errorMSG = "Exception :" + ex.Message;
-                response.Errors.Add(err);
                 return response;
             }
         }
@@ -1511,7 +1505,7 @@ namespace NewGaras.Domain.Services
             {
                 MiddleName = NewHrData.MiddleName;
             }
-           
+
             if (NewHrData.IsUser == true)
             {
                 if (string.IsNullOrWhiteSpace(NewHrData.systemEmail))
@@ -1628,7 +1622,7 @@ namespace NewGaras.Domain.Services
                 }
             }
 
-            if (NewHrData.Email!=null && HrUser.Email != NewHrData.Email)
+            if (NewHrData.Email != null && HrUser.Email != NewHrData.Email)
             {
                 var allHrUsersEmails = allHrUsers.Select(a => a.Email);
                 if (allHrUsersEmails.Contains(NewHrData.Email) || allHrUsersEmails.Contains(NewHrData.Email.ToLower()))
@@ -1725,7 +1719,7 @@ namespace NewGaras.Domain.Services
                         //    response.Errors.Add(err);
                         //    return response;
                         //}
-                        
+
                         //if (string.IsNullOrWhiteSpace(NewHrData.Mobile))
                         //{
                         //    response.Result = false;
