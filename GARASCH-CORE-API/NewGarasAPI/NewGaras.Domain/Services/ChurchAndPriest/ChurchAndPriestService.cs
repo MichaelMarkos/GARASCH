@@ -510,5 +510,48 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
                 return response;
             }
         }
+
+        public BaseResponseWithData<List<GetEparchyWithChurchDTO>> GetEparchyWithChurch()
+        {
+            BaseResponseWithData<List<GetEparchyWithChurchDTO>> Response = new BaseResponseWithData<List<GetEparchyWithChurchDTO>>();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+
+                var EparchiesList = new List<GetEparchyWithChurchDTO>();
+                if (Response.Result)
+                {
+                    var EparchiesDB = _unitOfWork.Eparchies.FindAll(x => true, new[] { "Churches" }).ToList();
+                    //var churches = _unitOfWork.Churches.GetAll().ToList();  
+
+                    if (EparchiesDB.Count > 0)
+                    {
+                        foreach (var item in EparchiesDB)
+                        {
+                            var DLLObj = new GetEparchyWithChurchDTO();
+                            DLLObj.ID = item.Id;
+                            DLLObj.EparchyName = item.Name;
+                            DLLObj.NumberOfChurchs = item.Churches.Count();
+
+                            EparchiesList.Add(DLLObj);
+                        }
+                    }
+                }
+                Response.Data = EparchiesList;
+                return Response;
+
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message; ;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
     }
 }
