@@ -701,7 +701,41 @@ namespace NewGarasAPI.Controllers.HR
             }
         }
 
-        
+        [HttpGet("GetHrUserAttachments")]  //services Added
+        public async Task<BaseResponseWithData<List<GetHrUserAttachmentDto>>> GetHrUserAttachments([FromHeader]long HrUserId)
+        {
+            var response = new BaseResponseWithData<List<GetHrUserAttachmentDto>> ()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = await _hrUserService.GetHrUserAttachments(HrUserId);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+
 
         [HttpPost("AddChurchesAndPriestToHrUser")]  //services Added
         public async Task<BaseResponseWithId<long>> AddChurchesAndPriestToHrUser(AddChurchesAndPriestToHrUserDto dto)

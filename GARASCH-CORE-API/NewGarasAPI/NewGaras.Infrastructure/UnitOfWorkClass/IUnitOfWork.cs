@@ -161,6 +161,7 @@ namespace NewGaras.Infrastructure
         IBaseRepository<HrUserPriest, long> HrUserPriests { get; }
         IBaseRepository<SalesBranchTarget, long> SalesBranchTargets { get; }
         IBaseRepository<SalesBranchProductTarget, long> SalesBranchProductTargets { get; }
+        IBaseRepository<AttachmentType, long> AttachmentTypes { get; }
         IBaseRepository<VehicleColor, int> VehicleColors { get; }
         IBaseRepository<VehicleTransmission, int> VehicleTransmissions { get; }
         IBaseRepository<VehicleWheelsDrive, int> VehicleWheelsDrives { get; }

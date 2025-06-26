@@ -1154,6 +1154,46 @@ namespace NewGaras.Domain.Services
             }
         }
 
+        public async Task<BaseResponseWithData<List<GetHrUserAttachmentDto>>> GetHrUserAttachments(long HrUserId)
+        {
+            var response = new BaseResponseWithData<List<GetHrUserAttachmentDto>>();
+            response.Result = true;
+            response.Errors = new List<Error>();
+            try
+            {
+                if (response.Result)
+                {
+                    if (HrUserId != 0)
+                    {
+                        response.Data = new List<GetHrUserAttachmentDto>();
+                        var User = await _unitOfWork.HrUsers.GetByIdAsync(HrUserId);
+                        if (User == null)
+                        {
+                            response.Result = false;
+                            Error err = new Error();
+                            err.ErrorCode = "E-1";
+                            err.errorMSG = "This HR User Id is not found ";
+                            response.Errors.Add(err);
+                            return response;
+                        }
+                        var list = _unitOfWork.HrUserAttachments.FindAll(a => a.HrUserId == User.Id).ToList();
+                        var finalList = _mapper.Map<List<GetHrUserAttachmentDto>>(list);
+                        response.Data = finalList;
+                    }
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
         public async Task<List<HrUserMobileDto>> GetHrUserMobiles(long HrUserId)
         {
             var response = new List<HrUserMobileDto>();

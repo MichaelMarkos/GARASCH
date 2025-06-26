@@ -158,6 +158,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<HrUserPriest, long> HrUserPriests { get; private set;}
         public IBaseRepository<VBompartitionItemsInventoryItem, long> VBompartitionItemsInventoryItems { get; private set;}
         public IBaseRepository<VSalesOfferProductSalesOffer, long> VSalesOfferProductSalesOffers { get; private set;}
+        public IBaseRepository<AttachmentType, long> AttachmentTypes { get; private set;}
         public IBaseRepository<VInventoryInternalBackOrder, long> VInventoryInternalBackOrders { get; private set;}
         public IBaseRepository<VInventoryMatrialRelease, long> VInventoryMatrialReleases { get; private set;}
         public IBaseRepository<MaintenanceReport, long> MaintenanceReports { get; private set;}
@@ -749,6 +750,7 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             AdvanciedSettingAccounts = new BaseRepository<AdvanciedSettingAccount,long>(_context);
             HrUserAddresses = new BaseRepository<HrUserAddress, long>(_context);
             HrUserMobiles = new BaseRepository<HrUserMobile, long>(_context);
+            AttachmentTypes = new BaseRepository<AttachmentType, long>(_context);
             /*HrWeekDay = new BaseRepository<HrWeekDay, int>(_context);
             Shift = new BaseRepository<Shift, int>(_context);
             Vacation = new BaseRepository<Vacation, int>(_context);

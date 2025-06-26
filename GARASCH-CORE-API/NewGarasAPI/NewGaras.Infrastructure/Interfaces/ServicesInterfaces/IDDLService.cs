@@ -26,5 +26,7 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public SelectDDLResponse GetNationalityDDL();
 
         public SelectDDLResponse GetMilitaryStatusDDL();
+
+        public SelectDDLResponse GetAttachmentTypeDDL();
     }
 }
