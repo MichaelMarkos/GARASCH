@@ -617,7 +617,7 @@ namespace NewGarasAPI.Controllers
         }
 
         [HttpGet("GetCitiesDDL")]
-        public SelectDDLResponse GetCitiesDDL()
+        public SelectDDLResponse GetCitiesDDL([FromHeader] int GovernorateId)
         {
             var response = new SelectDDLResponse()
             {
@@ -633,7 +633,7 @@ namespace NewGarasAPI.Controllers
                 // without valdate
                 if (response.Result)
                 {
-                    var NationalityList = _ddlservice.GetCitiesDDL();
+                    var NationalityList = _ddlservice.GetCitiesDDL(GovernorateId);
                     if (!NationalityList.Result)
                     {
                         response.Result = false;
@@ -656,7 +656,7 @@ namespace NewGarasAPI.Controllers
         }
 
         [HttpGet("GetDistrictsDDL")]
-        public SelectDDLResponse GetDistrictsDDL()
+        public SelectDDLResponse GetDistrictsDDL([FromHeader] int CityId)
         {
             var response = new SelectDDLResponse()
             {
@@ -672,7 +672,46 @@ namespace NewGarasAPI.Controllers
                 // without valdate
                 if (response.Result)
                 {
-                    var NationalityList = _ddlservice.GetDistrictsDDL();
+                    var NationalityList = _ddlservice.GetDistrictsDDL(CityId);
+                    if (!NationalityList.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(NationalityList.Errors);
+                        return response;
+                    }
+                    response = NationalityList;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetAreasDDL")]
+        public SelectDDLResponse GetAreasDDL([FromHeader] int DistrictId)
+        {
+            var response = new SelectDDLResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                response.Errors = validation.errors;
+                response.Result = validation.result;
+                // without valdate
+                if (response.Result)
+                {
+                    var NationalityList = _ddlservice.GetAreasDDL(DistrictId);
                     if (!NationalityList.Result)
                     {
                         response.Result = false;
