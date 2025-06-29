@@ -183,6 +183,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<HrUserAddress, long> HrUserAddresses { get; private set;}
         public IBaseRepository<HrUserAttachment, long> HrUserAttachments { get; private set;}
         public IBaseRepository<HrUserSocialMedium, long> HrUserSocialMedias { get; private set;}
+        public IBaseRepository<District, long> Districts { get; private set;}
 
 
 
@@ -714,6 +715,7 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             HrUserSocialMedias = new BaseRepository<HrUserSocialMedium, long>(_context);
             HrUserLandLines = new BaseRepository<HrUserLandLine, long>(_context);
             HrUserPriests = new BaseRepository<HrUserPriest, long>(_context);
+            Districts = new BaseRepository<District, long>(_context);
 
             /*UserDeviceConnections = new BaseRepository<UserDeviceConnection, long>(_context);
             InventoryItems = new InventoryItemRepository(_context);
