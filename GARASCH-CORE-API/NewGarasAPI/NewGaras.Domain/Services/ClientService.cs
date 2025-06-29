@@ -973,7 +973,7 @@ namespace NewGaras.Domain.Services
                         var DDLObj = new AreaDDL();
                         DDLObj.ID = A.Id;
                         DDLObj.Name = A.Name;
-                        DDLObj.GovernorateId = A.GovernorateId;
+                        DDLObj.DistrictID = A.DistrictId;
 
                         AreasDDL.Add(DDLObj);
                     }

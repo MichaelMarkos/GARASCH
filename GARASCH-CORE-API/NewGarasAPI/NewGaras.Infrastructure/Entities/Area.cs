@@ -19,9 +19,6 @@ public partial class Area
 
     public string Description { get; set; }
 
-    [Column("GovernorateID")]
-    public int GovernorateId { get; set; }
-
     [Column(TypeName = "datetime")]
     public DateTime CreationDate { get; set; }
 
@@ -31,6 +28,9 @@ public partial class Area
     public DateTime? ModifiedDate { get; set; }
 
     public long? ModifiedBy { get; set; }
+
+    [Column("DistrictID")]
+    public long? DistrictId { get; set; }
 
     [InverseProperty("Area")]
     public virtual ICollection<Branch> Branches { get; set; } = new List<Branch>();
@@ -42,9 +42,9 @@ public partial class Area
     [InverseProperty("AreaCreatedByNavigations")]
     public virtual User CreatedByNavigation { get; set; }
 
-    [ForeignKey("GovernorateId")]
+    [ForeignKey("DistrictId")]
     [InverseProperty("Areas")]
-    public virtual Governorate Governorate { get; set; }
+    public virtual District District { get; set; }
 
     [InverseProperty("Area")]
     public virtual ICollection<HrUserAddress> HrUserAddresses { get; set; } = new List<HrUserAddress>();

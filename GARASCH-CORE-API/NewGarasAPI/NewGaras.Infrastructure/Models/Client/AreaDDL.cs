@@ -4,6 +4,6 @@
     {
         public long ID { get; set; }
         public string Name { get; set; }
-        public int GovernorateId { get; set; }
+        public long? DistrictID { get; set; }
     }
 }
