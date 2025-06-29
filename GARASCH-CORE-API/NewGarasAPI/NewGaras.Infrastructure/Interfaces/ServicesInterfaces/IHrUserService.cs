@@ -106,6 +106,7 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public Task<BaseResponseWithId<long>> AddChurchesAndPriestToHrUser(AddChurchesAndPriestToHrUserDto dto);
 
         public Task<BaseResponseWithData<GetHrUserContactsDto>> GetHrUserContacts(long HrUserId);
+        public Task<BaseResponseWithData<List<GetHrUserAttachmentDto>>> GetHrUserAttachments(long HrUserId);
         public BaseResponseWithId<long> AddPersonStatus(AddPersonStatusDTO dto);
         public BaseResponseWithId<long> EditPersonStatus(EditPersonStatusDTO dto);
         public BaseResponseWithData<List<GetPersonStatusListDTO>> GetPersonStatusList();

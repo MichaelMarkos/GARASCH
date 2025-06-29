@@ -107,8 +107,10 @@ namespace NewGaras.Domain.Mappers
             CreateMap<InsuranceDto, UserPatientInsurance>();
             CreateMap<HrUserAddress, HrUserAddressDto>().ReverseMap();
             CreateMap<HrUserAttachment, HrUserAttachmentDto>().ReverseMap();
-
-
+            CreateMap<HrUserAttachment, GetHrUserAttachmentDto>().ForMember(dto => dto.HrUserName, opt => opt.MapFrom(src => src.HrUser.FirstName+" "+src.HrUser.LastName)).
+            ForMember(dto => dto.AttachmentTypeName, opt => opt.MapFrom(src => src.AttachmentType.Type)).ForMember(dto => dto.AttachmentPath, opt => opt.MapFrom(src => Globals.baseURL+"/"+ src.AttachmentPath));
+            
+            
 
 
 
