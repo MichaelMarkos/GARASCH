@@ -14,5 +14,9 @@ namespace NewGaras.Infrastructure.DTO.ChurchAndPriest.Filters
         public long? ChurchID { get; set; }
         [FromHeader]
         public long? EparchyID { get; set; }
+        [FromHeader]
+        public int currentPage { get; set; } = 1;
+        [FromHeader]
+        public int numberOfItemsPerPage { get; set; } = 10;
     }
 }

@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace NewGaras.Infrastructure.DTO.ChurchAndPriest.Filters
 {
-    public class GetChurchsListFilters
+    public class GetEparchyWithChurchFilters
     {
         [FromHeader]
-        public string ChurchName { get; set; }
-        [FromHeader]
-        public int? EparchyID { get; set; }
+        public string Name { get; set; }
         [FromHeader]
         public int currentPage { get; set; } = 1;
         [FromHeader]

@@ -5,7 +5,9 @@ using NewGaras.Infrastructure.DTO.ChurchAndPriest;
 using NewGaras.Infrastructure.DTO.ChurchAndPriest.Filters;
 using NewGaras.Infrastructure.DTO.Family;
 using NewGaras.Infrastructure.Entities;
+using NewGaras.Infrastructure.Helper;
 using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Church;
+using NewGaras.Infrastructure.Models;
 using NewGarasAPI.Models.User;
 using Org.BouncyCastle.Bcpg;
 using System;
@@ -159,9 +161,9 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
             }
         }
 
-        public BaseResponseWithData<List<GetPriestsListDTO>> GetPriestList(GetPriestsListFilters filters)
+        public BaseResponseWithDataAndHeader<List<GetPriestsListDTO>> GetPriestList(GetPriestsListFilters filters)
         {
-            var response = new BaseResponseWithData<List<GetPriestsListDTO>>()
+            var response = new BaseResponseWithDataAndHeader<List<GetPriestsListDTO>>()
             {
                 Errors = new List<Error>(),
                 Result = true
@@ -186,7 +188,7 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
                     priestsQueryable = priestsQueryable.Where(a => a.PriestName.Contains(filters.PriestName));
                 }
 
-                var priestsListDB = priestsQueryable.ToList();
+                var priestsListDB = PagedList<Priest>.Create(priestsQueryable, filters.currentPage, filters.numberOfItemsPerPage);
 
                 //var familiesList = new List<GetFamiliesListDTO>();
                 var familiesList = priestsListDB.Select(a => new GetPriestsListDTO()
@@ -202,6 +204,15 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
 
                 }).ToList();
 
+                var paginationHeader = new PaginationHeader()
+                {
+                    CurrentPage = filters.currentPage,
+                    ItemsPerPage = filters.numberOfItemsPerPage,
+                    TotalItems = priestsListDB.TotalCount,
+                    TotalPages = priestsListDB.TotalPages,
+                };
+
+                response.PaginationHeader = paginationHeader;
                 response.Data = familiesList;
                 return response;
             }
@@ -320,9 +331,9 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
             }
         }
 
-        public BaseResponseWithData<List<GetChurchesListDTO>> GetChurchesList(GetChurchsListFilters filters)
+        public BaseResponseWithDataAndHeader<List<GetChurchesListDTO>> GetChurchesList(GetChurchsListFilters filters)
         {
-            var response = new BaseResponseWithData<List<GetChurchesListDTO>>()
+            var response = new BaseResponseWithDataAndHeader<List<GetChurchesListDTO>>()
             {
                 Errors = new List<Error>(),
                 Result = true
@@ -342,7 +353,7 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
                     churchesQueryable = churchesQueryable.Where(a => a.ChurchName.Contains(filters.ChurchName));
                 }
 
-                var ChurchesListDB = churchesQueryable.ToList();
+                var ChurchesListDB = PagedList<Church>.Create(churchesQueryable,filters.currentPage,filters.numberOfItemsPerPage);
 
                 //var familiesList = new List<GetFamiliesListDTO>();
                 var churchesList = ChurchesListDB.Select(a => new GetChurchesListDTO()
@@ -354,6 +365,15 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
                     
                 }).ToList();
 
+                var paginationHeader = new PaginationHeader()
+                {
+                    CurrentPage = filters.currentPage,
+                    ItemsPerPage = filters.numberOfItemsPerPage,
+                    TotalItems = ChurchesListDB.TotalCount,
+                    TotalPages = ChurchesListDB.TotalPages,
+                };
+
+                response.PaginationHeader = paginationHeader;
                 response.Data = churchesList;
                 return response;
             }
@@ -511,9 +531,9 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
             }
         }
 
-        public BaseResponseWithData<List<GetEparchyWithChurchDTO>> GetEparchyWithChurch()
+        public BaseResponseWithDataAndHeader<List<GetEparchyWithChurchDTO>> GetEparchyWithChurch(GetEparchyWithChurchFilters filters)
         {
-            BaseResponseWithData<List<GetEparchyWithChurchDTO>> Response = new BaseResponseWithData<List<GetEparchyWithChurchDTO>>();
+            BaseResponseWithDataAndHeader<List<GetEparchyWithChurchDTO>> Response = new BaseResponseWithDataAndHeader<List<GetEparchyWithChurchDTO>>();
             Response.Result = true;
             Response.Errors = new List<Error>();
             try
@@ -522,9 +542,14 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
                 var EparchiesList = new List<GetEparchyWithChurchDTO>();
                 if (Response.Result)
                 {
-                    var EparchiesDB = _unitOfWork.Eparchies.FindAll(x => true, new[] { "Churches" }).ToList();
+                    var EparchiesQueryable = _unitOfWork.Eparchies.FindAllQueryable(x => true, new[] { "Churches" });
+                    if (!string.IsNullOrEmpty(filters.Name))
+                    {
+                        EparchiesQueryable = EparchiesQueryable.Where(a => a.Name.Contains(filters.Name));
+                    }
                     //var churches = _unitOfWork.Churches.GetAll().ToList();  
 
+                    var EparchiesDB = PagedList<Eparchy>.Create(EparchiesQueryable,filters.currentPage,filters.numberOfItemsPerPage);
                     if (EparchiesDB.Count > 0)
                     {
                         foreach (var item in EparchiesDB)
@@ -537,6 +562,15 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
                             EparchiesList.Add(DLLObj);
                         }
                     }
+
+                    var pagiantionHeader = new PaginationHeader()
+                    {
+                        CurrentPage = filters.currentPage,
+                        ItemsPerPage = filters.numberOfItemsPerPage,
+                        TotalItems = EparchiesDB.TotalCount,
+                        TotalPages = EparchiesDB.TotalPages
+                    };
+                    Response.PaginationHeader = pagiantionHeader;
                 }
                 Response.Data = EparchiesList;
                 return Response;
