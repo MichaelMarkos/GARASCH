@@ -3,7 +3,7 @@
     public class AreaData
     {
         public string ID { get; set; }
-        public string GovenorateID { get; set; }
+        public long DistrictID { get; set; }
         public string Description { get; set; }
         public int GovernorateRequestedID { get; set; }
         public string Name { get; set; }

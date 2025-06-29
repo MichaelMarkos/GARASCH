@@ -23,6 +23,8 @@ public partial class GarasTestContext : DbContext
         _tenantService = tenantService;
         TenantId = _tenantService.GetTenant()?.TID;
     }
+
+
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<AccountCategory> AccountCategories { get; set; }
@@ -1350,9 +1352,7 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Area_User");
 
-            entity.HasOne(d => d.Governorate).WithMany(p => p.Areas)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Area_Governorate");
+            entity.HasOne(d => d.District).WithMany(p => p.Areas).HasConstraintName("FK_Area_District");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.AreaModifiedByNavigations).HasConstraintName("FK_Area_User1");
         });
@@ -1718,6 +1718,11 @@ public partial class GarasTestContext : DbContext
         modelBuilder.Entity<Church>(entity =>
         {
             entity.HasOne(d => d.Eparchy).WithMany(p => p.Churches).HasConstraintName("FK_Church_Eparchy");
+        });
+
+        modelBuilder.Entity<City>(entity =>
+        {
+            entity.HasOne(d => d.Governorate).WithMany(p => p.Cities).HasConstraintName("FK_City_Governorate");
         });
 
         modelBuilder.Entity<Client>(entity =>
@@ -2468,6 +2473,11 @@ public partial class GarasTestContext : DbContext
                 .HasConstraintName("FK_Department_User");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.DepartmentModifiedByNavigations).HasConstraintName("FK_Department_User1");
+        });
+
+        modelBuilder.Entity<District>(entity =>
+        {
+            entity.HasOne(d => d.City).WithMany(p => p.Districts).HasConstraintName("FK_District_City");
         });
 
         modelBuilder.Entity<DoctorRoom>(entity =>

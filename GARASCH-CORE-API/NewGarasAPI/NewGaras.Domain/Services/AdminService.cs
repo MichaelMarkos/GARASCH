@@ -64,6 +64,8 @@ namespace NewGaras.Domain.Services
             }
         }
 
+        HearderVaidatorOutput IAdminService.Validation { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public AdminService(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment host, ITenantService tenantService, IHrUserService hrUserService, ILogService logService,IProjectService projectService)
         {
             _unitOfWork = unitOfWork;
@@ -4419,7 +4421,7 @@ namespace NewGaras.Domain.Services
                 return Response;
             }
         }
-        public async Task<SelectDDLResponse> GetAreasList(int GovernorateId)
+        public async Task<SelectDDLResponse> GetAreasList()
         {
             SelectDDLResponse response = new SelectDDLResponse();
             response.Result = true;
@@ -4431,10 +4433,7 @@ namespace NewGaras.Domain.Services
                 {
 
                     var Areas = await _unitOfWork.Areas.GetAllAsync();
-                    if (GovernorateId != 0)
-                    {
-                        Areas = Areas.Where(x => x.GovernorateId == GovernorateId).ToList();
-                    }
+                    
                     DDListDB = Areas.Select(c => new SelectDDL
                     {
                         ID = c.Id,
@@ -4460,385 +4459,7 @@ namespace NewGaras.Domain.Services
             }
 
         }
-        public BaseResponseWithID AddEditArea(AreaData request, long UserId)
-        {
-            BaseResponseWithID Response = new BaseResponseWithID();
-            Response.Result = true;
-            Response.Errors = new List<Error>();
-            try
-            {
-                if (Response.Result)
-                {
-                    if (string.IsNullOrEmpty(request.Name))
-                    {
-                        Response.Result = false;
-                        Error error = new Error();
-                        error.ErrorCode = "Err25";
-                        error.ErrorMSG = "Area Name Is Mandatory";
-                        Response.Errors.Add(error);
-                    }
-                    //if (string.IsNullOrEmpty(Request.GovenorateID))
-                    //{
-                    //    Response.Result = false;
-                    //    Error error = new Error();
-                    //    error.ErrorCode = "Err25";
-                    //    error.ErrorMSG = "Governorate ID Is Mandatory";
-                    //    Response.Errors.Add(error);
-                    //}
-
-                    if (Response.Result)
-                    {
-                        int GovenorateRequestID = 0;
-
-
-
-
-                        int AreaID = 0;
-
-                        if (!string.IsNullOrEmpty(request.ID))
-                        {
-
-
-
-                            try
-                            {
-                                AreaID = int.Parse(request.ID.Split('-')[1]);
-                            }
-                            catch (Exception ex)
-                            {
-                                Response.Result = false;
-                                Error error = new Error();
-                                error.ErrorCode = "Err-P12";
-                                error.ErrorMSG = "Please Insert A Valid Area ID ";
-                                Response.Errors.Add(error);
-                                return Response;
-
-                            }
-
-
-
-
-                        }
-                        try
-                        {
-                            GovenorateRequestID = int.Parse(request.GovenorateID.Split('-')[1]);
-                        }
-                        catch (Exception)
-                        {
-                            Response.Result = false;
-                            Error error = new Error();
-                            error.ErrorCode = "Err-P12";
-                            error.ErrorMSG = "Please Insert A Valid Governorate ID ";
-                            Response.Errors.Add(error);
-                            return Response;
-
-                        }
-                        //var modifiedUser = Common.GetUserName(validation.userID, _Context);
-
-
-                        var AreaIDCheck = _unitOfWork.Areas.FindAll(x => x.Id == AreaID).FirstOrDefault();
-                        var GovenorateIDCheck = _unitOfWork.Governorates.FindAll(x => x.Id == GovenorateRequestID).FirstOrDefault();
-
-
-
-                        if (AreaID != 0)
-                        {
-
-                            if (AreaIDCheck != null)
-                            {
-                                if (GovenorateIDCheck != null)
-                                {
-
-                                    var AreaDB = _unitOfWork.Areas.GetById((long)AreaID);
-                                    if (AreaDB != null)
-                                    {
-                                        // Update
-                                        /*var AreaDBUpdate = _Context.proc_AreaUpdate(AreaID,
-                                                                                                           Request.Name,
-                                                                                                           Request.Description,
-                                                                                                           GovenorateRequestID,
-                                                                                                           AreaDB.CreationDate,
-                                                                                                           AreaDB.CreatedBy,
-                                                                                                           DateTime.Now,
-                                                                                                           validation.userID
-                                                                                                            );*/
-                                        AreaDB.Name = request.Name;
-                                        AreaDB.Description = request.Description;
-                                        AreaDB.GovernorateId = GovenorateRequestID;
-                                        AreaDB.ModifiedDate = DateTime.Now;
-                                        AreaDB.ModifiedBy = UserId;
-                                        var AreaDBUpdate = _unitOfWork.Complete();
-                                        if (AreaDBUpdate > 0)
-                                        {
-                                            Response.Result = true;
-                                            Response.ID = (long)AreaID;
-                                        }
-                                        else
-                                        {
-                                            Response.Result = false;
-                                            Error error = new Error();
-                                            error.ErrorCode = "Err25";
-                                            error.ErrorMSG = "Faild To Update this Area!!";
-                                            Response.Errors.Add(error);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Response.Result = false;
-                                        Error error = new Error();
-                                        error.ErrorCode = "Err25";
-                                        error.ErrorMSG = "This Area Doesn't Exist!!";
-                                        Response.Errors.Add(error);
-                                    }
-                                }
-                                else
-                                {
-                                    Response.Result = false;
-                                    Error error = new Error();
-                                    error.ErrorCode = "Err25";
-                                    error.ErrorMSG = "This Governorate Doesn't Exist!!";
-                                    Response.Errors.Add(error);
-
-                                }
-
-                            }
-                            else
-                            {
-                                Response.Result = false;
-                                Error error = new Error();
-                                error.ErrorCode = "Err25";
-                                error.ErrorMSG = "This Area Doesn't Exist!!";
-                                Response.Errors.Add(error);
-                            }
-
-                        }
-                        else
-                        {
-                            // Insert
-                            /*ObjectParameter AreaInsertedID = new ObjectParameter("ID", typeof(int));
-                            var AreaInserted = _Context.proc_AreaInsert(AreaInsertedID,
-                                                                                           Request.Name,
-                                                                                           Request.Description,
-                                                                                           GovenorateRequestID,
-                                                                                            DateTime.Now,
-                                                                                            validation.userID,
-                                                                                            null,
-                                                                                            null
-                                                                                           );*/
-                            var area = new Area()
-                            {
-                                Name = request.Name,
-                                Description = request.Description,
-                                GovernorateId = GovenorateRequestID,
-                                ModifiedDate = DateTime.Now,
-                                ModifiedBy = UserId,
-                                CreatedBy = UserId,
-                                CreationDate = DateTime.Now,
-                            };
-                            _unitOfWork.Areas.Add(area);
-                            var AreaInserted = _unitOfWork.Complete();
-
-                            if (AreaInserted > 0)
-                            {
-                                var AreaaID = long.Parse(area.Id.ToString());
-                                Response.ID = AreaaID;
-                            }
-                            else
-                            {
-                                Response.Result = false;
-                                Error error = new Error();
-                                error.ErrorCode = "Err25";
-                                error.ErrorMSG = "Faild To Insert this Area !!";
-                                Response.Errors.Add(error);
-                            }
-                        }
-
-
-
-
-                    }
-                    ;
-
-
-                    //var CountryID = int.Parse(Request.ID.Split('-')[1]);
-
-
-
-
-
-
-                }
-
-                return Response;
-            }
-            catch (Exception ex)
-            {
-                Response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException.Message;
-                Response.Errors.Add(error);
-                return Response;
-            }
-        }
-        public BaseResponseWithID AddEditCountry(CountryData request, long UserId)
-        {
-            BaseResponseWithID Response = new BaseResponseWithID();
-            Response.Result = true;
-            Response.Errors = new List<Error>();
-            try
-            {
-                if (Response.Result)
-                {
-                    if (string.IsNullOrEmpty(request.Name))
-                    {
-                        Response.Result = false;
-                        Error error = new Error();
-                        error.ErrorCode = "Err25";
-                        error.ErrorMSG = "Country Name Is Mandatory";
-                        Response.Errors.Add(error);
-                    }
-
-                    if (Response.Result)
-                    {
-                        int countryID = 0;
-
-                        if (!string.IsNullOrEmpty(request.ID))
-                        {
-
-
-
-                            try
-                            {
-                                countryID = int.Parse(request.ID.Split('-')[1]);
-                            }
-                            catch (Exception ex)
-                            {
-                                Response.Result = false;
-                                Error error = new Error();
-                                error.ErrorCode = "Err-P12";
-                                error.ErrorMSG = "Please Insert A Valid Country ID ";
-                                Response.Errors.Add(error);
-                                return Response;
-
-                            }
-
-                        }
-
-                        //var modifiedUser = Common.GetUserName(validation.userID, _Context);
-
-                        if (countryID != 0)
-                        {
-                            var CountryDB = _unitOfWork.Countries.GetById(countryID);
-                            if (CountryDB != null)
-                            {
-                                // Update
-                                /*var CountryDBUpdate = _Context.proc_CountryUpdate(countryID,
-                                                                                                   Request.Name,
-                                                                                                   Request.Active,
-                                                                                                   CountryDB.CreationDate,
-                                                                                                   validation.userID,
-                                                                                                   DateTime.Now,
-                                                                                                   CountryDB.CreatedBy,
-                                                                                                    null
-                                                                                                    );*/
-                                CountryDB.Name = request.Name;
-                                CountryDB.Active = request.Active;
-                                CountryDB.ModifiedDate = DateTime.Now;
-                                CountryDB.ModifiedBy = UserId;
-                                var CountryDBUpdate = _unitOfWork.Complete();
-                                if (CountryDBUpdate > 0)
-                                {
-                                    Response.Result = true;
-                                    Response.ID = (long)countryID;
-                                }
-                                else
-                                {
-                                    Response.Result = false;
-                                    Error error = new Error();
-                                    error.ErrorCode = "Err25";
-                                    error.ErrorMSG = "Faild To Update this Country!!";
-                                    Response.Errors.Add(error);
-                                }
-                            }
-                            else
-                            {
-                                Response.Result = false;
-                                Error error = new Error();
-                                error.ErrorCode = "Err25";
-                                error.ErrorMSG = "This Country Doesn't Exist!!";
-                                Response.Errors.Add(error);
-                            }
-                        }
-                        else
-                        {
-                            // Insert
-                            /*ObjectParameter CountryInsertedID = new ObjectParameter("ID", typeof(int));
-                            var CountryInserted = _Context.proc_CountryInsert(CountryInsertedID,
-                                                                                            Request.Name,
-                                                                                            Request.Active,
-                                                                                            DateTime.Now,
-                                                                                            null,
-                                                                                            null,
-                                                                                            validation.userID,
-                                                                                            null
-                                                                                           );*/
-                            var country = new Country()
-                            {
-                                Name = request.Name,
-                                Active = request.Active,
-                                CreationDate = DateTime.Now,
-                                CreatedBy = UserId,
-                                ModifiedDate = DateTime.Now,
-                                ModifiedBy = UserId,
-                            };
-                            _unitOfWork.Countries.Add(country);
-                            var CountryInserted = _unitOfWork.Complete();
-
-                            if (CountryInserted > 0)
-                            {
-                                var CountryID = long.Parse(country.Id.ToString());
-                                Response.ID = CountryID;
-                            }
-                            else
-                            {
-                                Response.Result = false;
-                                Error error = new Error();
-                                error.ErrorCode = "Err25";
-                                error.ErrorMSG = "Faild To Insert this Country!!";
-                                Response.Errors.Add(error);
-                            }
-                        }
-
-
-
-
-                    }
-                    ;
-
-
-                    //var CountryID = int.Parse(Request.ID.Split('-')[1]);
-
-
-
-
-
-
-                }
-
-                return Response;
-            }
-            catch (Exception ex)
-            {
-                Response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException.Message;
-                Response.Errors.Add(error);
-                return Response;
-            }
-        }
-        public BaseResponseWithID AddEditGovernorate(GovernorateData request, long UserId)
+         public BaseResponseWithID AddEditGovernorate(GovernorateData request, long UserId)
         {
             BaseResponseWithID Response = new BaseResponseWithID();
             Response.Result = true;
@@ -5032,88 +4653,88 @@ namespace NewGaras.Domain.Services
                 return Response;
             }
         }
-        public async Task<GetCountryGovernorateAreaResponse> GetCountryGovernorateArea(bool allData = true)
-        {
-            GetCountryGovernorateAreaResponse response = new GetCountryGovernorateAreaResponse();
-            response.Result = true;
-            response.Errors = new List<Error>();
+        //public async Task<GetCountryGovernorateAreaResponse> GetCountryGovernorateArea(bool allData = true)
+        //{
+        //    GetCountryGovernorateAreaResponse response = new GetCountryGovernorateAreaResponse();
+        //    response.Result = true;
+        //    response.Errors = new List<Error>();
 
 
 
-            try
-            {
-                var GetCountryGovernorateAreaResponseList = new List<TreeViewCountr>();
-                /*bool allData = true;
-                if (!string.IsNullOrEmpty(headers["allData"]) && bool.TryParse(headers["allData"], out allData))
-                {
-                    bool.TryParse(headers["allData"], out allData);
-                }*/
+        //    try
+        //    {
+        //        var GetCountryGovernorateAreaResponseList = new List<TreeViewCountr>();
+        //        /*bool allData = true;
+        //        if (!string.IsNullOrEmpty(headers["allData"]) && bool.TryParse(headers["allData"], out allData))
+        //        {
+        //            bool.TryParse(headers["allData"], out allData);
+        //        }*/
 
 
 
 
-                if (response.Result)
-                {
-                    var ClientAddressList = await _unitOfWork.ClientAddresses.FindAllAsync(x => x.Active == true);
+        //        if (response.Result)
+        //        {
+        //            var ClientAddressList = await _unitOfWork.ClientAddresses.FindAllAsync(x => x.Active == true);
 
-                    var Countries = await _unitOfWork.Countries.GetAllAsync();
+        //            var Countries = await _unitOfWork.Countries.GetAllAsync();
 
-                    var TreeDtoObj = Countries.Select(c => new TreeViewCountr
-                    {
-                        id = "Country-" + c.Id.ToString(),
-                        title = c.Name,
-                        parentId = "",
-                        CountOfClient = ClientAddressList.Where(x => x.CountryId == c.Id).Select(x => x.ClientId).Distinct().Count()
-                    }).ToList();
+        //            var TreeDtoObj = Countries.Select(c => new TreeViewCountr
+        //            {
+        //                id = "Country-" + c.Id.ToString(),
+        //                title = c.Name,
+        //                parentId = "",
+        //                CountOfClient = ClientAddressList.Where(x => x.CountryId == c.Id).Select(x => x.ClientId).Distinct().Count()
+        //            }).ToList();
 
-                    var Govenorates = await _unitOfWork.Governorates.GetAllAsync();
-                    var GovernorateDto = Govenorates.Select(c => new TreeViewCountr
-                    {
-                        id = "Governorate-" + c.Id.ToString(),
-                        title = c.Name,
-                        parentId = "Country-" + c.CountryId.ToString(),
-                        CountOfClient = ClientAddressList.Where(x => x.GovernorateId == c.Id).Select(x => x.ClientId).Distinct().Count()
-                    }).ToList();
+        //            var Govenorates = await _unitOfWork.Governorates.GetAllAsync();
+        //            var GovernorateDto = Govenorates.Select(c => new TreeViewCountr
+        //            {
+        //                id = "Governorate-" + c.Id.ToString(),
+        //                title = c.Name,
+        //                parentId = "Country-" + c.CountryId.ToString(),
+        //                CountOfClient = ClientAddressList.Where(x => x.GovernorateId == c.Id).Select(x => x.ClientId).Distinct().Count()
+        //            }).ToList();
 
-                    TreeDtoObj.AddRange(GovernorateDto);
-
-
-                    var Areas = await _unitOfWork.Areas.GetAllAsync();
-                    var AreasDto = Areas.Select(c => new TreeViewCountr
-                    {
-                        id = "Area-" + c.Id.ToString(),
-                        title = c.Name,
-                        parentId = "Governorate-" + c.GovernorateId.ToString()
-                        ,
-                        CountOfClient = ClientAddressList.Where(x => x.AreaId == c.Id).Select(x => x.ClientId).Distinct().Count()
-                    }).ToList();
-
-                    TreeDtoObj.AddRange(AreasDto);
-                    if (!allData)
-                    {
-                        TreeDtoObj = TreeDtoObj.Where(x => x.CountOfClient > 0).ToList();
-
-                    }
-                    var trees = Common.BuildTreeViews("", TreeDtoObj);
-                    response.GetCountryGovernorateAreaResponseList = trees;
-                }
+        //            TreeDtoObj.AddRange(GovernorateDto);
 
 
+        //            var Areas = await _unitOfWork.Areas.GetAllAsync();
+        //            var AreasDto = Areas.Select(c => new TreeViewCountr
+        //            {
+        //                id = "Area-" + c.Id.ToString(),
+        //                title = c.Name,
+        //                parentId = "Governorate-" + c.GovernorateId.ToString()
+        //                ,
+        //                CountOfClient = ClientAddressList.Where(x => x.AreaId == c.Id).Select(x => x.ClientId).Distinct().Count()
+        //            }).ToList();
 
-                return response;
-            }
-            catch (Exception ex)
-            {
-                response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException.Message;
-                response.Errors.Add(error);
+        //            TreeDtoObj.AddRange(AreasDto);
+        //            if (!allData)
+        //            {
+        //                TreeDtoObj = TreeDtoObj.Where(x => x.CountOfClient > 0).ToList();
 
-                return response;
-            }
+        //            }
+        //            var trees = Common.BuildTreeViews("", TreeDtoObj);
+        //            response.GetCountryGovernorateAreaResponseList = trees;
+        //        }
 
-        }
+
+
+        //        return response;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.Result = false;
+        //        Error error = new Error();
+        //        error.ErrorCode = "Err10";
+        //        error.ErrorMSG = ex.InnerException.Message;
+        //        response.Errors.Add(error);
+
+        //        return response;
+        //    }
+
+        //}
         public async Task<GetRoleResponse> GetRole()
         {
             GetRoleResponse response = new GetRoleResponse();

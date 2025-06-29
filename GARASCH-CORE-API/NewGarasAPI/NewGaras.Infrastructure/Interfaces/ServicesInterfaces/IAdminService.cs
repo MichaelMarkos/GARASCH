@@ -63,11 +63,7 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public BaseResponseWithID AddEditBranches(BranchData request, long UserId);
         public Task<GetTermsAndConditionsResponse> GetTermsAndConditions();
         public BaseResponseWithID AddEditTermsAndConditions(TermsAndConditionsData request, long userId);
-        public Task<SelectDDLResponse> GetAreasList(int GovernorateId);
-        public BaseResponseWithID AddEditArea(AreaData request, long UserId);
-        public BaseResponseWithID AddEditCountry(CountryData request, long UserId);
         public BaseResponseWithID AddEditGovernorate(GovernorateData request, long UserId);
-        public  Task<GetCountryGovernorateAreaResponse> GetCountryGovernorateArea(bool allData = true);
         public Task<GetRoleResponse> GetRole();
         public BaseResponseWithID AddGroupRole(AddGroupRoleData request, long UserId);
         public BaseResponseWithID EditGroupRole(EditGroupData request, long UserId);
