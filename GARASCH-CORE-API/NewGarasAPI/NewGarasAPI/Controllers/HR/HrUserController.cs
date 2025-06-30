@@ -2138,7 +2138,7 @@ namespace NewGarasAPI.Controllers.HR
 
 
         [HttpPost("AddAddressToHrUser")]
-        public async Task<BaseResponse> AddAddressToHrUser(List<HrUserAddressDto> dtos)
+        public async Task<BaseResponse> AddAddressToHrUser(AddHrUserAddessList dtos)
         {
             var response = new BaseResponse()
             {

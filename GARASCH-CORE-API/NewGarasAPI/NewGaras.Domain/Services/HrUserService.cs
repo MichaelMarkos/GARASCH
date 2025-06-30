@@ -378,7 +378,7 @@ namespace NewGaras.Domain.Services
             }
         }
 
-        public async Task<BaseResponse> AddAddressToHrUser(List<HrUserAddressDto> dtos)
+        public async Task<BaseResponse> AddAddressToHrUser(AddHrUserAddessList dtos)
         {
             var response = new BaseResponse()
             {
@@ -387,7 +387,7 @@ namespace NewGaras.Domain.Services
             };
             try
             {
-                if (dtos.Count < 0)
+                if (dtos.Addresses.Count < 0)
                 {
                     response.Result = false;
                     Error err = new Error();
@@ -396,7 +396,7 @@ namespace NewGaras.Domain.Services
                     response.Errors.Add(err);
                     return response;
                 }
-                foreach (var address in dtos)
+                foreach (var address in dtos.Addresses)
                 {
                     var ad = _mapper.Map<HrUserAddress>(address);
                     ad.HrUserId = address.HrUserID;
