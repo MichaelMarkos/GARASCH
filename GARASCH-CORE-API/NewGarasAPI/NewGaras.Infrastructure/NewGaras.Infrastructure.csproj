@@ -24,6 +24,7 @@
   <ItemGroup>
     <Folder Include="Interfaces\ServicesInterfaces\ProjectManagment\" />
     <Folder Include="Models\EInvoice\EInvoice_Classes\" />
+    <Folder Include="Models\ItemsPricing\UsedInResponse\" />
     <Folder Include="Models\ProjectsDetails\Headers\" />
   </ItemGroup>
 

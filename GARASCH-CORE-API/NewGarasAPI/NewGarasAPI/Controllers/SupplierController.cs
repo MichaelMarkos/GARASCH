@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using NewGaras.Domain.Models;
 using NewGaras.Infrastructure.DBContext;
 using NewGaras.Infrastructure.Helper.TenantService;
-using NewGaras.Infrastructure.Models.PurchaseOrder;
 using NewGaras.Infrastructure.Models.Supplier;
 
 namespace NewGarasAPI.Controllers

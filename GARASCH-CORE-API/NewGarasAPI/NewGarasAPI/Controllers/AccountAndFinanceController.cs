@@ -2003,37 +2003,7 @@ namespace NewGarasAPI.Controllers
             }
         }
 
-        [HttpGet("BalanceSheetPDF")]
-        public async Task<BaseMessageResponse> BalanceSheetPDF([FromHeader] AccountTreeExcelHeader header)
-        {
-            BaseMessageResponse Response = new BaseMessageResponse();
-            Response.Result = true;
-            Response.Errors = new List<Error>();
-            try
-            {
-                //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
-                //WebHeaderCollection headers = request.Headers;
-                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers,ref _Context);
-                Response.Errors = validation.errors;
-                Response.Result = validation.result;
-                if (Response.Result)
-                {
-                    Response = await _accountAndFinance.BalanceSheetPDF(header, validation.userID, validation.CompanyName);
-                }
 
-                return Response;
-            }
-            catch (Exception ex)
-            {
-                Response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
-                Response.Errors.Add(error);
-                return Response;
-            }
-
-        }
 
         [HttpPost("JournalEntryPDFReport")]
         public async Task<BaseMessageResponse> JournalEntryPDFReport([FromHeader] long DailyJournalEntryID = 0)
