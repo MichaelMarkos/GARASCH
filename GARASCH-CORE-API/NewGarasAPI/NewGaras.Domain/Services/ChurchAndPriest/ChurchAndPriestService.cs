@@ -470,6 +470,53 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
             }
         }
 
+        public BaseResponseWithId<int> EditEparchy(EditEparchyDTO dto)
+        {
+            var response = new BaseResponseWithId<int>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            #region validation
+            var Eparchy = _unitOfWork.Eparchies.GetById(dto.ID);
+            if (Eparchy == null)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E101";
+                err.ErrorMSG = "No Eparchy with this ID";
+                response.Errors.Add(err);
+                return response;
+            }
+
+
+            #endregion
+
+            try
+            {
+
+                if (!string.IsNullOrEmpty(dto.Name)) Eparchy.Name = dto.Name;
+                
+
+
+                _unitOfWork.Complete();
+
+                response.ID = Eparchy.Id;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+
         public BaseResponseWithData<List<GetHrUserPriestHistoryDTO>> GetHrUserPriestHistory(GetHrUserPriestHistoryFilters filters)
         {
             var response = new BaseResponseWithData<List<GetHrUserPriestHistoryDTO>>()
