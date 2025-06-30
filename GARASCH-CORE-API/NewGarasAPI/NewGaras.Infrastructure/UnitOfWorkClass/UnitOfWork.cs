@@ -485,6 +485,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<ClientInformation , int> clientInformations { get; private set; }
         public IBaseRepository<CostType, long> CostTypes { get; private set; }
         public IBaseRepository<MilitaryStatus, int> MilitaryStatuses { get; private set; }
+        public IBaseRepository<GeographicalName, long> GeographicalNames { get; private set; }
 
 
 
@@ -716,6 +717,7 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             HrUserLandLines = new BaseRepository<HrUserLandLine, long>(_context);
             HrUserPriests = new BaseRepository<HrUserPriest, long>(_context);
             Districts = new BaseRepository<District, long>(_context);
+            GeographicalNames = new BaseRepository<GeographicalName, long>(_context);
 
             /*UserDeviceConnections = new BaseRepository<UserDeviceConnection, long>(_context);
             InventoryItems = new InventoryItemRepository(_context);

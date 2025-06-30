@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using NewGaras.Domain.Models;
+using NewGaras.Infrastructure.DTO.HrUser;
 using NewGaras.Infrastructure.Models;
 using NewGaras.Infrastructure.Models.Admin;
 using NewGaras.Infrastructure.Models.Admin.Responses;
@@ -63,7 +64,7 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public BaseResponseWithID AddEditBranches(BranchData request, long UserId);
         public Task<GetTermsAndConditionsResponse> GetTermsAndConditions();
         public BaseResponseWithID AddEditTermsAndConditions(TermsAndConditionsData request, long userId);
-        public BaseResponseWithID AddEditGovernorate(GovernorateData request, long UserId);
+        public BaseResponseWithID AddEditGovernorate(GovernorateData request);
         public Task<GetRoleResponse> GetRole();
         public BaseResponseWithID AddGroupRole(AddGroupRoleData request, long UserId);
         public BaseResponseWithID EditGroupRole(EditGroupData request, long UserId);
@@ -120,6 +121,14 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
 
         public Task<BaseResponseWithID> AddEditCostType(CostTypeData Request);
 
+        public BaseResponseWithID AddEditCountry(CountryData request);
 
+        public BaseResponseWithID AddEditCity(CityData request);
+
+        public BaseResponseWithID AddEditDistrict(DistrictData request);
+
+        public BaseResponseWithID AddEditArea(AreaData request);
+
+        public BaseResponseWithID AddEditGeographicalName(GeographicalNameData request);
     }
 }

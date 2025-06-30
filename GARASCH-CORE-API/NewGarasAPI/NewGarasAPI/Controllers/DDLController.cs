@@ -732,5 +732,44 @@ namespace NewGarasAPI.Controllers
                 return response;
             }
         }
+
+        [HttpGet("GetGeographicalNamesDDL")]
+        public SelectDDLResponse GetGeographicalNamesDDL()
+        {
+            var response = new SelectDDLResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                response.Errors = validation.errors;
+                response.Result = validation.result;
+                // without valdate
+                if (response.Result)
+                {
+                    var NationalityList = _ddlservice.GetGeographicalNamesDDL();
+                    if (!NationalityList.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(NationalityList.Errors);
+                        return response;
+                    }
+                    response = NationalityList;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
     }
 }

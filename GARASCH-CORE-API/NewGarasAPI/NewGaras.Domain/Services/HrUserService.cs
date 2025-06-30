@@ -1176,7 +1176,7 @@ namespace NewGaras.Domain.Services
                             response.Errors.Add(err);
                             return response;
                         }
-                        var list = _unitOfWork.HrUserAttachments.FindAll(a => a.HrUserId == User.Id).ToList();
+                        var list = _unitOfWork.HrUserAttachments.FindAll(a => a.HrUserId == User.Id, includes: new[] { "AttachmentType" }).ToList();
                         var finalList = _mapper.Map<List<GetHrUserAttachmentDto>>(list);
                         response.Data = finalList;
                     }

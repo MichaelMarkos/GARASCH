@@ -38,6 +38,7 @@ using OfficeOpenXml.Style;
 using OfficeOpenXml;
 using System.Data;
 using NewGarasAPI.Models.Project.Headers;
+using NewGaras.Infrastructure.DTO.HrUser;
 
 namespace NewGaras.Domain.Services
 {
@@ -63,9 +64,6 @@ namespace NewGaras.Domain.Services
                 validation = value;
             }
         }
-
-        HearderVaidatorOutput IAdminService.Validation { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
         public AdminService(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment host, ITenantService tenantService, IHrUserService hrUserService, ILogService logService,IProjectService projectService)
         {
             _unitOfWork = unitOfWork;
@@ -4459,7 +4457,7 @@ namespace NewGaras.Domain.Services
             }
 
         }
-         public BaseResponseWithID AddEditGovernorate(GovernorateData request, long UserId)
+         public BaseResponseWithID AddEditGovernorate(GovernorateData request)
         {
             BaseResponseWithID Response = new BaseResponseWithID();
             Response.Result = true;
@@ -4498,7 +4496,7 @@ namespace NewGaras.Domain.Services
                     {
                         try
                         {
-                            CountryRequestID = int.Parse(request.CountryRequestedID.Split('-')[1]);
+                            CountryRequestID = int.Parse(request.CountryRequestedID);
                         }
                         catch (Exception)
                         {
@@ -4519,7 +4517,7 @@ namespace NewGaras.Domain.Services
 
                         try
                         {
-                            governorateID = int.Parse(request.ID.Split('-')[1]);
+                            governorateID = int.Parse(request.ID);
                         }
                         catch (Exception ex)
                         {
@@ -4558,7 +4556,7 @@ namespace NewGaras.Domain.Services
                             GovernorateDB.Name = request.Name;
                             GovernorateDB.Active = request.Active;
                             GovernorateDB.CountryId = CountryRequestID;
-                            GovernorateDB.ModifiedBy = UserId;
+                            GovernorateDB.ModifiedBy = validation.userID;
                             GovernorateDB.Modified = DateTime.Now;
                             var GovernorateDBUpdate = _unitOfWork.Complete();
                             if (GovernorateDBUpdate > 0)
@@ -4603,9 +4601,9 @@ namespace NewGaras.Domain.Services
                             Name = request.Name,
                             Active = request.Active,
                             CountryId = CountryRequestID,
-                            ModifiedBy = UserId,
+                            ModifiedBy = validation.userID,
                             Modified = DateTime.Now,
-                            CreatedBy = UserId,
+                            CreatedBy = validation.userID,
                             CreationDate = DateTime.Now,
                         };
                         _unitOfWork.Governorates.Add(governate);
@@ -4653,88 +4651,751 @@ namespace NewGaras.Domain.Services
                 return Response;
             }
         }
-        //public async Task<GetCountryGovernorateAreaResponse> GetCountryGovernorateArea(bool allData = true)
-        //{
-        //    GetCountryGovernorateAreaResponse response = new GetCountryGovernorateAreaResponse();
-        //    response.Result = true;
-        //    response.Errors = new List<Error>();
+
+        public BaseResponseWithID AddEditCountry(CountryData request)
+        {
+            BaseResponseWithID Response = new BaseResponseWithID();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+                if (Response.Result)
+                {
+                    if (string.IsNullOrEmpty(request.Name))
+                    {
+                        Response.Result = false;
+                        Error error = new Error();
+                        error.ErrorCode = "Err25";
+                        error.ErrorMSG = "Country Name Is Mandatory";
+                        Response.Errors.Add(error);
+                    }
+
+                    if (Response.Result)
+                    {
+                        int countryID = 0;
+
+                        if (!string.IsNullOrEmpty(request.ID))
+                        {
+
+                            try
+                            {
+                                countryID = int.Parse(request.ID);
+                            }
+                            catch (Exception ex)
+                            {
+                                Response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err-P12";
+                                error.ErrorMSG = "Please Insert A Valid Country ID ";
+                                Response.Errors.Add(error);
+                                return Response;
+
+                            }
+
+                        }
+
+                        //var modifiedUser = Common.GetUserName(validation.userID, _Context);
+
+                        if (countryID != 0)
+                        {
+                            var CountryDB = _unitOfWork.Countries.GetById(countryID);
+                            if (CountryDB != null)
+                            {
+                                CountryDB.Name = request.Name;
+                                CountryDB.Active = request.Active;
+                                CountryDB.ModifiedDate = DateTime.Now;
+                                CountryDB.ModifiedBy = validation.userID;
+                                var CountryDBUpdate = _unitOfWork.Complete();
+                                if (CountryDBUpdate > 0)
+                                {
+                                    Response.Result = true;
+                                    Response.ID = (long)countryID;
+                                }
+                                else
+                                {
+                                    Response.Result = false;
+                                    Error error = new Error();
+                                    error.ErrorCode = "Err25";
+                                    error.ErrorMSG = "Faild To Update this Country!!";
+                                    Response.Errors.Add(error);
+                                }
+                            }
+                            else
+                            {
+                                Response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err25";
+                                error.ErrorMSG = "This Country Doesn't Exist!!";
+                                Response.Errors.Add(error);
+                            }
+                        }
+                        else
+                        {
+                            var country = new Country()
+                            {
+                                Name = request.Name,
+                                Active = request.Active,
+                                CreationDate = DateTime.Now,
+                                CreatedBy = validation.userID,
+                                ModifiedDate = DateTime.Now,
+                                ModifiedBy = validation.userID,
+                            };
+                            _unitOfWork.Countries.Add(country);
+                            var CountryInserted = _unitOfWork.Complete();
+
+                            if (CountryInserted > 0)
+                            {
+                                var CountryID = long.Parse(country.Id.ToString());
+                                Response.ID = CountryID;
+                            }
+                            else
+                            {
+                                Response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err25";
+                                error.ErrorMSG = "Faild To Insert this Country!!";
+                                Response.Errors.Add(error);
+                            }
+                        }
 
 
 
-        //    try
-        //    {
-        //        var GetCountryGovernorateAreaResponseList = new List<TreeViewCountr>();
-        //        /*bool allData = true;
-        //        if (!string.IsNullOrEmpty(headers["allData"]) && bool.TryParse(headers["allData"], out allData))
-        //        {
-        //            bool.TryParse(headers["allData"], out allData);
-        //        }*/
+
+                    }
+                    
+                }
+
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException.Message;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
+        public BaseResponseWithID AddEditCity(CityData request)
+        {
+            BaseResponseWithID Response = new BaseResponseWithID();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+                if (Response.Result)
+                {
+                    if (string.IsNullOrEmpty(request.Name))
+                    {
+                        Response.Result = false;
+                        Error error = new Error();
+                        error.ErrorCode = "Err25";
+                        error.ErrorMSG = "City Name Is Mandatory";
+                        Response.Errors.Add(error);
+                    }
+
+                    if (Response.Result)
+                    {
+                        int GovenorateRequestID = 0;
 
 
 
 
-        //        if (response.Result)
-        //        {
-        //            var ClientAddressList = await _unitOfWork.ClientAddresses.FindAllAsync(x => x.Active == true);
+                        int CityID = 0;
 
-        //            var Countries = await _unitOfWork.Countries.GetAllAsync();
-
-        //            var TreeDtoObj = Countries.Select(c => new TreeViewCountr
-        //            {
-        //                id = "Country-" + c.Id.ToString(),
-        //                title = c.Name,
-        //                parentId = "",
-        //                CountOfClient = ClientAddressList.Where(x => x.CountryId == c.Id).Select(x => x.ClientId).Distinct().Count()
-        //            }).ToList();
-
-        //            var Govenorates = await _unitOfWork.Governorates.GetAllAsync();
-        //            var GovernorateDto = Govenorates.Select(c => new TreeViewCountr
-        //            {
-        //                id = "Governorate-" + c.Id.ToString(),
-        //                title = c.Name,
-        //                parentId = "Country-" + c.CountryId.ToString(),
-        //                CountOfClient = ClientAddressList.Where(x => x.GovernorateId == c.Id).Select(x => x.ClientId).Distinct().Count()
-        //            }).ToList();
-
-        //            TreeDtoObj.AddRange(GovernorateDto);
-
-
-        //            var Areas = await _unitOfWork.Areas.GetAllAsync();
-        //            var AreasDto = Areas.Select(c => new TreeViewCountr
-        //            {
-        //                id = "Area-" + c.Id.ToString(),
-        //                title = c.Name,
-        //                parentId = "Governorate-" + c.GovernorateId.ToString()
-        //                ,
-        //                CountOfClient = ClientAddressList.Where(x => x.AreaId == c.Id).Select(x => x.ClientId).Distinct().Count()
-        //            }).ToList();
-
-        //            TreeDtoObj.AddRange(AreasDto);
-        //            if (!allData)
-        //            {
-        //                TreeDtoObj = TreeDtoObj.Where(x => x.CountOfClient > 0).ToList();
-
-        //            }
-        //            var trees = Common.BuildTreeViews("", TreeDtoObj);
-        //            response.GetCountryGovernorateAreaResponseList = trees;
-        //        }
+                        if (!string.IsNullOrEmpty(request.ID))
+                        {
 
 
 
-        //        return response;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        response.Result = false;
-        //        Error error = new Error();
-        //        error.ErrorCode = "Err10";
-        //        error.ErrorMSG = ex.InnerException.Message;
-        //        response.Errors.Add(error);
+                            try
+                            {
+                                CityID = int.Parse(request.ID);
+                            }
+                            catch (Exception ex)
+                            {
+                                Response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err-P12";
+                                error.ErrorMSG = "Please Insert A Valid Area ID ";
+                                Response.Errors.Add(error);
+                                return Response;
 
-        //        return response;
-        //    }
+                            }
 
-        //}
+                        }
+                        try
+                        {
+                            GovenorateRequestID = int.Parse(request.GovernorateID);
+                        }
+                        catch (Exception)
+                        {
+                            Response.Result = false;
+                            Error error = new Error();
+                            error.ErrorCode = "Err-P12";
+                            error.ErrorMSG = "Please Insert A Valid Governorate ID ";
+                            Response.Errors.Add(error);
+                            return Response;
+
+                        }
+                        //var modifiedUser = Common.GetUserName(validation.userID, _Context);
+
+
+                        var CityIDCheck = _unitOfWork.City.FindAll(x => x.Id == CityID).FirstOrDefault();
+                        var GovenorateIDCheck = _unitOfWork.Governorates.FindAll(x => x.Id == GovenorateRequestID).FirstOrDefault();
+
+
+
+                        if (CityID != 0)
+                        {
+
+                            if (CityIDCheck != null)
+                            {
+                                if (GovenorateIDCheck != null)
+                                {
+
+                                    var CityDB = _unitOfWork.City.GetById((int)CityID);
+                                    if (CityDB != null)
+                                    {
+                                        CityDB.Name = request.Name;
+                                        CityDB.GovernorateId = GovenorateRequestID;
+                                        var CityDBUpdate = _unitOfWork.Complete();
+                                        if (CityDBUpdate > 0)
+                                        {
+                                            Response.Result = true;
+                                            Response.ID = (long)CityID;
+                                        }
+                                        else
+                                        {
+                                            Response.Result = false;
+                                            Error error = new Error();
+                                            error.ErrorCode = "Err25";
+                                            error.ErrorMSG = "Faild To Update this City!!";
+                                            Response.Errors.Add(error);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Response.Result = false;
+                                        Error error = new Error();
+                                        error.ErrorCode = "Err25";
+                                        error.ErrorMSG = "This City Doesn't Exist!!";
+                                        Response.Errors.Add(error);
+                                    }
+                                }
+                                else
+                                {
+                                    Response.Result = false;
+                                    Error error = new Error();
+                                    error.ErrorCode = "Err25";
+                                    error.ErrorMSG = "This Governorate Doesn't Exist!!";
+                                    Response.Errors.Add(error);
+
+                                }
+
+                            }
+                            else
+                            {
+                                Response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err25";
+                                error.ErrorMSG = "This City Doesn't Exist!!";
+                                Response.Errors.Add(error);
+                            }
+
+                        }
+                        else
+                        {
+                            var city = new City()
+                            {
+                                Name = request.Name,
+                                GovernorateId = GovenorateRequestID,
+                            };
+                            _unitOfWork.City.Add(city);
+                            var CityInserted = _unitOfWork.Complete();
+
+                            if (CityInserted > 0)
+                            {
+                                var CityyID = long.Parse(city.Id.ToString());
+                                Response.ID = CityyID;
+                            }
+                            else
+                            {
+                                Response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err25";
+                                error.ErrorMSG = "Failed To Insert this City !!";
+                                Response.Errors.Add(error);
+                            }
+                        }
+
+
+
+
+                    }
+                    ;
+
+
+                    //var CountryID = int.Parse(Request.ID.Split('-')[1]);
+
+
+
+
+
+
+                }
+
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException.Message;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
+        public BaseResponseWithID AddEditDistrict(DistrictData request)
+        {
+            BaseResponseWithID Response = new BaseResponseWithID();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+                if (Response.Result)
+                {
+                    if (string.IsNullOrEmpty(request.Name))
+                    {
+                        Response.Result = false;
+                        Error error = new Error();
+                        error.ErrorCode = "Err25";
+                        error.ErrorMSG = "District Name Is Mandatory";
+                        Response.Errors.Add(error);
+                    }
+
+                    if (Response.Result)
+                    {
+                        int CityRequestID = 0;
+
+
+
+
+                        int DistrictID = 0;
+
+                        if (!string.IsNullOrEmpty(request.ID))
+                        {
+
+
+
+                            try
+                            {
+                                DistrictID = int.Parse(request.ID);
+                            }
+                            catch (Exception ex)
+                            {
+                                Response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err-P12";
+                                error.ErrorMSG = "Please Insert A Valid District ID ";
+                                Response.Errors.Add(error);
+                                return Response;
+
+                            }
+
+                        }
+                        try
+                        {
+                            CityRequestID = int.Parse(request.CityID);
+                        }
+                        catch (Exception)
+                        {
+                            Response.Result = false;
+                            Error error = new Error();
+                            error.ErrorCode = "Err-P12";
+                            error.ErrorMSG = "Please Insert A Valid City ID ";
+                            Response.Errors.Add(error);
+                            return Response;
+
+                        }
+                        //var modifiedUser = Common.GetUserName(validation.userID, _Context);
+
+
+                        var DistrictIDCheck = _unitOfWork.Districts.FindAll(x => x.Id == DistrictID).FirstOrDefault();
+                        var CityIDCheck = _unitOfWork.City.FindAll(x => x.Id == CityRequestID).FirstOrDefault();
+
+
+
+                        if (DistrictID != 0)
+                        {
+
+                            if (DistrictIDCheck != null)
+                            {
+                                if (CityIDCheck != null)
+                                {
+
+                                    var DistrictDB = _unitOfWork.Districts.GetById((int)DistrictID);
+                                    if (DistrictDB != null)
+                                    {
+                                        DistrictDB.DistrictName = request.Name;
+                                        DistrictDB.CityId = CityRequestID;
+                                        var DistrictDBUpdate = _unitOfWork.Complete();
+                                        if (DistrictDBUpdate > 0)
+                                        {
+                                            Response.Result = true;
+                                            Response.ID = (long)DistrictID;
+                                        }
+                                        else
+                                        {
+                                            Response.Result = false;
+                                            Error error = new Error();
+                                            error.ErrorCode = "Err25";
+                                            error.ErrorMSG = "Faild To Update this District!!";
+                                            Response.Errors.Add(error);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Response.Result = false;
+                                        Error error = new Error();
+                                        error.ErrorCode = "Err25";
+                                        error.ErrorMSG = "This City Doesn't District!!";
+                                        Response.Errors.Add(error);
+                                    }
+                                }
+                                else
+                                {
+                                    Response.Result = false;
+                                    Error error = new Error();
+                                    error.ErrorCode = "Err25";
+                                    error.ErrorMSG = "This City Doesn't Exist!!";
+                                    Response.Errors.Add(error);
+
+                                }
+
+                            }
+                            else
+                            {
+                                Response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err25";
+                                error.ErrorMSG = "This District Doesn't Exist!!";
+                                Response.Errors.Add(error);
+                            }
+
+                        }
+                        else
+                        {
+                            var district = new District()
+                            {
+                                DistrictName = request.Name,
+                                CityId = CityRequestID,
+                            };
+                            _unitOfWork.Districts.Add(district);
+                            var DistrictInserted = _unitOfWork.Complete();
+
+                            if (DistrictInserted > 0)
+                            {
+                                var DistricttID = long.Parse(district.Id.ToString());
+                                Response.ID = DistricttID;
+                            }
+                            else
+                            {
+                                Response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err25";
+                                error.ErrorMSG = "Failed To Insert this City !!";
+                                Response.Errors.Add(error);
+                            }
+                        }
+
+
+
+
+                    }
+                    ;
+
+
+                    //var CountryID = int.Parse(Request.ID.Split('-')[1]);
+
+
+
+
+
+
+                }
+
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException.Message;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
+        public BaseResponseWithID AddEditArea(AreaData request)
+        {
+            BaseResponseWithID Response = new BaseResponseWithID();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+                if (Response.Result)
+                {
+                    if (string.IsNullOrEmpty(request.Name))
+                    {
+                        Response.Result = false;
+                        Error error = new Error();
+                        error.ErrorCode = "Err25";
+                        error.ErrorMSG = "Area Name Is Mandatory";
+                        Response.Errors.Add(error);
+                    }
+                    if (Response.Result)
+                    {
+                        int DistrictRequestID = 0;
+
+
+
+
+                        int AreaID = 0;
+
+                        if (!string.IsNullOrEmpty(request.ID))
+                        {
+
+
+
+                            try
+                            {
+                                AreaID = int.Parse(request.ID);
+                            }
+                            catch (Exception ex)
+                            {
+                                Response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err-P12";
+                                error.ErrorMSG = "Please Insert A Valid Area ID ";
+                                Response.Errors.Add(error);
+                                return Response;
+
+                            }
+
+
+
+
+                        }
+                        try
+                        {
+                            DistrictRequestID = int.Parse(request.DistrictID);
+                        }
+                        catch (Exception)
+                        {
+                            Response.Result = false;
+                            Error error = new Error();
+                            error.ErrorCode = "Err-P12";
+                            error.ErrorMSG = "Please Insert A Valid Governorate ID ";
+                            Response.Errors.Add(error);
+                            return Response;
+
+                        }
+                        //var modifiedUser = Common.GetUserName(validation.userID, _Context);
+
+
+                        var AreaIDCheck = _unitOfWork.Areas.FindAll(x => x.Id == AreaID).FirstOrDefault();
+                        var DistrictIDCheck = _unitOfWork.Governorates.FindAll(x => x.Id == DistrictRequestID).FirstOrDefault();
+
+
+
+                        if (AreaID != 0)
+                        {
+
+                            if (AreaIDCheck != null)
+                            {
+                                if (DistrictIDCheck != null)
+                                {
+
+                                    var AreaDB = _unitOfWork.Areas.GetById((long)AreaID);
+                                    if (AreaDB != null)
+                                    {
+                                        AreaDB.Name = request.Name;
+                                        AreaDB.Description = request.Description;
+                                        AreaDB.DistrictId = DistrictRequestID;
+                                        AreaDB.ModifiedDate = DateTime.Now;
+                                        AreaDB.ModifiedBy = validation.userID;
+                                        var AreaDBUpdate = _unitOfWork.Complete();
+                                        if (AreaDBUpdate > 0)
+                                        {
+                                            Response.Result = true;
+                                            Response.ID = (long)AreaID;
+                                        }
+                                        else
+                                        {
+                                            Response.Result = false;
+                                            Error error = new Error();
+                                            error.ErrorCode = "Err25";
+                                            error.ErrorMSG = "Faild To Update this Area!!";
+                                            Response.Errors.Add(error);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Response.Result = false;
+                                        Error error = new Error();
+                                        error.ErrorCode = "Err25";
+                                        error.ErrorMSG = "This Area Doesn't Exist!!";
+                                        Response.Errors.Add(error);
+                                    }
+                                }
+                                else
+                                {
+                                    Response.Result = false;
+                                    Error error = new Error();
+                                    error.ErrorCode = "Err25";
+                                    error.ErrorMSG = "This Governorate Doesn't Exist!!";
+                                    Response.Errors.Add(error);
+
+                                }
+
+                            }
+                            else
+                            {
+                                Response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err25";
+                                error.ErrorMSG = "This Area Doesn't Exist!!";
+                                Response.Errors.Add(error);
+                            }
+
+                        }
+                        else
+                        {
+                            var area = new Area()
+                            {
+                                Name = request.Name,
+                                Description = request.Description,
+                                DistrictId = DistrictRequestID,
+                                ModifiedDate = DateTime.Now,
+                                ModifiedBy = validation.userID,
+                                CreatedBy = validation.userID,
+                                CreationDate = DateTime.Now,
+                            };
+                            _unitOfWork.Areas.Add(area);
+                            var AreaInserted = _unitOfWork.Complete();
+
+                            if (AreaInserted > 0)
+                            {
+                                var AreaaID = long.Parse(area.Id.ToString());
+                                Response.ID = AreaaID;
+                            }
+                            else
+                            {
+                                Response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err25";
+                                error.ErrorMSG = "Faild To Insert this Area !!";
+                                Response.Errors.Add(error);
+                            }
+                        }
+
+
+
+
+                    }
+                    ;
+
+                }
+
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException.Message;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
+        public BaseResponseWithID AddEditGeographicalName(GeographicalNameData request)
+        {
+            BaseResponseWithID Response = new BaseResponseWithID();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+                if (Response.Result)
+                {
+                    if (string.IsNullOrEmpty(request.Name))
+                    {
+                        Response.Result = false;
+                        Error error = new Error();
+                        error.ErrorCode = "Err25";
+                        error.ErrorMSG = "Geographical Name Is Mandatory";
+                        Response.Errors.Add(error);
+                    }
+                    if (Response.Result)
+                    {
+                        if (request.ID != 0)
+                        {
+                            var GeoName = _unitOfWork.GeographicalNames.GetById(request.ID);
+                            if (GeoName == null)
+                            {
+                                Response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err25";
+                                error.ErrorMSG = "Geographical Name is not found!";
+                                Response.Errors.Add(error);
+                            }
+                            Response.ID = GeoName.Id;
+                            if (request.Active)
+                            {
+                                GeoName.GeographicalName1 = request.Name;
+                            }
+                            else
+                            {
+                                _unitOfWork.GeographicalNames.Delete(GeoName);
+                            }
+                             _unitOfWork.Complete();
+                            
+                        }
+                        else
+                        {
+                            var GeoName = new GeographicalName()
+                            {
+                                GeographicalName1 = request.Name,
+                            };
+                            _unitOfWork.GeographicalNames.Add(GeoName);
+                            _unitOfWork.Complete();
+                            Response.ID = GeoName.Id;
+                        }
+                        
+                    }
+
+                }
+
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException.Message;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
         public async Task<GetRoleResponse> GetRole()
         {
             GetRoleResponse response = new GetRoleResponse();

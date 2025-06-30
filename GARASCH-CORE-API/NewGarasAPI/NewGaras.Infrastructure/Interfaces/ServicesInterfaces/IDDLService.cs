@@ -38,5 +38,7 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public SelectDDLResponse GetDistrictsDDL([FromHeader] int CityId);
 
         public SelectDDLResponse GetAreasDDL([FromHeader] int DistrictId);
+
+        public SelectDDLResponse GetGeographicalNamesDDL();
     }
 }

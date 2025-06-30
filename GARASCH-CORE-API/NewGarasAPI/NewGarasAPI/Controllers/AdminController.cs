@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using NewGaras.Domain.Models;
 using NewGaras.Infrastructure;
 using NewGaras.Infrastructure.DBContext;
+using NewGaras.Infrastructure.DTO.HrUser;
 using NewGaras.Infrastructure.Entities;
 using NewGaras.Infrastructure.Helper.TenantService;
 using NewGaras.Infrastructure.Models;
@@ -3538,7 +3539,7 @@ namespace NewGarasAPI.Controllers
         //        response.Errors = validation.errors;
         //        response.Result = validation.result;
 
-                
+
 
         //        if (response.Result)
         //        {
@@ -3556,7 +3557,7 @@ namespace NewGarasAPI.Controllers
 
         //        }
 
-                
+
 
         //        return response;
         //    }
@@ -3573,87 +3574,131 @@ namespace NewGarasAPI.Controllers
 
         //}
 
-        //[HttpPost("AddEditArea")]       //Service Added
-        //public BaseResponseWithID AddEditArea(AreaData request)
-        //{
-        //    BaseResponseWithID Response = new BaseResponseWithID();
-        //    Response.Result = true;
-        //    Response.Errors = new List<Error>();
-        //    try
-        //    {
-        //        //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
-        //        //WebHeaderCollection headers = request.Headers;
-        //        HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
-        //        Response.Errors = validation.errors;
-        //        Response.Result = validation.result;
+        [HttpPost("AddEditArea")]       //Service Added
+        public BaseResponseWithID AddEditArea(AreaData request)
+        {
+            BaseResponseWithID Response = new BaseResponseWithID();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+                //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
+                //WebHeaderCollection headers = request.Headers;
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                Response.Errors = validation.errors;
+                Response.Result = validation.result;
 
-        //        if (Response.Result)
-        //        {
+                if (Response.Result)
+                {
 
+                    _adminService.Validation = validation;
+                    var area = _adminService.AddEditArea(request);
+                    if (!area.Result)
+                    {
+                        Response.Result = false;
+                        Response.Errors.AddRange(area.Errors);
+                        return Response;
+                    }
+                    Response = area;
+                    return Response;
 
-        //            var area = _adminService.AddEditArea(request, validation.userID);
-        //            if (!area.Result)
-        //            {
-        //                Response.Result = false;
-        //                Response.Errors.AddRange(area.Errors);
-        //                return Response;
-        //            }
+                }
 
-        //            return Response;
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException.Message;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
 
-        //        }
+        [HttpPost("AddEditGeographicalName")]       //Service Added
+        public BaseResponseWithID AddEditGeographicalName(GeographicalNameData request)
+        {
+            BaseResponseWithID Response = new BaseResponseWithID();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+                //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
+                //WebHeaderCollection headers = request.Headers;
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                Response.Errors = validation.errors;
+                Response.Result = validation.result;
 
-        //        return Response;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Result = false;
-        //        Error error = new Error();
-        //        error.ErrorCode = "Err10";
-        //        error.ErrorMSG = ex.InnerException.Message;
-        //        Response.Errors.Add(error);
-        //        return Response;
-        //    }
-        //}
-        //[HttpPost("AddEditCountry")]        //Service Added
-        //public BaseResponseWithID AddEditCountry(CountryData request)
-        //{
-        //    BaseResponseWithID Response = new BaseResponseWithID();
-        //    Response.Result = true;
-        //    Response.Errors = new List<Error>();
-        //    try
-        //    {
-        //        //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
-        //        //WebHeaderCollection headers = request.Headers;
-        //        HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
-        //        Response.Errors = validation.errors;
-        //        Response.Result = validation.result;
+                if (Response.Result)
+                {
 
-        //        if (Response.Result)
-        //        {
-        //            var country = _adminService.AddEditCountry(request, validation.userID);
-        //            if (!country.Result)
-        //            {
-        //                Response.Result = false;
-        //                Response.Errors.AddRange(country.Errors);
-        //                return Response;
-        //            }
-        //            Response = country;
-        //            return Response;
-        //        }
+                    _adminService.Validation = validation;
+                    var area = _adminService.AddEditGeographicalName(request);
+                    if (!area.Result)
+                    {
+                        Response.Result = false;
+                        Response.Errors.AddRange(area.Errors);
+                        return Response;
+                    }
+                    Response = area;
+                    return Response;
 
-        //        return Response;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Result = false;
-        //        Error error = new Error();
-        //        error.ErrorCode = "Err10";
-        //        error.ErrorMSG = ex.InnerException.Message;
-        //        Response.Errors.Add(error);
-        //        return Response;
-        //    }
-        //}
+                }
+
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException.Message;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+        [HttpPost("AddEditCountry")]        //Service Added
+        public BaseResponseWithID AddEditCountry(CountryData request)
+        {
+            BaseResponseWithID Response = new BaseResponseWithID();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+                //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
+                //WebHeaderCollection headers = request.Headers;
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                Response.Errors = validation.errors;
+                Response.Result = validation.result;
+
+                if (Response.Result)
+                {
+                    _adminService.Validation = validation;
+                    var country = _adminService.AddEditCountry(request);
+                    if (!country.Result)
+                    {
+                        Response.Result = false;
+                        Response.Errors.AddRange(country.Errors);
+                        return Response;
+                    }
+                    Response = country;
+                    return Response;
+                }
+
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.Message;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
 
         [HttpPost("AddEditGovernorate")]       //under testing
         public BaseResponseWithID AddEditGovernorate(GovernorateData request)
@@ -3671,7 +3716,8 @@ namespace NewGarasAPI.Controllers
 
                 if (Response.Result)
                 {
-                    var Governorate = _adminService.AddEditGovernorate(request, validation.userID);
+                    _adminService.Validation = validation;
+                    var Governorate = _adminService.AddEditGovernorate(request);
                     if (!Governorate.Result)
                     {
                         Response.Result = false;
@@ -3680,6 +3726,84 @@ namespace NewGarasAPI.Controllers
                     }
 
                     Response = Governorate;
+                    return Response;
+                }
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException.Message;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
+        [HttpPost("AddEditCity")]       //under testing
+        public BaseResponseWithID AddEditCity(CityData request)
+        {
+            BaseResponseWithID Response = new BaseResponseWithID();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                Response.Errors = validation.errors;
+                Response.Result = validation.result;
+
+                if (Response.Result)
+                {
+                    _adminService.Validation = validation;
+                    var city = _adminService.AddEditCity(request);
+                    if (!city.Result)
+                    {
+                        Response.Result = false;
+                        Response.Errors.AddRange(city.Errors);
+                        return Response;
+                    }
+
+                    Response = city;
+                    return Response;
+                }
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException.Message;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
+        [HttpPost("AddEditDistrict")]       //under testing
+        public BaseResponseWithID AddEditDistrict(DistrictData request)
+        {
+            BaseResponseWithID Response = new BaseResponseWithID();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                Response.Errors = validation.errors;
+                Response.Result = validation.result;
+
+                if (Response.Result)
+                {
+                    _adminService.Validation = validation;
+                    var district = _adminService.AddEditDistrict(request);
+                    if (!district.Result)
+                    {
+                        Response.Result = false;
+                        Response.Errors.AddRange(district.Errors);
+                        return Response;
+                    }
+
+                    Response = district;
                     return Response;
                 }
                 return Response;
