@@ -109,6 +109,7 @@ builder.Services.AddScoped<ISupplierService,  SupplierService>();
 builder.Services.AddScoped<IApplicationVersionService,  ApplicationVersionService>();
 builder.Services.AddScoped<IFamilyService, FamilyService>();
 builder.Services.AddScoped<IChurchAndPriestService, ChurchAndPriestService>();
+builder.Services.AddScoped<IAssetDepreciationService,  AssetDepreciationService>();
 
 builder.Services.AddScoped<IWeekDayService , WeekDayService>();
 //-----------------------------------------------Medical------------------------------

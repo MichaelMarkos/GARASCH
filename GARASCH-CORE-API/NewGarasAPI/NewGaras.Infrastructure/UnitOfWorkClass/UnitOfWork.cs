@@ -375,6 +375,10 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<PersonStatus, int> PersonStatus { get; set; }
         public IBaseRepository<HrUserStatus, long> HrUserStatus { get; set; }
         public IBaseRepository<Relationship, int> Relationships { get; set;}
+
+        public IBaseRepository<ProductionUom, long> ProductionUoms { get; set; }
+        public IBaseRepository<DepreciationType, long> DepreciationTypes { get; set; }
+        public IBaseRepository<AssetDepreciation, long> AssetDepreciations {  get; set; }
         //-------------------------------------------------------------------------------------------------
 
         public IBaseRepository<OverTimeAndDeductionRate, long> OverTimeAndDeductionRates { get; private set; }
@@ -929,7 +933,10 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             Eparchies = new BaseRepository<Eparchy, int>(_context);
             PersonStatus = new BaseRepository<PersonStatus, int>(_context);
             HrUserStatus = new BaseRepository<HrUserStatus, long>(_context);
-            Relationships = new BaseRepository<Relationship, int> (_context ); 
+            Relationships = new BaseRepository<Relationship, int> (_context );
+            AssetDepreciations = new BaseRepository<AssetDepreciation, long>(_context);
+            DepreciationTypes = new BaseRepository<DepreciationType, long>(_context);
+            ProductionUoms = new BaseRepository<ProductionUom, long>(_context); 
             //-----------------------------------------------------HANY----------------------------------------------
             LaboratoryMessagesReports =new BaseRepository<LaboratoryMessagesReport , long>(_context);
             MaritalStatus=new BaseRepository<MaritalStatus , int>(_context);

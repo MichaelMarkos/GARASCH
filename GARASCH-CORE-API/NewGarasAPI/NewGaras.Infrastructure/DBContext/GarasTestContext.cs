@@ -47,6 +47,8 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<Area> Areas { get; set; }
 
+    public virtual DbSet<AssetDepreciation> AssetDepreciations { get; set; }
+
     public virtual DbSet<AttachmentCategory> AttachmentCategories { get; set; }
 
     public virtual DbSet<AttachmentType> AttachmentTypes { get; set; }
@@ -234,6 +236,8 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<DeliveryType> DeliveryTypes { get; set; }
 
     public virtual DbSet<Department> Departments { get; set; }
+
+    public virtual DbSet<DepreciationType> DepreciationTypes { get; set; }
 
     public virtual DbSet<District> Districts { get; set; }
 
@@ -546,6 +550,8 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<ProductGroup> ProductGroups { get; set; }
+
+    public virtual DbSet<ProductionUom> ProductionUoms { get; set; }
 
     public virtual DbSet<ProgressStatus> ProgressStatuses { get; set; }
 
@@ -1355,6 +1361,23 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.District).WithMany(p => p.Areas).HasConstraintName("FK_Area_District");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.AreaModifiedByNavigations).HasConstraintName("FK_Area_User1");
+        });
+
+        modelBuilder.Entity<AssetDepreciation>(entity =>
+        {
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.AssetDepreciationCreatedByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AssetDepreciation_Creator");
+
+            entity.HasOne(d => d.DepreciationType).WithMany(p => p.AssetDepreciations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AssetDepreciation_DepreciationType");
+
+            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.AssetDepreciationModifiedByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AssetDepreciation_ModifiedBy");
+
+            entity.HasOne(d => d.ProductionUom).WithMany(p => p.AssetDepreciations).HasConstraintName("FK_AssetDepreciation_ProductionUOM");
         });
 
         modelBuilder.Entity<AttachmentCategory>(entity =>
@@ -4298,6 +4321,17 @@ public partial class GarasTestContext : DbContext
                 .HasConstraintName("FK_ProductGroup_User");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProductGroupModifiedByNavigations).HasConstraintName("FK_ProductGroup_User1");
+        });
+
+        modelBuilder.Entity<ProductionUom>(entity =>
+        {
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProductionUomCreatedByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProductionUOM_CreatedBy");
+
+            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProductionUomModifiedByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProductionUOM_ModifiedBy");
         });
 
         modelBuilder.Entity<ProgressType>(entity =>

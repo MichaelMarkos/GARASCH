@@ -36,6 +36,9 @@ using MimeKit;
 using NewGaras.Domain.Models;
 using DocumentFormat.OpenXml.Bibliography;
 using Microsoft.Identity.Client;
+using NewGaras.Infrastructure.DTO.Family;
+using NewGaras.Infrastructure.DTO.AssetDepreciation;
+using NewGaras.Infrastructure.DTO.Family.Filters;
 
 namespace NewGarasAPI.Controllers
 {
@@ -50,8 +53,9 @@ namespace NewGarasAPI.Controllers
         public string CurrencyConvertorAddress;
         private readonly IWebHostEnvironment _host;
         private readonly ITenantService _tenantService; 
-        private readonly IAccountAndFinanceService _accountAndFinance; 
-        public AccountAndFinanceController(IWebHostEnvironment host,ITenantService tenantService,IAccountAndFinanceService accountAndFinance)
+        private readonly IAccountAndFinanceService _accountAndFinance;
+        private readonly IAssetDepreciationService _assetDepreciationService;
+        public AccountAndFinanceController(IWebHostEnvironment host,ITenantService tenantService,IAccountAndFinanceService accountAndFinance, IAssetDepreciationService assetDepreciationService)
         {
             _tenantService = tenantService;
             _Context = new GarasTestContext(_tenantService);
@@ -61,6 +65,7 @@ namespace NewGarasAPI.Controllers
             CurrencyConvertorAddress = "convert?format=json";
             _host = host;
             _accountAndFinance = accountAndFinance;
+            _assetDepreciationService = assetDepreciationService;
         }
 
         [HttpGet("GetAccountsAndFinanceIncomeStatment")]
@@ -2599,8 +2604,313 @@ namespace NewGarasAPI.Controllers
         }
 
 
+        //-------------------------------------AssetsDeprecition-------------------------------------------------------
 
+        [HttpPost("AddProductionUOM")]
+        public BaseResponseWithId<long> AddProductionUOM(AddProductionUOMDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
 
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _assetDepreciationService.AddProductionUOM(dto, validation.userID);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("EditProductionUOM")]
+        public BaseResponseWithId<long> EditProductionUOM(EditProductionUOMDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _assetDepreciationService.EditProductionUOM(dto, validation.userID);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetProductionUOMDDL")]
+        public SelectDDLResponse GetFamilyStatusDDL()
+        {
+            var response = new SelectDDLResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _assetDepreciationService.GetProductionUOMDDL();
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("AddDepreciationType")]
+        public BaseResponseWithId<long> AddDepreciationType(AddProductionUOMDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _assetDepreciationService.AddDepreciationType(dto, validation.userID);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("EditDepreciationType")]
+        public BaseResponseWithId<long> EditDepreciationType(EditProductionUOMDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _assetDepreciationService.EditDepreciationType(dto, validation.userID);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetDepreciationTypeDDL")]
+        public SelectDDLResponse GetDepreciationTypeDDL()
+        {
+            var response = new SelectDDLResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _assetDepreciationService.GetDepreciationTypeDDL();
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("AddAssetDepreciation")]
+        public BaseResponseWithId<long> AddAssetDepreciation(AddAssetDepreciationDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _assetDepreciationService.AddAssetDepreciation(dto, validation.userID);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+      
+        [HttpPost("EditAssetDepreciation")]
+        public BaseResponseWithId<long> EditAssetDepreciation(EditAssetDepreciationDTO dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _assetDepreciationService.EditAssetDepreciation(dto, validation.userID);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetAssetDepreciation")]
+        public BaseResponseWithData<List<GetAssetDepreciationDTO>> GetAssetDepreciation([FromHeader] GetAssetDepreciationFilters filters)
+        {
+            var response = new BaseResponseWithData<List<GetAssetDepreciationDTO>>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _assetDepreciationService.GetAssetDepreciation(filters);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
 
     }
 

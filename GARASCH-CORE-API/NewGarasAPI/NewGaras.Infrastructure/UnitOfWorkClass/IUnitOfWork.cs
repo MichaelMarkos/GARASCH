@@ -461,6 +461,9 @@ namespace NewGaras.Infrastructure
         IBaseRepository<PersonStatus, int> PersonStatus { get; }
         IBaseRepository<HrUserStatus, long> HrUserStatus { get; }
         IBaseRepository<Relationship, int> Relationships { get; }
+        IBaseRepository<AssetDepreciation, long> AssetDepreciations { get; }
+        IBaseRepository<ProductionUom, long> ProductionUoms { get; }
+        IBaseRepository<DepreciationType, long> DepreciationTypes { get; }
         //-----------------------------------------------------Hany-------------------------------------------------
         IBaseRepository<LaboratoryMessagesReport , long> LaboratoryMessagesReports { get; }
         IBaseRepository<MaritalStatus , int> MaritalStatus { get; }

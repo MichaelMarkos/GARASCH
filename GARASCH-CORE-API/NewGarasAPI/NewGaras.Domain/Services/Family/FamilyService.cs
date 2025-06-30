@@ -744,14 +744,11 @@ namespace NewGaras.Domain.Services.Family
             {
                 var familiesQueryable = _unitOfWork.Families.FindAllQueryable(a => true, new[] { "FamilyStatus" });       //new[] { "HrUser", "Family", "Family.FamilyStatus" });
 
-                //if(!string.IsNullOrEmpty(filters.familyName))
-                //{
-                //    familiesQueryable = familiesQueryable.Where(a => a.Family.FamilyName.Contains(filters.familyName));
-                //}
-                //if(filters.HrUserID != null)
-                //{
-                //    familiesQueryable = familiesQueryable.Where(a => a.HrUserId == filters.HrUserID);
-                //}
+                if (!string.IsNullOrEmpty(filters.familyName))
+                {
+                    familiesQueryable = familiesQueryable.Where(a => a.FamilyName.Contains(filters.familyName));
+                }
+                
                 //if(filters.ChurchOfHeadID != null)
                 //{
                 //    familiesQueryable = familiesQueryable.Where(a => a.HrUser.BelongToChurchId == filters.ChurchOfHeadID);
@@ -763,7 +760,10 @@ namespace NewGaras.Domain.Services.Family
 
                 var hruserFamiliesQueryable = _unitOfWork.HrUserFamilies.FindAll(a => familiesIDsList.Contains(a.FamilyId), new[] { "HrUser", "Family", "Family.FamilyStatus", "HrUser.BelongToChurch" });
                 //---------filters to be added here ----------------
-
+                if (filters.HeadOfTheFamilyID != null)
+                {
+                    hruserFamiliesQueryable = hruserFamiliesQueryable.Where(a => a.IsHeadOfTheFamily == true && a.HrUserId == filters.HeadOfTheFamilyID);
+                }
                 //--------------------------------------------------
 
                 var hruserFamiliesList = hruserFamiliesQueryable.ToList();
