@@ -13,7 +13,7 @@ namespace NewGaras.Infrastructure.DTO.Family.Filters
         [FromHeader]
         public long? ChurchOfHeadID { get; set; }
         [FromHeader]
-        public long? HrUserID { get; set; }
+        public long? HeadOfTheFamilyID { get; set; }
         [FromHeader]
         public int currentPage { get; set; } = 1;
         [FromHeader]

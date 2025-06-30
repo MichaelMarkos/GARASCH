@@ -119,6 +119,12 @@ public partial class User
     [InverseProperty("ModifiedByNavigation")]
     public virtual ICollection<Area> AreaModifiedByNavigations { get; set; } = new List<Area>();
 
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<AssetDepreciation> AssetDepreciationCreatedByNavigations { get; set; } = new List<AssetDepreciation>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<AssetDepreciation> AssetDepreciationModifiedByNavigations { get; set; } = new List<AssetDepreciation>();
+
     [InverseProperty("ApprovedByUser")]
     public virtual ICollection<Attendance> AttendanceApprovedByUsers { get; set; } = new List<Attendance>();
 
@@ -1107,6 +1113,12 @@ public partial class User
 
     [InverseProperty("ModifiedByNavigation")]
     public virtual ICollection<Product> ProductModifiedByNavigations { get; set; } = new List<Product>();
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<ProductionUom> ProductionUomCreatedByNavigations { get; set; } = new List<ProductionUom>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<ProductionUom> ProductionUomModifiedByNavigations { get; set; } = new List<ProductionUom>();
 
     [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<ProgressType> ProgressTypeCreatedByNavigations { get; set; } = new List<ProgressType>();
