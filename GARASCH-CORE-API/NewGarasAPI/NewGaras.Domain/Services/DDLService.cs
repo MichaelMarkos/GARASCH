@@ -548,5 +548,200 @@ namespace NewGaras.Domain.Services
             }
         }
 
+        public SelectDDLResponse GetCountriesDDL()
+        {
+            SelectDDLResponse Response = new SelectDDLResponse();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+
+                var DDLList = new List<SelectDDL>();
+                if (Response.Result)
+                {
+                    var ListDB = _unitOfWork.Countries.FindAll(x => true).ToList();
+                    if (ListDB.Count > 0)
+                    {
+                        foreach (var item in ListDB)
+                        {
+                            var DLLObj = new SelectDDL();
+                            DLLObj.ID = item.Id;
+                            DLLObj.Name = item.Name;
+
+                            DDLList.Add(DLLObj);
+                        }
+                    }
+                }
+                Response.DDLList = DDLList;
+                return Response;
+
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message; ;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
+        public SelectDDLResponse GetGovernoratesDDL([FromHeader] int CountryId)
+        {
+            SelectDDLResponse Response = new SelectDDLResponse();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+
+                var DDLList = new List<SelectDDL>();
+                if (Response.Result)
+                {
+                    var ListDB = _unitOfWork.Governorates.FindAll(x => x.CountryId == CountryId).ToList();
+                    if (ListDB.Count > 0)
+                    {
+                        foreach (var item in ListDB)
+                        {
+                            var DLLObj = new SelectDDL();
+                            DLLObj.ID = item.Id;
+                            DLLObj.Name = item.Name;
+
+                            DDLList.Add(DLLObj);
+                        }
+                    }
+                }
+                Response.DDLList = DDLList;
+                return Response;
+
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message; ;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
+        public SelectDDLResponse GetCitiesDDL([FromHeader] int GovernorateId)
+        {
+            SelectDDLResponse Response = new SelectDDLResponse();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+
+                var DDLList = new List<SelectDDL>();
+                if (Response.Result)
+                {
+                    var ListDB = _unitOfWork.City.FindAll(a=>a.GovernorateId == GovernorateId).ToList();
+                    if (ListDB.Count > 0)
+                    {
+                        foreach (var item in ListDB)
+                        {
+                            var DLLObj = new SelectDDL();
+                            DLLObj.ID = item.Id;
+                            DLLObj.Name = item.Name;
+
+                            DDLList.Add(DLLObj);
+                        }
+                    }
+                }
+                Response.DDLList = DDLList;
+                return Response;
+
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message; ;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
+        public SelectDDLResponse GetDistrictsDDL([FromHeader] int CityId)
+        {
+            SelectDDLResponse Response = new SelectDDLResponse();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+
+                var DDLList = new List<SelectDDL>();
+                if (Response.Result)
+                {
+                    var ListDB = _unitOfWork.Districts.FindAll(a => a.CityId==CityId).ToList();
+                    if (ListDB.Count > 0)
+                    {
+                        foreach (var item in ListDB)
+                        {
+                            var DLLObj = new SelectDDL();
+                            DLLObj.ID = item.Id;
+                            DLLObj.Name = item.DistrictName;
+
+                            DDLList.Add(DLLObj);
+                        }
+                    }
+                }
+                Response.DDLList = DDLList;
+                return Response;
+
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message; ;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
+        public SelectDDLResponse GetAreasDDL([FromHeader] int DistrictId)
+        {
+            SelectDDLResponse Response = new SelectDDLResponse();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+
+                var DDLList = new List<SelectDDL>();
+                if (Response.Result)
+                {
+                    var ListDB = _unitOfWork.Areas.FindAll(a => a.DistrictId == DistrictId).ToList();
+                    if (ListDB.Count > 0)
+                    {
+                        foreach (var item in ListDB)
+                        {
+                            var DLLObj = new SelectDDL();
+                            DLLObj.ID = item.Id;
+                            DLLObj.Name = item.Name;
+
+                            DDLList.Add(DLLObj);
+                        }
+                    }
+                }
+                Response.DDLList = DDLList;
+                return Response;
+
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message; ;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
     }
 }

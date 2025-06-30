@@ -13,7 +13,7 @@ namespace NewGaras.Infrastructure.DTO.HrUser
         public string HrUserName { get; set; }
         public long AttachmentTypeID { get; set; }
         public string AttachmentTypeName { get; set; }
-        public int AttachmentNumber { get; set; }
+        public string AttachmentNumber { get; set; }
 
         public string AttachmentPath { get; set; }
     }
