@@ -8,6 +8,7 @@ using NewGaras.Domain.Models;
 using NewGaras.Infrastructure.DTO.Family;
 using NewGaras.Infrastructure.DTO.ChurchAndPriest;
 using NewGaras.Infrastructure.DTO.ChurchAndPriest.Filters;
+using NewGaras.Infrastructure.Models;
 
 namespace NewGarasAPI.Controllers
 {
@@ -104,9 +105,9 @@ namespace NewGarasAPI.Controllers
         }
 
         [HttpGet("GetPriestList")]
-        public BaseResponseWithData<List<GetPriestsListDTO>> GetPriestList(GetPriestsListFilters filters)
+        public BaseResponseWithDataAndHeader<List<GetPriestsListDTO>> GetPriestList(GetPriestsListFilters filters)
         {
-            var response = new BaseResponseWithData<List<GetPriestsListDTO>>()
+            var response = new BaseResponseWithDataAndHeader<List<GetPriestsListDTO>>()
             {
                 Result = true,
                 Errors = new List<Error>()
@@ -206,9 +207,9 @@ namespace NewGarasAPI.Controllers
         }
 
         [HttpGet("GetChurchesList")]
-        public BaseResponseWithData<List<GetChurchesListDTO>> GetChurchesList(GetChurchsListFilters filters)
+        public BaseResponseWithDataAndHeader<List<GetChurchesListDTO>> GetChurchesList(GetChurchsListFilters filters)
         {
-            var response = new BaseResponseWithData<List<GetChurchesListDTO>>()
+            var response = new BaseResponseWithDataAndHeader<List<GetChurchesListDTO>>()
             {
                 Result = true,
                 Errors = new List<Error>()
@@ -341,5 +342,38 @@ namespace NewGarasAPI.Controllers
             }
         }
 
+        [HttpGet("GetEparchyWithChurch")]
+        public BaseResponseWithDataAndHeader<List<GetEparchyWithChurchDTO>> GetEparchyWithChurch(GetEparchyWithChurchFilters filters)
+        {
+            var response = new BaseResponseWithDataAndHeader<List<GetEparchyWithChurchDTO>>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _churchAndPriestService.GetEparchyWithChurch(filters);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
     }
 }

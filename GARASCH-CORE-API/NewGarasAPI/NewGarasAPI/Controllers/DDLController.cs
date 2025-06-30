@@ -498,5 +498,278 @@ namespace NewGarasAPI.Controllers
                 return BadRequest(Response);
             }
         }
+
+        [HttpGet("GetAttachmentTypeDDL")]
+        public SelectDDLResponse GetAttachmentTypeDDL()
+        {
+            var response = new SelectDDLResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                response.Errors = validation.errors;
+                response.Result = validation.result;
+                // without valdate
+                if (response.Result)
+                {
+                    var NationalityList = _ddlservice.GetAttachmentTypeDDL();
+                    if (!NationalityList.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(NationalityList.Errors);
+                        return response;
+                    }
+                    response = NationalityList;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetCountriesDDL")]
+        public SelectDDLResponse GetCountriesDDL()
+        {
+            var response = new SelectDDLResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                response.Errors = validation.errors;
+                response.Result = validation.result;
+                // without valdate
+                if (response.Result)
+                {
+                    var NationalityList = _ddlservice.GetCountriesDDL();
+                    if (!NationalityList.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(NationalityList.Errors);
+                        return response;
+                    }
+                    response = NationalityList;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetGovernoratesDDL")]
+        public SelectDDLResponse GetGovernoratesDDL([FromHeader] int CountryId)
+        {
+            var response = new SelectDDLResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                response.Errors = validation.errors;
+                response.Result = validation.result;
+                // without valdate
+                if (response.Result)
+                {
+                    var NationalityList = _ddlservice.GetGovernoratesDDL(CountryId);
+                    if (!NationalityList.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(NationalityList.Errors);
+                        return response;
+                    }
+                    response = NationalityList;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetCitiesDDL")]
+        public SelectDDLResponse GetCitiesDDL([FromHeader] int GovernorateId)
+        {
+            var response = new SelectDDLResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                response.Errors = validation.errors;
+                response.Result = validation.result;
+                // without valdate
+                if (response.Result)
+                {
+                    var NationalityList = _ddlservice.GetCitiesDDL(GovernorateId);
+                    if (!NationalityList.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(NationalityList.Errors);
+                        return response;
+                    }
+                    response = NationalityList;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetDistrictsDDL")]
+        public SelectDDLResponse GetDistrictsDDL([FromHeader] int CityId)
+        {
+            var response = new SelectDDLResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                response.Errors = validation.errors;
+                response.Result = validation.result;
+                // without valdate
+                if (response.Result)
+                {
+                    var NationalityList = _ddlservice.GetDistrictsDDL(CityId);
+                    if (!NationalityList.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(NationalityList.Errors);
+                        return response;
+                    }
+                    response = NationalityList;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetAreasDDL")]
+        public SelectDDLResponse GetAreasDDL([FromHeader] int DistrictId)
+        {
+            var response = new SelectDDLResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                response.Errors = validation.errors;
+                response.Result = validation.result;
+                // without valdate
+                if (response.Result)
+                {
+                    var NationalityList = _ddlservice.GetAreasDDL(DistrictId);
+                    if (!NationalityList.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(NationalityList.Errors);
+                        return response;
+                    }
+                    response = NationalityList;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetGeographicalNamesDDL")]
+        public SelectDDLResponse GetGeographicalNamesDDL()
+        {
+            var response = new SelectDDLResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                response.Errors = validation.errors;
+                response.Result = validation.result;
+                // without valdate
+                if (response.Result)
+                {
+                    var NationalityList = _ddlservice.GetGeographicalNamesDDL();
+                    if (!NationalityList.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(NationalityList.Errors);
+                        return response;
+                    }
+                    response = NationalityList;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
     }
 }

@@ -36,10 +36,10 @@ public partial class Governorate
     public int? OldId { get; set; }
 
     [InverseProperty("Governorate")]
-    public virtual ICollection<Area> Areas { get; set; } = new List<Area>();
+    public virtual ICollection<Branch> Branches { get; set; } = new List<Branch>();
 
     [InverseProperty("Governorate")]
-    public virtual ICollection<Branch> Branches { get; set; } = new List<Branch>();
+    public virtual ICollection<City> Cities { get; set; } = new List<City>();
 
     [InverseProperty("Governorate")]
     public virtual ICollection<ClientAddress> ClientAddresses { get; set; } = new List<ClientAddress>();

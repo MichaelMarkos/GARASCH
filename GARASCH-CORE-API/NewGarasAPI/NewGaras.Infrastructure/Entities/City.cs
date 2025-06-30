@@ -17,6 +17,16 @@ public partial class City
     [StringLength(50)]
     public string Name { get; set; }
 
+    [Column("GovernorateID")]
+    public int? GovernorateId { get; set; }
+
+    [InverseProperty("City")]
+    public virtual ICollection<District> Districts { get; set; } = new List<District>();
+
+    [ForeignKey("GovernorateId")]
+    [InverseProperty("Cities")]
+    public virtual Governorate Governorate { get; set; }
+
     [InverseProperty("City")]
     public virtual ICollection<HrUserAddress> HrUserAddresses { get; set; } = new List<HrUserAddress>();
 }

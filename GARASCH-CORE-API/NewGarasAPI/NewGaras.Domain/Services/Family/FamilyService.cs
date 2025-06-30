@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Spreadsheet;
 using NewGaras.Domain.Models;
 using NewGaras.Infrastructure;
+using NewGaras.Infrastructure.DTO;
 using NewGaras.Infrastructure.DTO.Family;
 using NewGaras.Infrastructure.DTO.Family.Filters;
 using NewGaras.Infrastructure.Entities;
@@ -291,7 +292,8 @@ namespace NewGaras.Domain.Services.Family
             {
                 var familyDB = _unitOfWork.Families.Find(a => a.Id == familyID, new[] { "FamilyStatus" });
 
-                
+                var hrusersInFamily = _unitOfWork.HrUserFamilies.FindAll(a => a.FamilyId == familyID, new[] { "Relationship", "HrUser" });
+
                 //var familiesList = new List<GetFamiliesListDTO>();
                 var familyData = new GetFamiliesListDTO()
                 {
@@ -300,6 +302,18 @@ namespace NewGaras.Domain.Services.Family
                     FamilyStatusID = familyDB.FamilyStatusId,
                     FamilyStatusName = familyDB.FamilyStatus.StatusName
                 };
+
+                var hruserList = hrusersInFamily.Select(a => new MembersOfFamilyDTO()
+                {
+                    ID = a.Id,
+                    Name = a.HrUser.FirstName +" "+a.HrUser.LastName,
+                    RelationID = a.RelationshipId??0,
+                    RelationName = a.Relationship?.RelationshipName,
+                    Active = a.Active,
+                    IsHeadOfTheFamily = a.IsHeadOfTheFamily,
+                }).ToList();
+
+                familyData.membersList = hruserList;
 
                 response.Data = familyData;
                 return response;
@@ -744,14 +758,11 @@ namespace NewGaras.Domain.Services.Family
             {
                 var familiesQueryable = _unitOfWork.Families.FindAllQueryable(a => true, new[] { "FamilyStatus" });       //new[] { "HrUser", "Family", "Family.FamilyStatus" });
 
-                //if(!string.IsNullOrEmpty(filters.familyName))
-                //{
-                //    familiesQueryable = familiesQueryable.Where(a => a.Family.FamilyName.Contains(filters.familyName));
-                //}
-                //if(filters.HrUserID != null)
-                //{
-                //    familiesQueryable = familiesQueryable.Where(a => a.HrUserId == filters.HrUserID);
-                //}
+                if (!string.IsNullOrEmpty(filters.familyName))
+                {
+                    familiesQueryable = familiesQueryable.Where(a => a.FamilyName.Contains(filters.familyName));
+                }
+                
                 //if(filters.ChurchOfHeadID != null)
                 //{
                 //    familiesQueryable = familiesQueryable.Where(a => a.HrUser.BelongToChurchId == filters.ChurchOfHeadID);
@@ -763,7 +774,10 @@ namespace NewGaras.Domain.Services.Family
 
                 var hruserFamiliesQueryable = _unitOfWork.HrUserFamilies.FindAll(a => familiesIDsList.Contains(a.FamilyId), new[] { "HrUser", "Family", "Family.FamilyStatus", "HrUser.BelongToChurch" });
                 //---------filters to be added here ----------------
-
+                if (filters.HeadOfTheFamilyID != null)
+                {
+                    hruserFamiliesQueryable = hruserFamiliesQueryable.Where(a => a.IsHeadOfTheFamily == true && a.HrUserId == filters.HeadOfTheFamilyID);
+                }
                 //--------------------------------------------------
 
                 var hruserFamiliesList = hruserFamiliesQueryable.ToList();

@@ -158,6 +158,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<HrUserPriest, long> HrUserPriests { get; private set;}
         public IBaseRepository<VBompartitionItemsInventoryItem, long> VBompartitionItemsInventoryItems { get; private set;}
         public IBaseRepository<VSalesOfferProductSalesOffer, long> VSalesOfferProductSalesOffers { get; private set;}
+        public IBaseRepository<AttachmentType, long> AttachmentTypes { get; private set;}
         public IBaseRepository<VInventoryInternalBackOrder, long> VInventoryInternalBackOrders { get; private set;}
         public IBaseRepository<VInventoryMatrialRelease, long> VInventoryMatrialReleases { get; private set;}
         public IBaseRepository<MaintenanceReport, long> MaintenanceReports { get; private set;}
@@ -182,6 +183,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<HrUserAddress, long> HrUserAddresses { get; private set;}
         public IBaseRepository<HrUserAttachment, long> HrUserAttachments { get; private set;}
         public IBaseRepository<HrUserSocialMedium, long> HrUserSocialMedias { get; private set;}
+        public IBaseRepository<District, long> Districts { get; private set;}
 
 
 
@@ -374,6 +376,10 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<PersonStatus, int> PersonStatus { get; set; }
         public IBaseRepository<HrUserStatus, long> HrUserStatus { get; set; }
         public IBaseRepository<Relationship, int> Relationships { get; set;}
+
+        public IBaseRepository<ProductionUom, long> ProductionUoms { get; set; }
+        public IBaseRepository<DepreciationType, long> DepreciationTypes { get; set; }
+        public IBaseRepository<AssetDepreciation, long> AssetDepreciations {  get; set; }
         //-------------------------------------------------------------------------------------------------
 
         public IBaseRepository<OverTimeAndDeductionRate, long> OverTimeAndDeductionRates { get; private set; }
@@ -483,6 +489,7 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<ClientInformation , int> clientInformations { get; private set; }
         public IBaseRepository<CostType, long> CostTypes { get; private set; }
         public IBaseRepository<MilitaryStatus, int> MilitaryStatuses { get; private set; }
+        public IBaseRepository<GeographicalName, long> GeographicalNames { get; private set; }
 
 
 
@@ -713,6 +720,8 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             HrUserSocialMedias = new BaseRepository<HrUserSocialMedium, long>(_context);
             HrUserLandLines = new BaseRepository<HrUserLandLine, long>(_context);
             HrUserPriests = new BaseRepository<HrUserPriest, long>(_context);
+            Districts = new BaseRepository<District, long>(_context);
+            GeographicalNames = new BaseRepository<GeographicalName, long>(_context);
 
             /*UserDeviceConnections = new BaseRepository<UserDeviceConnection, long>(_context);
             InventoryItems = new InventoryItemRepository(_context);
@@ -749,6 +758,7 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             AdvanciedSettingAccounts = new BaseRepository<AdvanciedSettingAccount,long>(_context);
             HrUserAddresses = new BaseRepository<HrUserAddress, long>(_context);
             HrUserMobiles = new BaseRepository<HrUserMobile, long>(_context);
+            AttachmentTypes = new BaseRepository<AttachmentType, long>(_context);
             /*HrWeekDay = new BaseRepository<HrWeekDay, int>(_context);
             Shift = new BaseRepository<Shift, int>(_context);
             Vacation = new BaseRepository<Vacation, int>(_context);
@@ -927,7 +937,10 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             Eparchies = new BaseRepository<Eparchy, int>(_context);
             PersonStatus = new BaseRepository<PersonStatus, int>(_context);
             HrUserStatus = new BaseRepository<HrUserStatus, long>(_context);
-            Relationships = new BaseRepository<Relationship, int> (_context ); 
+            Relationships = new BaseRepository<Relationship, int> (_context );
+            AssetDepreciations = new BaseRepository<AssetDepreciation, long>(_context);
+            DepreciationTypes = new BaseRepository<DepreciationType, long>(_context);
+            ProductionUoms = new BaseRepository<ProductionUom, long>(_context); 
             //-----------------------------------------------------HANY----------------------------------------------
             LaboratoryMessagesReports =new BaseRepository<LaboratoryMessagesReport , long>(_context);
             MaritalStatus=new BaseRepository<MaritalStatus , int>(_context);

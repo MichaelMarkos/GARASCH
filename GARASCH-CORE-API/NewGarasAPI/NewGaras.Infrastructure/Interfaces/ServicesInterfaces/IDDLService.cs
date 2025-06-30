@@ -26,5 +26,19 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public SelectDDLResponse GetNationalityDDL();
 
         public SelectDDLResponse GetMilitaryStatusDDL();
+
+        public SelectDDLResponse GetAttachmentTypeDDL();
+
+        public SelectDDLResponse GetCountriesDDL();
+
+        public SelectDDLResponse GetGovernoratesDDL([FromHeader] int CountryId);
+
+        public SelectDDLResponse GetCitiesDDL([FromHeader] int GovernorateId);
+
+        public SelectDDLResponse GetDistrictsDDL([FromHeader] int CityId);
+
+        public SelectDDLResponse GetAreasDDL([FromHeader] int DistrictId);
+
+        public SelectDDLResponse GetGeographicalNamesDDL();
     }
 }

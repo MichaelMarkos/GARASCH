@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using NewGaras.Domain.Models;
 using NewGaras.Infrastructure;
 using NewGaras.Infrastructure.DBContext;
+using NewGaras.Infrastructure.DTO.HrUser;
 using NewGaras.Infrastructure.Entities;
 using NewGaras.Infrastructure.Helper.TenantService;
 using NewGaras.Infrastructure.Models;
@@ -3045,58 +3046,58 @@ namespace NewGarasAPI.Controllers
             }
         }
 
-        [HttpGet("GetAreasList")]       //Service Added
-        public async Task<SelectDDLResponse> GetAreasList([FromHeader] int GovernorateId)
-        {
-            SelectDDLResponse response = new SelectDDLResponse();
-            response.Result = true;
-            response.Errors = new List<Error>();
+        //[HttpGet("GetAreasList")]       //Service Added
+        //public async Task<SelectDDLResponse> GetAreasList()
+        //{
+        //    SelectDDLResponse response = new SelectDDLResponse();
+        //    response.Result = true;
+        //    response.Errors = new List<Error>();
 
 
 
-            try
-            {
+        //    try
+        //    {
 
-                //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
-                //WebHeaderCollection headers = request.Headers;
-                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
-                response.Errors = validation.errors;
-                response.Result = validation.result;
-
-                
-
-                if (response.Result)
-                {
+        //        //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
+        //        //WebHeaderCollection headers = request.Headers;
+        //        HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+        //        response.Errors = validation.errors;
+        //        response.Result = validation.result;
 
 
-                    var areasList = await _adminService.GetAreasList(GovernorateId);
-                    if (!areasList.Result)
-                    {
-                        response.Result = false;
-                        response.Errors.AddRange(areasList.Errors);
-                        return response;
-                    }
-                    response = areasList;
-                    return response;
 
-                }
+        //        if (response.Result)
+        //        {
 
-                
 
-                return response;
-            }
-            catch (Exception ex)
-            {
-                response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException.Message;
-                response.Errors.Add(error);
+        //            var areasList = await _adminService.GetAreasList(GovernorateId);
+        //            if (!areasList.Result)
+        //            {
+        //                response.Result = false;
+        //                response.Errors.AddRange(areasList.Errors);
+        //                return response;
+        //            }
+        //            response = areasList;
+        //            return response;
 
-                return response;
-            }
+        //        }
 
-        }
+
+
+        //        return response;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.Result = false;
+        //        Error error = new Error();
+        //        error.ErrorCode = "Err10";
+        //        error.ErrorMSG = ex.InnerException.Message;
+        //        response.Errors.Add(error);
+
+        //        return response;
+        //    }
+
+        //}
 
         [HttpPost("AddEditArea")]       //Service Added
         public BaseResponseWithID AddEditArea(AreaData request)
@@ -3115,15 +3116,58 @@ namespace NewGarasAPI.Controllers
                 if (Response.Result)
                 {
 
-
-                    var area = _adminService.AddEditArea(request, validation.userID);
+                    _adminService.Validation = validation;
+                    var area = _adminService.AddEditArea(request);
                     if (!area.Result)
                     {
                         Response.Result = false;
                         Response.Errors.AddRange(area.Errors);
                         return Response;
                     }
+                    Response = area;
+                    return Response;
 
+                }
+
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException.Message;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
+        [HttpPost("AddEditGeographicalName")]       //Service Added
+        public BaseResponseWithID AddEditGeographicalName(GeographicalNameData request)
+        {
+            BaseResponseWithID Response = new BaseResponseWithID();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+                //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
+                //WebHeaderCollection headers = request.Headers;
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                Response.Errors = validation.errors;
+                Response.Result = validation.result;
+
+                if (Response.Result)
+                {
+
+                    _adminService.Validation = validation;
+                    var area = _adminService.AddEditGeographicalName(request);
+                    if (!area.Result)
+                    {
+                        Response.Result = false;
+                        Response.Errors.AddRange(area.Errors);
+                        return Response;
+                    }
+                    Response = area;
                     return Response;
 
                 }
@@ -3156,7 +3200,8 @@ namespace NewGarasAPI.Controllers
 
                 if (Response.Result)
                 {
-                    var country = _adminService.AddEditCountry(request, validation.userID);
+                    _adminService.Validation = validation;
+                    var country = _adminService.AddEditCountry(request);
                     if (!country.Result)
                     {
                         Response.Result = false;
@@ -3174,7 +3219,7 @@ namespace NewGarasAPI.Controllers
                 Response.Result = false;
                 Error error = new Error();
                 error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException.Message;
+                error.ErrorMSG = ex.Message;
                 Response.Errors.Add(error);
                 return Response;
             }
@@ -3196,7 +3241,8 @@ namespace NewGarasAPI.Controllers
 
                 if (Response.Result)
                 {
-                    var Governorate = _adminService.AddEditGovernorate(request, validation.userID);
+                    _adminService.Validation = validation;
+                    var Governorate = _adminService.AddEditGovernorate(request);
                     if (!Governorate.Result)
                     {
                         Response.Result = false;
@@ -3220,105 +3266,183 @@ namespace NewGarasAPI.Controllers
             }
         }
 
-        [HttpGet("GetCountryGovernorateArea")]      //Service Added
-        public async Task<GetCountryGovernorateAreaResponse> GetCountryGovernorateArea([FromHeader] bool allData = true)
+        [HttpPost("AddEditCity")]       //under testing
+        public BaseResponseWithID AddEditCity(CityData request)
         {
-            GetCountryGovernorateAreaResponse response = new GetCountryGovernorateAreaResponse();
-            response.Result = true;
-            response.Errors = new List<Error>();
-
-
-
+            BaseResponseWithID Response = new BaseResponseWithID();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
             try
             {
-
-                //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
-                //WebHeaderCollection headers = request.Headers;
                 HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
-                response.Errors = validation.errors;
-                response.Result = validation.result;
+                Response.Errors = validation.errors;
+                Response.Result = validation.result;
 
-                //var GetCountryGovernorateAreaResponseList = new List<TreeViewCountr>();
-                /*bool allData = true;
-                if (!string.IsNullOrEmpty(headers["allData"]) && bool.TryParse(headers["allData"], out allData))
+                if (Response.Result)
                 {
-                    bool.TryParse(headers["allData"], out allData);
-                }*/
-
-
-
-
-                if (response.Result)
-                {
-                    #region old code
-                    //var ClientAddressList = await _Context.ClientAddresses.Where(x => x.Active == true).ToListAsync();
-
-                    //var Countries = await _Context.Countries.ToListAsync();
-
-                    //var TreeDtoObj = Countries.Select(c => new TreeViewCountr
-                    //{
-                    //    id = "Country-" + c.Id.ToString(),
-                    //    title = c.Name,
-                    //    parentId = "",
-                    //    CountOfClient = ClientAddressList.Where(x => x.CountryId == c.Id).Select(x => x.ClientId).Distinct().Count()
-                    //}).ToList();
-
-                    //var Govenorates = await _Context.Governorates.ToListAsync();
-                    //var GovernorateDto = Govenorates.Select(c => new TreeViewCountr
-                    //{
-                    //    id = "Governorate-" + c.Id.ToString(),
-                    //    title = c.Name,
-                    //    parentId = "Country-" + c.CountryId.ToString(),
-                    //    CountOfClient = ClientAddressList.Where(x => x.GovernorateId == c.Id).Select(x => x.ClientId).Distinct().Count()
-                    //}).ToList();
-
-                    //TreeDtoObj.AddRange(GovernorateDto);
-
-
-                    //var Areas = await _Context.Areas.ToListAsync();
-                    //var AreasDto = Areas.Select(c => new TreeViewCountr
-                    //{
-                    //    id = "Area-" + c.Id.ToString(),
-                    //    title = c.Name,
-                    //    parentId = "Governorate-" + c.GovernorateId.ToString()
-                    //    ,
-                    //    CountOfClient = ClientAddressList.Where(x => x.AreaId == c.Id).Select(x => x.ClientId).Distinct().Count()
-                    //}).ToList();
-
-                    //TreeDtoObj.AddRange(AreasDto);
-                    //if (!allData)
-                    //{
-                    //    TreeDtoObj = TreeDtoObj.Where(x => x.CountOfClient > 0).ToList();
-
-                    //}
-                    //var trees = Common.BuildTreeViews("", TreeDtoObj);
-                    //response.GetCountryGovernorateAreaResponseList = trees;
-                    #endregion
-                    var CountryGovernorateArea =await _adminService.GetCountryGovernorateArea(allData);
-                    if (!CountryGovernorateArea.Result)
+                    _adminService.Validation = validation;
+                    var city = _adminService.AddEditCity(request);
+                    if (!city.Result)
                     {
-                        response.Result = false;
-                        response.Errors.AddRange(CountryGovernorateArea.Errors);
-                        return response;
+                        Response.Result = false;
+                        Response.Errors.AddRange(city.Errors);
+                        return Response;
                     }
-                    response = CountryGovernorateArea;
-                    return response;
-                }
 
-                return response;
+                    Response = city;
+                    return Response;
+                }
+                return Response;
             }
             catch (Exception ex)
             {
-                response.Result = false;
+                Response.Result = false;
                 Error error = new Error();
                 error.ErrorCode = "Err10";
                 error.ErrorMSG = ex.InnerException.Message;
-                response.Errors.Add(error);
-
-                return response;
+                Response.Errors.Add(error);
+                return Response;
             }
-
         }
+
+        [HttpPost("AddEditDistrict")]       //under testing
+        public BaseResponseWithID AddEditDistrict(DistrictData request)
+        {
+            BaseResponseWithID Response = new BaseResponseWithID();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                Response.Errors = validation.errors;
+                Response.Result = validation.result;
+
+                if (Response.Result)
+                {
+                    _adminService.Validation = validation;
+                    var district = _adminService.AddEditDistrict(request);
+                    if (!district.Result)
+                    {
+                        Response.Result = false;
+                        Response.Errors.AddRange(district.Errors);
+                        return Response;
+                    }
+
+                    Response = district;
+                    return Response;
+                }
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException.Message;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
+        //[HttpGet("GetCountryGovernorateArea")]      //Service Added
+        //public async Task<GetCountryGovernorateAreaResponse> GetCountryGovernorateArea([FromHeader] bool allData = true)
+        //{
+        //    GetCountryGovernorateAreaResponse response = new GetCountryGovernorateAreaResponse();
+        //    response.Result = true;
+        //    response.Errors = new List<Error>();
+
+
+
+        //    try
+        //    {
+
+        //        //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
+        //        //WebHeaderCollection headers = request.Headers;
+        //        HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+        //        response.Errors = validation.errors;
+        //        response.Result = validation.result;
+
+        //        //var GetCountryGovernorateAreaResponseList = new List<TreeViewCountr>();
+        //        /*bool allData = true;
+        //        if (!string.IsNullOrEmpty(headers["allData"]) && bool.TryParse(headers["allData"], out allData))
+        //        {
+        //            bool.TryParse(headers["allData"], out allData);
+        //        }*/
+
+
+
+
+        //        if (response.Result)
+        //        {
+        //            #region old code
+        //            //var ClientAddressList = await _Context.ClientAddresses.Where(x => x.Active == true).ToListAsync();
+
+        //            //var Countries = await _Context.Countries.ToListAsync();
+
+        //            //var TreeDtoObj = Countries.Select(c => new TreeViewCountr
+        //            //{
+        //            //    id = "Country-" + c.Id.ToString(),
+        //            //    title = c.Name,
+        //            //    parentId = "",
+        //            //    CountOfClient = ClientAddressList.Where(x => x.CountryId == c.Id).Select(x => x.ClientId).Distinct().Count()
+        //            //}).ToList();
+
+        //            //var Govenorates = await _Context.Governorates.ToListAsync();
+        //            //var GovernorateDto = Govenorates.Select(c => new TreeViewCountr
+        //            //{
+        //            //    id = "Governorate-" + c.Id.ToString(),
+        //            //    title = c.Name,
+        //            //    parentId = "Country-" + c.CountryId.ToString(),
+        //            //    CountOfClient = ClientAddressList.Where(x => x.GovernorateId == c.Id).Select(x => x.ClientId).Distinct().Count()
+        //            //}).ToList();
+
+        //            //TreeDtoObj.AddRange(GovernorateDto);
+
+
+        //            //var Areas = await _Context.Areas.ToListAsync();
+        //            //var AreasDto = Areas.Select(c => new TreeViewCountr
+        //            //{
+        //            //    id = "Area-" + c.Id.ToString(),
+        //            //    title = c.Name,
+        //            //    parentId = "Governorate-" + c.GovernorateId.ToString()
+        //            //    ,
+        //            //    CountOfClient = ClientAddressList.Where(x => x.AreaId == c.Id).Select(x => x.ClientId).Distinct().Count()
+        //            //}).ToList();
+
+        //            //TreeDtoObj.AddRange(AreasDto);
+        //            //if (!allData)
+        //            //{
+        //            //    TreeDtoObj = TreeDtoObj.Where(x => x.CountOfClient > 0).ToList();
+
+        //            //}
+        //            //var trees = Common.BuildTreeViews("", TreeDtoObj);
+        //            //response.GetCountryGovernorateAreaResponseList = trees;
+        //            #endregion
+        //            var CountryGovernorateArea =await _adminService.GetCountryGovernorateArea(allData);
+        //            if (!CountryGovernorateArea.Result)
+        //            {
+        //                response.Result = false;
+        //                response.Errors.AddRange(CountryGovernorateArea.Errors);
+        //                return response;
+        //            }
+        //            response = CountryGovernorateArea;
+        //            return response;
+        //        }
+
+        //        return response;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.Result = false;
+        //        Error error = new Error();
+        //        error.ErrorCode = "Err10";
+        //        error.ErrorMSG = ex.InnerException.Message;
+        //        response.Errors.Add(error);
+
+        //        return response;
+        //    }
+
+        //}
 
         [HttpPost("AddEditRole")]        //Service Added
         public BaseResponseWithId<long> AddEditRole(RoleData request)

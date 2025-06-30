@@ -17,6 +17,16 @@ public partial class District
     [StringLength(250)]
     public string DistrictName { get; set; }
 
+    [Column("CityID")]
+    public int? CityId { get; set; }
+
+    [InverseProperty("District")]
+    public virtual ICollection<Area> Areas { get; set; } = new List<Area>();
+
+    [ForeignKey("CityId")]
+    [InverseProperty("Districts")]
+    public virtual City City { get; set; }
+
     [InverseProperty("District")]
     public virtual ICollection<HrUserAddress> HrUserAddresses { get; set; } = new List<HrUserAddress>();
 }

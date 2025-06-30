@@ -161,6 +161,9 @@ namespace NewGaras.Infrastructure
         IBaseRepository<HrUserPriest, long> HrUserPriests { get; }
         IBaseRepository<SalesBranchTarget, long> SalesBranchTargets { get; }
         IBaseRepository<SalesBranchProductTarget, long> SalesBranchProductTargets { get; }
+        IBaseRepository<AttachmentType, long> AttachmentTypes { get; }
+        IBaseRepository<District, long> Districts { get; }
+        IBaseRepository<GeographicalName, long> GeographicalNames { get; }
         IBaseRepository<VehicleColor, int> VehicleColors { get; }
         IBaseRepository<VehicleTransmission, int> VehicleTransmissions { get; }
         IBaseRepository<VehicleWheelsDrive, int> VehicleWheelsDrives { get; }
@@ -460,6 +463,9 @@ namespace NewGaras.Infrastructure
         IBaseRepository<PersonStatus, int> PersonStatus { get; }
         IBaseRepository<HrUserStatus, long> HrUserStatus { get; }
         IBaseRepository<Relationship, int> Relationships { get; }
+        IBaseRepository<AssetDepreciation, long> AssetDepreciations { get; }
+        IBaseRepository<ProductionUom, long> ProductionUoms { get; }
+        IBaseRepository<DepreciationType, long> DepreciationTypes { get; }
         //-----------------------------------------------------Hany-------------------------------------------------
         IBaseRepository<LaboratoryMessagesReport , long> LaboratoryMessagesReports { get; }
         IBaseRepository<MaritalStatus , int> MaritalStatus { get; }

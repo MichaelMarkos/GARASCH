@@ -378,7 +378,7 @@ namespace NewGaras.Domain.Services
             }
         }
 
-        public async Task<BaseResponse> AddAddressToHrUser(List<HrUserAddressDto> dtos)
+        public async Task<BaseResponse> AddAddressToHrUser(AddHrUserAddessList dtos)
         {
             var response = new BaseResponse()
             {
@@ -387,7 +387,7 @@ namespace NewGaras.Domain.Services
             };
             try
             {
-                if (dtos.Count < 0)
+                if (dtos.Addresses.Count < 0)
                 {
                     response.Result = false;
                     Error err = new Error();
@@ -396,7 +396,7 @@ namespace NewGaras.Domain.Services
                     response.Errors.Add(err);
                     return response;
                 }
-                foreach (var address in dtos)
+                foreach (var address in dtos.Addresses)
                 {
                     var ad = _mapper.Map<HrUserAddress>(address);
                     ad.HrUserId = address.HrUserID;
@@ -1139,6 +1139,46 @@ namespace NewGaras.Domain.Services
                         response.Data.LandLines = GetHrUserLandLines(HrUserId).Result;
                         response.Data.SocialMedias = GetHrUserSocialMedia(HrUserId).Result;
                         response.Data.Email = User.Email;
+                    }
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public async Task<BaseResponseWithData<List<GetHrUserAttachmentDto>>> GetHrUserAttachments(long HrUserId)
+        {
+            var response = new BaseResponseWithData<List<GetHrUserAttachmentDto>>();
+            response.Result = true;
+            response.Errors = new List<Error>();
+            try
+            {
+                if (response.Result)
+                {
+                    if (HrUserId != 0)
+                    {
+                        response.Data = new List<GetHrUserAttachmentDto>();
+                        var User = await _unitOfWork.HrUsers.GetByIdAsync(HrUserId);
+                        if (User == null)
+                        {
+                            response.Result = false;
+                            Error err = new Error();
+                            err.ErrorCode = "E-1";
+                            err.errorMSG = "This HR User Id is not found ";
+                            response.Errors.Add(err);
+                            return response;
+                        }
+                        var list = _unitOfWork.HrUserAttachments.FindAll(a => a.HrUserId == User.Id, includes: new[] { "AttachmentType" }).ToList();
+                        var finalList = _mapper.Map<List<GetHrUserAttachmentDto>>(list);
+                        response.Data = finalList;
                     }
                 }
                 return response;
