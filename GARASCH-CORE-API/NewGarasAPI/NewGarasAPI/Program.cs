@@ -98,7 +98,6 @@ builder.Services.AddScoped<IEmailToolService,  EmailToolService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IPurchesRequestService, PurchesRequestService>();
 builder.Services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
-builder.Services.AddScoped<ICrmService, CrmService>();
 builder.Services.AddScoped<IInternalTicketService, InternalTicketService>();
 builder.Services.AddScoped<INotificationSubscriptionService, NotificationSubscriptionService>();
 builder.Services.AddSingleton<IGraphAuthService, GraphAuthService>();

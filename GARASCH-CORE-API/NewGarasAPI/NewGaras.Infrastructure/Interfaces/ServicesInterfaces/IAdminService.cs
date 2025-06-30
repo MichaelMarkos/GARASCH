@@ -29,10 +29,6 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public Task<BaseResponseWithID> AddEditIncomeType(IncomeTypeData request, long UserID);
         public Task<GetShippingMethodResponse> GetShippingMethod();
         public Task<BaseResponseWithID> AddEditShippingMethod(ShippingMethodData request);
-        public Task<GetCRMContactTypeResponse> GetCRMContactType();
-        public BaseResponseWithID AddEditCRMContactType(CRMContactTypeData request, long UserID);
-        public Task<GetCRMRecievedTypeResponse> GetCRMRecievedType();
-        public BaseResponseWithID AddEditCRMRecievedType(CRMRecievedTypeData request, long UserId);
         public Task<GetDailyReportThroughResponse> GetDailyReportThrough();
         public BaseResponseWithID AddEditDailyReportThrough(DailyReportThroughData request, long UserID);
         public Task<GetDeliveryAndShippingMethodResponse> GetDeliveryAndShippingMethod();
