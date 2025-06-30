@@ -9,6 +9,7 @@ namespace NewGaras.Infrastructure.DTO.AssetDepreciation
     public class AddAssetDepreciationDTO
     {
         public long DepreciationTypeId { get; set; }
+        public long AccountID { get; set; }
         public decimal CostOfAssets { get; set; }
         public string YearOfPurchase { get; set; }
         public decimal? ResidualValue { get; set; }

@@ -39,6 +39,9 @@ public partial class AssetDepreciation
     [Column(TypeName = "decimal(18, 2)")]
     public decimal RealCost { get; set; }
 
+    [Column("AccountID")]
+    public long AccountId { get; set; }
+
     public long CreatedBy { get; set; }
 
     [Column(TypeName = "datetime")]
@@ -48,6 +51,10 @@ public partial class AssetDepreciation
 
     [Column(TypeName = "datetime")]
     public DateTime ModifiedDate { get; set; }
+
+    [ForeignKey("AccountId")]
+    [InverseProperty("AssetDepreciations")]
+    public virtual Account Account { get; set; }
 
     [ForeignKey("CreatedBy")]
     [InverseProperty("AssetDepreciationCreatedByNavigations")]
