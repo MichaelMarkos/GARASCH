@@ -95,6 +95,9 @@ public partial class Account
     public virtual ICollection<AdvanciedSettingAccount> AdvanciedSettingAccounts { get; set; } = new List<AdvanciedSettingAccount>();
 
     [InverseProperty("Account")]
+    public virtual ICollection<AssetDepreciation> AssetDepreciations { get; set; } = new List<AssetDepreciation>();
+
+    [InverseProperty("Account")]
     public virtual ICollection<ClientAccount> ClientAccounts { get; set; } = new List<ClientAccount>();
 
     [InverseProperty("Account")]

@@ -301,7 +301,29 @@ namespace NewGaras.Domain.Services
                 return response;
             }
 
-            if(dto.ProductionUOMID != null)
+            var account = _unitOfWork.Accounts.GetById(dto.AccountID);
+            if (account == null)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E101";
+                err.ErrorMSG = "No Account with this ID";
+                response.Errors.Add(err);
+                return response;
+            }
+
+            if(account.Haveitem == true || account.AccountCategoryId == 1)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E101";
+                err.ErrorMSG = "you don't have permission ";
+                response.Errors.Add(err);
+                return response;
+            }
+
+
+            if (dto.ProductionUOMID != null)
             {
 
                 var productionUOM = _unitOfWork.ProductionUoms.GetById(dto.ProductionUOMID??0);
@@ -340,6 +362,7 @@ namespace NewGaras.Domain.Services
                     ProductionUomid = dto.ProductionUOMID,
                     ProductionUomcount = dto.ProductionUOMCount,
                     RealCost = dto.RealCost,
+                    AccountId = dto.AccountID,
                     CreatedBy = creatorID,
                     CreationDate = DateTime.Now,
                     ModifiedBy = creatorID,

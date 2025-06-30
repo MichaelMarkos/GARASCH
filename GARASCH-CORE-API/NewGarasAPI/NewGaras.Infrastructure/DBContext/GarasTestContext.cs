@@ -1365,6 +1365,10 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<AssetDepreciation>(entity =>
         {
+            entity.HasOne(d => d.Account).WithMany(p => p.AssetDepreciations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AssetDepreciation_Accounts");
+
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.AssetDepreciationCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_AssetDepreciation_Creator");
