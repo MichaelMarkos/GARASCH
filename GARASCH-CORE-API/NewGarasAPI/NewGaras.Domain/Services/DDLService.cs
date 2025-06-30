@@ -743,5 +743,44 @@ namespace NewGaras.Domain.Services
             }
         }
 
+        public SelectDDLResponse GetGeographicalNamesDDL()
+        {
+            SelectDDLResponse Response = new SelectDDLResponse();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+
+                var DDLList = new List<SelectDDL>();
+                if (Response.Result)
+                {
+                    var ListDB = _unitOfWork.GeographicalNames.FindAll(a =>true).ToList();
+                    if (ListDB.Count > 0)
+                    {
+                        foreach (var item in ListDB)
+                        {
+                            var DLLObj = new SelectDDL();
+                            DLLObj.ID = item.Id;
+                            DLLObj.Name = item.GeographicalName1;
+
+                            DDLList.Add(DLLObj);
+                        }
+                    }
+                }
+                Response.DDLList = DDLList;
+                return Response;
+
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message; ;
+                Response.Errors.Add(error);
+                return Response;
+            }
+        }
+
     }
 }
