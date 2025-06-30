@@ -1835,7 +1835,10 @@ namespace NewGaras.Domain.Services
                         HrUser.MiddleName = MiddleName;
                         //HrUser.IsUser = NewHrData
                         //HrUser.Mobile = NewHrData.Mobile;
-                        HrUser.Email = NewHrData.Email.ToLower();
+                        if (NewHrData.Email != null)
+                        {
+                            HrUser.Email = NewHrData.Email.ToLower();
+                        }
                         HrUser.Gender = NewHrData.Gender;
                         //------------------------------CanBeNull-------------------
                         HrUser.ArfirstName = NewHrData.ARFirstName;

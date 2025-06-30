@@ -70,8 +70,6 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
 
         public BaseMessageResponse GetAccountAnnualReportPDF(string companyname,[FromHeader] int year = 0, [FromHeader] string AccountID = null);
 
-        public Task<BaseMessageResponse> BalanceSheetPDF([FromHeader] AccountTreeExcelHeader header,long userID, string companyname);
-
         public Task<BaseMessageResponse> JournalEntryPDFReport(string companyname,[FromHeader] long DailyJournalEntryID = 0);
 
         public BaseMessageResponse AccountMovementReports([FromHeader] AccountMovementReportsHeader header, HttpRequest Request);
