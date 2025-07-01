@@ -305,7 +305,7 @@ namespace NewGaras.Domain.Services.Family
 
                 var hruserList = hrusersInFamily.Select(a => new MembersOfFamilyDTO()
                 {
-                    ID = a.Id,
+                    ID = a.HrUserId,
                     Name = a.HrUser.FirstName +" "+a.HrUser.LastName,
                     RelationID = a.RelationshipId??0,
                     RelationName = a.Relationship?.RelationshipName,

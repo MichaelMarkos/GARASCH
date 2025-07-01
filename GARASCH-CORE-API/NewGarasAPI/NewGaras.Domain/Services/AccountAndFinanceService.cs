@@ -6282,6 +6282,7 @@ namespace NewGaras.Domain.Services
             response.Errors = new List<Error>();
             try
             {
+                
                 DateTime CurrentEndYear = new DateTime(DateTime.Now.Year + 1, 1, 1);
                 if (!string.IsNullOrEmpty(DateTo) && DateTime.TryParse(DateTo, out CurrentEndYear))
                 {
@@ -6308,6 +6309,13 @@ namespace NewGaras.Domain.Services
                     var ParentAccountList = AccountTreeList.Where(x => x.ParentCategory == 0).ToList();
                     //var AccountMovementList = _Context.STP_AccountMovement(CalcWithoutPrivate, OrderByCreationDate).ToList();
                     //var AccountMovementListaaa = AccountMovementList.Where(x=>x.ID == 227).ToList();
+                    //-------------check if account has AssetDepreciation-----------------------------
+                    var accountsIDsList = ParentAccountList.Select(a => a.Id).ToList();
+                    var assetDepreciation = _unitOfWork.AssetDepreciations.FindAll(a => accountsIDsList.Contains(a.AccountId)).ToList();
+
+                    //--------------------------------------------------------------------------------
+
+                    
                     var TreeDtoObj = ParentAccountList.Select(c => new TreeViewAccount
                     {
                         id = c.Id.ToString(),
@@ -6324,7 +6332,8 @@ namespace NewGaras.Domain.Services
                         Active = c.Active,
                         AdvanciedTypeId = c.AdvanciedTypeId,
                         AdvanciedTypeName = c.AdvanciedTypeName,
-                        DataLevel = c.DataLevel
+                        DataLevel = c.DataLevel,
+                        HasDuplicate = assetDepreciation.Where(a => a.AccountId == c.Id).FirstOrDefault() == null ? false : true
                     }).Distinct().ToList();
 
 

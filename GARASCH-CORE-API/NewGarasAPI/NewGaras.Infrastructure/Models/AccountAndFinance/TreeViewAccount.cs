@@ -21,5 +21,7 @@
 
         // for test 
         public List<AccumulativePerMonth> AccumulativePerMonth { get; set; }
+
+        public bool HasDuplicate { get; set; }
     }
 }
