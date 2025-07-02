@@ -2839,43 +2839,7 @@ namespace NewGaras.Domain.Services
             }
         }
 
-        public async Task<GetCalcDetailsResponse> GetCalcPODetails([FromHeader] long POId = 0)
-        {
-            GetCalcDetailsResponse Response = new GetCalcDetailsResponse();
-            Response.Result = true;
-            Response.Errors = new List<Error>();
-            try
-            {
-                if (Response.Result)
-                {
-                    // Check if Project exist 
-                    var POObjDB = _unitOfWork.PurchasePos.FindAllAsync(x => x.Id == POId && x.Active == true, includes: new[] { "PurchasePoinvoices" }).Result.FirstOrDefault();
-                    if (POObjDB == null)
-                    {
-                        Response.Result = false;
-                        Error error = new Error();
-                        error.ErrorCode = "Err-P212";
-                        error.ErrorMSG = "Invalid PO Id";
-                        Response.Errors.Add(error);
-                        return Response;
-                    }
-                    Response.TotalCollected = POObjDB.SupplierAccounts.Select(x => x.Amount).Sum();
-                    Response.TotalAmount = POObjDB.PurchasePoinvoices.Select(x => x.TotalInvoiceCost).Sum() ?? 0;
-                    Response.Remain = Response.TotalAmount > Response.TotalCollected ? Response.TotalAmount - Response.TotalCollected : 0;
-                }
-                return Response;
-
-            }
-            catch (Exception ex)
-            {
-                Response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
-                Response.Errors.Add(error);
-                return Response;
-            }
-        }
+       
 
         public async Task<DailyJournalEntryDiviededResponse> GetDailyJournalEntryWithFilterList([FromHeader] GetDailyJournalEntryWithFilterListHeader header)
         {
@@ -4315,52 +4279,6 @@ namespace NewGaras.Domain.Services
             }
         }
 
-        public async Task<GetCalcDetailsResponse> GetCalcSupplierCollectedDetails([FromHeader] long SupplierId = 0)
-        {
-            GetCalcDetailsResponse Response = new GetCalcDetailsResponse();
-            Response.Result = true;
-            Response.Errors = new List<Error>();
-            try
-            {
-                if (Response.Result)
-                {
-                    if (SupplierId == 0)
-                    {
-                        Response.Result = false;
-                        Error error = new Error();
-                        error.ErrorCode = "Err-P112";
-                        error.ErrorMSG = "Invalid Supplier Id";
-                        Response.Errors.Add(error);
-                        return Response;
-                    }
-                    var SupplierObjDB = _unitOfWork.Suppliers.FindAll(x => x.Id == SupplierId).FirstOrDefault();
-                    if (SupplierObjDB == null)
-                    {
-                        Response.Result = false;
-                        Error error = new Error();
-                        error.ErrorCode = "Err-P212";
-                        error.ErrorMSG = "Invalid Supplier Id";
-                        Response.Errors.Add(error);
-                        return Response;
-                    }
-                    var TotalPOAmount = SupplierObjDB.PurchasePos.Sum(x => x.PurchasePoinvoices.Where(y => y.Active == true).Select(t => t.TotalInvoiceCost).Sum());
-                    Response.TotalCollected = SupplierObjDB.SupplierAccounts.Where(x => x.Active == true).Select(x => x.Amount).DefaultIfEmpty(0).Sum();
-                    Response.TotalAmount = TotalPOAmount ?? 0;
-                    Response.Remain = Response.TotalAmount > Response.TotalCollected ? Response.TotalAmount - Response.TotalCollected : 0;
-                }
-                return Response;
-
-            }
-            catch (Exception ex)
-            {
-                Response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
-                Response.Errors.Add(error);
-                return Response;
-            }
-        }
 
         public async Task<BaseResponseWithID> AddReverseDailyJournalEntry(AddReverseDailyJournalEntryRequest request, long creator)
         {

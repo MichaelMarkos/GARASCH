@@ -108,24 +108,9 @@ public partial class TaskInfo
     [InverseProperty("TaskInfoModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }
 
-    [InverseProperty("TaskInfo")]
-    public virtual ICollection<TaskAssignUser> TaskAssignUsers { get; set; } = new List<TaskAssignUser>();
-
-    [InverseProperty("TaskInfo")]
-    public virtual ICollection<TaskAttachment> TaskAttachments { get; set; } = new List<TaskAttachment>();
-
     [ForeignKey("TaskCategoryId")]
     [InverseProperty("TaskInfos")]
     public virtual TaskCategory TaskCategory { get; set; }
-
-    [InverseProperty("TaskInfo")]
-    public virtual ICollection<TaskClosureLog> TaskClosureLogs { get; set; } = new List<TaskClosureLog>();
-
-    [InverseProperty("TaskInfo")]
-    public virtual ICollection<TaskComment> TaskComments { get; set; } = new List<TaskComment>();
-
-    [InverseProperty("TaskInfo")]
-    public virtual ICollection<TaskStageHistory> TaskStageHistories { get; set; } = new List<TaskStageHistory>();
 
     [InverseProperty("TaskInfo")]
     public virtual ICollection<UserTimer> UserTimers { get; set; } = new List<UserTimer>();

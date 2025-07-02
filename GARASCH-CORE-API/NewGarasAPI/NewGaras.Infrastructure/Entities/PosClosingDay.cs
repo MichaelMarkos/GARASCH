@@ -67,10 +67,6 @@ public partial class PosClosingDay
     [InverseProperty("PosClosingDayModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }
 
-    [ForeignKey("StoreId")]
-    [InverseProperty("PosClosingDays")]
-    public virtual InventoryStore Store { get; set; }
-
     [ForeignKey("UserId")]
     [InverseProperty("PosClosingDayUsers")]
     public virtual User User { get; set; }

@@ -30,7 +30,4 @@ public partial class Priority
 
     [InverseProperty("Priorty")]
     public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
-
-    [InverseProperty("Proiority")]
-    public virtual ICollection<TaskInfoRevision> TaskInfoRevisions { get; set; } = new List<TaskInfoRevision>();
 }

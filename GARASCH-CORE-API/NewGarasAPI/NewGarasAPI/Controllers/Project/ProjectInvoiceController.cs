@@ -340,45 +340,7 @@ namespace NewGarasAPI.Controllers.Project
             }
         }
 
-        [HttpGet("GetProjectFinancialData")]
-        public BaseResponseWithData<GetProjectFinancialDataModel> GetProjectFinancialData([FromHeader] long ProjectId)
-        {
-            var response = new BaseResponseWithData<GetProjectFinancialDataModel>();
-            response.Result = true;
-            response.Errors = new List<Error>();
-
-            #region validation
-            if (ProjectId == 0)
-            {
-                response.Result = false;
-                Error err = new Error();
-                err.ErrorCode = "E-1";
-                err.errorMSG = "please enter a valid ProjectId";
-                response.Errors.Add(err);
-                return response;
-            }
-            #endregion
-            try
-            {
-                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
-                response.Errors = validation.errors;
-                response.Result = validation.result;
-                if (response.Result)
-                {
-                    response = _projectInvoiceService.GetProjectFinancialData(ProjectId);
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message; ;
-                response.Errors.Add(error);
-                return response;
-            }
-        }
+        
 
         [HttpPost("DeleteProjectInvoiceItem")]
         public BaseResponseWithId<long> DeleteProjectInvoiceItem([FromHeader] long InvoiceItemId)

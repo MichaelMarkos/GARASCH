@@ -39,9 +39,6 @@ public partial class ProjectFabricationBoq
     [InverseProperty("ProjectFabricationBoqCreatedByNavigations")]
     public virtual User CreatedByNavigation { get; set; }
 
-    [InverseProperty("FabricationOrderItem")]
-    public virtual ICollection<InventoryMatrialRequestItem> InventoryMatrialRequestItems { get; set; } = new List<InventoryMatrialRequestItem>();
-
     [ForeignKey("ModifiedBy")]
     [InverseProperty("ProjectFabricationBoqModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }

@@ -16,15 +16,13 @@ namespace NewGaras.Domain.Services
     {
         private GarasTestContext _Context;
         private readonly ITenantService _tenantService;
-        private readonly IProjectService _projectService;
         public static DateTime StartYear = new DateTime(DateTime.Now.Year, 1, 1);
         public static DateTime CurrentEndYear = new DateTime(DateTime.Now.Year + 1, 1, 1);
 
-        public AccountMovementService(GarasTestContext context, ITenantService tenantService, IProjectService projectService)
+        public AccountMovementService(GarasTestContext context, ITenantService tenantService)
         {
             _tenantService = tenantService;
             _Context = new GarasTestContext(_tenantService);
-            _projectService = projectService;
         }
 
         public List<AccountOfMovement> GetAccountMovementList_WithListAccountIds(string AccountIdSTRr, bool CalcWithoutPrivate, bool OrderByCreationDatee, DateTime? DateFrom, DateTime? DateTo, long ClientIdd, long SupplierIdd,long BranchIdd)
@@ -129,7 +127,7 @@ namespace NewGaras.Domain.Services
                             ClientName = ClientAccountDb.Client != null ? ClientAccountDb.Client.Name : "";
                             ProjectID = ClientAccountDb.ProjectId;
                             AccountDescription = ClientAccountDb.Description;
-                            ProjectName = ClientAccountDb.ProjectId != null ? _projectService.GetProjectName((long)ClientAccountDb.ProjectId) : "";
+                            //ProjectName = ClientAccountDb.ProjectId != null ? _projectService.GetProjectName((long)ClientAccountDb.ProjectId) : "";
                         }
                         return new AccountOfMovement
                         {

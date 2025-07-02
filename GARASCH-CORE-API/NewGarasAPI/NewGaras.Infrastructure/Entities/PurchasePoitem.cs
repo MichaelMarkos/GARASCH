@@ -92,10 +92,6 @@ public partial class PurchasePoitem
     [InverseProperty("PurchasePoitems")]
     public virtual InventoryItem InventoryItem { get; set; }
 
-    [ForeignKey("InventoryMatrialRequestItemId")]
-    [InverseProperty("PurchasePoitems")]
-    public virtual InventoryMatrialRequestItem InventoryMatrialRequestItem { get; set; }
-
     [ForeignKey("ProjectId")]
     [InverseProperty("PurchasePoitems")]
     public virtual Project Project { get; set; }
@@ -106,15 +102,4 @@ public partial class PurchasePoitem
     [ForeignKey("PurchasePoid")]
     [InverseProperty("PurchasePoitems")]
     public virtual PurchasePo PurchasePo { get; set; }
-
-    [InverseProperty("Poitem")]
-    public virtual ICollection<PurchasePoinvoiceExtraFee> PurchasePoinvoiceExtraFees { get; set; } = new List<PurchasePoinvoiceExtraFee>();
-
-    [ForeignKey("PurchaseRequestItemId")]
-    [InverseProperty("PurchasePoitems")]
-    public virtual PurchaseRequestItem PurchaseRequestItem { get; set; }
-
-    [ForeignKey("Uomid")]
-    [InverseProperty("PurchasePoitems")]
-    public virtual InventoryUom Uom { get; set; }
 }

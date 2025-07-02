@@ -78,10 +78,6 @@ public partial class PrsupplierOfferItem
     [InverseProperty("PrsupplierOfferItems")]
     public virtual InventoryItem InventoryItem { get; set; }
 
-    [ForeignKey("MritemId")]
-    [InverseProperty("PrsupplierOfferItems")]
-    public virtual InventoryMatrialRequestItem Mritem { get; set; }
-
     [ForeignKey("Poid")]
     [InverseProperty("PrsupplierOfferItems")]
     public virtual PurchasePo Po { get; set; }
@@ -90,15 +86,7 @@ public partial class PrsupplierOfferItem
     [InverseProperty("PrsupplierOfferItems")]
     public virtual PurchasePoitem Poitem { get; set; }
 
-    [ForeignKey("Prid")]
-    [InverseProperty("PrsupplierOfferItems")]
-    public virtual PurchaseRequestItem Pr { get; set; }
-
     [ForeignKey("PrsupplierOfferId")]
     [InverseProperty("PrsupplierOfferItems")]
     public virtual PrsupplierOffer PrsupplierOffer { get; set; }
-
-    [ForeignKey("Uomid")]
-    [InverseProperty("PrsupplierOfferItems")]
-    public virtual InventoryUom Uom { get; set; }
 }

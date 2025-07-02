@@ -78,7 +78,6 @@ builder.Services.AddScoped<IVacationOverTimeAndDeductionRate, VacationOverTimeAn
 builder.Services.AddScoped<IVacationDayService, VacationDayService>();
 builder.Services.AddScoped<ISalesOfferService, SalesOfferService>();
 builder.Services.AddScoped<IAccountMovementService, AccountMovementService>();
-builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 builder.Services.AddSingleton<IConnectionManager, ConnectionManager>();
 //builder.Services.AddSingleton<IHubNotificationHelper,HubNotificationHelper>();

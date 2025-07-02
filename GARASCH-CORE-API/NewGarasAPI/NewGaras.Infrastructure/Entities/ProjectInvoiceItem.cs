@@ -68,8 +68,4 @@ public partial class ProjectInvoiceItem
     [ForeignKey("ProjectInvoiceId")]
     [InverseProperty("ProjectInvoiceItems")]
     public virtual ProjectInvoice ProjectInvoice { get; set; }
-
-    [ForeignKey("Uomid")]
-    [InverseProperty("ProjectInvoiceItems")]
-    public virtual InventoryUom Uom { get; set; }
 }

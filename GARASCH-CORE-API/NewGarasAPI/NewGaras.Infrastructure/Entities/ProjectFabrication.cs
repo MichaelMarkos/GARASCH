@@ -163,9 +163,6 @@ public partial class ProjectFabrication
     public virtual User CreatedByNavigation { get; set; }
 
     [InverseProperty("FabricationOrder")]
-    public virtual ICollection<InventoryMatrialRequestItem> InventoryMatrialRequestItems { get; set; } = new List<InventoryMatrialRequestItem>();
-
-    [InverseProperty("FabricationOrder")]
     public virtual ICollection<InvoiceExtraModification> InvoiceExtraModifications { get; set; } = new List<InvoiceExtraModification>();
 
     [ForeignKey("ModifiedBy")]

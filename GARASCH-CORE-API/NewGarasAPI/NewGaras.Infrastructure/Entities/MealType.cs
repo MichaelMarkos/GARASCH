@@ -13,7 +13,4 @@ public partial class MealType
 
     [Required]
     public string Name { get; set; }
-
-    [InverseProperty("MealType")]
-    public virtual ICollection<RoomsReservationMeal> RoomsReservationMeals { get; set; } = new List<RoomsReservationMeal>();
 }

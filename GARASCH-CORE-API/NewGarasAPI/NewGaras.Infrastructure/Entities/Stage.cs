@@ -36,7 +36,4 @@ public partial class Stage
     [ForeignKey("ModifiedBy")]
     [InverseProperty("StageModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }
-
-    [InverseProperty("Stage")]
-    public virtual ICollection<TaskStageHistory> TaskStageHistories { get; set; } = new List<TaskStageHistory>();
 }

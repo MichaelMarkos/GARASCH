@@ -90,45 +90,9 @@ public partial class Task
     [InverseProperty("Tasks")]
     public virtual ProjectWorkFlow ProjectWorkFlow { get; set; }
 
-    [InverseProperty("Task")]
-    public virtual ICollection<TaskApplicationOpen> TaskApplicationOpens { get; set; } = new List<TaskApplicationOpen>();
-
-    [InverseProperty("Task")]
-    public virtual ICollection<TaskBrowserTab> TaskBrowserTabs { get; set; } = new List<TaskBrowserTab>();
-
-    [InverseProperty("Task")]
-    public virtual ICollection<TaskDetail> TaskDetails { get; set; } = new List<TaskDetail>();
-
-    [InverseProperty("Task")]
-    public virtual ICollection<TaskExpensi> TaskExpensis { get; set; } = new List<TaskExpensi>();
-
-    [InverseProperty("Task")]
-    public virtual ICollection<TaskFlagsOwnerReciever> TaskFlagsOwnerRecievers { get; set; } = new List<TaskFlagsOwnerReciever>();
-
-    [InverseProperty("Task")]
-    public virtual ICollection<TaskHistory> TaskHistories { get; set; } = new List<TaskHistory>();
-
-    [InverseProperty("Task")]
-    public virtual ICollection<TaskPermission> TaskPermissions { get; set; } = new List<TaskPermission>();
-
-    [InverseProperty("Task")]
-    public virtual ICollection<TaskRequirement> TaskRequirements { get; set; } = new List<TaskRequirement>();
-
-    [InverseProperty("Task")]
-    public virtual ICollection<TaskScreenShot> TaskScreenShots { get; set; } = new List<TaskScreenShot>();
-
     [ForeignKey("TaskTypeId")]
     [InverseProperty("Tasks")]
     public virtual TaskType TaskType { get; set; }
-
-    [InverseProperty("Task")]
-    public virtual ICollection<TaskUnitRateService> TaskUnitRateServices { get; set; } = new List<TaskUnitRateService>();
-
-    [InverseProperty("Task")]
-    public virtual ICollection<TaskUserMonitor> TaskUserMonitors { get; set; } = new List<TaskUserMonitor>();
-
-    [InverseProperty("Task")]
-    public virtual ICollection<TaskUserReply> TaskUserReplies { get; set; } = new List<TaskUserReply>();
 
     [InverseProperty("Task")]
     public virtual ICollection<WorkingHourseTracking> WorkingHourseTrackings { get; set; } = new List<WorkingHourseTracking>();

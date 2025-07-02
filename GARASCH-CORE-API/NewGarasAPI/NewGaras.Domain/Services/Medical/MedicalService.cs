@@ -1219,10 +1219,10 @@ namespace NewGaras.Domain.Services.Medical
                             {
                                 var offerProject = offer.Projects.FirstOrDefault();
                                 projectId = offerProject.Id;
-                                if (offerProject.InventoryMatrialRequestItems.Count > 0)
+                                /*if (offerProject.InventoryMatrialRequestItems.Count > 0)
                                 {
                                     QTYOfMatrialReleaseItem = offerProject.InventoryMatrialRequestItems?.Sum(x => x.RecivedQuantity1 ?? 0) ?? 0;
-                                }
+                                }*/
                             }
                             long? ParentSalesOfferId = null;
                             string ParentSalesOfferSErial = "";

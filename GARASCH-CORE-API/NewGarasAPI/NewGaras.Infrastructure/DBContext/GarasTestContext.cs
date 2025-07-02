@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NewGaras.Infrastructure.Entities;
 using NewGaras.Infrastructure.Helper.TenantService;
+using System;
+using System.Collections.Generic;
 using Task = NewGaras.Infrastructure.Entities.Task;
 
 namespace NewGaras.Infrastructure.DBContext;
@@ -23,7 +23,6 @@ public partial class GarasTestContext : DbContext
         _tenantService = tenantService;
         TenantId = _tenantService.GetTenant()?.TID;
     }
-
 
     public virtual DbSet<Account> Accounts { get; set; }
 
@@ -62,28 +61,6 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<BankDetail> BankDetails { get; set; }
 
     public virtual DbSet<BillingType> BillingTypes { get; set; }
-
-    public virtual DbSet<Bom> Boms { get; set; }
-
-    public virtual DbSet<Bomattachment> Bomattachments { get; set; }
-
-    public virtual DbSet<Bomhistory> Bomhistories { get; set; }
-
-    public virtual DbSet<Bomimage> Bomimages { get; set; }
-
-    public virtual DbSet<Bomlibrary> Bomlibraries { get; set; }
-
-    public virtual DbSet<Bompartition> Bompartitions { get; set; }
-
-    public virtual DbSet<BompartitionAttachment> BompartitionAttachments { get; set; }
-
-    public virtual DbSet<BompartitionHistory> BompartitionHistories { get; set; }
-
-    public virtual DbSet<BompartitionItem> BompartitionItems { get; set; }
-
-    public virtual DbSet<BompartitionItemAttachment> BompartitionItemAttachments { get; set; }
-
-    public virtual DbSet<Bomproduct> Bomproducts { get; set; }
 
     public virtual DbSet<Branch> Branches { get; set; }
 
@@ -355,59 +332,9 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<Interview> Interviews { get; set; }
 
-    public virtual DbSet<InventoryAddingOrder> InventoryAddingOrders { get; set; }
-
-    public virtual DbSet<InventoryAddingOrderItem> InventoryAddingOrderItems { get; set; }
-
-    public virtual DbSet<InventoryInternalBackOrder> InventoryInternalBackOrders { get; set; }
-
-    public virtual DbSet<InventoryInternalBackOrderItem> InventoryInternalBackOrderItems { get; set; }
-
-    public virtual DbSet<InventoryInternalTransferOrder> InventoryInternalTransferOrders { get; set; }
-
-    public virtual DbSet<InventoryInternalTransferOrderItem> InventoryInternalTransferOrderItems { get; set; }
-
     public virtual DbSet<InventoryItem> InventoryItems { get; set; }
 
-    public virtual DbSet<InventoryItemAttachment> InventoryItemAttachments { get; set; }
-
     public virtual DbSet<InventoryItemCategory> InventoryItemCategories { get; set; }
-
-    public virtual DbSet<InventoryItemContent> InventoryItemContents { get; set; }
-
-    public virtual DbSet<InventoryItemPrice> InventoryItemPrices { get; set; }
-
-    public virtual DbSet<InventoryItemUom> InventoryItemUoms { get; set; }
-
-    public virtual DbSet<InventoryMaterialRequestType> InventoryMaterialRequestTypes { get; set; }
-
-    public virtual DbSet<InventoryMatrialRelease> InventoryMatrialReleases { get; set; }
-
-    public virtual DbSet<InventoryMatrialReleaseItem> InventoryMatrialReleaseItems { get; set; }
-
-    public virtual DbSet<InventoryMatrialReleasePrintInfo> InventoryMatrialReleasePrintInfos { get; set; }
-
-    public virtual DbSet<InventoryMatrialRequest> InventoryMatrialRequests { get; set; }
-
-    public virtual DbSet<InventoryMatrialRequestItem> InventoryMatrialRequestItems { get; set; }
-
-    public virtual DbSet<InventoryReport> InventoryReports { get; set; }
-
-    public virtual DbSet<InventoryReportAttachment> InventoryReportAttachments { get; set; }
-
-    public virtual DbSet<InventoryReportItem> InventoryReportItems { get; set; }
-
-    public virtual DbSet<InventoryReportItemParent> InventoryReportItemParents { get; set; }
-
-    public virtual DbSet<InventoryStore> InventoryStores { get; set; }
-
-    public virtual DbSet<InventoryStoreItem> InventoryStoreItems { get; set; }
-
-    public virtual DbSet<InventoryStoreKeeper> InventoryStoreKeepers { get; set; }
-
-    public virtual DbSet<InventoryStoreLocation> InventoryStoreLocations { get; set; }
-
-    public virtual DbSet<InventoryUom> InventoryUoms { get; set; }
 
     public virtual DbSet<Invoice> Invoices { get; set; }
 
@@ -593,8 +520,6 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<ProjectFabricationWorkshopStationHistory> ProjectFabricationWorkshopStationHistories { get; set; }
 
-    public virtual DbSet<ProjectFinishInstallationAttachment> ProjectFinishInstallationAttachments { get; set; }
-
     public virtual DbSet<ProjectInstallAttachment> ProjectInstallAttachments { get; set; }
 
     public virtual DbSet<ProjectInstallation> ProjectInstallations { get; set; }
@@ -657,71 +582,9 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<PrsupplierOfferItem> PrsupplierOfferItems { get; set; }
 
-    public virtual DbSet<PuchasePoshipment> PuchasePoshipments { get; set; }
-
-    public virtual DbSet<PurchaseImportPosetting> PurchaseImportPosettings { get; set; }
-
-    public virtual DbSet<PurchasePaymentMethod> PurchasePaymentMethods { get; set; }
-
     public virtual DbSet<PurchasePo> PurchasePos { get; set; }
 
-    public virtual DbSet<PurchasePoamountPaymentMethod> PurchasePoamountPaymentMethods { get; set; }
-
-    public virtual DbSet<PurchasePoattachment> PurchasePoattachments { get; set; }
-
-    public virtual DbSet<PurchasePoinactiveTask> PurchasePoinactiveTasks { get; set; }
-
-    public virtual DbSet<PurchasePoinvoice> PurchasePoinvoices { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceAttachment> PurchasePoinvoiceAttachments { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceCalculatedShipmentValue> PurchasePoinvoiceCalculatedShipmentValues { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceClosedPayment> PurchasePoinvoiceClosedPayments { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceDeduction> PurchasePoinvoiceDeductions { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceDeductionType> PurchasePoinvoiceDeductionTypes { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceExtraFee> PurchasePoinvoiceExtraFees { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceExtraFeesType> PurchasePoinvoiceExtraFeesTypes { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceFinalExpensi> PurchasePoinvoiceFinalExpenses { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceNotIncludedTax> PurchasePoinvoiceNotIncludedTaxes { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceNotIncludedTaxType> PurchasePoinvoiceNotIncludedTaxTypes { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceTaxIncluded> PurchasePoinvoiceTaxIncludeds { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceTaxIncludedType> PurchasePoinvoiceTaxIncludedTypes { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceTotalOrderCustomFee> PurchasePoinvoiceTotalOrderCustomFees { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceType> PurchasePoinvoiceTypes { get; set; }
-
-    public virtual DbSet<PurchasePoinvoiceUnloadingFee> PurchasePoinvoiceUnloadingFees { get; set; }
-
     public virtual DbSet<PurchasePoitem> PurchasePoitems { get; set; }
-
-    public virtual DbSet<PurchasePopaymentSwift> PurchasePopaymentSwifts { get; set; }
-
-    public virtual DbSet<PurchasePopdf> PurchasePopdfs { get; set; }
-
-    public virtual DbSet<PurchasePopdfEditHistory> PurchasePopdfEditHistories { get; set; }
-
-    public virtual DbSet<PurchasePopdfTemplate> PurchasePopdfTemplates { get; set; }
-
-    public virtual DbSet<PurchasePoshipmentDocument> PurchasePoshipmentDocuments { get; set; }
-
-    public virtual DbSet<PurchasePoshipmentShippingMethodDetail> PurchasePoshipmentShippingMethodDetails { get; set; }
-
-    public virtual DbSet<PurchasePotype> PurchasePotypes { get; set; }
-
-    public virtual DbSet<PurchaseRequest> PurchaseRequests { get; set; }
-
-    public virtual DbSet<PurchaseRequestItem> PurchaseRequestItems { get; set; }
 
     public virtual DbSet<Rate> Rates { get; set; }
 
@@ -753,19 +616,7 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<Room> Rooms { get; set; }
 
-    public virtual DbSet<RoomFacility> RoomFacilities { get; set; }
-
-    public virtual DbSet<RoomService> RoomServices { get; set; }
-
     public virtual DbSet<RoomType> RoomTypes { get; set; }
-
-    public virtual DbSet<RoomView> RoomViews { get; set; }
-
-    public virtual DbSet<RoomsReservation> RoomsReservations { get; set; }
-
-    public virtual DbSet<RoomsReservationChildern> RoomsReservationChilderns { get; set; }
-
-    public virtual DbSet<RoomsReservationMeal> RoomsReservationMeals { get; set; }
 
     public virtual DbSet<Salary> Salaries { get; set; }
 
@@ -837,10 +688,6 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<Sheet2> Sheet2s { get; set; }
 
-    public virtual DbSet<ShippingCompany> ShippingCompanies { get; set; }
-
-    public virtual DbSet<ShippingCompanyAttachment> ShippingCompanyAttachments { get; set; }
-
     public virtual DbSet<ShippingMethod> ShippingMethods { get; set; }
 
     public virtual DbSet<Speciality> Specialities { get; set; }
@@ -885,53 +732,11 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<Task> Tasks { get; set; }
 
-    public virtual DbSet<TaskApplicationOpen> TaskApplicationOpens { get; set; }
-
-    public virtual DbSet<TaskAssignUser> TaskAssignUsers { get; set; }
-
-    public virtual DbSet<TaskAttachment> TaskAttachments { get; set; }
-
-    public virtual DbSet<TaskBrowserTab> TaskBrowserTabs { get; set; }
-
     public virtual DbSet<TaskCategory> TaskCategories { get; set; }
-
-    public virtual DbSet<TaskClosureLog> TaskClosureLogs { get; set; }
-
-    public virtual DbSet<TaskComment> TaskComments { get; set; }
-
-    public virtual DbSet<TaskCommentAttachment> TaskCommentAttachments { get; set; }
-
-    public virtual DbSet<TaskDetail> TaskDetails { get; set; }
-
-    public virtual DbSet<TaskExpensi> TaskExpenses { get; set; }
-
-    public virtual DbSet<TaskFlagsOwnerReciever> TaskFlagsOwnerRecievers { get; set; }
-
-    public virtual DbSet<TaskHistory> TaskHistories { get; set; }
 
     public virtual DbSet<TaskInfo> TaskInfos { get; set; }
 
-    public virtual DbSet<TaskInfoRevision> TaskInfoRevisions { get; set; }
-
-    public virtual DbSet<TaskPermission> TaskPermissions { get; set; }
-
-    public virtual DbSet<TaskPrimarySubCategory> TaskPrimarySubCategories { get; set; }
-
-    public virtual DbSet<TaskRequirement> TaskRequirements { get; set; }
-
-    public virtual DbSet<TaskScreenShot> TaskScreenShots { get; set; }
-
-    public virtual DbSet<TaskSecondarySubCategory> TaskSecondarySubCategories { get; set; }
-
-    public virtual DbSet<TaskStageHistory> TaskStageHistories { get; set; }
-
     public virtual DbSet<TaskType> TaskTypes { get; set; }
-
-    public virtual DbSet<TaskUnitRateService> TaskUnitRateServices { get; set; }
-
-    public virtual DbSet<TaskUserMonitor> TaskUserMonitors { get; set; }
-
-    public virtual DbSet<TaskUserReply> TaskUserReplies { get; set; }
 
     public virtual DbSet<Tax> Taxes { get; set; }
 
@@ -1171,36 +976,6 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<VacationPaymentStrategy> VacationPaymentStrategies { get; set; }
 
-    public virtual DbSet<VehicleBodyType> VehicleBodyTypes { get; set; }
-
-    public virtual DbSet<VehicleBrand> VehicleBrands { get; set; }
-
-    public virtual DbSet<VehicleColor> VehicleColors { get; set; }
-
-    public virtual DbSet<VehicleIssuer> VehicleIssuers { get; set; }
-
-    public virtual DbSet<VehicleMaintenanceJobOrderHistory> VehicleMaintenanceJobOrderHistories { get; set; }
-
-    public virtual DbSet<VehicleMaintenanceType> VehicleMaintenanceTypes { get; set; }
-
-    public virtual DbSet<VehicleMaintenanceTypeForModel> VehicleMaintenanceTypeForModels { get; set; }
-
-    public virtual DbSet<VehicleMaintenanceTypePriorityLevel> VehicleMaintenanceTypePriorityLevels { get; set; }
-
-    public virtual DbSet<VehicleMaintenanceTypeRate> VehicleMaintenanceTypeRates { get; set; }
-
-    public virtual DbSet<VehicleMaintenanceTypeServiceSheduleCategory> VehicleMaintenanceTypeServiceSheduleCategories { get; set; }
-
-    public virtual DbSet<VehicleModel> VehicleModels { get; set; }
-
-    public virtual DbSet<VehiclePerClient> VehiclePerClients { get; set; }
-
-    public virtual DbSet<VehicleServiceScheduleCategory> VehicleServiceScheduleCategories { get; set; }
-
-    public virtual DbSet<VehicleTransmission> VehicleTransmissions { get; set; }
-
-    public virtual DbSet<VehicleWheelsDrive> VehicleWheelsDrives { get; set; }
-
     public virtual DbSet<VisitsScheduleOfMaintenance> VisitsScheduleOfMaintenances { get; set; }
 
     public virtual DbSet<VisitsScheduleOfMaintenanceAttachment> VisitsScheduleOfMaintenanceAttachments { get; set; }
@@ -1215,6 +990,7 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<WorkshopStation> WorkshopStations { get; set; }
 
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var tenantConnectionString = _tenantService.GetConnectionString();
@@ -1227,12 +1003,15 @@ public partial class GarasTestContext : DbContext
             }
         }
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Arabic_CI_AS");
 
         modelBuilder.Entity<Account>(entity =>
         {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
             entity.HasOne(d => d.AccountCategory).WithMany(p => p.Accounts)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Accounts_AccountCategory");
@@ -1446,191 +1225,6 @@ public partial class GarasTestContext : DbContext
         modelBuilder.Entity<BillingType>(entity =>
         {
             entity.Property(e => e.BillingTypeName).IsFixedLength();
-        });
-
-        modelBuilder.Entity<Bom>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BomCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOM_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BomModifiedByNavigations).HasConstraintName("FK_BOM_User1");
-
-            entity.HasOne(d => d.ProductGroup).WithMany(p => p.Boms).HasConstraintName("FK_BOM_InventoryItemCategory");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.Boms).HasConstraintName("FK_BOM_InventoryItem");
-        });
-
-        modelBuilder.Entity<Bomattachment>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Bom).WithMany(p => p.Bomattachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMAttachments_BOM");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BomattachmentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMAttachments_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BomattachmentModifiedByNavigations).HasConstraintName("FK_BOMAttachments_User1");
-        });
-
-        modelBuilder.Entity<Bomhistory>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Bom).WithMany(p => p.Bomhistories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMHistory_BOM");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BomhistoryCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMHistory_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BomhistoryModifiedByNavigations).HasConstraintName("FK_BOMHistory_User1");
-        });
-
-        modelBuilder.Entity<Bomimage>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Bom).WithMany(p => p.Bomimages)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMImages_BOM");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BomimageCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMImages_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BomimageModifiedByNavigations).HasConstraintName("FK_BOMImages_User1");
-        });
-
-        modelBuilder.Entity<Bomlibrary>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-            entity.Property(e => e.Global).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BomlibraryCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMLibrary_User");
-
-            entity.HasOne(d => d.Currency).WithMany(p => p.Bomlibraries)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMLibrary_Currency");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BomlibraryModifiedByNavigations).HasConstraintName("FK_BOMLibrary_User1");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.Bomlibraries)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMLibrary_Product");
-        });
-
-        modelBuilder.Entity<Bompartition>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Bom).WithMany(p => p.Bompartitions)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMPartitions_BOM");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BompartitionCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMPartitions_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BompartitionModifiedByNavigations).HasConstraintName("FK_BOMPartitions_User1");
-        });
-
-        modelBuilder.Entity<BompartitionAttachment>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Bompartition).WithMany(p => p.BompartitionAttachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMPartitionAttachments_BOMPartitions");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BompartitionAttachmentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMPartitionAttachments_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BompartitionAttachmentModifiedByNavigations).HasConstraintName("FK_BOMPartitionAttachments_User1");
-        });
-
-        modelBuilder.Entity<BompartitionHistory>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Bompartition).WithMany(p => p.BompartitionHistories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMPartitionHistory_BOMPartitions");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BompartitionHistoryCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMPartitionHistory_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BompartitionHistoryModifiedByNavigations).HasConstraintName("FK_BOMPartitionHistory_User1");
-        });
-
-        modelBuilder.Entity<BompartitionItem>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-            entity.Property(e => e.ActiveToUse).HasDefaultValue(true);
-            entity.Property(e => e.AlternativeItem).HasDefaultValue(1L);
-            entity.Property(e => e.IsAlternative).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Bompartition).WithMany(p => p.BompartitionItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMPartitionItems_BOMPartitions");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BompartitionItemCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMPartitionItems_User");
-
-            entity.HasOne(d => d.Item).WithMany(p => p.BompartitionItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMPartitionItems_InventoryItem");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BompartitionItemModifiedByNavigations).HasConstraintName("FK_BOMPartitionItems_User1");
-        });
-
-        modelBuilder.Entity<BompartitionItemAttachment>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.BompartitionItem).WithMany(p => p.BompartitionItemAttachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMPartitionItemAttachments_BOMPartitionItems");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BompartitionItemAttachmentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMPartitionItemAttachments_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BompartitionItemAttachmentModifiedByNavigations).HasConstraintName("FK_BOMPartitionItemAttachments_User1");
-        });
-
-        modelBuilder.Entity<Bomproduct>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Bom).WithMany(p => p.Bomproducts)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMProduct_BOM");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BomproductCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMProduct_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BomproductModifiedByNavigations).HasConstraintName("FK_BOMProduct_User1");
-
-            entity.HasOne(d => d.ProductGroup).WithMany(p => p.Bomproducts)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMProduct_InventoryItemCategory");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.Bomproducts)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BOMProduct_InventoryItem");
         });
 
         modelBuilder.Entity<Branch>(entity =>
@@ -2942,14 +2536,6 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_HRCustody_InventoryItem");
 
-            entity.HasOne(d => d.MaterialRequest).WithMany(p => p.Hrcustodies)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_HRCustody_InventoryMatrialRequest");
-
-            entity.HasOne(d => d.MaterialRequestItem).WithMany(p => p.Hrcustodies)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_HRCustody_InventoryMatrialRequestItems");
-
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.HrcustodyModifiedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_HRCustody_User1");
@@ -3118,108 +2704,6 @@ public partial class GarasTestContext : DbContext
                 .HasConstraintName("FK_Interview_User1");
         });
 
-        modelBuilder.Entity<InventoryAddingOrder>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InventoryAddingOrderCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryAddingOrder_User");
-
-            entity.HasOne(d => d.InventoryStore).WithMany(p => p.InventoryAddingOrders)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryAddingOrder_InventoryStore");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryAddingOrderModifiedByNavigations).HasConstraintName("FK_InventoryAddingOrder_User1");
-
-            entity.HasOne(d => d.Supplier).WithMany(p => p.InventoryAddingOrders)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryAddingOrder_Supplier");
-        });
-
-        modelBuilder.Entity<InventoryAddingOrderItem>(entity =>
-        {
-            entity.HasOne(d => d.InventoryAddingOrder).WithMany(p => p.InventoryAddingOrderItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryAddingOrderItems_InventoryAddingOrder");
-
-            entity.HasOne(d => d.InventoryItem).WithMany(p => p.InventoryAddingOrderItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryAddingOrderItems_InventoryItem");
-
-            entity.HasOne(d => d.Po).WithMany(p => p.InventoryAddingOrderItems)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_InventoryAddingOrderItems_PurchasePO");
-
-            entity.HasOne(d => d.Uom).WithMany(p => p.InventoryAddingOrderItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryAddingOrderItems_InventoryUOM");
-        });
-
-        modelBuilder.Entity<InventoryInternalBackOrder>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InventoryInternalBackOrderCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryInternalBackOrder_User1");
-
-            entity.HasOne(d => d.From).WithMany(p => p.InventoryInternalBackOrderFroms)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryInternalBackOrder_User");
-
-            entity.HasOne(d => d.InventoryStore).WithMany(p => p.InventoryInternalBackOrders)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryInternalBackOrder_InventoryStore");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryInternalBackOrderModifiedByNavigations).HasConstraintName("FK_InventoryInternalBackOrder_User2");
-        });
-
-        modelBuilder.Entity<InventoryInternalBackOrderItem>(entity =>
-        {
-            entity.HasOne(d => d.InventoryInternalBackOrder).WithMany(p => p.InventoryInternalBackOrderItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryInternalBackOrderItems_InventoryInternalBackOrder");
-
-            entity.HasOne(d => d.InventoryItem).WithMany(p => p.InventoryInternalBackOrderItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryInternalBackOrderItems_InventoryItem");
-
-            entity.HasOne(d => d.InventoryMatrialReleaseItem).WithMany(p => p.InventoryInternalBackOrderItems).HasConstraintName("FK_InventoryInternalBackOrderItems_InventoryMatrialReleaseItems");
-
-            entity.HasOne(d => d.Uom).WithMany(p => p.InventoryInternalBackOrderItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryInternalBackOrderItems_InventoryUOM");
-        });
-
-        modelBuilder.Entity<InventoryInternalTransferOrder>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InventoryInternalTransferOrderCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryInternalTransferOrder_User");
-
-            entity.HasOne(d => d.FromInventoryStore).WithMany(p => p.InventoryInternalTransferOrderFromInventoryStores)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryInternalTransferOrder_InventoryStore");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryInternalTransferOrderModifiedByNavigations).HasConstraintName("FK_InventoryInternalTransferOrder_User1");
-
-            entity.HasOne(d => d.ToInventoryStore).WithMany(p => p.InventoryInternalTransferOrderToInventoryStores)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryInternalTransferOrder_InventoryStore1");
-        });
-
-        modelBuilder.Entity<InventoryInternalTransferOrderItem>(entity =>
-        {
-            entity.HasOne(d => d.InventoryInternalTransferOrder).WithMany(p => p.InventoryInternalTransferOrderItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryInternalTransferOrderItems_InventoryInternalTransferOrder");
-
-            entity.HasOne(d => d.InventoryItem).WithMany(p => p.InventoryInternalTransferOrderItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryInternalTransferOrderItems_InventoryItem");
-
-            entity.HasOne(d => d.Uom).WithMany(p => p.InventoryInternalTransferOrderItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryInternalTransferOrderItems_InventoryUOM");
-        });
-
         modelBuilder.Entity<InventoryItem>(entity =>
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
@@ -3239,23 +2723,6 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryItemModifiedByNavigations).HasConstraintName("FK_InventoryItem_User1");
 
             entity.HasOne(d => d.Priority).WithMany(p => p.InventoryItems).HasConstraintName("FK_InventoryItem_Priority");
-
-            entity.HasOne(d => d.PurchasingUom).WithMany(p => p.InventoryItemPurchasingUoms)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryItem_InventoryUOM");
-
-            entity.HasOne(d => d.RequstionUom).WithMany(p => p.InventoryItemRequstionUoms)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryItem_InventoryUOM1");
-        });
-
-        modelBuilder.Entity<InventoryItemAttachment>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.InventoryItem).WithMany(p => p.InventoryItemAttachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryItemAttachment_InventoryItemAttachment");
         });
 
         modelBuilder.Entity<InventoryItemCategory>(entity =>
@@ -3271,264 +2738,6 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryItemCategoryModifiedByNavigations).HasConstraintName("FK_InventoryItemCategory_User1");
 
             entity.HasOne(d => d.ParentCategory).WithMany(p => p.InverseParentCategory).HasConstraintName("FK_InventoryItemCategory_InventoryItemCategory");
-        });
-
-        modelBuilder.Entity<InventoryItemContent>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InventoryItemContentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryItemContent_User");
-
-            entity.HasOne(d => d.InventoryItem).WithMany(p => p.InventoryItemContents)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryItemContent_InventoryItem");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryItemContentModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryItemContent_User1");
-
-            entity.HasOne(d => d.ParentContent).WithMany(p => p.InverseParentContent).HasConstraintName("FK_InventoryItemContent_InventoryItemContent1");
-        });
-
-        modelBuilder.Entity<InventoryItemPrice>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InventoryItemPrices)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryItemPrice_User");
-
-            entity.HasOne(d => d.InventoryItem).WithMany(p => p.InventoryItemPrices)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryItemPrice_InventoryItem");
-
-            entity.HasOne(d => d.Supplier).WithMany(p => p.InventoryItemPrices).HasConstraintName("FK_InventoryItemPrice_Supplier");
-        });
-
-        modelBuilder.Entity<InventoryItemUom>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_InventoryItemUOM_1");
-
-            entity.Property(e => e.Active).HasDefaultValue(true);
-            entity.Property(e => e.CanEdit).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InventoryItemUomCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryItemUOM_User");
-
-            entity.HasOne(d => d.InventoryItem).WithMany(p => p.InventoryItemUoms)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryItemUOM_InventoryItem");
-
-            entity.HasOne(d => d.InventoryUom).WithMany(p => p.InventoryItemUoms)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryItemUOM_InventoryUOM");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryItemUomModifiedByNavigations).HasConstraintName("FK_InventoryItemUOM_User1");
-        });
-
-        modelBuilder.Entity<InventoryMatrialRelease>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InventoryMatrialReleaseCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryMatrialRelease_User1");
-
-            entity.HasOne(d => d.FromInventoryStore).WithMany(p => p.InventoryMatrialReleases)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryMatrialRelease_InventoryStore");
-
-            entity.HasOne(d => d.MatrialRequest).WithMany(p => p.InventoryMatrialReleases)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryMatrialRelease_InventoryMatrialRequest");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryMatrialReleaseModifiedByNavigations).HasConstraintName("FK_InventoryMatrialRelease_User2");
-
-            entity.HasOne(d => d.ToUser).WithMany(p => p.InventoryMatrialReleaseToUsers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryMatrialRelease_User");
-        });
-
-        modelBuilder.Entity<InventoryMatrialReleaseItem>(entity =>
-        {
-            entity.HasOne(d => d.InventoryMatrialReleaset).WithMany(p => p.InventoryMatrialReleaseItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryMatrialReleaseItems_InventoryMatrialRelease");
-
-            entity.HasOne(d => d.InventoryMatrialRequestItem).WithMany(p => p.InventoryMatrialReleaseItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryMatrialReleaseItems_InventoryMatrialRequestItems");
-        });
-
-        modelBuilder.Entity<InventoryMatrialReleasePrintInfo>(entity =>
-        {
-            entity.HasOne(d => d.InventoryMatrialRelease).WithMany(p => p.InventoryMatrialReleasePrintInfos)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryMatrialReleasePrintInfo_InventoryMatrialRelease");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.InventoryMatrialReleasePrintInfos).HasConstraintName("FK_InventoryMatrialReleasePrintInfo_Project");
-        });
-
-        modelBuilder.Entity<InventoryMatrialRequest>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InventoryMatrialRequestCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryMatrialRequest_User1");
-
-            entity.HasOne(d => d.FromUser).WithMany(p => p.InventoryMatrialRequestFromUsers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryMatrialRequest_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryMatrialRequestModifiedByNavigations).HasConstraintName("FK_InventoryMatrialRequest_User2");
-
-            entity.HasOne(d => d.RequestType).WithMany(p => p.InventoryMatrialRequests).HasConstraintName("FK_InventoryMatrialRequest_InventoryMaterialRequestType");
-
-            entity.HasOne(d => d.ToInventoryStore).WithMany(p => p.InventoryMatrialRequests)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryMatrialRequest_InventoryStore");
-        });
-
-        modelBuilder.Entity<InventoryMatrialRequestItem>(entity =>
-        {
-            entity.Property(e => e.FromBom).HasDefaultValue(false);
-            entity.Property(e => e.PurchaseQuantity).HasDefaultValue(0.0);
-            entity.Property(e => e.PurchaseQuantity1).HasDefaultValue(0m);
-
-            entity.HasOne(d => d.FabricationOrder).WithMany(p => p.InventoryMatrialRequestItems).HasConstraintName("FK_InventoryMatrialRequestItems_ProjectFabrication");
-
-            entity.HasOne(d => d.FabricationOrderItem).WithMany(p => p.InventoryMatrialRequestItems).HasConstraintName("FK_InventoryMatrialRequestItems_ProjectFabricationBOQ");
-
-            entity.HasOne(d => d.InventoryItem).WithMany(p => p.InventoryMatrialRequestItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryMatrialRequestItems_InventoryItem");
-
-            entity.HasOne(d => d.InventoryMatrialRequest).WithMany(p => p.InventoryMatrialRequestItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryMatrialRequestItems_InventoryMatrialRequest");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.InventoryMatrialRequestItems).HasConstraintName("FK_InventoryMatrialRequestItems_Project");
-
-            entity.HasOne(d => d.Uom).WithMany(p => p.InventoryMatrialRequestItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryMatrialRequestItems_InventoryUOM");
-        });
-
-        modelBuilder.Entity<InventoryReport>(entity =>
-        {
-            entity.HasOne(d => d.ByUser).WithMany(p => p.InventoryReports)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryReport_User");
-
-            entity.HasOne(d => d.InventoryStore).WithMany(p => p.InventoryReports)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryReport_InventoryStore");
-        });
-
-        modelBuilder.Entity<InventoryReportAttachment>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.InventoryReport).WithMany(p => p.InventoryReportAttachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryReportAttachment_InventoryReport");
-        });
-
-        modelBuilder.Entity<InventoryReportItem>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InventoryReportItemCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryReportItems_User");
-
-            entity.HasOne(d => d.InventoryItem).WithMany(p => p.InventoryReportItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryReportItems_InventoryItem");
-
-            entity.HasOne(d => d.InventoryReport).WithMany(p => p.InventoryReportItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryReportItems_InventoryReport");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryReportItemModifiedByNavigations).HasConstraintName("FK_InventoryReportItems_User1");
-        });
-
-        modelBuilder.Entity<InventoryReportItemParent>(entity =>
-        {
-            entity.HasOne(d => d.InvReportItem).WithMany(p => p.InventoryReportItemParents)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryReportItemParent_InventoryReportItems");
-
-            entity.HasOne(d => d.InvStoreItem).WithMany(p => p.InventoryReportItemParents)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryReportItemParent_InventoryStoreItem");
-        });
-
-        modelBuilder.Entity<InventoryStore>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InventoryStoreCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryStore_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryStoreModifiedByNavigations).HasConstraintName("FK_InventoryStore_User1");
-        });
-
-        modelBuilder.Entity<InventoryStoreItem>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_InvneotryStoreItem");
-
-            entity.Property(e => e.HoldQty).HasDefaultValue(0m);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InventoryStoreItemCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InvneotryStoreItem_User");
-
-            entity.HasOne(d => d.InvenoryStoreLocation).WithMany(p => p.InventoryStoreItems).HasConstraintName("FK_InventoryStoreItem_InventoryStoreLocation");
-
-            entity.HasOne(d => d.InventoryItem).WithMany(p => p.InventoryStoreItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InvneotryStoreItem_InventoryItem");
-
-            entity.HasOne(d => d.InventoryStore).WithMany(p => p.InventoryStoreItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InvneotryStoreItem_InventoryStore");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryStoreItemModifiedByNavigations).HasConstraintName("FK_InvneotryStoreItem_User1");
-        });
-
-        modelBuilder.Entity<InventoryStoreKeeper>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InventoryStoreKeeperCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryStoreKeeper_User1");
-
-            entity.HasOne(d => d.InventoryStore).WithMany(p => p.InventoryStoreKeepers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryStoreKeeper_InventoryStore");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryStoreKeeperModifiedByNavigations).HasConstraintName("FK_InventoryStoreKeeper_User2");
-
-            entity.HasOne(d => d.User).WithMany(p => p.InventoryStoreKeeperUsers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryStoreKeeper_User");
-        });
-
-        modelBuilder.Entity<InventoryStoreLocation>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.InventoryStore).WithMany(p => p.InventoryStoreLocations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryStoreLocation_InventoryStore");
-        });
-
-        modelBuilder.Entity<InventoryUom>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_InventoryItemUOM");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InventoryUomCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InventoryUOM_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InventoryUomModifiedByNavigations).HasConstraintName("FK_InventoryUOM_User1");
         });
 
         modelBuilder.Entity<Invoice>(entity =>
@@ -4139,10 +3348,6 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PosClosingDay_User2");
 
-            entity.HasOne(d => d.Store).WithMany(p => p.PosClosingDays)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PosClosingDay_InventoryStore");
-
             entity.HasOne(d => d.User).WithMany(p => p.PosClosingDayUsers)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PosClosingDay_User");
@@ -4649,19 +3854,6 @@ public partial class GarasTestContext : DbContext
                 .HasConstraintName("FK_ProjectFabricationWorkshopStationHistory_ProjectWorkshopStation");
         });
 
-        modelBuilder.Entity<ProjectFinishInstallationAttachment>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectFinishInstallationAttachmentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectFinishInstallationAttachment_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectFinishInstallationAttachmentModifiedByNavigations).HasConstraintName("FK_ProjectFinishInstallationAttachment_User1");
-
-            entity.HasOne(d => d.ProjectInstallationReport).WithMany(p => p.ProjectFinishInstallationAttachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectFinishInstallationAttachment_ProjectInstallation");
-        });
-
         modelBuilder.Entity<ProjectInstallAttachment>(entity =>
         {
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInstallAttachmentCreatedByNavigations)
@@ -4878,8 +4070,6 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.ProjectInvoice).WithMany(p => p.ProjectInvoiceItems)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectInvoiceItem_ProjectInvoice");
-
-            entity.HasOne(d => d.Uom).WithMany(p => p.ProjectInvoiceItems).HasConstraintName("FK_ProjectInvoiceItem_InventoryUOM");
         });
 
         modelBuilder.Entity<ProjectLetterOfCredit>(entity =>
@@ -5163,10 +4353,6 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.Po).WithMany(p => p.PrsupplierOffers).HasConstraintName("FK_PRSupplierOffer_PurchasePO");
 
-            entity.HasOne(d => d.Pr).WithMany(p => p.PrsupplierOffers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PRSupplierOffer_PurchaseRequest");
-
             entity.HasOne(d => d.Supplier).WithMany(p => p.PrsupplierOffers)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PRSupplierOffer_Supplier");
@@ -5184,54 +4370,13 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PRSupplierOfferItem_InventoryItem");
 
-            entity.HasOne(d => d.Mritem).WithMany(p => p.PrsupplierOfferItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PRSupplierOfferItem_InventoryMatrialRequestItems");
-
             entity.HasOne(d => d.Po).WithMany(p => p.PrsupplierOfferItems).HasConstraintName("FK_PRSupplierOfferItem_PurchasePO");
 
             entity.HasOne(d => d.Poitem).WithMany(p => p.PrsupplierOfferItems).HasConstraintName("FK_PRSupplierOfferItem_PurchasePOItem");
 
-            entity.HasOne(d => d.Pr).WithMany(p => p.PrsupplierOfferItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PRSupplierOfferItem_PurchaseRequestItems");
-
             entity.HasOne(d => d.PrsupplierOffer).WithMany(p => p.PrsupplierOfferItems)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PRSupplierOfferItem_PRSupplierOffer");
-
-            entity.HasOne(d => d.Uom).WithMany(p => p.PrsupplierOfferItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PRSupplierOfferItem_InventoryUOM");
-        });
-
-        modelBuilder.Entity<PuchasePoshipment>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PuchasePoshipmentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PuchasePOShipment_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PuchasePoshipmentModifiedByNavigations).HasConstraintName("FK_PuchasePOShipment_User1");
-
-            entity.HasOne(d => d.Po).WithMany(p => p.PuchasePoshipments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PuchasePOShipment_PurchasePO");
-
-            entity.HasOne(d => d.ShipmentShippingMethodDetails).WithMany(p => p.PuchasePoshipments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PuchasePOShipment_PurchasePOShipmentShippingMethodDetails");
-        });
-
-        modelBuilder.Entity<PurchaseImportPosetting>(entity =>
-        {
-            entity.HasOne(d => d.Po).WithMany(p => p.PurchaseImportPosettings)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchaseImportPOSetting_PurchasePO");
-        });
-
-        modelBuilder.Entity<PurchasePaymentMethod>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_Inventory_PaymentMethod");
         });
 
         modelBuilder.Entity<PurchasePo>(entity =>
@@ -5246,8 +4391,6 @@ public partial class GarasTestContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PurchasePoModifiedByNavigations).HasConstraintName("FK_PurchasePO_User1");
 
-            entity.HasOne(d => d.Potype).WithMany(p => p.PurchasePos).HasConstraintName("FK__PurchaseP__POTyp__2DFCAC08");
-
             entity.HasOne(d => d.SentToSupplierContactPerson).WithMany(p => p.PurchasePos).HasConstraintName("FK__PurchaseP__SentT__41CE9A8B");
 
             entity.HasOne(d => d.ToSupplier).WithMany(p => p.PurchasePos)
@@ -5257,221 +4400,6 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.UserIdforFinalApproveNavigation).WithMany(p => p.PurchasePoUserIdforFinalApproveNavigations).HasConstraintName("FK__PurchaseP__UserI__359DCDD0");
 
             entity.HasOne(d => d.UserIdforTechApproveNavigation).WithMany(p => p.PurchasePoUserIdforTechApproveNavigations).HasConstraintName("FK__PurchaseP__UserI__34A9A997");
-        });
-
-        modelBuilder.Entity<PurchasePoamountPaymentMethod>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_PurchasePOPaymentMethod");
-
-            entity.HasOne(d => d.Po).WithMany(p => p.PurchasePoamountPaymentMethods)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOPaymentMethod_PurchasePO");
-
-            entity.HasOne(d => d.PurchasePaymentMethod).WithMany(p => p.PurchasePoamountPaymentMethods)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOPaymentMethod_PurchasePaymentMethod");
-        });
-
-        modelBuilder.Entity<PurchasePoattachment>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Po).WithMany(p => p.PurchasePoattachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOAttachment_PurchasePO");
-        });
-
-        modelBuilder.Entity<PurchasePoinactiveTask>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_PurchasePOInactiveTasks");
-
-            entity.HasOne(d => d.Po).WithMany(p => p.PurchasePoinactiveTasks)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInactiveTasks_PurchasePO");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoice>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePoinvoiceCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoice_User");
-
-            entity.HasOne(d => d.InvoiceAttachement).WithMany(p => p.PurchasePoinvoices).HasConstraintName("FK_PurchasePOInvoice_PurchasePOInvoiceAttachment");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PurchasePoinvoiceModifiedByNavigations).HasConstraintName("FK_PurchasePOInvoice_User1");
-
-            entity.HasOne(d => d.Po).WithMany(p => p.PurchasePoinvoices)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoice_PurchasePO");
-
-            entity.HasOne(d => d.PurchasePoinvoiceType).WithMany(p => p.PurchasePoinvoices)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoice_PurchasePOInvoiceType");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoiceAttachment>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.PurchasePoinvoice).WithMany(p => p.PurchasePoinvoiceAttachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceAttachment_PurchasePOInvoice");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoiceCalculatedShipmentValue>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_PurchasePOInvoiceCalculatedShipment");
-
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePoinvoiceCalculatedShipmentValues)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceCalculatedShipment_User");
-
-            entity.HasOne(d => d.Currency).WithMany(p => p.PurchasePoinvoiceCalculatedShipmentValues).HasConstraintName("FK_PurchasePOInvoiceCalculatedShipment_Currency");
-
-            entity.HasOne(d => d.PurchasePoinvoice).WithMany(p => p.PurchasePoinvoiceCalculatedShipmentValues)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceCalculatedShipment_PurchasePOInvoice");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoiceClosedPayment>(entity =>
-        {
-            entity.HasOne(d => d.Currency).WithMany(p => p.PurchasePoinvoiceClosedPayments).HasConstraintName("FK_PurchasePOInvoiceClosedPayment_Currency");
-
-            entity.HasOne(d => d.Poinvoice).WithMany(p => p.PurchasePoinvoiceClosedPayments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceClosedPayment_PurchasePOInvoice");
-
-            entity.HasOne(d => d.PurchasePaymentMethod).WithMany(p => p.PurchasePoinvoiceClosedPayments).HasConstraintName("FK_PurchasePOInvoiceClosedPayment_PurchasePaymentMethod");
-
-            entity.HasOne(d => d.PurchasePoinvoiceAttachment).WithMany(p => p.PurchasePoinvoiceClosedPayments).HasConstraintName("FK_PurchasePOInvoiceClosedPayment_PurchasePOInvoiceAttachment");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoiceDeduction>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePoinvoiceDeductionCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceDeduction_User");
-
-            entity.HasOne(d => d.Currency).WithMany(p => p.PurchasePoinvoiceDeductions).HasConstraintName("FK_PurchasePOInvoiceDeduction_Currency");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PurchasePoinvoiceDeductionModifiedByNavigations).HasConstraintName("FK_PurchasePOInvoiceDeduction_User1");
-
-            entity.HasOne(d => d.PodeductionType).WithMany(p => p.PurchasePoinvoiceDeductions)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceDeduction_PurchasePOInvoiceDeductionType");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoiceDeductionType>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_PurchasePOInvoiceDeductions");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoiceExtraFee>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePoinvoiceExtraFeeCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceExtraFees_User");
-
-            entity.HasOne(d => d.Currency).WithMany(p => p.PurchasePoinvoiceExtraFees).HasConstraintName("FK_PurchasePOInvoiceExtraFees_Currency");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PurchasePoinvoiceExtraFeeModifiedByNavigations).HasConstraintName("FK_PurchasePOInvoiceExtraFees_User1");
-
-            entity.HasOne(d => d.PoinvoiceExtraFeesType).WithMany(p => p.PurchasePoinvoiceExtraFees)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceExtraFees_PurchasePOInvoiceExtraFeesType");
-
-            entity.HasOne(d => d.Poitem).WithMany(p => p.PurchasePoinvoiceExtraFees).HasConstraintName("FK_PurchasePOInvoiceExtraFees_PurchasePOItem");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoiceFinalExpensi>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePoinvoiceFinalExpensis)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceFinalExpensis_User");
-
-            entity.HasOne(d => d.Currency).WithMany(p => p.PurchasePoinvoiceFinalExpensis).HasConstraintName("FK_PurchasePOInvoiceFinalExpensis_Currency");
-
-            entity.HasOne(d => d.PurchasePoinvoice).WithMany(p => p.PurchasePoinvoiceFinalExpensis)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceFinalExpensis_PurchasePOInvoice");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoiceNotIncludedTax>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_PurchasePOInvoiceNotIncludedTax_1");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePoinvoiceNotIncludedTaxCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceNotIncludedTax_User");
-
-            entity.HasOne(d => d.Currency).WithMany(p => p.PurchasePoinvoiceNotIncludedTaxes).HasConstraintName("FK_PurchasePOInvoiceNotIncludedTax_Currency");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PurchasePoinvoiceNotIncludedTaxModifiedByNavigations).HasConstraintName("FK_PurchasePOInvoiceNotIncludedTax_User1");
-
-            entity.HasOne(d => d.PonotIncludedTaxType).WithMany(p => p.PurchasePoinvoiceNotIncludedTaxes)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceNotIncludedTax_PurchasePOInvoiceNotIncludedTaxType");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoiceNotIncludedTaxType>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_PurchasePOInvoiceNotIncludedTax");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoiceTaxIncluded>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePoinvoiceTaxIncludedCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceTaxIncluded_User");
-
-            entity.HasOne(d => d.Currency).WithMany(p => p.PurchasePoinvoiceTaxIncludeds).HasConstraintName("FK_PurchasePOInvoiceTaxIncluded_Currency");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PurchasePoinvoiceTaxIncludedModifiedByNavigations).HasConstraintName("FK_PurchasePOInvoiceTaxIncluded_User1");
-
-            entity.HasOne(d => d.Poinvoice).WithMany(p => p.PurchasePoinvoiceTaxIncludeds)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceTaxIncluded_PurchasePOInvoice");
-
-            entity.HasOne(d => d.PotaxIncludedType).WithMany(p => p.PurchasePoinvoiceTaxIncludeds)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceTaxIncluded_PurchasePOInvoiceTaxIncludedType");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoiceTaxIncludedType>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_PurchasePOTaxIncludedType");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoiceTotalOrderCustomFee>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePoinvoiceTotalOrderCustomFees)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceTotalOrderCustomFee_User");
-
-            entity.HasOne(d => d.Currency).WithMany(p => p.PurchasePoinvoiceTotalOrderCustomFees).HasConstraintName("FK_PurchasePOInvoiceTotalOrderCustomFee_Currency");
-
-            entity.HasOne(d => d.PurchasePoinvoice).WithMany(p => p.PurchasePoinvoiceTotalOrderCustomFees)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceTotalOrderCustomFee_PurchasePOInvoice");
-        });
-
-        modelBuilder.Entity<PurchasePoinvoiceUnloadingFee>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePoinvoiceUnloadingFees)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceUnloadingFee_User");
-
-            entity.HasOne(d => d.PurchasePoinvoice).WithMany(p => p.PurchasePoinvoiceUnloadingFees)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOInvoiceUnloadingFee_PurchasePOInvoice");
         });
 
         modelBuilder.Entity<PurchasePoitem>(entity =>
@@ -5484,132 +4412,11 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PurchasePOItem_InventoryItem");
 
-            entity.HasOne(d => d.InventoryMatrialRequestItem).WithMany(p => p.PurchasePoitems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOItem_InventoryMatrialRequestItems");
-
             entity.HasOne(d => d.Project).WithMany(p => p.PurchasePoitems).HasConstraintName("FK_PurchasePOItem_Project");
 
             entity.HasOne(d => d.PurchasePo).WithMany(p => p.PurchasePoitems)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PurchasePOItem_PurchasePO");
-
-            entity.HasOne(d => d.PurchaseRequestItem).WithMany(p => p.PurchasePoitems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOItem_PurchaseRequestItems");
-
-            entity.HasOne(d => d.Uom).WithMany(p => p.PurchasePoitems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOItem_InventoryUOM");
-        });
-
-        modelBuilder.Entity<PurchasePopaymentSwift>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePopaymentSwiftCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOPaymentSwift_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PurchasePopaymentSwiftModifiedByNavigations).HasConstraintName("FK_PurchasePOPaymentSwift_User1");
-
-            entity.HasOne(d => d.Po).WithMany(p => p.PurchasePopaymentSwifts)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOPaymentSwift_PurchasePO");
-
-            entity.HasOne(d => d.PurchasePoattachment).WithMany(p => p.PurchasePopaymentSwifts).HasConstraintName("FK_PurchasePOPaymentSwift_PurchasePOAttachment");
-        });
-
-        modelBuilder.Entity<PurchasePopdf>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePopdfCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOPdf_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PurchasePopdfModifiedByNavigations).HasConstraintName("FK_PurchasePOPdf_User1");
-
-            entity.HasOne(d => d.Po).WithMany(p => p.PurchasePopdfs)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOPdf_PurchasePO");
-        });
-
-        modelBuilder.Entity<PurchasePopdfEditHistory>(entity =>
-        {
-            entity.HasOne(d => d.EditedByNavigation).WithMany(p => p.PurchasePopdfEditHistories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOPdfEditHistory_User");
-
-            entity.HasOne(d => d.Po).WithMany(p => p.PurchasePopdfEditHistories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOPdfEditHistory_PurchasePO");
-        });
-
-        modelBuilder.Entity<PurchasePopdfTemplate>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePopdfTemplateCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOPdfTemplate_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PurchasePopdfTemplateModifiedByNavigations).HasConstraintName("FK_PurchasePOPdfTemplate_User1");
-
-            entity.HasOne(d => d.Po).WithMany(p => p.PurchasePopdfTemplates)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOPdfTemplate_PurchasePO");
-        });
-
-        modelBuilder.Entity<PurchasePoshipmentDocument>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchasePoshipmentDocuments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOShipmentDocuments_User");
-
-            entity.HasOne(d => d.Currency).WithMany(p => p.PurchasePoshipmentDocuments).HasConstraintName("FK_PurchasePOShipmentDocuments_Currency");
-        });
-
-        modelBuilder.Entity<PurchasePoshipmentShippingMethodDetail>(entity =>
-        {
-            entity.HasOne(d => d.Currency).WithMany(p => p.PurchasePoshipmentShippingMethodDetails).HasConstraintName("FK_PurchasePOShipmentShippingMethodDetails_Currency");
-
-            entity.HasOne(d => d.ShippingMethod).WithMany(p => p.PurchasePoshipmentShippingMethodDetails)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchasePOShipmentShippingMethodDetails_ShippingMethod");
-        });
-
-        modelBuilder.Entity<PurchasePotype>(entity =>
-        {
-            entity.Property(e => e.Id).ValueGeneratedNever();
-        });
-
-        modelBuilder.Entity<PurchaseRequest>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurchaseRequestCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchaseRequest_User1");
-
-            entity.HasOne(d => d.FromInventoryStore).WithMany(p => p.PurchaseRequests)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchaseRequest_InventoryStore");
-
-            entity.HasOne(d => d.MatrialRequest).WithMany(p => p.PurchaseRequests)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchaseRequest_InventoryMatrialRequest");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PurchaseRequestModifiedByNavigations).HasConstraintName("FK_PurchaseRequest_User2");
-
-            entity.HasOne(d => d.ToUser).WithMany(p => p.PurchaseRequestToUsers).HasConstraintName("FK_PurchaseRequest_User");
-        });
-
-        modelBuilder.Entity<PurchaseRequestItem>(entity =>
-        {
-            entity.HasOne(d => d.InventoryMatrialRequestItem).WithMany(p => p.PurchaseRequestItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchaseRequestItems_InventoryMatrialRequestItems");
-
-            entity.HasOne(d => d.PurchaseRequest).WithMany(p => p.PurchaseRequestItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PurchaseRequestItems_PurchaseRequest");
         });
 
         modelBuilder.Entity<Report>(entity =>
@@ -6309,26 +5116,6 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.ModifiedNavigation).WithMany(p => p.SalesTargetModifiedNavigations).HasConstraintName("FK_SalesTarget_User");
         });
 
-        modelBuilder.Entity<ShippingCompany>(entity =>
-        {
-            entity.HasOne(d => d.Attachement).WithMany(p => p.ShippingCompanies).HasConstraintName("FK_ShippingCompany_ShippingCompanyAttachment");
-
-            entity.HasOne(d => d.PurchasePoshipmentShippingMethodDetails).WithMany(p => p.ShippingCompanies)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ShippingCompany_PurchasePOShipmentShippingMethodDetails");
-        });
-
-        modelBuilder.Entity<ShippingCompanyAttachment>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ShippingCompanyAttachmentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ShippingCompanyAttachment_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ShippingCompanyAttachmentModifiedByNavigations).HasConstraintName("FK_ShippingCompanyAttachment_User1");
-        });
-
         modelBuilder.Entity<Speciality>(entity =>
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
@@ -6606,156 +5393,9 @@ public partial class GarasTestContext : DbContext
                 .HasConstraintName("FK_Task_TaskType");
         });
 
-        modelBuilder.Entity<TaskApplicationOpen>(entity =>
-        {
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskApplicationOpens)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskApplicationOpen_Task");
-
-            entity.HasOne(d => d.User).WithMany(p => p.TaskApplicationOpens)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskApplicationOpen_User");
-        });
-
-        modelBuilder.Entity<TaskAssignUser>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskAssignUserCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskAssignUser_User1");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskAssignUserModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskAssignUser_User");
-
-            entity.HasOne(d => d.TaskInfo).WithMany(p => p.TaskAssignUsers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskAssignUser_TaskInfo");
-        });
-
-        modelBuilder.Entity<TaskAttachment>(entity =>
-        {
-            entity.HasOne(d => d.Category).WithMany(p => p.TaskAttachments).HasConstraintName("FK_TaskAttachment_AttachmentCategory");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskAttachmentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskAttachment_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskAttachmentModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskAttachment_User1");
-
-            entity.HasOne(d => d.TaskInfo).WithMany(p => p.TaskAttachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskAttachment_TaskInfo");
-        });
-
-        modelBuilder.Entity<TaskBrowserTab>(entity =>
-        {
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskBrowserTabs)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskBrowserTab_Task");
-
-            entity.HasOne(d => d.User).WithMany(p => p.TaskBrowserTabs)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskBrowserTab_TaskBrowserTab");
-        });
-
         modelBuilder.Entity<TaskCategory>(entity =>
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
-        });
-
-        modelBuilder.Entity<TaskClosureLog>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_TaskLog");
-
-            entity.Property(e => e.ClosureDate).HasDefaultValueSql("((1))");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskClosureLogCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskLog_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskClosureLogModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskLog_User1");
-
-            entity.HasOne(d => d.TaskInfo).WithMany(p => p.TaskClosureLogs)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskLog_TaskInfo");
-        });
-
-        modelBuilder.Entity<TaskComment>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskCommentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskComment_User1");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskCommentModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskComment_User");
-
-            entity.HasOne(d => d.ParentComment).WithMany(p => p.InverseParentComment).HasConstraintName("FK_TaskComment_TaskComment");
-
-            entity.HasOne(d => d.TaskInfo).WithMany(p => p.TaskComments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskComment_TaskInfo");
-        });
-
-        modelBuilder.Entity<TaskCommentAttachment>(entity =>
-        {
-            entity.HasOne(d => d.Category).WithMany(p => p.TaskCommentAttachments).HasConstraintName("FK_TaskCommentAttachment_AttachmentCategory");
-
-            entity.HasOne(d => d.Comment).WithMany(p => p.TaskCommentAttachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskCommentAttachment_TaskComment");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskCommentAttachmentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskCommentAttachment_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskCommentAttachmentModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskCommentAttachment_User1");
-        });
-
-        modelBuilder.Entity<TaskDetail>(entity =>
-        {
-            entity.ToTable(tb => tb.HasTrigger("Trig_TaskDetails_log"));
-
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskDetails)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Task_TaskDetails");
-        });
-
-        modelBuilder.Entity<TaskExpensi>(entity =>
-        {
-            entity.HasOne(d => d.ApprovedByNavigation).WithMany(p => p.TaskExpensiApprovedByNavigations).HasConstraintName("FK_TaskExpensis_User2");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskExpensiCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskExpensis_User");
-
-            entity.HasOne(d => d.ExpensisType).WithMany(p => p.TaskExpensis)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskExpensis_ExpensisType");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskExpensiModifiedByNavigations).HasConstraintName("FK_TaskExpensis_User1");
-
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskExpensis).HasConstraintName("FK_TaskExpensis_Task");
-        });
-
-        modelBuilder.Entity<TaskFlagsOwnerReciever>(entity =>
-        {
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskFlagsOwnerRecievers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Task_TaskFlagsOwnerReciever");
-        });
-
-        modelBuilder.Entity<TaskHistory>(entity =>
-        {
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskHistories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskHistory_Task");
         });
 
         modelBuilder.Entity<TaskInfo>(entity =>
@@ -6779,112 +5419,6 @@ public partial class GarasTestContext : DbContext
                 .HasConstraintName("FK_TaskInfo_TaskCategory");
         });
 
-        modelBuilder.Entity<TaskInfoRevision>(entity =>
-        {
-            entity.Property(e => e.Billable).HasDefaultValue(false);
-            entity.Property(e => e.Eapproval).HasDefaultValue(false);
-            entity.Property(e => e.MangageStageId).IsFixedLength();
-            entity.Property(e => e.TimeTracking).HasDefaultValue(false);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskInfoRevisionCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskInfoRevision_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskInfoRevisionModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskInfoRevision_User1");
-
-            entity.HasOne(d => d.Proiority).WithMany(p => p.TaskInfoRevisions)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskInfoRevision_Priority");
-
-            entity.HasOne(d => d.TaskCategory).WithMany(p => p.TaskInfoRevisions)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskInfoRevision_TaskCategory");
-        });
-
-        modelBuilder.Entity<TaskPermission>(entity =>
-        {
-            entity.HasOne(d => d.PermissionLevel).WithMany(p => p.TaskPermissions)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskPermission_PermissionLevel");
-
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskPermissions)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskPermission_Task");
-        });
-
-        modelBuilder.Entity<TaskPrimarySubCategory>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskPrimarySubCategoryCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskPrimarySubCategory_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskPrimarySubCategoryModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskPrimarySubCategory_User1");
-
-            entity.HasOne(d => d.TaskCategory).WithMany(p => p.TaskPrimarySubCategories).HasConstraintName("FK_TaskPrimarySubCategory_TaskCategory");
-        });
-
-        modelBuilder.Entity<TaskRequirement>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskRequirementCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskRequirement_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskRequirementModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskRequirement_User1");
-
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskRequirements)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskRequirement_Task");
-
-            entity.HasOne(d => d.WorkingHourTracking).WithMany(p => p.TaskRequirements).HasConstraintName("FK_TaskRequirement_WorkingHourseTracking");
-        });
-
-        modelBuilder.Entity<TaskScreenShot>(entity =>
-        {
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskScreenShots)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskScreenShot_Task");
-
-            entity.HasOne(d => d.User).WithMany(p => p.TaskScreenShots)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskScreenShot_User");
-        });
-
-        modelBuilder.Entity<TaskSecondarySubCategory>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.TaskPrimarySubCategory).WithMany(p => p.TaskSecondarySubCategories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskSecondarySubCategory_TaskPrimarySubCategory");
-        });
-
-        modelBuilder.Entity<TaskStageHistory>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskStageHistoryCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskStageHistory_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskStageHistoryModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskStageHistory_User1");
-
-            entity.HasOne(d => d.Stage).WithMany(p => p.TaskStageHistories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskStageHistory_Stages");
-
-            entity.HasOne(d => d.TaskInfo).WithMany(p => p.TaskStageHistories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskStageHistory_TaskInfo");
-        });
-
         modelBuilder.Entity<TaskType>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
@@ -6896,51 +5430,6 @@ public partial class GarasTestContext : DbContext
                 .HasConstraintName("FK_TaskType_User");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskTypeModifiedByNavigations).HasConstraintName("FK_TaskType_User1");
-        });
-
-        modelBuilder.Entity<TaskUnitRateService>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskUnitRateServiceCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskUnitRateService_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskUnitRateServiceModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskUnitRateService_User1");
-
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskUnitRateServices)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskUnitRateService_Task");
-
-            entity.HasOne(d => d.Uom).WithMany(p => p.TaskUnitRateServices)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskUnitRateService_InventoryUOM");
-        });
-
-        modelBuilder.Entity<TaskUserMonitor>(entity =>
-        {
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskUserMonitors)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskUserMonitor_Task");
-
-            entity.HasOne(d => d.User).WithMany(p => p.TaskUserMonitors)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskUserMonitor_User");
-        });
-
-        modelBuilder.Entity<TaskUserReply>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_TaskUserReplya");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskUserReplyCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskUserReply_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskUserReplyModifiedByNavigations).HasConstraintName("FK_TaskUserReply_User1");
-
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskUserReplies)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskUserReply_Task");
         });
 
         modelBuilder.Entity<Tax>(entity =>
@@ -7665,163 +6154,6 @@ public partial class GarasTestContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_aymentStrategy");
 
-            entity.Property(e => e.Active).HasDefaultValue(true);
-        });
-
-        modelBuilder.Entity<VehicleBodyType>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_VehicleSubModel");
-
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.VehicleModel).WithMany(p => p.VehicleBodyTypes)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_VehicleSubModel_VehicleModel");
-        });
-
-        modelBuilder.Entity<VehicleBrand>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-        });
-
-        modelBuilder.Entity<VehicleColor>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-        });
-
-        modelBuilder.Entity<VehicleIssuer>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-        });
-
-        modelBuilder.Entity<VehicleMaintenanceJobOrderHistory>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.JobOrderProject).WithMany(p => p.VehicleMaintenanceJobOrderHistories).HasConstraintName("FK_VehicleMaintenanceJobOrderHistory_Project");
-
-            entity.HasOne(d => d.NextVisitFor).WithMany(p => p.VehicleMaintenanceJobOrderHistoryNextVisitFors).HasConstraintName("FK_VehicleMaintenanceJobOrderHistory_VehicleMaintenanceType1");
-
-            entity.HasOne(d => d.SalesOffer).WithMany(p => p.VehicleMaintenanceJobOrderHistories).HasConstraintName("FK_VehicleMaintenanceJobOrderHistory_SalesOffer");
-
-            entity.HasOne(d => d.VehicleMaintenanceType).WithMany(p => p.VehicleMaintenanceJobOrderHistoryVehicleMaintenanceTypes)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_VehicleMaintenanceJobOrderHistory_VehicleMaintenanceType");
-
-            entity.HasOne(d => d.VehiclePerClient).WithMany(p => p.VehicleMaintenanceJobOrderHistories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_VehicleMaintenanceJobOrderHistory_VehiclePerClient");
-        });
-
-        modelBuilder.Entity<VehicleMaintenanceType>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Bom).WithMany(p => p.VehicleMaintenanceTypes).HasConstraintName("FK_VehicleMaintenanceType_BOM");
-
-            entity.HasOne(d => d.VehiclePriorityLevel).WithMany(p => p.VehicleMaintenanceTypes)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_VehicleMaintenanceType_VehicleMaintenanceTypePriorityLevel");
-
-            entity.HasOne(d => d.VehicleRate).WithMany(p => p.VehicleMaintenanceTypes)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_VehicleMaintenanceType_VehicleMaintenanceTypeRate");
-        });
-
-        modelBuilder.Entity<VehicleMaintenanceTypeForModel>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Brand).WithMany(p => p.VehicleMaintenanceTypeForModels).HasConstraintName("FK_VehicleMaintenanceTypeForModel_VehicleBrand");
-
-            entity.HasOne(d => d.Model).WithMany(p => p.VehicleMaintenanceTypeForModels).HasConstraintName("FK_VehicleMaintenanceTypeForModel_VehicleModel");
-
-            entity.HasOne(d => d.VehicleMaintenanceType).WithMany(p => p.VehicleMaintenanceTypeForModels)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_VehicleMaintenanceTypeForModel_VehicleMaintenanceType");
-        });
-
-        modelBuilder.Entity<VehicleMaintenanceTypePriorityLevel>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_VehicleMaintenanceTypePriority");
-
-            entity.Property(e => e.Active).HasDefaultValue(true);
-            entity.Property(e => e.PriorityLevelName).IsFixedLength();
-        });
-
-        modelBuilder.Entity<VehicleMaintenanceTypeRate>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-            entity.Property(e => e.RateName).IsFixedLength();
-        });
-
-        modelBuilder.Entity<VehicleMaintenanceTypeServiceSheduleCategory>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.VehicleMaintenanceType).WithMany(p => p.VehicleMaintenanceTypeServiceSheduleCategories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_VehicleMaintenanceTypeServiceSheduleCategory_VehicleMaintenanceType");
-
-            entity.HasOne(d => d.VehicleServiceScheduleCategory).WithMany(p => p.VehicleMaintenanceTypeServiceSheduleCategories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_VehicleMaintenanceTypeServiceSheduleCategory_VehicleServiceScheduleCategory");
-        });
-
-        modelBuilder.Entity<VehicleModel>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.VehicleBrand).WithMany(p => p.VehicleModels)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_VehicleModel_VehicleBrand");
-        });
-
-        modelBuilder.Entity<VehiclePerClient>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_ClientVehicle");
-
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.BodyType).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_VehiclePerClient_VehicleBodyType");
-
-            entity.HasOne(d => d.Brand).WithMany(p => p.VehiclePerClients)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_VehiclePerClient_VehicleBrand");
-
-            entity.HasOne(d => d.City).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_ClientVehicle_Governorate");
-
-            entity.HasOne(d => d.Client).WithMany(p => p.VehiclePerClients)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_VehiclePerClient_Client");
-
-            entity.HasOne(d => d.Color).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_ClientVehicle_VehicleColor");
-
-            entity.HasOne(d => d.Country).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_ClientVehicle_Country");
-
-            entity.HasOne(d => d.Issuer).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_ClientVehicle_VehicleIssuer");
-
-            entity.HasOne(d => d.Model).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_VehiclePerClient_VehicleModel");
-
-            entity.HasOne(d => d.Transmission).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_ClientVehicle_VehicleTransmission");
-
-            entity.HasOne(d => d.WheelsDrive).WithMany(p => p.VehiclePerClients).HasConstraintName("FK_ClientVehicle_VehicleWheelsDrive");
-        });
-
-        modelBuilder.Entity<VehicleServiceScheduleCategory>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent).HasConstraintName("FK_VehicleServiceScheduleCategory_VehicleServiceScheduleCategory");
-        });
-
-        modelBuilder.Entity<VehicleTransmission>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-        });
-
-        modelBuilder.Entity<VehicleWheelsDrive>(entity =>
-        {
             entity.Property(e => e.Active).HasDefaultValue(true);
         });
 

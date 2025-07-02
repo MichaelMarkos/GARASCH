@@ -705,41 +705,6 @@ namespace NewGaras.Domain.Services
             }
         }
 
-        public BaseResponseWithData<GetProjectFinancialDataModel> GetProjectFinancialData([FromHeader]long ProjectId)
-        {
-            BaseResponseWithData<GetProjectFinancialDataModel> response = new BaseResponseWithData<GetProjectFinancialDataModel>();
-            response.Result = true;
-            response.Errors = new List<Error>();
-            response.Data = new GetProjectFinancialDataModel();
-            var Project = _unitOfWork.Projects.Find(a => a.Id == ProjectId, includes: new[] { "Tasks.TaskDetails", "WorkingHourseTrackings", "Tasks.TaskExpensis", "ProjectInvoices.ProjectInvoiceItems", "Tasks.TaskUnitRateServices" });
-            if(Project == null)
-            {
-                response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err101";
-                error.ErrorMSG = "Project not found";
-                response.Errors.Add(error);
-                return response;
-            }
-            var unitservices = Project.Tasks.SelectMany(a=>a.TaskUnitRateServices).ToList();
-            var items = Project.ProjectInvoices.SelectMany(a=>a.ProjectInvoiceItems).ToList();
-            response.Data.ProjectBudget = Project.Budget??0;
-            response.Data.TotalTasksBudget = Project.Tasks.SelectMany(x => x.TaskDetails).Sum(z=>z.ProjectBudget??0);
-            response.Data.ExpensisTotalAmount = Project.WorkingHourseTrackings.Where(a=>a.WorkingHoursApproval==true).Select(a => a.TaskRate * a.TotalHours).Sum() + Project.Tasks.SelectMany(a=>a.TaskExpensis).Where(a=>a.Approved==true).Sum(a=>a.Amount) + unitservices.Sum(a => a.Total);
-            response.Data.InvoicesAmountExtra = items.Where(a => a.ItemId == null).Sum(a => a.Total);
-            response.Data.InvoicesAmountBasic = items.Where(a => a.ItemId != null).Sum(a => a.Total);
-            response.Data.InvoicesAmount = Project.ProjectInvoices.Sum(a => a.Amount);
-            response.Data.InvoicesCollected = Project.ProjectInvoices.Sum(a => a.Collected);
-            response.Data.InvoicesRemain = response.Data.ExpensisTotalAmount - response.Data.InvoicesAmount;
-            response.Data.GrossProfit = response.Data.InvoicesAmount- response.Data.ExpensisTotalAmount;
-            response.Data.WorkingHours = Project.WorkingHourseTrackings.Where(a=>a.WorkingHoursApproval==true).Select(a => a.TaskRate * a.TotalHours).Sum();
-            response.Data.UnitRateService = unitservices.Sum(a => a.Total);
-            response.Data.DirectExpenses = Project.Tasks.SelectMany(a => a.TaskExpensis).Where(a => a.Approved == true).Sum(a => a.Amount);
-            response.Data.RemainingTobeCollected = response.Data.InvoicesAmount - response.Data.InvoicesCollected;
-            response.Data.RemainingTobeInvoiced = response.Data.ExpensisTotalAmount - response.Data.InvoicesAmountBasic;
-            return response;
-
-        }
 
         public BaseResponseWithId<long> DeleteProjectInvoiceItem(long InvoiceItemId,long creator)
         {

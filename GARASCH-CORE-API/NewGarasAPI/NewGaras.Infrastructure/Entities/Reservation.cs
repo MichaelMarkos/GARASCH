@@ -56,14 +56,5 @@ public partial class Reservation
     public virtual ICollection<ReservationInvoice> ReservationInvoices { get; set; } = new List<ReservationInvoice>();
 
     [InverseProperty("Reservation")]
-    public virtual ICollection<RoomsReservationChildern> RoomsReservationChilderns { get; set; } = new List<RoomsReservationChildern>();
-
-    [InverseProperty("Reservation")]
-    public virtual ICollection<RoomsReservationMeal> RoomsReservationMeals { get; set; } = new List<RoomsReservationMeal>();
-
-    [InverseProperty("Reservation")]
-    public virtual ICollection<RoomsReservation> RoomsReservations { get; set; } = new List<RoomsReservation>();
-
-    [InverseProperty("Reservation")]
     public virtual ICollection<StatusReservation> StatusReservations { get; set; } = new List<StatusReservation>();
 }

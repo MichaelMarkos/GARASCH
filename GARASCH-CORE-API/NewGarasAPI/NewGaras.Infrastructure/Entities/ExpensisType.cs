@@ -42,7 +42,4 @@ public partial class ExpensisType
     [ForeignKey("ModifiedBy")]
     [InverseProperty("ExpensisTypeModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }
-
-    [InverseProperty("ExpensisType")]
-    public virtual ICollection<TaskExpensi> TaskExpensis { get; set; } = new List<TaskExpensi>();
 }

@@ -46,8 +46,4 @@ public partial class Rate
     [ForeignKey("RoomTypeId")]
     [InverseProperty("Rates")]
     public virtual RoomType RoomType { get; set; }
-
-    [ForeignKey("RoomViewId")]
-    [InverseProperty("Rates")]
-    public virtual RoomView RoomView { get; set; }
 }

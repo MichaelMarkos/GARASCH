@@ -123,15 +123,6 @@ public partial class InventoryItem
 
     public string ImageUrl { get; set; }
 
-    [InverseProperty("Item")]
-    public virtual ICollection<BompartitionItem> BompartitionItems { get; set; } = new List<BompartitionItem>();
-
-    [InverseProperty("Product")]
-    public virtual ICollection<Bomproduct> Bomproducts { get; set; } = new List<Bomproduct>();
-
-    [InverseProperty("Product")]
-    public virtual ICollection<Bom> Boms { get; set; } = new List<Bom>();
-
     [ForeignKey("CreatedBy")]
     [InverseProperty("InventoryItemCreatedByNavigations")]
     public virtual User CreatedByNavigation { get; set; }
@@ -145,39 +136,9 @@ public partial class InventoryItem
     [InverseProperty("InventoryItem")]
     public virtual ICollection<Hrcustody> Hrcustodies { get; set; } = new List<Hrcustody>();
 
-    [InverseProperty("InventoryItem")]
-    public virtual ICollection<InventoryAddingOrderItem> InventoryAddingOrderItems { get; set; } = new List<InventoryAddingOrderItem>();
-
-    [InverseProperty("InventoryItem")]
-    public virtual ICollection<InventoryInternalBackOrderItem> InventoryInternalBackOrderItems { get; set; } = new List<InventoryInternalBackOrderItem>();
-
-    [InverseProperty("InventoryItem")]
-    public virtual ICollection<InventoryInternalTransferOrderItem> InventoryInternalTransferOrderItems { get; set; } = new List<InventoryInternalTransferOrderItem>();
-
-    [InverseProperty("InventoryItem")]
-    public virtual ICollection<InventoryItemAttachment> InventoryItemAttachments { get; set; } = new List<InventoryItemAttachment>();
-
     [ForeignKey("InventoryItemCategoryId")]
     [InverseProperty("InventoryItems")]
     public virtual InventoryItemCategory InventoryItemCategory { get; set; }
-
-    [InverseProperty("InventoryItem")]
-    public virtual ICollection<InventoryItemContent> InventoryItemContents { get; set; } = new List<InventoryItemContent>();
-
-    [InverseProperty("InventoryItem")]
-    public virtual ICollection<InventoryItemPrice> InventoryItemPrices { get; set; } = new List<InventoryItemPrice>();
-
-    [InverseProperty("InventoryItem")]
-    public virtual ICollection<InventoryItemUom> InventoryItemUoms { get; set; } = new List<InventoryItemUom>();
-
-    [InverseProperty("InventoryItem")]
-    public virtual ICollection<InventoryMatrialRequestItem> InventoryMatrialRequestItems { get; set; } = new List<InventoryMatrialRequestItem>();
-
-    [InverseProperty("InventoryItem")]
-    public virtual ICollection<InventoryReportItem> InventoryReportItems { get; set; } = new List<InventoryReportItem>();
-
-    [InverseProperty("InventoryItem")]
-    public virtual ICollection<InventoryStoreItem> InventoryStoreItems { get; set; } = new List<InventoryStoreItem>();
 
     [InverseProperty("InventoryItem")]
     public virtual ICollection<MaintenanceFor> MaintenanceFors { get; set; } = new List<MaintenanceFor>();
@@ -198,14 +159,6 @@ public partial class InventoryItem
 
     [InverseProperty("InventoryItem")]
     public virtual ICollection<PurchasePoitem> PurchasePoitems { get; set; } = new List<PurchasePoitem>();
-
-    [ForeignKey("PurchasingUomid")]
-    [InverseProperty("InventoryItemPurchasingUoms")]
-    public virtual InventoryUom PurchasingUom { get; set; }
-
-    [ForeignKey("RequstionUomid")]
-    [InverseProperty("InventoryItemRequstionUoms")]
-    public virtual InventoryUom RequstionUom { get; set; }
 
     [InverseProperty("Product")]
     public virtual ICollection<SalesBranchProductTarget> SalesBranchProductTargets { get; set; } = new List<SalesBranchProductTarget>();

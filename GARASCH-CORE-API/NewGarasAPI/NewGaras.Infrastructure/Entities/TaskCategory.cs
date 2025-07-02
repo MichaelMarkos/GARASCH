@@ -22,11 +22,5 @@ public partial class TaskCategory
     public bool Active { get; set; }
 
     [InverseProperty("TaskCategory")]
-    public virtual ICollection<TaskInfoRevision> TaskInfoRevisions { get; set; } = new List<TaskInfoRevision>();
-
-    [InverseProperty("TaskCategory")]
     public virtual ICollection<TaskInfo> TaskInfos { get; set; } = new List<TaskInfo>();
-
-    [InverseProperty("TaskCategory")]
-    public virtual ICollection<TaskPrimarySubCategory> TaskPrimarySubCategories { get; set; } = new List<TaskPrimarySubCategory>();
 }

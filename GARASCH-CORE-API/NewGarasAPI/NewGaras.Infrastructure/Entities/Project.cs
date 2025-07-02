@@ -131,12 +131,6 @@ public partial class Project
     public virtual ICollection<DailyTransactionCostCenter> DailyTransactionCostCenters { get; set; } = new List<DailyTransactionCostCenter>();
 
     [InverseProperty("Project")]
-    public virtual ICollection<InventoryMatrialReleasePrintInfo> InventoryMatrialReleasePrintInfos { get; set; } = new List<InventoryMatrialReleasePrintInfo>();
-
-    [InverseProperty("Project")]
-    public virtual ICollection<InventoryMatrialRequestItem> InventoryMatrialRequestItems { get; set; } = new List<InventoryMatrialRequestItem>();
-
-    [InverseProperty("Project")]
     public virtual ICollection<InvoiceExtraModification> InvoiceExtraModifications { get; set; } = new List<InvoiceExtraModification>();
 
     [InverseProperty("Project")]
@@ -214,9 +208,6 @@ public partial class Project
 
     [InverseProperty("Project")]
     public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
-
-    [InverseProperty("JobOrderProject")]
-    public virtual ICollection<VehicleMaintenanceJobOrderHistory> VehicleMaintenanceJobOrderHistories { get; set; } = new List<VehicleMaintenanceJobOrderHistory>();
 
     [InverseProperty("Project")]
     public virtual ICollection<WorkingHourseTracking> WorkingHourseTrackings { get; set; } = new List<WorkingHourseTracking>();

@@ -47,9 +47,6 @@ public partial class Currency
     [InverseProperty("Currency")]
     public virtual ICollection<AllowncesType> AllowncesTypes { get; set; } = new List<AllowncesType>();
 
-    [InverseProperty("Currency")]
-    public virtual ICollection<Bomlibrary> Bomlibraries { get; set; } = new List<Bomlibrary>();
-
     [InverseProperty("OpeningBalanceCurrency")]
     public virtual ICollection<Client> Clients { get; set; } = new List<Client>();
 
@@ -99,37 +96,7 @@ public partial class Currency
     public virtual ICollection<PrsupplierOfferItem> PrsupplierOfferItems { get; set; } = new List<PrsupplierOfferItem>();
 
     [InverseProperty("Currency")]
-    public virtual ICollection<PurchasePoinvoiceCalculatedShipmentValue> PurchasePoinvoiceCalculatedShipmentValues { get; set; } = new List<PurchasePoinvoiceCalculatedShipmentValue>();
-
-    [InverseProperty("Currency")]
-    public virtual ICollection<PurchasePoinvoiceClosedPayment> PurchasePoinvoiceClosedPayments { get; set; } = new List<PurchasePoinvoiceClosedPayment>();
-
-    [InverseProperty("Currency")]
-    public virtual ICollection<PurchasePoinvoiceDeduction> PurchasePoinvoiceDeductions { get; set; } = new List<PurchasePoinvoiceDeduction>();
-
-    [InverseProperty("Currency")]
-    public virtual ICollection<PurchasePoinvoiceExtraFee> PurchasePoinvoiceExtraFees { get; set; } = new List<PurchasePoinvoiceExtraFee>();
-
-    [InverseProperty("Currency")]
-    public virtual ICollection<PurchasePoinvoiceFinalExpensi> PurchasePoinvoiceFinalExpensis { get; set; } = new List<PurchasePoinvoiceFinalExpensi>();
-
-    [InverseProperty("Currency")]
-    public virtual ICollection<PurchasePoinvoiceNotIncludedTax> PurchasePoinvoiceNotIncludedTaxes { get; set; } = new List<PurchasePoinvoiceNotIncludedTax>();
-
-    [InverseProperty("Currency")]
-    public virtual ICollection<PurchasePoinvoiceTaxIncluded> PurchasePoinvoiceTaxIncludeds { get; set; } = new List<PurchasePoinvoiceTaxIncluded>();
-
-    [InverseProperty("Currency")]
-    public virtual ICollection<PurchasePoinvoiceTotalOrderCustomFee> PurchasePoinvoiceTotalOrderCustomFees { get; set; } = new List<PurchasePoinvoiceTotalOrderCustomFee>();
-
-    [InverseProperty("Currency")]
     public virtual ICollection<PurchasePoitem> PurchasePoitems { get; set; } = new List<PurchasePoitem>();
-
-    [InverseProperty("Currency")]
-    public virtual ICollection<PurchasePoshipmentDocument> PurchasePoshipmentDocuments { get; set; } = new List<PurchasePoshipmentDocument>();
-
-    [InverseProperty("Currency")]
-    public virtual ICollection<PurchasePoshipmentShippingMethodDetail> PurchasePoshipmentShippingMethodDetails { get; set; } = new List<PurchasePoshipmentShippingMethodDetail>();
 
     [InverseProperty("Currency")]
     public virtual ICollection<ReservationInvoice> ReservationInvoices { get; set; } = new List<ReservationInvoice>();

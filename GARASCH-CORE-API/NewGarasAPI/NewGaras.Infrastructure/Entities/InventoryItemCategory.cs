@@ -46,12 +46,6 @@ public partial class InventoryItemCategory
 
     public int? CategoryTypeId { get; set; }
 
-    [InverseProperty("ProductGroup")]
-    public virtual ICollection<Bomproduct> Bomproducts { get; set; } = new List<Bomproduct>();
-
-    [InverseProperty("ProductGroup")]
-    public virtual ICollection<Bom> Boms { get; set; } = new List<Bom>();
-
     [ForeignKey("CategoryTypeId")]
     [InverseProperty("InventoryItemCategories")]
     public virtual CategoryType CategoryType { get; set; }

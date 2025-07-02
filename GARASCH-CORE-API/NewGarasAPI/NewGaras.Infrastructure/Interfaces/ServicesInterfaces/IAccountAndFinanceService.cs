@@ -25,7 +25,6 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public Task<DailyJournalEntryGroupingResponse> GetDailyJournalEntryDateList([FromHeader] GetDailyJournalEntryDateListHeader header,long creator);
         public Task<DailyJournalEntryResponse> GetDailyJournalEntryPerDateList([FromHeader] GetDailyJournalEntryPerDateListHader header,long creator);
         public Task<GetCalcDetailsResponse> GetCalcProjectDetails([FromHeader] long ProjectId = 0);
-        public Task<GetCalcDetailsResponse> GetCalcPODetails([FromHeader] long POId = 0);
         public Task<DailyJournalEntryDiviededResponse> GetDailyJournalEntryWithFilterList([FromHeader] GetDailyJournalEntryWithFilterListHeader header);
 
         public void UpdateParentAccountAccumilative(long ParentAccountID, decimal Credit, decimal Debit, decimal Balance);
@@ -35,7 +34,6 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public void UpdateParentAccountAccumilativetest(long ParentAccountID, decimal Balance);
         public BaseResponseWithId UpdateJournalEntryWithAccountAcc();
         public Task<GetCalcDetailsResponse> GetCalcClientCollectedDetails([FromHeader] long ClientId = 0);
-        public Task<GetCalcDetailsResponse> GetCalcSupplierCollectedDetails([FromHeader] long SupplierId = 0);
         public Task<BaseResponseWithID> AddReverseDailyJournalEntry(AddReverseDailyJournalEntryRequest request,long creator);
         public Task<BaseResponseWithID> SoftUpdateDailyJournalEntry(AddNewDailyJournalEntryRequest request,long creator);
         public Task<BaseResponseWithId> PermanentDeleteDailyJournalEntry(AddNewDailyJournalEntryRequest request);

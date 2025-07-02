@@ -18,7 +18,4 @@ public partial class ShippingMethod
     public string Name { get; set; }
 
     public bool Active { get; set; }
-
-    [InverseProperty("ShippingMethod")]
-    public virtual ICollection<PurchasePoshipmentShippingMethodDetail> PurchasePoshipmentShippingMethodDetails { get; set; } = new List<PurchasePoshipmentShippingMethodDetail>();
 }

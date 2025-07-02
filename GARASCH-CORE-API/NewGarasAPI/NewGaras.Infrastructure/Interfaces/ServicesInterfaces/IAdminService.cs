@@ -111,7 +111,6 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
 
         public GetEmployeeListResponse GetEmployeeList(GetEmployeeListFilters filters);
 
-        public Task<BaseResponseWithMessage<string>> TopSellingProductExcel(GetMyProjectsDetailsCRMHeaders headers);
 
         public Task<GetCostTypeResponse> GetCostType();
 

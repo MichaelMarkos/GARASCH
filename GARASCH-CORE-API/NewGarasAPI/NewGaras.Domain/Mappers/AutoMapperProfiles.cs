@@ -204,9 +204,6 @@ namespace NewGaras.Domain.Mappers
                 .ForMember(v => v.HolidayName, dto => dto.MapFrom(a => a.ContractLeaveSetting.HolidayName))
                 ;
 
-            //CreateMap<ProjectInvoice, GetProjectInvoiceModel>().ForMember(a => a.InvoiceDate, model => model.MapFrom(c => c.InvoiceDate.ToShortDateString()));
-            CreateMap<ProjectInvoiceItem, GetProjectInvoiceItemsModel>().ForMember(a=>a.Unit,model =>model.MapFrom(a=>a.Uom.Name??"")).ForMember(a=>a.CreationDate,model=>model.MapFrom(a=>a.CreationDate.ToShortDateString()));
-
             CreateMap<ProjectInvoice, GetProjectInvoiceModel>()
             .ForMember(a => a.ProjectName, model => model.MapFrom(c => c.Project.SalesOffer.ProjectName))
             .ForMember(a => a.InvoiceDate, model => model.MapFrom(c => c.InvoiceDate.ToShortDateString()))

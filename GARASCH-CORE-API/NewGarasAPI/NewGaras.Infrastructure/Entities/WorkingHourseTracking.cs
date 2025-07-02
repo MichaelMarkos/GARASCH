@@ -130,7 +130,4 @@ public partial class WorkingHourseTracking
     [ForeignKey("TaskId")]
     [InverseProperty("WorkingHourseTrackings")]
     public virtual Task Task { get; set; }
-
-    [InverseProperty("WorkingHourTracking")]
-    public virtual ICollection<TaskRequirement> TaskRequirements { get; set; } = new List<TaskRequirement>();
 }

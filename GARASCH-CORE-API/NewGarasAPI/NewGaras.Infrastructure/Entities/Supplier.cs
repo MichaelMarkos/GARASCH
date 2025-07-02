@@ -83,12 +83,6 @@ public partial class Supplier
     [InverseProperty("Suppliers")]
     public virtual DeliveryAndShippingMethod DefaultDelivaryAndShippingMethod { get; set; }
 
-    [InverseProperty("Supplier")]
-    public virtual ICollection<InventoryAddingOrder> InventoryAddingOrders { get; set; } = new List<InventoryAddingOrder>();
-
-    [InverseProperty("Supplier")]
-    public virtual ICollection<InventoryItemPrice> InventoryItemPrices { get; set; } = new List<InventoryItemPrice>();
-
     [ForeignKey("ModifiedBy")]
     [InverseProperty("SupplierModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }

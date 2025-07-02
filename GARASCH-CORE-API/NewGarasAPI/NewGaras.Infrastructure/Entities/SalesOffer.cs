@@ -235,9 +235,6 @@ public partial class SalesOffer
     [InverseProperty("SalesOfferSalesPeople")]
     public virtual User SalesPerson { get; set; }
 
-    [InverseProperty("SalesOffer")]
-    public virtual ICollection<VehicleMaintenanceJobOrderHistory> VehicleMaintenanceJobOrderHistories { get; set; } = new List<VehicleMaintenanceJobOrderHistory>();
-
     [InverseProperty("Offer")]
     public virtual ICollection<VisitsScheduleOfMaintenance> VisitsScheduleOfMaintenances { get; set; } = new List<VisitsScheduleOfMaintenance>();
 }

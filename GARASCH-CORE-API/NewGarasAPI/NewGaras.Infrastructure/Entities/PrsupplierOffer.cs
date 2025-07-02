@@ -53,10 +53,6 @@ public partial class PrsupplierOffer
     [InverseProperty("PrsupplierOffers")]
     public virtual PurchasePo Po { get; set; }
 
-    [ForeignKey("Prid")]
-    [InverseProperty("PrsupplierOffers")]
-    public virtual PurchaseRequest Pr { get; set; }
-
     [InverseProperty("PrsupplierOffer")]
     public virtual ICollection<PrsupplierOfferItem> PrsupplierOfferItems { get; set; } = new List<PrsupplierOfferItem>();
 

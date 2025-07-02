@@ -58,9 +58,6 @@ public partial class ProjectInstallationReport
     [InverseProperty("ProjectInstallationReportModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }
 
-    [InverseProperty("ProjectInstallationReport")]
-    public virtual ICollection<ProjectFinishInstallationAttachment> ProjectFinishInstallationAttachments { get; set; } = new List<ProjectFinishInstallationAttachment>();
-
     [ForeignKey("ProjectInstallationId")]
     [InverseProperty("ProjectInstallationReports")]
     public virtual ProjectInstallation ProjectInstallation { get; set; }

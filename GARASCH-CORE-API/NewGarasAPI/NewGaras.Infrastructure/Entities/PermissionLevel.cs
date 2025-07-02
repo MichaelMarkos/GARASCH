@@ -50,7 +50,4 @@ public partial class PermissionLevel
 
     [InverseProperty("Permission")]
     public virtual ICollection<SalesOfferUserPermission> SalesOfferUserPermissions { get; set; } = new List<SalesOfferUserPermission>();
-
-    [InverseProperty("PermissionLevel")]
-    public virtual ICollection<TaskPermission> TaskPermissions { get; set; } = new List<TaskPermission>();
 }

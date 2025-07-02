@@ -72,7 +72,4 @@ public partial class Governorate
 
     [InverseProperty("City")]
     public virtual ICollection<UserPatient> UserPatients { get; set; } = new List<UserPatient>();
-
-    [InverseProperty("City")]
-    public virtual ICollection<VehiclePerClient> VehiclePerClients { get; set; } = new List<VehiclePerClient>();
 }

@@ -66,7 +66,4 @@ public partial class Country
 
     [InverseProperty("Country")]
     public virtual ICollection<UserPatient> UserPatients { get; set; } = new List<UserPatient>();
-
-    [InverseProperty("Country")]
-    public virtual ICollection<VehiclePerClient> VehiclePerClients { get; set; } = new List<VehiclePerClient>();
 }

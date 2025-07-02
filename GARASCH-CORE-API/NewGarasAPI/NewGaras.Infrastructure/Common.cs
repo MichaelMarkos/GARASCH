@@ -1022,7 +1022,7 @@ Using FromUserID column as ToUserID
             string name = "";
             if (id != null)
             {
-                var ObjDB = _Context.PurchasePaymentMethods.Find(id);
+                var ObjDB = _Context.PaymentMethods.Find(id);
                 if (ObjDB != null)
                 {
                     name = ObjDB.Name;
@@ -1654,16 +1654,7 @@ Using FromUserID column as ToUserID
             long NoOfItem = _Context.InventoryItems.Where(x => x.Active == true).Select(x => x.Id).Distinct().Count();
             return NoOfItem;
         }
-        public static string GetInventoryUOM(int id, GarasTestContext _Context)
-        {
-            string name = "";
-            var LoadObjDB = _Context.InventoryUoms.Find(id);
-            if (LoadObjDB != null)
-            {
-                name = LoadObjDB.Name;
-            }
-            return name;
-        }
+        
         public static string GetIncentoryCalculationMethod(int id, GarasTestContext _Context)
         {
             string name = "";

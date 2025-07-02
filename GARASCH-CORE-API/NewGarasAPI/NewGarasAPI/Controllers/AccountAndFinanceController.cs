@@ -731,37 +731,7 @@ namespace NewGarasAPI.Controllers
             }
         }
 
-        [HttpGet("GetCalcPODetails")]
-        public async Task<GetCalcDetailsResponse> GetCalcPODetails([FromHeader] long POId = 0)
-        {
-            GetCalcDetailsResponse Response = new GetCalcDetailsResponse();
-            Response.Result = true;
-            Response.Errors = new List<Error>();
-            try
-            {
-                //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
-                //WebHeaderCollection headers = request.Headers;
-                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
-                Response.Errors = validation.errors;
-                Response.Result = validation.result;
-
-                if (Response.Result)
-                {
-                    Response =await _accountAndFinance.GetCalcPODetails(POId);
-                }
-                return Response;
-
-            }
-            catch (Exception ex)
-            {
-                Response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
-                Response.Errors.Add(error);
-                return Response;
-            }
-        }
+        
 
         [HttpGet("GetDailyJournalEntryWithFilterList")]
         public async Task<DailyJournalEntryDiviededResponse> GetDailyJournalEntryWithFilterList([FromHeader] GetDailyJournalEntryWithFilterListHeader header)
@@ -1039,63 +1009,7 @@ namespace NewGarasAPI.Controllers
             }
         }
 
-        [HttpGet("GetCalcSupplierCollectedDetails")]
-        public async Task<GetCalcDetailsResponse> GetCalcSupplierCollectedDetails([FromHeader] long SupplierId = 0)
-        {
-            GetCalcDetailsResponse Response = new GetCalcDetailsResponse();
-            Response.Result = true;
-            Response.Errors = new List<Error>();
-            try
-            {
-                //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
-                //WebHeaderCollection headers = request.Headers;
-                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers,ref _Context);
-                Response.Errors = validation.errors;
-                Response.Result = validation.result;
-
-                if (Response.Result)
-                {
-                    //long SupplierId = 0;
-                    if (SupplierId == 0)
-                    {
-                        Response.Result = false;
-                        Error error = new Error();
-                        error.ErrorCode = "Err-P112";
-                        error.ErrorMSG = "Invalid Supplier Id";
-                        Response.Errors.Add(error);
-                        return Response;
-                    }
-                    var SupplierObjDB = await _Context.Suppliers.Where(x => x.Id == SupplierId).FirstOrDefaultAsync();
-                    if (SupplierObjDB == null)
-                    {
-                        Response.Result = false;
-                        Error error = new Error();
-                        error.ErrorCode = "Err-P212";
-                        error.ErrorMSG = "Invalid Supplier Id";
-                        Response.Errors.Add(error);
-                        return Response;
-                    }
-                    var TotalPOAmount = SupplierObjDB.PurchasePos.Sum(x => x.PurchasePoinvoices.Where(y => y.Active == true).Select(t => t.TotalInvoiceCost).Sum());
-                    Response.TotalCollected = SupplierObjDB.SupplierAccounts.Where(x => x.Active == true).Select(x => x.Amount).DefaultIfEmpty(0).Sum();
-                    Response.TotalAmount = TotalPOAmount ?? 0;
-                    Response.Remain = Response.TotalAmount > Response.TotalCollected ? Response.TotalAmount - Response.TotalCollected : 0;
-
-
-
-                }
-                return Response;
-
-            }
-            catch (Exception ex)
-            {
-                Response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
-                Response.Errors.Add(error);
-                return Response;
-            }
-        }
+        
 
         [HttpPost("AddReverseDailyJournalEntry")]
         public async Task<BaseResponseWithID> AddReverseDailyJournalEntry(AddReverseDailyJournalEntryRequest request)

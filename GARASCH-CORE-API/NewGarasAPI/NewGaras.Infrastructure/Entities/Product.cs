@@ -35,9 +35,6 @@ public partial class Product
     public int? ProductGroupId { get; set; }
 
     [InverseProperty("Product")]
-    public virtual ICollection<Bomlibrary> Bomlibraries { get; set; } = new List<Bomlibrary>();
-
-    [InverseProperty("Product")]
     public virtual ICollection<BranchProduct> BranchProducts { get; set; } = new List<BranchProduct>();
 
     [ForeignKey("CreatedBy")]

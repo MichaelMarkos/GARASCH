@@ -223,7 +223,4 @@ public partial class Client
     [ForeignKey("SalesPersonId")]
     [InverseProperty("ClientSalesPeople")]
     public virtual User SalesPerson { get; set; }
-
-    [InverseProperty("Client")]
-    public virtual ICollection<VehiclePerClient> VehiclePerClients { get; set; } = new List<VehiclePerClient>();
 }

@@ -51,7 +51,6 @@ namespace NewGaras.Domain.Services
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _host;
         private readonly ILogService _logService;
-        private readonly IProjectService _projectService;
         private HearderVaidatorOutput validation;
         public HearderVaidatorOutput Validation
         {
@@ -64,7 +63,7 @@ namespace NewGaras.Domain.Services
                 validation = value;
             }
         }
-        public AdminService(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment host, ITenantService tenantService, IHrUserService hrUserService, ILogService logService,IProjectService projectService)
+        public AdminService(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment host, ITenantService tenantService, IHrUserService hrUserService, ILogService logService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -73,7 +72,6 @@ namespace NewGaras.Domain.Services
             _context = new GarasTestContext(_tenantService);
             _hrUserService = hrUserService;
             _logService = logService;
-            _projectService = projectService;
         }
 
         public GetCurrencyResponse GetCurrencyList(string CompanyName = "")
@@ -7552,235 +7550,6 @@ namespace NewGaras.Domain.Services
 
         }
 
-        public async Task<BaseResponseWithMessage<string>> TopSellingProductExcel(GetMyProjectsDetailsCRMHeaders headers)
-        {
-            //BaseMessageResponse Response = new BaseMessageResponse();
-            BaseResponseWithMessage<string> Response = new BaseResponseWithMessage<string>();
-            Response.Result = true;
-            Response.Errors = new List<Error>();
-            try
-            {
-
-                
-
-                var GetMyProjectsList = await _projectService.GetMyProjectsDetailsCRM(headers);
-
-
-
-
-
-                var dt = new System.Data.DataTable("Grid");
-
-                dt.Columns.AddRange(new DataColumn[4] {
-                                                     //new DataColumn("ID"),
-                                                     new DataColumn("Category Name"),
-                                                     new DataColumn("Product Name"),
-                                                     new DataColumn("Quantity"),
-                                                     new DataColumn("Value")
-
-
-
-
-                    });
-
-
-
-                if (GetMyProjectsList != null)
-                {
-
-                    foreach (var CategoryName in GetMyProjectsList.TopSellingProductsCategoryGrouped)
-                    {
-
-                        foreach (var ProductsDetails in CategoryName.TopSellingProductsList)
-                        {
-                            dt.Rows.Add(
-                            //item != null ? item.ID : 0
-
-                            //item.Id != null ? item.Id : 0,
-                            CategoryName.CategoryName != null ? CategoryName.CategoryName : "N/A",
-                            ProductsDetails.ProductName != null ? ProductsDetails.ProductName : "N/A",
-                            ProductsDetails.SoldCount,
-                            ProductsDetails.TotalSoldPrice
-                            );
-
-                        }
-                        ;
-
-
-                    }
-
-                }
-
-
-                var dtProduct = new System.Data.DataTable("Grid");
-
-                dtProduct.Columns.AddRange(new DataColumn[3] {
-                                                     //new DataColumn("ID"),
-                                                 
-                                                     new DataColumn("Product Name"),
-                                                     new DataColumn("Quantity"),
-                                                     new DataColumn("Value")
-
-
-
-
-                    });
-
-
-
-                if (GetMyProjectsList != null)
-                {
-
-
-
-                    foreach (var ProductsDetails in GetMyProjectsList.TopSellingProducts)
-                    {
-                        dtProduct.Rows.Add(
-
-
-                            ProductsDetails.ProductName != null ? ProductsDetails.ProductName : "N/A",
-                            ProductsDetails.SoldCount,
-                            ProductsDetails.TotalSoldPrice
-                            );
-
-                    }
-                    ;
-
-
-
-
-                }
-
-
-
-                var dtProductSum = new System.Data.DataTable("Grid");
-
-                dtProductSum.Columns.AddRange(new DataColumn[3] {
-                                                     //new DataColumn("ID"),
-                                                 
-                                                     new DataColumn("Category"),
-                                                     new DataColumn("Quantity"),
-                                                     new DataColumn("Value")
-
-
-
-
-                    });
-
-
-
-                if (GetMyProjectsList != null)
-                {
-
-
-
-                    foreach (var ProductsSum in GetMyProjectsList.TopSellingProductsCategoryGrouped)
-                    {
-                        dtProductSum.Rows.Add(
-
-
-                            ProductsSum.CategoryName,
-                            ProductsSum.TotalDealsCount,
-                            ProductsSum.TotalDealsPrice
-                            );
-
-                    }
-                    ;
-
-
-
-
-                }
-
-
-
-
-
-
-                //Second List to pass it to PDF
-
-
-
-                //if (FileExtension != null && FileExtension == "xml")
-                //{
-                using (ExcelPackage packge = new ExcelPackage())
-                {
-                    //Create the worksheet
-                    ExcelWorksheet ws = packge.Workbook.Worksheets.Add("SalesOffer");
-                    ws.TabColor = System.Drawing.Color.Red;
-                    ws.Columns.BestFit = true;
-
-
-                    //Load the datatable into the sheet, starting from cell A1. Print the column names on row 1
-                    ws.Cells["A1"].LoadFromDataTable(dt, true);
-                    //ws.Cells[1, 30].LoadFromDataTable(dt2, true);
-
-                    //Format the header for column 1-3
-                    using (ExcelRange range = ws.Cells["A1:O1"])
-                    {
-                        range.Style.Font.Bold = true;
-                        range.Style.Fill.PatternType = ExcelFillStyle.Solid;                      //Set Pattern for the background to Solid
-                        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(79, 129, 189)); //Set color to dark blue
-                        range.Style.Font.Color.SetColor(System.Drawing.Color.White);
-                    }
-
-
-
-
-
-
-                    using (var package = new ExcelPackage())
-                    {
-
-
-
-
-
-                        var CompanyName = validation.CompanyName.ToString().ToLower();
-
-                        string FullFileName = DateTime.Now.ToFileTime() + "_" + "ProjectDetails.xlsx";
-                        string PathsTR = "/Attachments/" + CompanyName + "/";
-                        String path = Path.Combine(_host.WebRootPath, PathsTR);
-                            /*HttpContext.Current.Server.MapPath(PathsTR);*/
-                        string p_strPath = Path.Combine(path, FullFileName);
-                        var workSheet = package.Workbook.Worksheets.Add("Project Details Grouped by Category");
-                        ExcelRangeBase excelRangeBase = workSheet.Cells.LoadFromDataTable(dt, true);
-                        var workSheetByProduct = package.Workbook.Worksheets.Add("Project Details Product");
-                        ExcelRangeBase excelRangeBase2 = workSheetByProduct.Cells.LoadFromDataTable(dtProduct, true);
-                        var workSheetProductSum = package.Workbook.Worksheets.Add("Project Product Sum");
-                        ExcelRangeBase excelRangeBase3 = workSheetProductSum.Cells.LoadFromDataTable(dtProductSum, true);
-
-                        File.Exists(p_strPath);
-                        FileStream objFileStrm = File.Create(p_strPath);
-
-                        objFileStrm.Close();
-                        package.Save();
-                        File.WriteAllBytes(p_strPath, package.GetAsByteArray());
-                        package.Dispose();
-
-                        Response.Message = Globals.baseURL+"/" + PathsTR + FullFileName;
-
-
-                    }
-
-
-                }
-
-
-
-
-                return Response;
-            }
-            catch (Exception ex)
-            {
-                Response.Result = false;
-                Error error = new Error();
-                error.ErrorCode = "Err10";
-                error.ErrorMSG = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
-                Response.Errors.Add(error);
-                return Response;
-            }
-        }
 
         //------------------------------------Dashboard-----------------------------------------
 

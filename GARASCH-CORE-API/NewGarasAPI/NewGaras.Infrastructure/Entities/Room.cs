@@ -36,23 +36,7 @@ public partial class Room
     [InverseProperty("Room")]
     public virtual ICollection<Rate> Rates { get; set; } = new List<Rate>();
 
-    [InverseProperty("Room")]
-    public virtual ICollection<RoomFacility> RoomFacilities { get; set; } = new List<RoomFacility>();
-
     [ForeignKey("RoomTypeId")]
     [InverseProperty("Rooms")]
     public virtual RoomType RoomType { get; set; }
-
-    [ForeignKey("RoomViewId")]
-    [InverseProperty("Rooms")]
-    public virtual RoomView RoomView { get; set; }
-
-    [InverseProperty("Room")]
-    public virtual ICollection<RoomsReservationChildern> RoomsReservationChilderns { get; set; } = new List<RoomsReservationChildern>();
-
-    [InverseProperty("Room")]
-    public virtual ICollection<RoomsReservationMeal> RoomsReservationMeals { get; set; } = new List<RoomsReservationMeal>();
-
-    [InverseProperty("Room")]
-    public virtual ICollection<RoomsReservation> RoomsReservations { get; set; } = new List<RoomsReservation>();
 }

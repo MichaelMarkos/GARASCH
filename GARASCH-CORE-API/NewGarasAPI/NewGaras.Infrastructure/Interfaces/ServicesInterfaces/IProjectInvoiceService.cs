@@ -21,7 +21,6 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public BaseResponseWithId<long> AddProjectInvoiceCollected(AddProjectInvoiceCollectedDto Dto, long creator, string CompName);
         public BaseResponseWithData<List<GetProjectInvoiceCollectedDto>> GetProjectInvoiceCollectedList(long projectInvoiceID);
         public BaseResponseWithId<long> EditProjectInvoiceCollected(EditProjectInvoiceCollectedDto Dto, long creator, string CompName);
-        public BaseResponseWithData<GetProjectFinancialDataModel> GetProjectFinancialData([FromHeader] long ProjectId);
         public BaseResponseWithId<long> DeleteProjectInvoiceItem(long InvoiceItemId, long creator);
         public BaseResponseWithId<long> DeleteProjectInvoiceCollected(long Id);
         public BaseResponseWithId<long> DeleteProjectInvoice(long InvoiceId);

@@ -100,9 +100,6 @@ public partial class PurchasePo
     [InverseProperty("PurchasePoCreatedByNavigations")]
     public virtual User CreatedByNavigation { get; set; }
 
-    [InverseProperty("Po")]
-    public virtual ICollection<InventoryAddingOrderItem> InventoryAddingOrderItems { get; set; } = new List<InventoryAddingOrderItem>();
-
     [ForeignKey("ModifiedBy")]
     [InverseProperty("PurchasePoModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }
@@ -113,48 +110,14 @@ public partial class PurchasePo
     [InverseProperty("Po")]
     public virtual ICollection<PofinalSelecteSupplier> PofinalSelecteSuppliers { get; set; } = new List<PofinalSelecteSupplier>();
 
-    [ForeignKey("PotypeId")]
-    [InverseProperty("PurchasePos")]
-    public virtual PurchasePotype Potype { get; set; }
-
     [InverseProperty("Po")]
     public virtual ICollection<PrsupplierOfferItem> PrsupplierOfferItems { get; set; } = new List<PrsupplierOfferItem>();
 
     [InverseProperty("Po")]
     public virtual ICollection<PrsupplierOffer> PrsupplierOffers { get; set; } = new List<PrsupplierOffer>();
 
-    [InverseProperty("Po")]
-    public virtual ICollection<PuchasePoshipment> PuchasePoshipments { get; set; } = new List<PuchasePoshipment>();
-
-    [InverseProperty("Po")]
-    public virtual ICollection<PurchaseImportPosetting> PurchaseImportPosettings { get; set; } = new List<PurchaseImportPosetting>();
-
-    [InverseProperty("Po")]
-    public virtual ICollection<PurchasePoamountPaymentMethod> PurchasePoamountPaymentMethods { get; set; } = new List<PurchasePoamountPaymentMethod>();
-
-    [InverseProperty("Po")]
-    public virtual ICollection<PurchasePoattachment> PurchasePoattachments { get; set; } = new List<PurchasePoattachment>();
-
-    [InverseProperty("Po")]
-    public virtual ICollection<PurchasePoinactiveTask> PurchasePoinactiveTasks { get; set; } = new List<PurchasePoinactiveTask>();
-
-    [InverseProperty("Po")]
-    public virtual ICollection<PurchasePoinvoice> PurchasePoinvoices { get; set; } = new List<PurchasePoinvoice>();
-
     [InverseProperty("PurchasePo")]
     public virtual ICollection<PurchasePoitem> PurchasePoitems { get; set; } = new List<PurchasePoitem>();
-
-    [InverseProperty("Po")]
-    public virtual ICollection<PurchasePopaymentSwift> PurchasePopaymentSwifts { get; set; } = new List<PurchasePopaymentSwift>();
-
-    [InverseProperty("Po")]
-    public virtual ICollection<PurchasePopdfEditHistory> PurchasePopdfEditHistories { get; set; } = new List<PurchasePopdfEditHistory>();
-
-    [InverseProperty("Po")]
-    public virtual ICollection<PurchasePopdfTemplate> PurchasePopdfTemplates { get; set; } = new List<PurchasePopdfTemplate>();
-
-    [InverseProperty("Po")]
-    public virtual ICollection<PurchasePopdf> PurchasePopdfs { get; set; } = new List<PurchasePopdf>();
 
     [ForeignKey("SentToSupplierContactPersonId")]
     [InverseProperty("PurchasePos")]

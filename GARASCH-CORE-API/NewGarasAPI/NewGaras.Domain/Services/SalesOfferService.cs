@@ -235,9 +235,9 @@ namespace NewGaras.Domain.Services
                     worksheet.Cells[rowIndex, 24].Value = item.Offer?.Id.ToString();
                     worksheet.Cells[rowIndex, 14].Value = (item.FinalPrice - item.DiscountValue ?? 0) + item.SalesOfferProductTaxes.Select(a => a.Value ?? 0).Sum();
                     worksheet.Cells[rowIndex, 15].Value = items.Where(a => a.OfferId == item.OfferId).Sum(a => (a.FinalPrice - a.DiscountValue ?? 0) + a.SalesOfferProductTaxes.Select(a => a.Value ?? 0).Sum());
-                    worksheet.Cells[rowIndex, 25].Value = item.InventoryItem.InventoryStoreItems.OrderByDescending(a => a.Id).Select(a => a.PoinvoiceTotalCostEgp).FirstOrDefault();
+                    /*worksheet.Cells[rowIndex, 25].Value = item.InventoryItem.InventoryStoreItems.OrderByDescending(a => a.Id).Select(a => a.PoinvoiceTotalCostEgp).FirstOrDefault();
                     worksheet.Cells[rowIndex, 26].Value = item.InventoryItem.InventoryStoreItems.Where(a => a.FinalBalance > 0).Select(a => a.PoinvoiceTotalCostEgp).Average() ?? item.InventoryItem.InventoryStoreItems.Select(a=>a.AverageUnitPrice).FirstOrDefault();
-                    worksheet.Cells[rowIndex, 27].Value = item.InventoryItem.InventoryStoreItems.Select(a => a.PoinvoiceTotalCostEgp).Max();
+                    worksheet.Cells[rowIndex, 27].Value = item.InventoryItem.InventoryStoreItems.Select(a => a.PoinvoiceTotalCostEgp).Max();*/
                     /*worksheet.Cells[rowIndex, 16].Value =
                         item.Offer.Projects.SelectMany(a => a.ClientAccounts).Where(a => a.AccountOfJe != null && a.CreationDate.Year == Year && a.AccountOfJe.Account.AdvanciedSettingAccounts.Where(x => x.AdvanciedTypeId == 30).Any()).Sum(a => a.Amount) -
                         item.Offer.Projects.SelectMany(a => a.ClientAccounts).Where(a => a.AccountOfJe != null && a.CreationDate.Month == Month && a.CreationDate.Year == Year && a.AccountOfJe.Account.AdvanciedSettingAccounts.Where(x => x.AdvanciedTypeId == 30).Any()).Sum(a => a.Amount);*/
@@ -700,13 +700,13 @@ namespace NewGaras.Domain.Services
                     {
                         var offerProject = offer.Projects.FirstOrDefault();
                         projectId = offerProject.Id;
-                        if (offerProject.InventoryMatrialRequestItems.Count > 0)
+                        /*if (offerProject.InventoryMatrialRequestItems.Count > 0)
                         {
                             QTYOfMatrialReleaseItem = (decimal)(offerProject.InventoryMatrialRequestItems?.Sum(x => x.RecivedQuantity1 ?? 0) ?? 0);
                             var releasedIds = offerProject.InventoryMatrialRequestItems?.Select(a => a.OfferItemId).ToList();
                             var releasedList = offer.SalesOfferProducts?.Where(a => releasedIds.Contains(a.Id)).ToList();
                             PriceOfMatrialReleaseItem = releasedList.Sum(a => a.FinalPrice ?? 0);
-                        }
+                        }*/
                     }
                     decimal PercentQty = 0;
                     decimal PercentValue = 0;
@@ -3729,10 +3729,10 @@ namespace NewGaras.Domain.Services
                             {
                                 var offerProject = offer.Projects.FirstOrDefault();
                                 projectId = offerProject.Id;
-                                if (offerProject.InventoryMatrialRequestItems.Count > 0)
+                                /*if (offerProject.InventoryMatrialRequestItems.Count > 0)
                                 {
                                     QTYOfMatrialReleaseItem = offerProject.InventoryMatrialRequestItems?.Sum(x => x.RecivedQuantity1 ?? 0) ?? 0;
-                                }
+                                }*/
                             }
                             // Calc Percentage Product Released
 
@@ -3965,13 +3965,10 @@ namespace NewGaras.Domain.Services
                 SalesOfferObj.ModifierName = SalesOfferDb.ModifiedByNavigation?.FirstName + " " + SalesOfferDb.ModifiedByNavigation?.LastName;
                 if (SalesOfferDb.ClientId != null)
                 {
-                    var VehicleMaintenanceJobOrderHistories = SalesOfferDb.VehicleMaintenanceJobOrderHistories;
+                    //var VehicleMaintenanceJobOrderHistories = SalesOfferDb.VehicleMaintenanceJobOrderHistories;
                     var ClientDb = _unitOfWork.Clients.FindAll(a => a.Id == (long)SalesOfferDb.ClientId).FirstOrDefault();
                     SalesOfferObj.ClientId = SalesOfferDb.ClientId;
-                    SalesOfferObj.ClientVehicleId = VehicleMaintenanceJobOrderHistories?.Where(x => x.SalesOfferId == SalesOfferDb.Id).Select(x => x.VehiclePerClientId).FirstOrDefault();
-                    SalesOfferObj.ClientVehicleName = VehicleMaintenanceJobOrderHistories?.Where(x => x.SalesOfferId == SalesOfferDb.Id).FirstOrDefault()?.VehiclePerClient?.PlatNumber;
-                    SalesOfferObj.VehicleChassisNumber = VehicleMaintenanceJobOrderHistories?.Where(x => x.SalesOfferId == SalesOfferDb.Id).FirstOrDefault()?.VehiclePerClient?.ChassisNumber;
-                    SalesOfferObj.VehicleModelName = VehicleMaintenanceJobOrderHistories?.Where(x => x.SalesOfferId == SalesOfferDb.Id).FirstOrDefault()?.VehiclePerClient?.Model?.Name;
+                    
                     var ClientAddresses = _unitOfWork.VClientAddresses.FindAll(a => a.ClientId == (long)SalesOfferDb.ClientId && a.Active == true).ToList();
                     if (ClientAddresses != null && ClientAddresses.Count > 0)
                     {
@@ -10194,15 +10191,12 @@ catch (Exception ex)
                                 InventoryItemCode = prItem.InventoryItem?.Code,
                                 InventoryItemId = prItem.InventoryItemId,
                                 InventoryItemName = prItem.InventoryItem?.Name,
-                                MrItemId = prItem.Mritem.Id,
                                 PoId = prItem.Poid,
                                 PoItemId = prItem.PoitemId,
                                 PrId = prItem.Prid,
                                 PrItemId = prItem.PritemId,
-                                PurchasingUOMShortName = prItem.InventoryItem?.PurchasingUom.ShortName,
                                 PurchasingUOMId = prItem.InventoryItem?.PurchasingUomid,
                                 ReqQuantity = prItem.ReqQuantity,
-                                RequstionUOMShortName = prItem.InventoryItem?.RequstionUom.ShortName,
                                 RequstionUOMId = prItem.InventoryItem?.RequstionUomid,
                                 Status = prItem.Status,
                                 Comment = prItem.Comment,
@@ -10216,7 +10210,6 @@ catch (Exception ex)
                                 RecivedQuantity = prItem.RecivedQuantity,
                                 TotalEstimatedCost = prItem.TotalEstimatedCost,
                                 UOMId = prItem.Uomid,
-                                UOMName = prItem.Uom.ShortName
                             }).ToList();
                             Response.PrSupplierOfferItems = SupOfferItemsResponse;
                         }
@@ -10270,14 +10263,11 @@ catch (Exception ex)
                             InventoryItemCode = prItem.InventoryItem.Code,
                             InventoryItemId = prItem.InventoryItemId,
                             InventoryItemName = prItem.InventoryItem.Name,
-                            MrItemId = prItem.Mritem.Id,
                             PoId = prItem.Poid,
                             PoItemId = prItem.PoitemId,
                             PrId = prItem.Prid,
                             PrItemId = prItem.PritemId,
-                            PurchasingUOMShortName = prItem.InventoryItem.PurchasingUom.ShortName,
                             ReqQuantity = prItem.ReqQuantity,
-                            RequstionUOMShortName = prItem.InventoryItem.RequstionUom.ShortName,
                             Status = prItem.Status,
                             Comment = prItem.Comment,
                             CurrencyName = prItem.Currency.Name,
@@ -10290,7 +10280,6 @@ catch (Exception ex)
                             RecivedQuantity = prItem.RecivedQuantity,
                             TotalEstimatedCost = prItem.TotalEstimatedCost,
                             UOMId = prItem.Uomid,
-                            UOMName = prItem.Uom.ShortName
                         }).ToList();
                         Response.PrSupplierOfferItemHistory = SupOfferItemsResponse;
                     }
@@ -12432,12 +12421,7 @@ catch (Exception ex)
                         PlateNo = VehiclePerClient.PlatNumber;
                         ChassisNumber = VehiclePerClient.ChassisNumber;
                         var ProjectId = _unitOfWork.Projects.FindAll(x => x.SalesOfferId == SalesOffer.Id).Select(x => x.Id).FirstOrDefault();
-                        var VehicleMaintenanceJobOrderHistory = _Context.VehicleMaintenanceJobOrderHistories.Where(x => x.VehiclePerClientId == VehiclePerClient.Id && x.JobOrderProjectId == ProjectId).FirstOrDefault();
-                        if (VehicleMaintenanceJobOrderHistory != null)
-                        {
-                            MaintenanceName = VehicleMaintenanceJobOrderHistory.VehicleMaintenanceType?.Name;
-                            CarKiloMeter = VehicleMaintenanceJobOrderHistory.Milage?.ToString();
-                        }
+                        
 
                     }
 
@@ -14495,10 +14479,7 @@ catch (Exception ex)
                         {
                             var offerProject = offer.Projects.FirstOrDefault();
                             projectId = offerProject.Id;
-                            if (offerProject.InventoryMatrialRequestItems.Count > 0)
-                            {
-                                QTYOfMatrialReleaseItem = offerProject.InventoryMatrialRequestItems?.Sum(x => x.RecivedQuantity1 ?? 0) ?? 0;
-                            }
+                            
                         }
                         // Calc Percentage Product Released
 
@@ -15719,10 +15700,7 @@ catch (Exception ex)
                         {
                             var offerProject = offer.Projects.FirstOrDefault();
                             projectId = offerProject.Id;
-                            if (offerProject.InventoryMatrialRequestItems.Count > 0)
-                            {
-                                QTYOfMatrialReleaseItem = (decimal)(offerProject.InventoryMatrialRequestItems?.Sum(x => x.RecivedQuantity ?? 0) ?? 0);
-                            }
+                            
                         }
                         decimal Percent = 0;
                         string ReleaseStatus = "";

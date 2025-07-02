@@ -21,10 +21,4 @@ public partial class AttachmentCategory
 
     [InverseProperty("Category")]
     public virtual ICollection<ProjectTmattachment> ProjectTmattachments { get; set; } = new List<ProjectTmattachment>();
-
-    [InverseProperty("Category")]
-    public virtual ICollection<TaskAttachment> TaskAttachments { get; set; } = new List<TaskAttachment>();
-
-    [InverseProperty("Category")]
-    public virtual ICollection<TaskCommentAttachment> TaskCommentAttachments { get; set; } = new List<TaskCommentAttachment>();
 }

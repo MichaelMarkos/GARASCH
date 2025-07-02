@@ -13,7 +13,4 @@ public partial class Facility
 
     [Required]
     public string FacilityName { get; set; }
-
-    [InverseProperty("Facility")]
-    public virtual ICollection<RoomFacility> RoomFacilities { get; set; } = new List<RoomFacility>();
 }

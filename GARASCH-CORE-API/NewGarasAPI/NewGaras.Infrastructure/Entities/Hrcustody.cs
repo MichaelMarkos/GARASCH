@@ -61,14 +61,6 @@ public partial class Hrcustody
     [InverseProperty("Hrcustodies")]
     public virtual InventoryItem InventoryItem { get; set; }
 
-    [ForeignKey("MaterialRequestId")]
-    [InverseProperty("Hrcustodies")]
-    public virtual InventoryMatrialRequest MaterialRequest { get; set; }
-
-    [ForeignKey("MaterialRequestItemId")]
-    [InverseProperty("Hrcustodies")]
-    public virtual InventoryMatrialRequestItem MaterialRequestItem { get; set; }
-
     [ForeignKey("ModifiedBy")]
     [InverseProperty("HrcustodyModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }
