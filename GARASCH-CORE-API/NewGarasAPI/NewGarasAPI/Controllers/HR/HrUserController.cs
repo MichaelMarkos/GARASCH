@@ -772,6 +772,41 @@ namespace NewGarasAPI.Controllers.HR
             }
         }
 
+        [HttpGet("GetChurchesAndPriestOfHrUser")]  //services Added
+        public async Task<BaseResponseWithData<GetChurchesAndPriestsToHrUser>> GetChurchesAndPriestOfHrUser([FromHeader] long HrUserId)
+        {
+            var response = new BaseResponseWithData<GetChurchesAndPriestsToHrUser>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    _hrUserService.Validation = validation;
+                    response = await _hrUserService.GetChurchesAndPriestOfHrUser(HrUserId);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
         [HttpGet("GetUserCards")]   //services Added
         public async Task<BaseResponseWithDataAndHeader<List<HrUserCardDto>>> GetAll([FromHeader] string userName, [FromHeader] bool? active
             , [FromHeader] int? DepId, [FromHeader] int? jobTilteId, [FromHeader] int? BranchId, [FromHeader] bool? IsUser, [FromHeader] string Email, [FromHeader] string mobile

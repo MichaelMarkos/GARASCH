@@ -50,7 +50,7 @@ namespace NewGaras.Domain.Services
             _mailService = mailSettingsOptions;
         }
 
-        public async Task<BaseResponseWithData<List<UserWithJobTitleDDL>>> GetUserWithJobTitleDDL(string UserName,int? BranchID,long? projectId)
+        public async Task<BaseResponseWithData<List<UserWithJobTitleDDL>>> GetUserWithJobTitleDDL(string UserName, int? BranchID, long? projectId)
         {
             BaseResponseWithData<List<UserWithJobTitleDDL>> response = new BaseResponseWithData<List<UserWithJobTitleDDL>>();
             response.Result = true;
@@ -65,18 +65,18 @@ namespace NewGaras.Domain.Services
             //(BranchID != null ? a.BranchId == BranchID : true)
             //);
 
-            if ((!string.IsNullOrEmpty(UserName) || BranchID != null ) && (projectId == null || projectId == 0))
+            if ((!string.IsNullOrEmpty(UserName) || BranchID != null) && (projectId == null || projectId == 0))
             {
                 criteria = a =>
                 (
                 (!string.IsNullOrEmpty(UserName) ?
                 ((a.FirstName + a.MiddleName + a.LastName).Contains(UserName.Replace(" ", ""))) : true) &&
-                (BranchID != null ? a.BranchId == BranchID : true) 
+                (BranchID != null ? a.BranchId == BranchID : true)
                 );
 
             }
 
-            if(projectId != null && projectId != 0)
+            if (projectId != null && projectId != 0)
             {
                 var projectAssignUserList = _unitOfWork.ProjectAssignUsers.FindAll((a => a.ProjectId == projectId));
                 var userIDs = projectAssignUserList.Select(a => a.UserId).Distinct().ToList();
@@ -87,16 +87,16 @@ namespace NewGaras.Domain.Services
                 (!string.IsNullOrEmpty(UserName) ?
                 ((a.FirstName + a.MiddleName + a.LastName).Contains(UserName.Replace(" ", ""))) : true) &&
                 (BranchID != null ? a.BranchId == BranchID : true) &&
-                (projectId != null ? userIDs.Contains(a.Id):true)
+                (projectId != null ? userIDs.Contains(a.Id) : true)
                 );
             }
 
             try
             {
                 //var ListOfUsers =await _unitOfWork.Users.FindAllAsync((a => (a.FirstName + a.MiddleName + a.LastName).Contains(UserName.Replace(" ", "")) && a.BranchId == BranchID), new[] { "JobTitle" } );
-                var ListOfUsers =await _unitOfWork.Users.FindAllAsync(criteria, new[] { "JobTitle" } );
-                var l1 = ListOfUsers.OrderBy(x=>x.FirstName).ThenBy(x=>x.MiddleName).ThenBy(x=>x.LastName).ToList();
-                
+                var ListOfUsers = await _unitOfWork.Users.FindAllAsync(criteria, new[] { "JobTitle" });
+                var l1 = ListOfUsers.OrderBy(x => x.FirstName).ThenBy(x => x.MiddleName).ThenBy(x => x.LastName).ToList();
+
                 var UserWithJobTitleList = new List<UserWithJobTitleDDL>();
                 foreach (var user in l1)
                 {
@@ -133,7 +133,7 @@ namespace NewGaras.Domain.Services
 
             try
             {
-                
+
                 if (response.Result)
                 {
 
@@ -153,7 +153,7 @@ namespace NewGaras.Domain.Services
 
                             GetUserBranchGroupResponse.ID = SalesPersonID;
 
-                            GetUserBranchGroupResponse.Name = users.Where(a=>a.Id==GetUserBranchGroupResponse.ID).Select(a=>a.FirstName+" "+a.LastName).FirstOrDefault();
+                            GetUserBranchGroupResponse.Name = users.Where(a => a.Id == GetUserBranchGroupResponse.ID).Select(a => a.FirstName + " " + a.LastName).FirstOrDefault();
 
                             GetUserBranchGroupResponse.BranchID = BranchId;
 
@@ -184,7 +184,7 @@ namespace NewGaras.Domain.Services
 
         }
 
-        public UserDDLResponse GetUserList(int BranchId, int RoleId, long GroupId, string JobTitleId ,bool NotActiveUser = false, bool WithTeam = false)
+        public UserDDLResponse GetUserList(int BranchId, int RoleId, long GroupId, string JobTitleId, bool NotActiveUser = false, bool WithTeam = false)
         {
             UserDDLResponse Response = new UserDDLResponse();
             Response.Result = true;
@@ -197,9 +197,9 @@ namespace NewGaras.Domain.Services
                     List<long> UsersIds = new List<long>();
 
                     var ListDBQuery = _unitOfWork.Users.FindAll(a => true, includes: new[] { "Department", "Branch", "JobTitle" }).AsQueryable();
-                    if(NotActiveUser != true)
+                    if (NotActiveUser != true)
                     {
-                        ListDBQuery = ListDBQuery.Where(x => x.Active == true ).AsQueryable();
+                        ListDBQuery = ListDBQuery.Where(x => x.Active == true).AsQueryable();
                     }
                     if (BranchId != 0)
                     {
@@ -211,7 +211,7 @@ namespace NewGaras.Domain.Services
                                                     .Select(s => int.Parse(s)).ToList();
 
 
-                        ListDBQuery = ListDBQuery.Where(a => jobTitleIDsList.Contains(a.JobTitleId??0));
+                        ListDBQuery = ListDBQuery.Where(a => jobTitleIDsList.Contains(a.JobTitleId ?? 0));
                     }
                     if (RoleId != 0)
                     {
@@ -328,9 +328,9 @@ namespace NewGaras.Domain.Services
                 if (Response.Result)
                 {
                     var TeamDDLData = _unitOfWork.Teams.GetAll();
-                    
-                    
-                    
+
+
+
                     var TaskDDLList = TeamDDLData.Select(a => new TaskDDL { ID = a.Id, Name = a.Name }).ToList();
                     Response.Data = TaskDDLList;
                 }
@@ -886,7 +886,7 @@ namespace NewGaras.Domain.Services
         //    }
 
         //}
-                     
+
         public async Task<LoginResponse> GetUserData(long userID, string UserToken)
         {
             var MyConfig = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
@@ -922,28 +922,7 @@ namespace NewGaras.Domain.Services
                                 response.UserImageURL = baseURL + CheckUserDB.PhotoUrl;
                                 //baseURL + "/ShowImage.ashx?ImageID=" + HttpUtility.UrlEncode(Encrypt_Decrypt.Encrypt(CheckUserDB.Id.ToString(), key)) + "&type=photo&CompName=" + Request.Headers["CompanyName"].ToString().ToLower();
                             }
-                            //long UserSessionID = 0;
-                            //var CheckSessionOpen = await _Context.UserSessions.Where(x => x.Active == true && x.UserID == CheckUserDB.ID && x.EndDate > DateTime.Now).OrderByDescending(x => x.EndDate).FirstOrDefaultAsync();
-                            //if (CheckSessionOpen == null)
-                            //{
-                            //    var UserSessionObj = new UserSession(); // DB
-                            //    UserSessionObj.UserID = CheckUserDB.ID;
-                            //    UserSessionObj.Active = true;
-                            //    UserSessionObj.CreationDate = DateTime.Now;
-                            //    UserSessionObj.EndDate = DateTime.Now.AddDays(1);
-                            //    UserSessionObj.ModifiedBy = "System";
-                            //    _Context.UserSessions.Add(UserSessionObj);
 
-                            //      await _Context.SaveChangesAsync();
-                            //    UserSessionID = (long)UserSessionObj.ID;
-                            //}
-                            //else
-                            //{
-                            //    UserSessionID = CheckSessionOpen.ID;
-                            //}
-                            //var CheckSessionOpen = await _Context.UserSessions.Where(x => x.Active == true && x.UserID == CheckUserDB.ID && x.EndDate > DateTime.Now).OrderByDescending(x => x.CreationDate).FirstOrDefaultAsync();
-                            //if (CheckSessionOpen != null)
-                            //{
 
                             response.EmplyeeId = _unitOfWork.HrUsers.FindAll(x => x.UserId == CheckUserDB.Id).Select(x => x.Id).FirstOrDefault();
                             response.Result = true;
@@ -963,62 +942,7 @@ namespace NewGaras.Domain.Services
                                 response.CountryName = MainCompanyProfileAddress.Country?.Name;
                             }
 
-                            //  for Working Hour Teacking and Task
-                            var WorkingHourTrackingForHrUserList = _unitOfWork.WorkingHoursTrackings
-                                .FindAll(a => a.HrUserId == response.EmplyeeId, new[] { "Task" })
-                                .OrderByDescending(a => a.Id).ToList();
 
-                            if (WorkingHourTrackingForHrUserList.Count() > 0)
-                            {
-
-                                //  HR Check In Task Working Hours
-                                var TaskWorkingHours = WorkingHourTrackingForHrUserList
-                                    .Where(a => a.TaskId != null && (a.CheckOutTime == null && a.CheckInTime != null))
-                                    .OrderByDescending(a => a.Id).FirstOrDefault();
-                                if (TaskWorkingHours != null)
-                                {
-                                    response.OpenTaskCheckIn = new GetOpenWorkingHoursForAllTasksDto()
-                                    {
-                                        Id = TaskWorkingHours.Id,
-                                        ProgressRate = TaskWorkingHours.ProgressRate,
-                                        CheckIn = (TimeOnly)TaskWorkingHours.CheckInTime,
-                                        Date = TaskWorkingHours.Date.ToString("yyyy-MM-dd"),
-                                        TaskId = TaskWorkingHours.TaskId,
-                                        TaskName = TaskWorkingHours.Task?.Name
-                                    }
-                                    ;
-                                }
-
-
-                                // working Hours
-                                var workingHours = WorkingHourTrackingForHrUserList
-                                        .Where(a => a.TaskId == null && (a.CheckOutTime == null && a.CheckInTime != null))
-                                        .OrderByDescending(a => a.Id).FirstOrDefault();
-                                if (workingHours != null)
-                                {
-                                    response.OpenAttendanceCheckIn = new GetOpenWorkingHoursForAllTasksDto()
-                                    {
-                                        Id = workingHours.Id,
-                                        CheckIn = (TimeOnly)workingHours.CheckInTime,
-                                        Date = workingHours.Date.ToString("yyyy-MM-dd"),
-                                    }
-                                    ;
-                                }
-                                // working Hours check in and check out
-                                var LastWorkingHour = WorkingHourTrackingForHrUserList
-                                        .Where(a => a.TaskId == null && (a.CheckInTime != null || a.CheckOutTime != null))
-                                        .OrderByDescending(a => a.Id).FirstOrDefault();
-                                if (LastWorkingHour != null)
-                                {
-                                    response.LastWorkingHourCheckIn = new LastWorkingHourDto()
-                                    {
-                                        Date = LastWorkingHour.Date.ToString("yyyy-MM-dd"),
-                                        CheckIn = LastWorkingHour.CheckInTime,
-                                        CheckOut = LastWorkingHour.CheckOutTime
-                                    }
-                                    ;
-                                }
-                            }
 
 
                             var LocalCurrency = await _unitOfWork.Currencies.FindAsync(x => x.IsLocal == true);
@@ -1031,19 +955,6 @@ namespace NewGaras.Domain.Services
                             // Not From UserID => To User Id
                             var NotificationCount = _unitOfWork.Notifications.Count(x => (x.FromUserId == CheckUserDB.Id || x.FromUserId == null) && x.New == true);
                             response.NotificationCount = NotificationCount;
-
-                            //var UserName = Common.GetUserName(CheckUserDB.Id, _Context);
-
-
-                            var TaskCountFromTaskCount = _unitOfWork.Tasks.FindAll(x => x.TaskDetails.Where(y => y.Status == "Open").Any() &&
-                            (x.CreatedBy == CheckUserDB.Id || x.TaskPermissions.Where(p => p.UserGroupId == CheckUserDB.Id).Any()
-                            )).Count();
-
-                            response.TaskCount = TaskCountFromTaskCount;
-
-                            //response.Jobtitle = CheckUserDB.JobTitleID != null ? Common.GetJobTitleName((int)CheckUserDB.JobTitleID) : "";
-                            //response.DepartmentName = CheckUserDB.DepartmentID != null ? Common.GetDepartmentName((int)CheckUserDB.DepartmentID) : "";
-                            //response.BranchName = CheckUserDB.BranchID != null ? Common.GetBranchName((int)CheckUserDB.BranchID) : "";
 
                             // Fill User role List 
                             var RoleList = new List<Roles>();
@@ -1070,18 +981,9 @@ namespace NewGaras.Domain.Services
                                     GroupName = UserGroupOBJ.GroupName
                                 });
                             }
-                            //var GroupList = new List<GroupRoles>();
-                            //var GroupListDB = _Context.proc_Group_UserLoadAll().Where(x => x.UserID == CheckUserDB.ID).ToList();
-                            //foreach (var UserGroupOBJ in GroupListDB)
-                            //{
-                            //        GroupList.Add(new GroupRoles
-                            //        {
-                            //            GroupID = (long)UserGroupOBJ.GroupID,
-                            //            GroupName = Common.GetGroupName(UserGroupOBJ.GroupID)
-                            //        });
-                            //}
+
                             var SpecialityList = new List<SelectDDL>();
-                            SpecialityList =  _unitOfWork.CompanySpecialties.FindAll(a => true).Select(x => new SelectDDL
+                            SpecialityList = _unitOfWork.CompanySpecialties.FindAll(a => true).Select(x => new SelectDDL
                             {
                                 ID = x.SpecialityId,
                                 Name = x.SpecialityName
@@ -1094,110 +996,48 @@ namespace NewGaras.Domain.Services
                             if (response.EmplyeeId != null)
                             {
 
-                            var ContractDetails = _unitOfWork.Contracts.FindAll(x => x.HrUserId == response.EmplyeeId && x.IsCurrent == true).FirstOrDefault();
-                                if (ContractDetails != null)
+
+
+                                // from supplier Is Owner
+                                var ClientInfo = _Context.Clients.Where(x => x.OwnerCoProfile == true).FirstOrDefault();
+                                if (ClientInfo != null)
                                 {
-                                    response.AllowLocationTracking = ContractDetails.AllowLocationTracking ?? false;
+                                    if (ClientInfo.LogoUrl != null)
+                                    {
+                                        response.ClientId = ClientInfo.Id;
+                                        response.CompanyImg = baseURL + ClientInfo.LogoUrl; //Common.GetUserPhoto(ClientInfo.Id, _Context);
+                                        /*"/ShowImage.ashx?ImageID=" + HttpUtility.UrlEncode(Encrypt_Decrypt.Encrypt(ClientInfo.Id.ToString(), key)) + "&type=client&CompName=" + login.CompanyName.ToString().ToLower();*/
+                                    }
+                                    response.CompanyInfo = ClientInfo.Name;
+                                    //response.CompanyImg = baseURL + ClientInfo.Logo;
                                 }
+                                return response;
+
                             }
-
-
-                            // from supplier Is Owner
-                            var ClientInfo = _Context.Clients.Where(x => x.OwnerCoProfile == true).FirstOrDefault();
-                            if (ClientInfo != null)
+                            else
                             {
-                                if (ClientInfo.LogoUrl != null)
-                                {
-                                    response.ClientId = ClientInfo.Id;
-                                    response.CompanyImg = baseURL + ClientInfo.LogoUrl; //Common.GetUserPhoto(ClientInfo.Id, _Context);
-                                    /*"/ShowImage.ashx?ImageID=" + HttpUtility.UrlEncode(Encrypt_Decrypt.Encrypt(ClientInfo.Id.ToString(), key)) + "&type=client&CompName=" + login.CompanyName.ToString().ToLower();*/
-                                }
-                                response.CompanyInfo = ClientInfo.Name;
-                                //response.CompanyImg = baseURL + ClientInfo.Logo;
+                                response.Result = false;
+                                Error error = new Error();
+                                error.ErrorCode = "Err-P9";
+                                error.ErrorMSG = "This Email is not active ";
+                                response.Errors.Add(error);
+
                             }
-                            return response;
 
                         }
                         else
                         {
                             response.Result = false;
                             Error error = new Error();
-                            error.ErrorCode = "Err-P9";
-                            error.ErrorMSG = "This Email is not active ";
+                            error.ErrorCode = "Err-P11";
+                            error.ErrorMSG = "Invalid User";
                             response.Errors.Add(error);
 
                         }
 
                     }
-                    else
-                    {
-                        response.Result = false;
-                        Error error = new Error();
-                        error.ErrorCode = "Err-P11";
-                        error.ErrorMSG = "Invalid User";
-                        response.Errors.Add(error);
-
-                    }
-                    //if (CheckUserDB != null)
-                    //{
-                    //    if (CheckUserDB.Active)
-                    //    {
-                    //        if (CheckUserDB.Photo != null)
-                    //        {
-                    //            response.UserImageURL = baseURL + "/ShowImage.ashx?ImageID=" + HttpUtility.UrlEncode(Encrypt_Decrypt.Encrypt(CheckUserDB.ID.ToString(), key)) + "&type=photo&CompName=" + headers["CompanyName"].ToString().ToLower();
-                    //        }
-
-                    //        response.Result = true;
-                    //        response.UserID = Encrypt_Decrypt.Encrypt(CheckUserDB.ID.ToString(), key);
-                    //        response.UserName = CheckUserDB.FirstName + " " + CheckUserDB.LastName;
-                    //        response.Jobtitle = CheckUserDB.UserJobTitle != null ? CheckUserDB.UserJobTitle : "";
-                    //        response.DepartmentName = CheckUserDB.UserDepartmentName != null ? CheckUserDB.UserDepartmentName : "";
-                    //        response.BranchName = CheckUserDB.UserBranchName != null ? CheckUserDB.UserBranchName : "";
-                    //        response.Data = headers["UserToken"];
-
-                    //        // Fill User role List 
-                    //        var RoleList = new List<Roles>();
-                    //        var RoleListDB = _Context.V_UserRole.Where(x => x.UserID == CheckUserDB.ID).ToList();
-                    //        foreach (var UserRoleOBJ in RoleListDB)
-                    //        {
-                    //            RoleList.Add(new Roles
-                    //            {
-                    //                RoleID = UserRoleOBJ.RoleID,
-                    //                RoleName = UserRoleOBJ.RoleName //Common.GetRoleName(UserRoleOBJ.RoleID)
-                    //            });
-                    //        }
-
-                    //        // Fill User Group List 
-                    //        var GroupList = new List<GroupRoles>();
-                    //        var GroupListDB = _Context.V_GroupUser_Branch.Where(x => x.UserID == CheckUserDB.ID).ToList();
-                    //        foreach (var UserGroupOBJ in GroupListDB)
-                    //        {
-                    //            GroupList.Add(new GroupRoles
-                    //            {
-                    //                GroupID = (long)UserGroupOBJ.GroupID,
-                    //                GroupName = UserGroupOBJ.GroupName
-                    //            });
-                    //        }
-
-                    //        response.RoleList = RoleList;
-                    //        response.GroupList = GroupList;
-                    //        return response;
-
-                    //    }
-                    //    else
-                    //    {
-                    //        response.Result = false;
-                    //        Error error = new Error();
-                    //        error.ErrorCode = "Err-P9";
-                    //        error.ErrorMSG = "This Email was not active ";
-                    //        response.Errors.Add(error);
-
-                    //    }
-
-                    //}
-
                 }
-                return response;
+                    return response;
             }
             catch (Exception ex)
             {
@@ -1334,7 +1174,7 @@ namespace NewGaras.Domain.Services
                         return response;
                     }
 
-                    
+
 
                     if (response.Result)
                     {
@@ -1398,7 +1238,7 @@ namespace NewGaras.Domain.Services
 
                             empObj.Mobile = GetEmployeeOBJ.Mobile;
 
-                            empObj.Photo = GetEmployeeOBJ.PhotoUrl != null ? Globals.baseURL + GetEmployeeOBJ.PhotoUrl :"";
+                            empObj.Photo = GetEmployeeOBJ.PhotoUrl != null ? Globals.baseURL + GetEmployeeOBJ.PhotoUrl : "";
 
 
 
