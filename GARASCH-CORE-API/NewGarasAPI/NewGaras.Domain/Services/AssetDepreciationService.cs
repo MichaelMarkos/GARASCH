@@ -312,7 +312,7 @@ namespace NewGaras.Domain.Services
                 return response;
             }
 
-            if(account.Haveitem == true || account.AccountCategoryId == 1)
+            if(account.Haveitem == true || account.AccountCategoryId != 1)
             {
                 response.Result = false;
                 Error err = new Error();
