@@ -1,6 +1,7 @@
 ﻿using NewGaras.Infrastructure.DTO.ChurchAndPriest;
 using NewGaras.Infrastructure.DTO.ChurchAndPriest.Filters;
 using NewGaras.Infrastructure.DTO.Family;
+using NewGaras.Infrastructure.DTO.General;
 using NewGaras.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -27,5 +28,8 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Church
         public BaseResponseWithId<int> EditEparchy(EditEparchyDTO dto);
         public BaseResponseWithData<List<GetHrUserPriestHistoryDTO>> GetHrUserPriestHistory(GetHrUserPriestHistoryFilters filters);
         public BaseResponseWithDataAndHeader<List<GetEparchyWithChurchDTO>> GetEparchyWithChurch(GetEparchyWithChurchFilters filters);
+        public BaseResponseWithId<int> DeleteEparchy(GeneralDeleteDTO<int> dto);
+        public BaseResponseWithId<long> DeleteChurch(GeneralDeleteDTO<long> dto);
+        public BaseResponseWithId<long> DeletePriest(GeneralDeleteDTO<long> dto);
     }
 }
