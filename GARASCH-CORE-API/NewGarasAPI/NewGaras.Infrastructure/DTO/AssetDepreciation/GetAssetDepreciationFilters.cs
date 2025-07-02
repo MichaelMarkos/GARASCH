@@ -10,5 +10,7 @@ namespace NewGaras.Infrastructure.DTO.AssetDepreciation
     {
         [FromHeader]
         public string YearOfPurchase { get; set; }
+        [FromHeader]
+        public long? AccountID { get; set; }
     }
 }

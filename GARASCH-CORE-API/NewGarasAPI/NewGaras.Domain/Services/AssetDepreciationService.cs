@@ -510,6 +510,11 @@ namespace NewGaras.Domain.Services
                     assetsDepreciationQueryable = assetsDepreciationQueryable.Where(a => a.YearOfPurchase == purchaseYear);
                 }
 
+                if (filters.AccountID != null)
+                {
+                    assetsDepreciationQueryable = assetsDepreciationQueryable.Where(a => a.AccountId == filters.AccountID);
+                }
+
                 var assetsDepreciationListDB = assetsDepreciationQueryable.ToList();
 
                 var assetsDepreciationList = assetsDepreciationListDB.Select(a => new GetAssetDepreciationDTO()
