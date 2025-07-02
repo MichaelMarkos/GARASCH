@@ -79,7 +79,8 @@ namespace NewGaras.Domain.Mappers
                 .ForMember(HrUser => HrUser.Modified, GetDto => GetDto.MapFrom(a => a.Modified.ToString()))
                 .ForMember(HrUser => HrUser.AcademicYearDate, GetDto => GetDto.MapFrom(a => a.AcademicYearDate.ToString()))
                 .ForMember(HrUser => HrUser.DateOfDeath, GetDto => GetDto.MapFrom(a => a.DateOfDeath.ToString()))
-                .ForMember(HrUser => HrUser.PlaceOfBirthName, GetDto => GetDto.MapFrom(a => a.PlaceOfBirth.Name));
+                .ForMember(HrUser => HrUser.PlaceOfBirthName, GetDto => GetDto.MapFrom(a => a.PlaceOfBirth.Name))
+                .ForMember(HrUser => HrUser.ImgPath, GetDto => GetDto.MapFrom(a => Globals.baseURL+"/"+ a.ImgPath));
 
             CreateMap<HrUserAddress, GetHrUserAddressDto>()
                 .ForMember(HrUser => HrUser.CountryName, GetDto => GetDto.MapFrom(a => a.Country.Name))

@@ -43,6 +43,6 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
 
         public SelectDDLResponse GetPriestsDDL();
 
-        public SelectDDLResponse GetChurchesDDL();
+        public SelectDDLResponse GetChurchesDDL([FromHeader] long EparchyId);
     }
 }
