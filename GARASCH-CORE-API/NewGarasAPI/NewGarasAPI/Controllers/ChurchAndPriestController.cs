@@ -9,6 +9,7 @@ using NewGaras.Infrastructure.DTO.Family;
 using NewGaras.Infrastructure.DTO.ChurchAndPriest;
 using NewGaras.Infrastructure.DTO.ChurchAndPriest.Filters;
 using NewGaras.Infrastructure.Models;
+using NewGaras.Infrastructure.DTO.General;
 
 namespace NewGarasAPI.Controllers
 {
@@ -397,6 +398,108 @@ namespace NewGarasAPI.Controllers
                 if (response.Result)
                 {
                     response = _churchAndPriestService.GetEparchyWithChurch(filters);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("DeleteEparchy")]
+        public BaseResponseWithId<int> DeleteEparchy(GeneralDeleteDTO<int> dto)
+        {
+            var response = new BaseResponseWithId<int>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _churchAndPriestService.DeleteEparchy(dto);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("DeleteChurch")]
+        public BaseResponseWithId<long> DeleteChurch(GeneralDeleteDTO<long> dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _churchAndPriestService.DeleteChurch(dto);
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpPost("DeletePriest")]
+        public BaseResponseWithId<long> DeletePriest(GeneralDeleteDTO<long> dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            #region user Auth
+            HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+            response.Errors = validation.errors;
+            response.Result = validation.result;
+            #endregion
+
+            try
+            {
+                if (response.Result)
+                {
+                    response = _churchAndPriestService.DeletePriest(dto);
                 }
                 return response;
             }

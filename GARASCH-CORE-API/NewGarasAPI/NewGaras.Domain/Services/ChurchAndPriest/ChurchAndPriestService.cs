@@ -4,6 +4,7 @@ using NewGaras.Infrastructure;
 using NewGaras.Infrastructure.DTO.ChurchAndPriest;
 using NewGaras.Infrastructure.DTO.ChurchAndPriest.Filters;
 using NewGaras.Infrastructure.DTO.Family;
+using NewGaras.Infrastructure.DTO.General;
 using NewGaras.Infrastructure.Entities;
 using NewGaras.Infrastructure.Helper;
 using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Church;
@@ -634,5 +635,164 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
             }
         }
 
+        public BaseResponseWithId<int> DeleteEparchy(GeneralDeleteDTO<int> dto)
+        {
+            var response = new BaseResponseWithId<int>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            #region validation
+            var Eparchy = _unitOfWork.Eparchies.Find(a => a.Id == dto.ID, new[] { "Churches" });
+            if (Eparchy == null)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E101";
+                err.ErrorMSG = "No Eparchy with this ID";
+                response.Errors.Add(err);
+                return response;
+            }
+            if (Eparchy.Churches.Count() != 0)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E101";
+                err.ErrorMSG = "There are Churches in this Eparchy, can not be deleted";
+                response.Errors.Add(err);
+                return response;
+            }
+
+            #endregion
+
+            try
+            {
+                response.ID = Eparchy.Id;
+
+                _unitOfWork.Eparchies.Delete(Eparchy);
+                _unitOfWork.Complete();
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public BaseResponseWithId<long> DeleteChurch(GeneralDeleteDTO<long> dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            #region validation
+            var Church = _unitOfWork.Churches.Find(a => a.Id == dto.ID, new[] { "Priests", "HrUserChurchOfPresences", "HrUserBelongToChurches" });
+            if (Church == null)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E101";
+                err.ErrorMSG = "No Church with this ID";
+                response.Errors.Add(err);
+                return response;
+            }
+            if (Church.Priests.Count() != 0)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E101";
+                err.ErrorMSG = "There are Priests in this Church, can not be deleted";
+                response.Errors.Add(err);
+                return response;
+            }
+            if (Church.HrUserChurchOfPresences.Count() != 0 || Church.HrUserBelongToChurches.Count() > 0)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E101";
+                err.ErrorMSG = "There are HrUsers in this Church, can not be deleted";
+                response.Errors.Add(err);
+                return response;
+            }
+            #endregion
+
+            try
+            {
+                response.ID = Church.Id;
+
+                _unitOfWork.Churches.Delete(Church);
+                _unitOfWork.Complete();
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        public BaseResponseWithId<long> DeletePriest(GeneralDeleteDTO<long> dto)
+        {
+            var response = new BaseResponseWithId<long>()
+            {
+                Errors = new List<Error>(),
+                Result = true
+            };
+
+            #region validation
+            var priest = _unitOfWork.Priests.Find(a => a.Id == dto.ID, new[] { "HrUserPriests" });
+            if (priest == null)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E101";
+                err.ErrorMSG = "No Church with this ID";
+                response.Errors.Add(err);
+                return response;
+            }
+            if (priest.HrUserPriests.Count() != 0)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E101";
+                err.ErrorMSG = "There are HrUsers with this Priest, can not be deleted";
+                response.Errors.Add(err);
+                return response;
+            }
+            #endregion
+
+            try
+            {
+                response.ID = priest.Id;
+
+                _unitOfWork.Priests.Delete(priest);
+                _unitOfWork.Complete();
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
     }
 }
