@@ -1036,8 +1036,9 @@ namespace NewGaras.Domain.Services
                         }
 
                     }
-                    return response;
                 }
+                    return response;
+            }
             catch (Exception ex)
             {
                 response.Result = false;
