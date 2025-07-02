@@ -386,9 +386,6 @@ namespace NewGarasAPI.Controllers
                                 response.BranchName = CheckUserDB.Branch?.Name; // CheckUserDB.UserBranchName != null ? CheckUserDB.UserBranchName : "";
                                 response.BranchID = CheckUserDB.BranchId;
 
-                                //response.Jobtitle = CheckUserDB.JobTitleID != null ? Common.GetJobTitleName((int)CheckUserDB.JobTitleID) : "";
-                                //response.DepartmentName = CheckUserDB.DepartmentID != null ? Common.GetDepartmentName((int)CheckUserDB.DepartmentID) : "";
-                                //response.BranchName = CheckUserDB.BranchID != null ? Common.GetBranchName((int)CheckUserDB.BranchID) : "";
 
                                 // Fill User role List 
                                 var RoleList = new List<Roles>();
@@ -420,26 +417,8 @@ namespace NewGarasAPI.Controllers
                                     ID = x.SpecialityId,
                                     Name = x.SpecialityName
                                 }).ToListAsync();
-                                //var GroupList = new List<GroupRoles>();
-                                //var GroupListDB = _Context.proc_Group_UserLoadAll().Where(x => x.UserID == CheckUserDB.ID).ToList();
-                                //foreach (var UserGroupOBJ in GroupListDB)
-                                //{
-                                //        GroupList.Add(new GroupRoles
-                                //        {
-                                //            GroupID = (long)UserGroupOBJ.GroupID,
-                                //            GroupName = Common.GetGroupName(UserGroupOBJ.GroupID)
-                                //        });
-                                //}
-                                //
                                 var NotificationCount = _Context.Notifications.Where(x => (x.FromUserId == CheckUserDB.Id || x.FromUserId == null) && x.New == true).Count();
                                 response.NotificationCount = NotificationCount;
-
-
-                                var TaskCountFromTaskCount = _Context.Tasks.Where(x => x.TaskDetails.Where(y => y.Status == "Open").Any() &&
-                                (x.CreatedBy == CheckUserDB.Id || x.TaskPermissions.Where(p => p.UserGroupId == CheckUserDB.Id).Any()
-                                )).Count();
-
-                                response.TaskCount = TaskCountFromTaskCount;
 
 
                                 response.SpecialityList = SpecialityList;
@@ -448,102 +427,6 @@ namespace NewGarasAPI.Controllers
 
 
 
-
-
-                                //  for Working Hour Teacking and Task
-                                var WorkingHourTrackingForHrUserList = _Context.WorkingHourseTrackings
-                                    .Include(a => a.Task)
-                                    .Where(a => a.HrUserId == response.EmplyeeId)
-                                    .OrderByDescending(a => a.Id).ToList();
-
-                                if (WorkingHourTrackingForHrUserList.Count() > 0)
-                                {
-
-                                    //  HR Check In Task Working Hours
-                                    var TaskWorkingHours = WorkingHourTrackingForHrUserList
-                                        .Where(a => a.TaskId != null && (a.CheckOutTime == null && a.CheckInTime != null))
-                                        .OrderByDescending(a => a.Id).FirstOrDefault();
-                                    if (TaskWorkingHours != null)
-                                    {
-                                        response.OpenTaskCheckIn = new GetOpenWorkingHoursForAllTasksDto()
-                                        {
-                                            Id = TaskWorkingHours.Id,
-                                            ProgressRate = TaskWorkingHours.ProgressRate,
-                                            CheckIn = (TimeOnly)TaskWorkingHours.CheckInTime,
-                                            Date = TaskWorkingHours.Date.ToString("yyyy-MM-dd"),
-                                            TaskId = TaskWorkingHours.TaskId,
-                                            TaskName = TaskWorkingHours.Task?.Name
-                                        }
-                                        ;
-                                    }
-
-
-                                    // working Hours
-                                    var workingHours = WorkingHourTrackingForHrUserList
-                                            .Where(a => a.TaskId == null && (a.CheckOutTime == null && a.CheckInTime != null))
-                                            .OrderByDescending(a => a.Id).FirstOrDefault();
-                                    if (workingHours != null)
-                                    {
-                                        response.OpenAttendanceCheckIn = new GetOpenWorkingHoursForAllTasksDto()
-                                        {
-                                            Id = workingHours.Id,
-                                            CheckIn = (TimeOnly)workingHours.CheckInTime,
-                                            Date = workingHours.Date.ToString("yyyy-MM-dd"),
-                                        }
-                                        ;
-                                    }
-                                    // working Hours check in and check out
-                                    var LastWorkingHour = WorkingHourTrackingForHrUserList
-                                            .Where(a => a.TaskId == null)
-                                            .OrderByDescending(a => a.Id).FirstOrDefault();
-                                    if (LastWorkingHour != null)
-                                    {
-                                        response.LastWorkingHourCheckIn = new LastWorkingHourDto()
-                                        {
-                                            Date = LastWorkingHour.Date.ToString("yyyy-MM-dd"),
-                                            CheckIn = LastWorkingHour.CheckInTime,
-                                            CheckOut = LastWorkingHour.CheckOutTime
-                                        }
-                                        ;
-                                    }
-                                }
-
-
-
-                                //                        //  HR Check In Task Working Hours
-                                //                        var TaskWorkingHours = _Context.WorkingHourseTrackings
-                                //                            .Include(a => a.Task)
-                                //                            .Where(a => a.HrUserId == response.EmplyeeId && a.TaskId != null && (a.CheckOutTime == null && a.CheckInTime != null) && a.Date.Date == DateTime.Now.Date)
-                                //                            .OrderBy(a => a.Id).LastOrDefault();
-                                //                        if (TaskWorkingHours != null)
-                                //                        {
-                                //                            response.OpenTaskCheckIn = new GetOpenWorkingHoursForAllTasksDto()
-                                //                            {
-                                //                                Id = TaskWorkingHours.Id,
-                                //                                ProgressRate = TaskWorkingHours.ProgressRate,
-                                //                                CheckIn = (TimeOnly)TaskWorkingHours.CheckInTime,
-                                //                                Date = TaskWorkingHours.Date.ToString("yyyy-MM-dd"),
-                                //                                TaskId = TaskWorkingHours.TaskId,
-                                //                                TaskName = TaskWorkingHours.Task?.Name
-                                //                            }
-                                //                            ;
-                                //                        }
-
-
-                                //                        // working Hours
-                                //                        var workingHours = _Context.WorkingHourseTrackings
-                                //.Where(a => a.HrUserId == response.EmplyeeId && a.TaskId == null && (a.CheckOutTime == null && a.CheckInTime != null) && a.Date.Date == DateTime.Now.Date)
-                                //.OrderBy(a => a.Id).LastOrDefault();
-                                //                        if (workingHours != null)
-                                //                        {
-                                //                            response.OpenAttendanceCheckIn = new GetOpenWorkingHoursForAllTasksDto()
-                                //                            {
-                                //                                Id = workingHours.Id,
-                                //                                CheckIn = (TimeOnly)workingHours.CheckInTime,
-                                //                                Date = workingHours.Date.ToString("yyyy-MM-dd"),
-                                //                            }
-                                //                            ;
-                                //                        }
 
 
 
