@@ -6333,7 +6333,7 @@ namespace NewGaras.Domain.Services
                         AdvanciedTypeId = c.AdvanciedTypeId,
                         AdvanciedTypeName = c.AdvanciedTypeName,
                         DataLevel = c.DataLevel,
-                        HasDuplicate = assetDepreciation.Where(a => a.AccountId == c.Id).FirstOrDefault() == null ? false : true
+                        HasDepreciation = assetDepreciation.Where(a => a.AccountId == c.Id).FirstOrDefault() == null ? false : true
                     }).Distinct().ToList();
 
 

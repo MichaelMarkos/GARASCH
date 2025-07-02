@@ -22,6 +22,6 @@
         // for test 
         public List<AccumulativePerMonth> AccumulativePerMonth { get; set; }
 
-        public bool HasDuplicate { get; set; }
+        public bool HasDepreciation { get; set; }
     }
 }
