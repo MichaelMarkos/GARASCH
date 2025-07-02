@@ -1337,6 +1337,59 @@ namespace NewGaras.Domain.Services
             }
         }
 
+        public async Task<BaseResponseWithData<GetChurchesAndPriestsToHrUser>> GetChurchesAndPriestOfHrUser([FromHeader] long HrUserId)
+        {
+            var response = new BaseResponseWithData<GetChurchesAndPriestsToHrUser>();
+            response.Result = true;
+            response.Errors = new List<Error>();
+            try
+            {
+                if (HrUserId == 0)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E-1";
+                    err.errorMSG = "HrUser Id is required";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                var HrUser = _unitOfWork.HrUsers.Find(a => a.Id == HrUserId, includes: new[] { "BelongToChurch", "ChurchOfPresence" });
+                if (HrUser == null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E-1";
+                    err.errorMSG = "This HR User is not found!";
+                    response.Errors.Add(err);
+                    return response;
+                }
+                var Priests = (await _unitOfWork.HrUserPriests.FindAllAsync(p => p.HrUserId == HrUserId && p.IsCurrent && p.DateTo==null, includes: new[] { "Priest" })).FirstOrDefault();
+                
+
+                response.Data = new GetChurchesAndPriestsToHrUser
+                {
+                    HrUserId = HrUser.Id,
+                    ChurchOfPresenceName = HrUser.ChurchOfPresence?.ChurchName,
+                    ChurchOfPresenceId = HrUser.ChurchOfPresence?.Id,
+                    BelongToChurchName = HrUser.BelongToChurch?.ChurchName,
+                    BelongToChurchId = HrUser.BelongToChurch?.Id,
+                    PriestName = Priests?.Priest?.PriestName,
+                    PriestId = Priests?.PriestId,
+                };
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
         public async Task<BaseResponseWithData<UserEmployeeResponse>> AddHrEmployeeToUserAsync(AddHrEmployeeToUserDTO InData, long userId, string key)
         {
             var response = new BaseResponseWithData<UserEmployeeResponse>()
@@ -1835,7 +1888,10 @@ namespace NewGaras.Domain.Services
                         HrUser.MiddleName = MiddleName;
                         //HrUser.IsUser = NewHrData
                         //HrUser.Mobile = NewHrData.Mobile;
-                        HrUser.Email = NewHrData.Email.ToLower();
+                        if (NewHrData.Email != null)
+                        {
+                            HrUser.Email = NewHrData.Email.ToLower();
+                        }
                         HrUser.Gender = NewHrData.Gender;
                         //------------------------------CanBeNull-------------------
                         HrUser.ArfirstName = NewHrData.ARFirstName;

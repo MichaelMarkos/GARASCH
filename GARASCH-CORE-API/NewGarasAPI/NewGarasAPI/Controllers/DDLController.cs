@@ -771,5 +771,83 @@ namespace NewGarasAPI.Controllers
                 return response;
             }
         }
+
+        [HttpGet("GetPriestsDDL")]
+        public SelectDDLResponse GetPriestsDDL()
+        {
+            var response = new SelectDDLResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                response.Errors = validation.errors;
+                response.Result = validation.result;
+                // without valdate
+                if (response.Result)
+                {
+                    var Priests = _ddlservice.GetPriestsDDL();
+                    if (!Priests.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(Priests.Errors);
+                        return response;
+                    }
+                    response = Priests;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
+
+        [HttpGet("GetChurchesDDL")]
+        public SelectDDLResponse GetChurchesDDL()
+        {
+            var response = new SelectDDLResponse()
+            {
+                Result = true,
+                Errors = new List<Error>()
+            };
+
+            try
+            {
+                HearderVaidatorOutput validation = _helper.ValidateHeader(Request.Headers, ref _Context);
+                response.Errors = validation.errors;
+                response.Result = validation.result;
+                // without valdate
+                if (response.Result)
+                {
+                    var Churches = _ddlservice.GetChurchesDDL();
+                    if (!Churches.Result)
+                    {
+                        response.Result = false;
+                        response.Errors.AddRange(Churches.Errors);
+                        return response;
+                    }
+                    response = Churches;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                Error err = new Error();
+                err.ErrorCode = "E-1";
+                err.errorMSG = "Exception :" + ex.Message;
+                response.Errors.Add(err);
+                return response;
+            }
+        }
     }
 }
