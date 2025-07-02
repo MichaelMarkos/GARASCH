@@ -812,7 +812,7 @@ namespace NewGarasAPI.Controllers
         }
 
         [HttpGet("GetChurchesDDL")]
-        public SelectDDLResponse GetChurchesDDL()
+        public SelectDDLResponse GetChurchesDDL([FromHeader] long EparchyId)
         {
             var response = new SelectDDLResponse()
             {
@@ -828,7 +828,7 @@ namespace NewGarasAPI.Controllers
                 // without valdate
                 if (response.Result)
                 {
-                    var Churches = _ddlservice.GetChurchesDDL();
+                    var Churches = _ddlservice.GetChurchesDDL(EparchyId);
                     if (!Churches.Result)
                     {
                         response.Result = false;

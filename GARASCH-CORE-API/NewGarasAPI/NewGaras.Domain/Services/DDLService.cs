@@ -821,7 +821,7 @@ namespace NewGaras.Domain.Services
             }
         }
 
-        public SelectDDLResponse GetChurchesDDL()
+        public SelectDDLResponse GetChurchesDDL([FromHeader] long EparchyId)
         {
             SelectDDLResponse Response = new SelectDDLResponse();
             Response.Result = true;
@@ -832,7 +832,7 @@ namespace NewGaras.Domain.Services
                 var DDLList = new List<SelectDDL>();
                 if (Response.Result)
                 {
-                    var ListDB = _unitOfWork.Churches.FindAll(a => true).ToList();
+                    var ListDB = _unitOfWork.Churches.FindAll(a => a.EparchyId==EparchyId).ToList();
                     if (ListDB.Count > 0)
                     {
                         foreach (var item in ListDB)
