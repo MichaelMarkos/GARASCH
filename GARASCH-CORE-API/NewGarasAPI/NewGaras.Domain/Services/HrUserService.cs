@@ -1353,7 +1353,7 @@ namespace NewGaras.Domain.Services
                     response.Errors.Add(err);
                     return response;
                 }
-                var HrUser = _unitOfWork.HrUsers.Find(a => a.Id == HrUserId, includes: new[] { "BelongToChurch", "ChurchOfPresence" });
+                var HrUser = _unitOfWork.HrUsers.Find(a => a.Id == HrUserId, includes: new[] { "BelongToChurch", "ChurchOfPresence", "BelongToChurch.Eparchy", "ChurchOfPresence.Eparchy" });
                 if (HrUser == null)
                 {
                     response.Result = false;
@@ -1375,6 +1375,10 @@ namespace NewGaras.Domain.Services
                     BelongToChurchId = HrUser.BelongToChurch?.Id,
                     PriestName = Priests?.Priest?.PriestName,
                     PriestId = Priests?.PriestId,
+                    ChurchOfPresenceEparchyId = HrUser.ChurchOfPresence?.EparchyId,
+                    ChurchOfPresenceEparchyName = HrUser.ChurchOfPresence?.Eparchy?.Name,
+                    BelongToChurchEparchyId = HrUser.BelongToChurch.EparchyId,
+                    BelongToChurchEparchyName = HrUser.BelongToChurch?.Eparchy?.Name
                 };
 
                 return response;
