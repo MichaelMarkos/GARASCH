@@ -1304,20 +1304,21 @@ namespace NewGaras.Domain.Services
                                 lastPriest.DateTo = DateTime.Now;
                                 lastPriest.Reason = dto.Reason;
                                 _unitOfWork.HrUserPriests.Update(lastPriest);
-                            }
-                            var newPriest = new HrUserPriest()
-                            {
 
-                                PriestId = (long)dto.PriestId,
-                                HrUserId = User.Id,
-                                IsCurrent = true,
-                                DateFrom = DateTime.Now,
-                                CreatedBy = validation.userID,
-                                ModifiedBy = validation.userID,
-                                CreationDate = DateTime.Now,
-                                ModifiedDate = DateTime.Now
-                            };
-                            _unitOfWork.HrUserPriests.Add(newPriest);
+                                var newPriest = new HrUserPriest()
+                                {
+
+                                    PriestId = (long)dto.PriestId,
+                                    HrUserId = User.Id,
+                                    IsCurrent = true,
+                                    DateFrom = DateTime.Now,
+                                    CreatedBy = validation.userID,
+                                    ModifiedBy = validation.userID,
+                                    CreationDate = DateTime.Now,
+                                    ModifiedDate = DateTime.Now
+                                };
+                                _unitOfWork.HrUserPriests.Add(newPriest);
+                            }
                         }
                         _unitOfWork.Complete();
                         response.ID = dto.HrUserId;
