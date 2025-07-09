@@ -21,9 +21,8 @@ namespace NewGaras.Infrastructure.Interfaces.ServicesInterfaces
         public Task<BaseResponseWithData<UserEmployeeResponse>> AddHrEmployeeToUserAsync(AddHrEmployeeToUserDTO InData, long userId, string key);
         public Task<BaseResponseWithData<GetHrUserDto>> GetHrUser(long HrUserId);
 
-        public Task<BaseResponseWithDataAndHeader<List<HrUserCardDto>>> GetAll(int CurrentPage, int NumberOfItemsPerPage, string? name,
-            bool? active, int? DepId, int? jobTilteId, int? BranchId, bool? isUser, string? Email, string? mobile, bool? isDeleted
-            , bool? ActiveUser);
+        public Task<BaseResponseWithDataAndHeader<List<HrUserCardDto>>> GetAll(int CurrentPage, int NumberOfItemsPerPage, string? searchKey,
+             bool? active, int? ChurchId, int? EparchyId, int? PriestId, string? Email, string? mobile);
 
         public BaseResponseWithDataAndHeader<HrUserListDDL> GetHrUserListDDl(int CurrentPage, int NumberOfItemsPerPage, string? searchKey, long? DoctorSpecialtyId);
         public Task<BaseResponseWithId<long>> CreateHrUser(HrUserDto NewHrUser, long UserId,string CompanyName);

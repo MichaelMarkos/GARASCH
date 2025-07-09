@@ -809,8 +809,8 @@ namespace NewGarasAPI.Controllers.HR
 
         [HttpGet("GetUserCards")]   //services Added
         public async Task<BaseResponseWithDataAndHeader<List<HrUserCardDto>>> GetAll([FromHeader] string userName, [FromHeader] bool? active
-            , [FromHeader] int? DepId, [FromHeader] int? jobTilteId, [FromHeader] int? BranchId, [FromHeader] bool? IsUser, [FromHeader] string Email, [FromHeader] string mobile
-            , [FromHeader] bool? isDeleted, [FromHeader] bool? ActiveUser, [FromHeader] int currentPage = 1, [FromHeader] int numberOfItemsPerPage = 10)
+            , [FromHeader] int? ChurchId, [FromHeader] int? EparchyId, [FromHeader] int? PriestId, [FromHeader] string Email, [FromHeader] string mobile
+            , [FromHeader] int currentPage = 1, [FromHeader] int numberOfItemsPerPage = 10)
         {   //userName is the serachKey in the view
             var response = new BaseResponseWithDataAndHeader<List<HrUserCardDto>>();
             response.Result = true;
@@ -822,13 +822,15 @@ namespace NewGarasAPI.Controllers.HR
             response.Result = validation.result;
             #endregion
 
+            //public async Task<BaseResponseWithDataAndHeader<List<HrUserCardDto>>> GetAll(int CurrentPage, int NumberOfItemsPerPage, string? searchKey,
+            //bool? active, int? ChurchId, int? EparchyId, int? PriestId, string? Email, string? mobile)
 
             try
             {
                 if (response.Result)
                 {
                     response = await _hrUserService.GetAll(currentPage, numberOfItemsPerPage, userName, active,
-                        DepId, jobTilteId, BranchId, IsUser, Email, mobile, isDeleted, ActiveUser);
+                        ChurchId, EparchyId, PriestId, Email, mobile);
                 }
                 return response;
 
