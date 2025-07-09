@@ -878,6 +878,7 @@ namespace NewGaras.Domain.Services
 
                     if (!string.IsNullOrEmpty(searchKey))
                     {
+                        searchKey = HttpUtility.UrlDecode(searchKey);
                         data = data.Where(a => (a.FirstName + a.MiddleName + a.LastName).Contains(searchKey.Replace(" ", "")));
                     }
                     if (active != null)
