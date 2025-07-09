@@ -812,7 +812,7 @@ namespace NewGarasAPI.Controllers
         }
 
         [HttpGet("GetChurchesDDL")]
-        public SelectDDLResponse GetChurchesDDL([FromHeader] long EparchyId)
+        public SelectDDLResponse GetChurchesDDL([FromHeader] long? EparchyId)
         {
             var response = new SelectDDLResponse()
             {

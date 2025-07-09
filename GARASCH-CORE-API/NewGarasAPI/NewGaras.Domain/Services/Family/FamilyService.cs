@@ -372,6 +372,30 @@ namespace NewGaras.Domain.Services.Family
                     response.Errors.Add(err);
                     return response;
                 }
+                var hruserFaimlyListDB = _unitOfWork.HrUserFamilies.FindAll(a => a.FamilyId == dto.FamilyID);
+                if ( hruserFaimlyListDB != null)
+                {
+                    var headOfFamily = hruserFaimlyListDB.Where(a => a.IsHeadOfTheFamily == true).FirstOrDefault();
+                    if (headOfFamily != null && dto.IsHeadOfFamily == true)
+                    {
+                        response.Result = false;
+                        Error err = new Error();
+                        err.ErrorCode = "E101";
+                        err.ErrorMSG = "This family already have head can not add another head";
+                        response.Errors.Add(err);
+                        return response;
+                    }
+                }
+                var hruserALreadyInFamily = hruserFaimlyListDB.Where(a => a.HrUserId == dto.HrUserID).FirstOrDefault();
+                if(hruserALreadyInFamily != null)
+                {
+                    response.Result = false;
+                    Error err = new Error();
+                    err.ErrorCode = "E101";
+                    err.ErrorMSG = "This Hruser already in this family";
+                    response.Errors.Add(err);
+                    return response;
+                }
                 #endregion
                 var newHrUserFamily = new HrUserFamily()
                 {
