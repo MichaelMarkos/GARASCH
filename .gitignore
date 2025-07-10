@@ -488,3 +488,5 @@ $RECYCLE.BIN/
 *.swp
 
 /NewGarasAPI/NewGarasAPI/wwwroot
+/GARASCH-CORE-API/NewGarasAPI/NewGarasAPI/appsettings.json
+/GARASCH-CORE-API/NewGarasAPI/NewGarasAPI/appsettings.json

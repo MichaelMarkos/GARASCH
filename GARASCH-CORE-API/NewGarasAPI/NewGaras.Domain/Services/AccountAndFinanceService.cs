@@ -6228,7 +6228,7 @@ namespace NewGaras.Domain.Services
                     //var AccountMovementList = _Context.STP_AccountMovement(CalcWithoutPrivate, OrderByCreationDate).ToList();
                     //var AccountMovementListaaa = AccountMovementList.Where(x=>x.ID == 227).ToList();
                     //-------------check if account has AssetDepreciation-----------------------------
-                    var accountsIDsList = ParentAccountList.Select(a => a.Id).ToList();
+                    var accountsIDsList = AccountTreeList.Select(a => a.Id).ToList();
                     var assetDepreciation = _unitOfWork.AssetDepreciations.FindAll(a => accountsIDsList.Contains(a.AccountId)).ToList();
 
                     //--------------------------------------------------------------------------------
@@ -6250,8 +6250,8 @@ namespace NewGaras.Domain.Services
                         Active = c.Active,
                         AdvanciedTypeId = c.AdvanciedTypeId,
                         AdvanciedTypeName = c.AdvanciedTypeName,
-                        DataLevel = c.DataLevel,
-                        HasDepreciation = assetDepreciation.Where(a => a.AccountId == c.Id).FirstOrDefault() == null ? false : true
+                        DataLevel = c.DataLevel
+                       // HasDepreciation = assetDepreciation.Where(a => a.AccountId == c.Id).FirstOrDefault() == null ? false : true
                     }).Distinct().ToList();
 
 
@@ -6291,7 +6291,9 @@ namespace NewGaras.Domain.Services
                             Active = item.Active,
                             AdvanciedTypeId = item.AdvanciedTypeId,
                             AdvanciedTypeName = item.AdvanciedTypeName,
-                            DataLevel = item.DataLevel
+                            DataLevel = item.DataLevel,
+                            HasDepreciation = assetDepreciation.Where(a => a.AccountId == item.Id).FirstOrDefault() == null ? false : true
+
                         };
                     }).Distinct().ToList();
 

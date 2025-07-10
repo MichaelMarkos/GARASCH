@@ -1363,7 +1363,6 @@ namespace NewGaras.Domain.Services
                     return response;
                 }
                 var Priests = (await _unitOfWork.HrUserPriests.FindAllAsync(p => p.HrUserId == HrUserId && p.IsCurrent && p.DateTo==null, includes: new[] { "Priest" })).FirstOrDefault();
-                
 
                 response.Data = new GetChurchesAndPriestsToHrUser
                 {
@@ -1376,7 +1375,7 @@ namespace NewGaras.Domain.Services
                     PriestId = Priests?.PriestId,
                     ChurchOfPresenceEparchyId = HrUser.ChurchOfPresence?.EparchyId,
                     ChurchOfPresenceEparchyName = HrUser.ChurchOfPresence?.Eparchy?.Name,
-                    BelongToChurchEparchyId = HrUser.BelongToChurch.EparchyId,
+                    BelongToChurchEparchyId = HrUser.BelongToChurch?.EparchyId,
                     BelongToChurchEparchyName = HrUser.BelongToChurch?.Eparchy?.Name
                 };
 
