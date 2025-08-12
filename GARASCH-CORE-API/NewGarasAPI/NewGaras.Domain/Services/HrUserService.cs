@@ -856,7 +856,7 @@ namespace NewGaras.Domain.Services
 
 
         public async Task<BaseResponseWithDataAndHeader<List<HrUserCardDto>>> GetAll(int CurrentPage, int NumberOfItemsPerPage, string? searchKey,
-            bool? active, int? DepId, int? jobTilteId, int? BranchId, bool? isUser, string? Email, string? mobile, bool? isDeleted, bool? ActiveUser)
+            bool? active, int? ChurchId, int? EparchyId, int? PriestId, string? Email, string? mobile)
         {
             var response = new BaseResponseWithDataAndHeader<List<HrUserCardDto>>();
             response.Result = true;
@@ -874,40 +874,38 @@ namespace NewGaras.Domain.Services
                 if (response.Result)
                 {
                     //var data = await _unitOfWork.HrUsers.FindAllAsync((a => a.Active == true), new[] { "JobTitle" });
-                    var data = _unitOfWork.HrUsers.FindAllQueryable(a => true, new[] { "JobTitle", "User" });
+                    var data = _unitOfWork.HrUsers.FindAllQueryable(a => true, new[] { "BelongToChurch.Eparchy", "ChurchOfPresence.Eparchy", "HrUserPriests.Priest", "HrUserMobiles", "HrUserSocialMedia" });
 
-                    //if (!string.IsNullOrEmpty(searchKey))
-                    //{
-                    //    data = data.Where(a => (a.FirstName + a.MiddleName + a.LastName).Contains(searchKey.Replace(" ", "")) || (a.Email).Contains(searchKey) || (a.Mobile).Contains(searchKey));
-                    //}
+                    if (!string.IsNullOrEmpty(searchKey))
+                    {
+                        searchKey = HttpUtility.UrlDecode(searchKey);
+                        data = data.Where(a => (a.FirstName + a.MiddleName + a.LastName).Contains(searchKey.Replace(" ", "")));
+                    }
                     if (active != null)
                     {
                         data = data.Where(a => a.Active == active).AsQueryable();
                     }
-                    //if (DepId != null)
-                    //{
-                    //    data = data.Where(a => a.DepartmentId == DepId).AsQueryable();
-                    //}
-                    if (jobTilteId != null)
+                    if (EparchyId != null)
                     {
-                        data = data.Where(a => a.JobTitleId == jobTilteId).AsQueryable();
+                        data = data.Where(a => a.ChurchOfPresence.EparchyId == EparchyId || a.BelongToChurch.EparchyId==EparchyId).AsQueryable();
                     }
-                    //if (BranchId != null)
-                    //{
-                    //    data = data.Where(a => a.BranchId == BranchId).AsQueryable();
-                    //}
-                    if (isUser != null)
+                    if (ChurchId != null)
                     {
-                        data = data.Where(a => a.IsUser == isUser).AsQueryable();
+                        data = data.Where(a => a.ChurchOfPresenceId == ChurchId || a.BelongToChurchId==ChurchId).AsQueryable();
                     }
-                    if (isDeleted == true)
+                    if (PriestId != null)
                     {
-                        data = data.Where(a => a.IsDeleted == true).AsQueryable();
+                        data = data.Where(a => a.HrUserPriests.Any(x=>x.IsCurrent && x.PriestId==PriestId)).AsQueryable();
                     }
-                    else
+                    if (Email != null)
                     {
-                        data = data.Where(a => a.IsDeleted != true).AsQueryable();
+                        data = data.Where(a => a.Email.Contains(Email) || a.HrUserSocialMedia.Any(x=>x.Link.Contains(Email))).AsQueryable();
                     }
+                    if (mobile !=null)
+                    {
+                        data = data.Where(a =>a.HrUserMobiles.Any(x=>x.MobileNumber.Contains(mobile))).AsQueryable();
+                    }
+                   
 
                     data = data.OrderBy(a => (a.FirstName + " " + (a.LastName != null ? (a.LastName + " ") : "") + a.LastName));
 
@@ -1365,7 +1363,6 @@ namespace NewGaras.Domain.Services
                     return response;
                 }
                 var Priests = (await _unitOfWork.HrUserPriests.FindAllAsync(p => p.HrUserId == HrUserId && p.IsCurrent && p.DateTo==null, includes: new[] { "Priest" })).FirstOrDefault();
-                
 
                 response.Data = new GetChurchesAndPriestsToHrUser
                 {
@@ -1378,7 +1375,7 @@ namespace NewGaras.Domain.Services
                     PriestId = Priests?.PriestId,
                     ChurchOfPresenceEparchyId = HrUser.ChurchOfPresence?.EparchyId,
                     ChurchOfPresenceEparchyName = HrUser.ChurchOfPresence?.Eparchy?.Name,
-                    BelongToChurchEparchyId = HrUser.BelongToChurch.EparchyId,
+                    BelongToChurchEparchyId = HrUser.BelongToChurch?.EparchyId,
                     BelongToChurchEparchyName = HrUser.BelongToChurch?.Eparchy?.Name
                 };
 
