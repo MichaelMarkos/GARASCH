@@ -9,5 +9,5 @@ namespace NewGaras.Infrastructure.DTO.General
     public class GeneralDeleteDTO<T>
     {
         public T ID { get; set; }
-    }
+    } 
 }
