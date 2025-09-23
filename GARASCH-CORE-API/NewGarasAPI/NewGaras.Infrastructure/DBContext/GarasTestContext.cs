@@ -9,6 +9,7 @@ namespace NewGaras.Infrastructure.DBContext;
 
 public partial class GarasTestContext : DbContext
 {
+
     public string TenantId { get; set; }
     private readonly ITenantService _tenantService;
     public GarasTestContext(ITenantService tenantService)
@@ -23,6 +24,7 @@ public partial class GarasTestContext : DbContext
         _tenantService = tenantService;
         TenantId = _tenantService.GetTenant()?.TID;
     }
+
 
     public virtual DbSet<Account> Accounts { get; set; }
 
@@ -989,8 +991,6 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<WorkingHourseTracking> WorkingHourseTrackings { get; set; }
 
     public virtual DbSet<WorkshopStation> WorkshopStations { get; set; }
-
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var tenantConnectionString = _tenantService.GetConnectionString();
@@ -2271,6 +2271,8 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.FamilyStatus).WithMany(p => p.Families)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Family_FamilyStatus");
+
+            entity.HasOne(d => d.Servant).WithMany(p => p.Families).HasConstraintName("FK_Family_User");
         });
 
         modelBuilder.Entity<GarasClientInfo>(entity =>
