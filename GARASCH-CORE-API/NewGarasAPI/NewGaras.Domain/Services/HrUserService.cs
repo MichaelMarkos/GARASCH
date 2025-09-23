@@ -1302,7 +1302,10 @@ namespace NewGaras.Domain.Services
                                 lastPriest.DateTo = DateTime.Now;
                                 lastPriest.Reason = dto.Reason;
                                 _unitOfWork.HrUserPriests.Update(lastPriest);
-
+                            }
+                            // last modified 2025-7-10 mic
+                            if ((lastPriest!= null && lastPriest.PriestId != dto.PriestId) || lastPriest == null)
+                            {
                                 var newPriest = new HrUserPriest()
                                 {
 

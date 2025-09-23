@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace NewGaras.Domain.Services.ChurchAndPriest
 {
@@ -186,7 +187,8 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
 
                 if (!string.IsNullOrEmpty(filters.PriestName))
                 {
-                    priestsQueryable = priestsQueryable.Where(a => a.PriestName.Contains(filters.PriestName));
+                    var PriestName = HttpUtility.UrlDecode(filters.PriestName);
+                    priestsQueryable = priestsQueryable.Where(a => a.PriestName.Contains(PriestName));
                 }
 
                 var priestsListDB = PagedList<Priest>.Create(priestsQueryable, filters.currentPage, filters.numberOfItemsPerPage);
@@ -351,7 +353,8 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
 
                 if (!string.IsNullOrEmpty(filters.ChurchName))
                 {
-                    churchesQueryable = churchesQueryable.Where(a => a.ChurchName.Contains(filters.ChurchName));
+                    var ChurchName = HttpUtility.UrlDecode(filters.ChurchName);
+                    churchesQueryable = churchesQueryable.Where(a => a.ChurchName.Contains(ChurchName));
                 }
 
                 var ChurchesListDB = PagedList<Church>.Create(churchesQueryable,filters.currentPage,filters.numberOfItemsPerPage);
@@ -593,7 +596,8 @@ namespace NewGaras.Domain.Services.ChurchAndPriest
                     var EparchiesQueryable = _unitOfWork.Eparchies.FindAllQueryable(x => true, new[] { "Churches" });
                     if (!string.IsNullOrEmpty(filters.Name))
                     {
-                        EparchiesQueryable = EparchiesQueryable.Where(a => a.Name.Contains(filters.Name));
+                        var Name = HttpUtility.UrlDecode(filters.Name);
+                        EparchiesQueryable = EparchiesQueryable.Where(a => a.Name.Contains(Name));
                     }
                     //var churches = _unitOfWork.Churches.GetAll().ToList();  
 
