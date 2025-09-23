@@ -527,6 +527,9 @@ public partial class User
     [InverseProperty("ModifiedByNavigation")]
     public virtual ICollection<ExtraCostLibrary> ExtraCostLibraryModifiedByNavigations { get; set; } = new List<ExtraCostLibrary>();
 
+    [InverseProperty("Servant")]
+    public virtual ICollection<Family> Families { get; set; } = new List<Family>();
+
     [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<GarasClientInfo> GarasClientInfoCreatedByNavigations { get; set; } = new List<GarasClientInfo>();
 

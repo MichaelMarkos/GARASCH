@@ -131,6 +131,20 @@ namespace NewGaras.Domain.Services.Family
                     response.Errors.Add(err);
                     return response;
                 }
+                if (dto.ServantId != null)
+                {
+                    var checkServant = _unitOfWork.Users.GetById(dto.ServantId.Value);
+                    if(checkServant == null)
+                    {
+                        response.Result = false;
+                        Error err = new Error();
+                        err.ErrorCode = "E101";
+                        err.ErrorMSG = "No user with this ID";
+                        response.Errors.Add(err);
+                        return response;
+                    }
+
+                }
 
                 var familyName = _unitOfWork.Families.FindAll(a => a.FamilyName == dto.FamilyName).FirstOrDefault();
                 if (familyName != null)
@@ -147,7 +161,8 @@ namespace NewGaras.Domain.Services.Family
                 var newFamily = new Infrastructure.Entities.Family()
                 {
                     FamilyName = dto.FamilyName,
-                    FamilyStatusId = dto.FamilyStatusID
+                    FamilyStatusId = dto.FamilyStatusID,
+                    ServantId = dto.ServantId
                 };
                 _unitOfWork.Families.Add(newFamily);
                 _unitOfWork.Complete();
@@ -191,6 +206,20 @@ namespace NewGaras.Domain.Services.Family
                         return response;
                     }
                 }
+                if (dto.ServantId != null)
+                {
+                    var checkServant = _unitOfWork.Users.GetById(dto.ServantId.Value);
+                    if (checkServant == null)
+                    {
+                        response.Result = false;
+                        Error err = new Error();
+                        err.ErrorCode = "E101";
+                        err.ErrorMSG = "No user with this ID";
+                        response.Errors.Add(err);
+                        return response;
+                    }
+
+                }
 
                 var family = _unitOfWork.Families.GetById(dto.Id);
                 if (family == null)
@@ -217,7 +246,8 @@ namespace NewGaras.Domain.Services.Family
 
                 if (dto.FamilyStatusID != null)family.FamilyStatusId = dto.FamilyStatusID??0;
                 if(!string.IsNullOrEmpty(dto.FamilyName)) family.FamilyName = dto.FamilyName;
-               
+                if (dto.ServantId != null) family.ServantId = dto.ServantId;
+
                 _unitOfWork.Complete();
 
                 response.ID = family.Id;
@@ -263,7 +293,8 @@ namespace NewGaras.Domain.Services.Family
                     ID = a.Id,
                     FamilyName = a.FamilyName,
                     FamilyStatusID = a.FamilyStatusId,
-                    FamilyStatusName = a.FamilyStatus.StatusName
+                    FamilyStatusName = a.FamilyStatus.StatusName,
+                    ServantId = a.ServantId
                 }).ToList();
 
                 response.Data = familiesList;
@@ -300,7 +331,8 @@ namespace NewGaras.Domain.Services.Family
                     ID = familyDB.Id,
                     FamilyName = familyDB.FamilyName,
                     FamilyStatusID = familyDB.FamilyStatusId,
-                    FamilyStatusName = familyDB.FamilyStatus.StatusName
+                    FamilyStatusName = familyDB.FamilyStatus.StatusName,
+                    ServantId = familyDB.ServantId
                 };
 
                 var hruserList = hrusersInFamily.Select(a => new MembersOfFamilyDTO()
@@ -652,6 +684,20 @@ namespace NewGaras.Domain.Services.Family
                     response.Errors.Add(err);
                     return response;
                 }
+                if (dto.ServantId != null)
+                {
+                    var checkServant = _unitOfWork.Users.GetById(dto.ServantId.Value);
+                    if (checkServant == null)
+                    {
+                        response.Result = false;
+                        Error err = new Error();
+                        err.ErrorCode = "E101";
+                        err.ErrorMSG = "No user with this ID";
+                        response.Errors.Add(err);
+                        return response;
+                    }
+
+                }
 
                 var familyName = _unitOfWork.Families.FindAll(a => a.FamilyName == dto.FamilyName).FirstOrDefault();
                 if (familyName != null)
@@ -726,7 +772,8 @@ namespace NewGaras.Domain.Services.Family
                 var newFamily = new Infrastructure.Entities.Family()
                 {
                     FamilyName = dto.FamilyName,
-                    FamilyStatusId = dto.FamilyStatusID
+                    FamilyStatusId = dto.FamilyStatusID,
+                    ServantId = dto.ServantId
                 };
                 _unitOfWork.Families.Add(newFamily);
                 _unitOfWork.Complete();
@@ -821,6 +868,7 @@ namespace NewGaras.Domain.Services.Family
                     currentFamily.headOfFamilyName = headOfTheFamily?.FirstName + " " + headOfTheFamily?.LastName;
                     currentFamily.familyStatusID = family.FamilyStatusId;
                     currentFamily.familyStatusName = family.FamilyStatus.StatusName;
+                    currentFamily.servantId = family.ServantId;
                     currentFamily.NUmberOFMembersInFamily = numberOFMembersInFamily;
                     currentFamily.churchOfHeadID = churchHeadBelongsTo?.Id;
                     currentFamily.churchOfHeadName = churchHeadBelongsTo?.ChurchName;

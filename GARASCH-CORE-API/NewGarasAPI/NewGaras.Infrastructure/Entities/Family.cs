@@ -19,10 +19,16 @@ public partial class Family
     [Column("FamilyStatusID")]
     public int FamilyStatusId { get; set; }
 
+    public long? ServantId { get; set; }
+
     [ForeignKey("FamilyStatusId")]
     [InverseProperty("Families")]
     public virtual FamilyStatus FamilyStatus { get; set; }
 
     [InverseProperty("Family")]
     public virtual ICollection<HrUserFamily> HrUserFamilies { get; set; } = new List<HrUserFamily>();
+
+    [ForeignKey("ServantId")]
+    [InverseProperty("Families")]
+    public virtual User Servant { get; set; }
 }

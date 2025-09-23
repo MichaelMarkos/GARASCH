@@ -10,6 +10,7 @@ namespace NewGaras.Infrastructure.DTO.Family
     {
         public string FamilyName { get; set; }
         public int FamilyStatusID { get; set; }
+        public long? ServantId { get; set; }
         public List<HruserFamilyRelation> HrUserAndRelationsList { get; set; }
         public long headOfFamilyID { get; set; }
     }

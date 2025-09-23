@@ -11,5 +11,6 @@ namespace NewGaras.Infrastructure.DTO.Family
         public int Id { get; set; }
         public string FamilyName { get; set; }
         public int? FamilyStatusID { get; set; }
+        public long? ServantId { get; set; }
     }
 }
