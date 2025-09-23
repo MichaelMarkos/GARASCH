@@ -131,6 +131,20 @@ namespace NewGaras.Domain.Services.Family
                     response.Errors.Add(err);
                     return response;
                 }
+                if (dto.ServantId != null)
+                {
+                    var checkServant = _unitOfWork.Users.GetById(dto.ServantId.Value);
+                    if(checkServant == null)
+                    {
+                        response.Result = false;
+                        Error err = new Error();
+                        err.ErrorCode = "E101";
+                        err.ErrorMSG = "No user with this ID";
+                        response.Errors.Add(err);
+                        return response;
+                    }
+
+                }
 
                 var familyName = _unitOfWork.Families.FindAll(a => a.FamilyName == dto.FamilyName).FirstOrDefault();
                 if (familyName != null)
@@ -191,6 +205,20 @@ namespace NewGaras.Domain.Services.Family
                         response.Errors.Add(err);
                         return response;
                     }
+                }
+                if (dto.ServantId != null)
+                {
+                    var checkServant = _unitOfWork.Users.GetById(dto.ServantId.Value);
+                    if (checkServant == null)
+                    {
+                        response.Result = false;
+                        Error err = new Error();
+                        err.ErrorCode = "E101";
+                        err.ErrorMSG = "No user with this ID";
+                        response.Errors.Add(err);
+                        return response;
+                    }
+
                 }
 
                 var family = _unitOfWork.Families.GetById(dto.Id);
@@ -655,6 +683,20 @@ namespace NewGaras.Domain.Services.Family
                     err.ErrorMSG = "No family status with this ID";
                     response.Errors.Add(err);
                     return response;
+                }
+                if (dto.ServantId != null)
+                {
+                    var checkServant = _unitOfWork.Users.GetById(dto.ServantId.Value);
+                    if (checkServant == null)
+                    {
+                        response.Result = false;
+                        Error err = new Error();
+                        err.ErrorCode = "E101";
+                        err.ErrorMSG = "No user with this ID";
+                        response.Errors.Add(err);
+                        return response;
+                    }
+
                 }
 
                 var familyName = _unitOfWork.Families.FindAll(a => a.FamilyName == dto.FamilyName).FirstOrDefault();
