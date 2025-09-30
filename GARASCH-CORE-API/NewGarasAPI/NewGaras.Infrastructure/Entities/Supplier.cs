@@ -125,4 +125,7 @@ public partial class Supplier
 
     [InverseProperty("Supplier")]
     public virtual ICollection<SupplierSpeciality> SupplierSpecialities { get; set; } = new List<SupplierSpeciality>();
+
+    [InverseProperty("Supplier")]
+    public virtual ICollection<TransportationVehicleRoute> TransportationVehicleRoutes { get; set; } = new List<TransportationVehicleRoute>();
 }

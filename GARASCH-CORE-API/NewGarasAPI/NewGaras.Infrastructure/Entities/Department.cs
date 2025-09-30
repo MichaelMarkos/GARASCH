@@ -61,8 +61,5 @@ public partial class Department
     public virtual ICollection<ProjectFabricationReportUser> ProjectFabricationReportUsers { get; set; } = new List<ProjectFabricationReportUser>();
 
     [InverseProperty("Department")]
-    public virtual ICollection<ProjectInstallationReportUser> ProjectInstallationReportUsers { get; set; } = new List<ProjectInstallationReportUser>();
-
-    [InverseProperty("Department")]
     public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

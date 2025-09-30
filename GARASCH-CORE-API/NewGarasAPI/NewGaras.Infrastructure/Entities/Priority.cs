@@ -22,12 +22,6 @@ public partial class Priority
     [InverseProperty("Priority")]
     public virtual ICollection<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
 
-    [InverseProperty("Priority")]
-    public virtual ICollection<ProjectTmrevision> ProjectTmrevisions { get; set; } = new List<ProjectTmrevision>();
-
-    [InverseProperty("Priorty")]
-    public virtual ICollection<ProjectTm> ProjectTms { get; set; } = new List<ProjectTm>();
-
     [InverseProperty("Priorty")]
     public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
 }

@@ -18,7 +18,4 @@ public partial class AttachmentCategory
     public string Name { get; set; }
 
     public bool IsActive { get; set; }
-
-    [InverseProperty("Category")]
-    public virtual ICollection<ProjectTmattachment> ProjectTmattachments { get; set; } = new List<ProjectTmattachment>();
 }

@@ -63,4 +63,7 @@ public partial class SupplierContactPerson
     [ForeignKey("SupplierId")]
     [InverseProperty("SupplierContactPeople")]
     public virtual Supplier Supplier { get; set; }
+
+    [InverseProperty("SupplierContactPerson")]
+    public virtual ICollection<TransportationVehicleRoute> TransportationVehicleRoutes { get; set; } = new List<TransportationVehicleRoute>();
 }

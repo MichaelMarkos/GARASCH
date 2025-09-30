@@ -1,46 +1,47 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using NewGaras.Domain.DTO.Salary;
 using NewGaras.Infrastructure.DTO.Branch;
+using NewGaras.Infrastructure.DTO.BranchSetting;
+using NewGaras.Infrastructure.DTO.BYCompany;
 using NewGaras.Infrastructure.DTO.Contract;
-using NewGaras.Infrastructure.DTO.HrUser;
 using NewGaras.Infrastructure.DTO.Department;
+using NewGaras.Infrastructure.DTO.HrUser;
+using NewGaras.Infrastructure.DTO.JobTitle;
+using NewGaras.Infrastructure.DTO.LMS;
+using NewGaras.Infrastructure.DTO.Log;
+using NewGaras.Infrastructure.DTO.Medical.DoctorSchedule;
+using NewGaras.Infrastructure.DTO.Medical.MedicalFinance;
+using NewGaras.Infrastructure.DTO.Medical.MedicalReservation;
+using NewGaras.Infrastructure.DTO.OverTimeAndDeductionRate;
+using NewGaras.Infrastructure.DTO.Payment;
+using NewGaras.Infrastructure.DTO.ProjectInvoiceCollected;
+using NewGaras.Infrastructure.DTO.ProjectSprint;
+using NewGaras.Infrastructure.DTO.Salary;
+using NewGaras.Infrastructure.DTO.Salary.AllowncesType;
+using NewGaras.Infrastructure.DTO.Salary.SalaryAllownces;
+using NewGaras.Infrastructure.DTO.Salary.SalaryDeduction;
+using NewGaras.Infrastructure.DTO.Salary.SalaryDeductionTax;
+using NewGaras.Infrastructure.DTO.Salary.SalaryTax;
+using NewGaras.Infrastructure.DTO.Shift;
+using NewGaras.Infrastructure.DTO.TaskUnitRateService;
 using NewGaras.Infrastructure.DTO.Team;
+using NewGaras.Infrastructure.DTO.VacationDay;
+using NewGaras.Infrastructure.DTO.VacationOverTimeAndDeductionRates;
+using NewGaras.Infrastructure.DTO.VacationType;
+using NewGaras.Infrastructure.DTO.WorkFlow;
 using NewGaras.Infrastructure.Entities;
+using NewGaras.Infrastructure.Models;
+using NewGaras.Infrastructure.Models.HR;
+using NewGaras.Infrastructure.Models.HrUser;
+using NewGaras.Infrastructure.Models.Medical;
+using NewGaras.Infrastructure.Models.ProjectInvoice;
+using NewGaras.Infrastructure.Models.SalaryAllownce;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NewGaras.Infrastructure.DTO.Salary;
-using NewGaras.Infrastructure.DTO.Log;
-using NewGaras.Infrastructure.DTO.JobTitle;
-using NewGaras.Infrastructure.DTO.Shift;
-using NewGaras.Infrastructure.DTO.Salary.SalaryAllownces;
-using NewGaras.Infrastructure.DTO.BYCompany;
-using NewGaras.Infrastructure.DTO.Salary.SalaryTax;
-using NewGaras.Infrastructure.DTO.VacationType;
-using NewGaras.Infrastructure.DTO.Salary.SalaryDeduction;
-using NewGaras.Infrastructure.DTO.Salary.SalaryDeductionTax;
-using NewGaras.Infrastructure.DTO.BranchSetting;
-using NewGaras.Infrastructure.DTO.OverTimeAndDeductionRate;
-using Microsoft.Extensions.Configuration;
-using NewGaras.Infrastructure.DTO.VacationOverTimeAndDeductionRates;
-using NewGaras.Infrastructure.DTO.VacationDay;
-using NewGaras.Infrastructure.DTO.WorkFlow;
-using NewGaras.Infrastructure.DTO.ProjectSprint;
-using NewGaras.Infrastructure.DTO.Salary.AllowncesType;
-using NewGaras.Infrastructure.DTO.Payment;
-using NewGaras.Infrastructure.Models.SalaryAllownce;
-using NewGaras.Infrastructure.DTO.TaskUnitRateService;
-using NewGaras.Infrastructure.Models.ProjectInvoice;
-using NewGaras.Infrastructure.DTO.ProjectInvoiceCollected;
-using NewGaras.Infrastructure.Models;
-using NewGaras.Infrastructure.DTO.Medical.DoctorSchedule;
-using NewGaras.Infrastructure.DTO.Medical.MedicalReservation;
-using NewGaras.Infrastructure.DTO.Medical.MedicalFinance;
-using NewGaras.Infrastructure.Models.HrUser;
-using NewGaras.Infrastructure.Models.Medical;
-using NewGaras.Infrastructure.Models.HR;
 
 namespace NewGaras.Domain.Mappers
 {
@@ -231,6 +232,17 @@ namespace NewGaras.Domain.Mappers
                        opt => opt.MapFrom(src => src.PosNumber != null ? src.PosNumber.Serial : null))
             .ForMember(dest => dest.CreationDate, opt => opt.MapFrom(src => src.CreationDate.ToString("dd-MM-yyyy h:m:s tt")))
             .ForMember(dest => dest.ClosingDate, opt => opt.MapFrom(src => src.ClosingDate.ToString("dd-MM-yyyy h:m:s tt")));
+
+
+            // ---------------------------------------- LMS ------------------------------------------
+            CreateMap<CompetitionCreateDTO , Competition>()
+               .ForMember(c => c.Active , option => option.Ignore())
+               .ForMember(c => c.ImagePath , option => option.Ignore())
+               //.ForMember(c => c.CertificateTempImg, option => option.Ignore())
+               .ForMember(c => c.CreationBy , option => option.Ignore())
+               .ForMember(c => c.CreationDate , option => option.Ignore());
+
+
 
         }
     }

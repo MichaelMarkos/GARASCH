@@ -17,7 +17,4 @@ public partial class LetterOfCreditType
     [Column("LOCTypeName")]
     [StringLength(50)]
     public string LoctypeName { get; set; }
-
-    [InverseProperty("LetterOfCreditType")]
-    public virtual ICollection<ProjectLetterOfCredit> ProjectLetterOfCredits { get; set; } = new List<ProjectLetterOfCredit>();
 }

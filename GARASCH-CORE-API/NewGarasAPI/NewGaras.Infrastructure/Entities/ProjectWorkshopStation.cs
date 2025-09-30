@@ -35,9 +35,6 @@ public partial class ProjectWorkshopStation
     [InverseProperty("ProjectWorkshopStations")]
     public virtual Project Project { get; set; }
 
-    [InverseProperty("ProjectWorkshopStation")]
-    public virtual ICollection<ProjectFabricationWorkshopStationHistory> ProjectFabricationWorkshopStationHistories { get; set; } = new List<ProjectFabricationWorkshopStationHistory>();
-
     [ForeignKey("WorkshopStationId")]
     [InverseProperty("ProjectWorkshopStations")]
     public virtual WorkshopStation WorkshopStation { get; set; }

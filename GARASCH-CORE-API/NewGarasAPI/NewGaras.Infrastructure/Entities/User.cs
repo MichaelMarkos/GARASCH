@@ -983,15 +983,6 @@ public partial class User
     public virtual ICollection<ProjectAssignUser> ProjectAssignUserUsers { get; set; } = new List<ProjectAssignUser>();
 
     [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectCheque> ProjectChequeCreatedByNavigations { get; set; } = new List<ProjectCheque>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectCheque> ProjectChequeModifiedByNavigations { get; set; } = new List<ProjectCheque>();
-
-    [InverseProperty("WithdrawedByNavigation")]
-    public virtual ICollection<ProjectCheque> ProjectChequeWithdrawedByNavigations { get; set; } = new List<ProjectCheque>();
-
-    [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<ProjectContactPerson> ProjectContactPersonCreatedByNavigations { get; set; } = new List<ProjectContactPerson>();
 
     [InverseProperty("ModifiedByNavigation")]
@@ -1072,107 +1063,8 @@ public partial class User
     [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<ProjectFabricationVersion> ProjectFabricationVersions { get; set; } = new List<ProjectFabricationVersion>();
 
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInstallAttachment> ProjectInstallAttachmentCreatedByNavigations { get; set; } = new List<ProjectInstallAttachment>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectInstallAttachment> ProjectInstallAttachmentModifiedByNavigations { get; set; } = new List<ProjectInstallAttachment>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInstallationAttachment> ProjectInstallationAttachmentCreatedByNavigations { get; set; } = new List<ProjectInstallationAttachment>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectInstallationAttachment> ProjectInstallationAttachmentModifiedByNavigations { get; set; } = new List<ProjectInstallationAttachment>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInstallationBoq> ProjectInstallationBoqCreatedByNavigations { get; set; } = new List<ProjectInstallationBoq>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectInstallationBoq> ProjectInstallationBoqModifiedByNavigations { get; set; } = new List<ProjectInstallationBoq>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInstallation> ProjectInstallationCreatedByNavigations { get; set; } = new List<ProjectInstallation>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInstallationJobTitle> ProjectInstallationJobTitleCreatedByNavigations { get; set; } = new List<ProjectInstallationJobTitle>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectInstallationJobTitle> ProjectInstallationJobTitleModifiedByNavigations { get; set; } = new List<ProjectInstallationJobTitle>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectInstallation> ProjectInstallationModifiedByNavigations { get; set; } = new List<ProjectInstallation>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInstallationReportAttachment> ProjectInstallationReportAttachmentCreatedByNavigations { get; set; } = new List<ProjectInstallationReportAttachment>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectInstallationReportAttachment> ProjectInstallationReportAttachmentModifiedByNavigations { get; set; } = new List<ProjectInstallationReportAttachment>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInstallationReportClarificationAttachment> ProjectInstallationReportClarificationAttachmentCreatedByNavigations { get; set; } = new List<ProjectInstallationReportClarificationAttachment>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectInstallationReportClarificationAttachment> ProjectInstallationReportClarificationAttachmentModifiedByNavigations { get; set; } = new List<ProjectInstallationReportClarificationAttachment>();
-
-    [InverseProperty("ClarificationUser")]
-    public virtual ICollection<ProjectInstallationReportClarification> ProjectInstallationReportClarificationClarificationUsers { get; set; } = new List<ProjectInstallationReportClarification>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInstallationReportClarification> ProjectInstallationReportClarificationCreatedByNavigations { get; set; } = new List<ProjectInstallationReportClarification>();
-
-    [InverseProperty("ModifedByNavigation")]
-    public virtual ICollection<ProjectInstallationReportClarification> ProjectInstallationReportClarificationModifedByNavigations { get; set; } = new List<ProjectInstallationReportClarification>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInstallationReport> ProjectInstallationReportCreatedByNavigations { get; set; } = new List<ProjectInstallationReport>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectInstallationReport> ProjectInstallationReportModifiedByNavigations { get; set; } = new List<ProjectInstallationReport>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInstallationReportUser> ProjectInstallationReportUserCreatedByNavigations { get; set; } = new List<ProjectInstallationReportUser>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectInstallationReportUser> ProjectInstallationReportUserModifiedByNavigations { get; set; } = new List<ProjectInstallationReportUser>();
-
-    [InverseProperty("User")]
-    public virtual ICollection<ProjectInstallationReportUser> ProjectInstallationReportUserUsers { get; set; } = new List<ProjectInstallationReportUser>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInstallationVersion> ProjectInstallationVersions { get; set; } = new List<ProjectInstallationVersion>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInvoiceCollected> ProjectInvoiceCollectedCreatedByNavigations { get; set; } = new List<ProjectInvoiceCollected>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectInvoiceCollected> ProjectInvoiceCollectedModifiedByNavigations { get; set; } = new List<ProjectInvoiceCollected>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInvoice> ProjectInvoiceCreatedByNavigations { get; set; } = new List<ProjectInvoice>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectInvoiceItem> ProjectInvoiceItemCreatedByNavigations { get; set; } = new List<ProjectInvoiceItem>();
-
-    [InverseProperty("ModifedByNavigation")]
-    public virtual ICollection<ProjectInvoiceItem> ProjectInvoiceItemModifedByNavigations { get; set; } = new List<ProjectInvoiceItem>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectInvoice> ProjectInvoiceModifiedByNavigations { get; set; } = new List<ProjectInvoice>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectLetterOfCreditComment> ProjectLetterOfCreditCommentCreatedByNavigations { get; set; } = new List<ProjectLetterOfCreditComment>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectLetterOfCreditComment> ProjectLetterOfCreditCommentModifiedByNavigations { get; set; } = new List<ProjectLetterOfCreditComment>();
-
     [InverseProperty("ModifiedByNavigation")]
     public virtual ICollection<Project> ProjectModifiedByNavigations { get; set; } = new List<Project>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectPaymentTerm> ProjectPaymentTermCreatedByNavigations { get; set; } = new List<ProjectPaymentTerm>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectPaymentTerm> ProjectPaymentTermModifiedByNavigations { get; set; } = new List<ProjectPaymentTerm>();
 
     [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<ProjectProgress> ProjectProgressCreatedByNavigations { get; set; } = new List<ProjectProgress>();
@@ -1188,54 +1080,6 @@ public partial class User
 
     [InverseProperty("ProjectManager")]
     public virtual ICollection<Project> ProjectProjectManagers { get; set; } = new List<Project>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectSprint> ProjectSprintCreatedByNavigations { get; set; } = new List<ProjectSprint>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectSprint> ProjectSprintModifiedByNavigations { get; set; } = new List<ProjectSprint>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectTm> ProjectTmCreatedByNavigations { get; set; } = new List<ProjectTm>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectTm> ProjectTmModifiedByNavigations { get; set; } = new List<ProjectTm>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectTmassignUser> ProjectTmassignUserCreatedByNavigations { get; set; } = new List<ProjectTmassignUser>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectTmassignUser> ProjectTmassignUserModifiedByNavigations { get; set; } = new List<ProjectTmassignUser>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectTmattachment> ProjectTmattachmentCreatedByNavigations { get; set; } = new List<ProjectTmattachment>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectTmattachment> ProjectTmattachmentModifiedByNavigations { get; set; } = new List<ProjectTmattachment>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectTmimpDate> ProjectTmimpDateCreatedByNavigations { get; set; } = new List<ProjectTmimpDate>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectTmimpDate> ProjectTmimpDateModifiedByNavigations { get; set; } = new List<ProjectTmimpDate>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectTmrevision> ProjectTmrevisionCreatedByNavigations { get; set; } = new List<ProjectTmrevision>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectTmrevision> ProjectTmrevisionModifiedByNavigations { get; set; } = new List<ProjectTmrevision>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ProjectTmsprint> ProjectTmsprintCreatedByNavigations { get; set; } = new List<ProjectTmsprint>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectTmsprint> ProjectTmsprintModifiedByNavigations { get; set; } = new List<ProjectTmsprint>();
-
-    [InverseProperty("CreateByNavigation")]
-    public virtual ICollection<ProjectWorkFlow> ProjectWorkFlowCreateByNavigations { get; set; } = new List<ProjectWorkFlow>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ProjectWorkFlow> ProjectWorkFlowModifiedByNavigations { get; set; } = new List<ProjectWorkFlow>();
 
     [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<PrsupplierOffer> PrsupplierOfferCreatedByNavigations { get; set; } = new List<PrsupplierOffer>();
@@ -1571,24 +1415,6 @@ public partial class User
     public virtual ICollection<SystemLog> SystemLogs { get; set; } = new List<SystemLog>();
 
     [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<Task> TaskCreatedByNavigations { get; set; } = new List<Task>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<TaskInfo> TaskInfoCreatedByNavigations { get; set; } = new List<TaskInfo>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<TaskInfo> TaskInfoModifiedByNavigations { get; set; } = new List<TaskInfo>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<Task> TaskModifiedByNavigations { get; set; } = new List<Task>();
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<TaskType> TaskTypeCreatedByNavigations { get; set; } = new List<TaskType>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<TaskType> TaskTypeModifiedByNavigations { get; set; } = new List<TaskType>();
-
-    [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<Tax> TaxCreatedByNavigations { get; set; } = new List<Tax>();
 
     [InverseProperty("ModifiedByNavigation")]
@@ -1623,6 +1449,54 @@ public partial class User
 
     [InverseProperty("ModifiedByNavigation")]
     public virtual ICollection<TermsLibrary> TermsLibraryModifiedByNavigations { get; set; } = new List<TermsLibrary>();
+
+    [InverseProperty("CreationByNavigation")]
+    public virtual ICollection<TransportationLine> TransportationLineCreationByNavigations { get; set; } = new List<TransportationLine>();
+
+    [InverseProperty("ApprovedByNavigation")]
+    public virtual ICollection<TransportationLineIncreaseRequest> TransportationLineIncreaseRequestApprovedByNavigations { get; set; } = new List<TransportationLineIncreaseRequest>();
+
+    [InverseProperty("CreationByNavigation")]
+    public virtual ICollection<TransportationLineIncreaseRequest> TransportationLineIncreaseRequestCreationByNavigations { get; set; } = new List<TransportationLineIncreaseRequest>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<TransportationLine> TransportationLineModifiedByNavigations { get; set; } = new List<TransportationLine>();
+
+    [InverseProperty("CreationByNavigation")]
+    public virtual ICollection<TransportationVehicle> TransportationVehicleCreationByNavigations { get; set; } = new List<TransportationVehicle>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<TransportationVehicle> TransportationVehicleModifiedByNavigations { get; set; } = new List<TransportationVehicle>();
+
+    [InverseProperty("CreationByNavigation")]
+    public virtual ICollection<TransportationVehicleRouteAccount> TransportationVehicleRouteAccountCreationByNavigations { get; set; } = new List<TransportationVehicleRouteAccount>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<TransportationVehicleRouteAccount> TransportationVehicleRouteAccountModifiedByNavigations { get; set; } = new List<TransportationVehicleRouteAccount>();
+
+    [InverseProperty("CreationByNavigation")]
+    public virtual ICollection<TransportationVehicleRoute> TransportationVehicleRouteCreationByNavigations { get; set; } = new List<TransportationVehicleRoute>();
+
+    [InverseProperty("CreationByNavigation")]
+    public virtual ICollection<TransportationVehicleRouteDeduction> TransportationVehicleRouteDeductions { get; set; } = new List<TransportationVehicleRouteDeduction>();
+
+    [InverseProperty("CreationByNavigation")]
+    public virtual ICollection<TransportationVehicleRouteDirection> TransportationVehicleRouteDirections { get; set; } = new List<TransportationVehicleRouteDirection>();
+
+    [InverseProperty("CreationByNavigation")]
+    public virtual ICollection<TransportationVehicleRouteEmployeeException> TransportationVehicleRouteEmployeeExceptions { get; set; } = new List<TransportationVehicleRouteEmployeeException>();
+
+    [InverseProperty("CreationByNavigation")]
+    public virtual ICollection<TransportationVehicleRouteEmployee> TransportationVehicleRouteEmployees { get; set; } = new List<TransportationVehicleRouteEmployee>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<TransportationVehicleRoute> TransportationVehicleRouteModifiedByNavigations { get; set; } = new List<TransportationVehicleRoute>();
+
+    [InverseProperty("Supervisor")]
+    public virtual ICollection<TransportationVehicleRoute> TransportationVehicleRouteSupervisors { get; set; } = new List<TransportationVehicleRoute>();
+
+    [InverseProperty("CreationByNavigation")]
+    public virtual ICollection<TransprotationUserAttedance> TransprotationUserAttedances { get; set; } = new List<TransprotationUserAttedance>();
 
     [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<UserPatient> UserPatientCreatedByNavigations { get; set; } = new List<UserPatient>();

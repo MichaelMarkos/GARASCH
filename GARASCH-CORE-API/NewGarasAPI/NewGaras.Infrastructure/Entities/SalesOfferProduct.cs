@@ -127,9 +127,6 @@ public partial class SalesOfferProduct
     public virtual ICollection<ProjectFabricationBoq> ProjectFabricationBoqs { get; set; } = new List<ProjectFabricationBoq>();
 
     [InverseProperty("SalesOfferProduct")]
-    public virtual ICollection<ProjectInstallationBoq> ProjectInstallationBoqs { get; set; } = new List<ProjectInstallationBoq>();
-
-    [InverseProperty("SalesOfferProduct")]
     public virtual ICollection<SalesOfferItemAttachment> SalesOfferItemAttachments { get; set; } = new List<SalesOfferItemAttachment>();
 
     [InverseProperty("SalesOfferProduct")]

@@ -98,9 +98,6 @@ public partial class ManagementOfMaintenanceOrder
     [InverseProperty("ManagementOfMaintenanceOrders")]
     public virtual Project Project { get; set; }
 
-    [InverseProperty("MaintenanceOrder")]
-    public virtual ICollection<ProjectCheque> ProjectCheques { get; set; } = new List<ProjectCheque>();
-
     [InverseProperty("ManagementOfMaintenanceOrder")]
     public virtual ICollection<VisitsScheduleOfMaintenance> VisitsScheduleOfMaintenances { get; set; } = new List<VisitsScheduleOfMaintenance>();
 }

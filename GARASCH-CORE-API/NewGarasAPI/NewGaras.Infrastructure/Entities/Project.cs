@@ -160,41 +160,17 @@ public partial class Project
     public virtual ICollection<ProjectAttachment> ProjectAttachments { get; set; } = new List<ProjectAttachment>();
 
     [InverseProperty("Project")]
-    public virtual ICollection<ProjectCheque> ProjectCheques { get; set; } = new List<ProjectCheque>();
-
-    [InverseProperty("Project")]
     public virtual ICollection<ProjectContactPerson> ProjectContactPeople { get; set; } = new List<ProjectContactPerson>();
 
     [InverseProperty("Project")]
     public virtual ICollection<ProjectFabrication> ProjectFabrications { get; set; } = new List<ProjectFabrication>();
-
-    [InverseProperty("Project")]
-    public virtual ICollection<ProjectInstallAttachment> ProjectInstallAttachments { get; set; } = new List<ProjectInstallAttachment>();
-
-    [InverseProperty("Project")]
-    public virtual ICollection<ProjectInstallation> ProjectInstallations { get; set; } = new List<ProjectInstallation>();
-
-    [InverseProperty("Project")]
-    public virtual ICollection<ProjectInvoice> ProjectInvoices { get; set; } = new List<ProjectInvoice>();
-
-    [InverseProperty("Project")]
-    public virtual ICollection<ProjectLetterOfCredit> ProjectLetterOfCredits { get; set; } = new List<ProjectLetterOfCredit>();
 
     [ForeignKey("ProjectManagerId")]
     [InverseProperty("ProjectProjectManagers")]
     public virtual User ProjectManager { get; set; }
 
     [InverseProperty("Project")]
-    public virtual ICollection<ProjectPaymentTerm> ProjectPaymentTerms { get; set; } = new List<ProjectPaymentTerm>();
-
-    [InverseProperty("Project")]
     public virtual ICollection<ProjectProgress> ProjectProgresses { get; set; } = new List<ProjectProgress>();
-
-    [InverseProperty("Project")]
-    public virtual ICollection<ProjectSprint> ProjectSprints { get; set; } = new List<ProjectSprint>();
-
-    [InverseProperty("Project")]
-    public virtual ICollection<ProjectWorkFlow> ProjectWorkFlows { get; set; } = new List<ProjectWorkFlow>();
 
     [InverseProperty("Project")]
     public virtual ICollection<ProjectWorkshopStation> ProjectWorkshopStations { get; set; } = new List<ProjectWorkshopStation>();
@@ -205,9 +181,6 @@ public partial class Project
     [ForeignKey("SalesOfferId")]
     [InverseProperty("Projects")]
     public virtual SalesOffer SalesOffer { get; set; }
-
-    [InverseProperty("Project")]
-    public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
 
     [InverseProperty("Project")]
     public virtual ICollection<WorkingHourseTracking> WorkingHourseTrackings { get; set; } = new List<WorkingHourseTracking>();

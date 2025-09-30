@@ -69,11 +69,5 @@ public partial class JobTitle
     public virtual ICollection<ProjectFabricationReportUser> ProjectFabricationReportUsers { get; set; } = new List<ProjectFabricationReportUser>();
 
     [InverseProperty("JobTitle")]
-    public virtual ICollection<ProjectInstallationJobTitle> ProjectInstallationJobTitles { get; set; } = new List<ProjectInstallationJobTitle>();
-
-    [InverseProperty("JobTitle")]
-    public virtual ICollection<ProjectInstallationReportUser> ProjectInstallationReportUsers { get; set; } = new List<ProjectInstallationReportUser>();
-
-    [InverseProperty("JobTitle")]
     public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

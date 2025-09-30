@@ -141,12 +141,6 @@ public partial class Branch
     public virtual ICollection<ProjectFabricationReportUser> ProjectFabricationReportUsers { get; set; } = new List<ProjectFabricationReportUser>();
 
     [InverseProperty("Branch")]
-    public virtual ICollection<ProjectInstallationReportUser> ProjectInstallationReportUsers { get; set; } = new List<ProjectInstallationReportUser>();
-
-    [InverseProperty("Branch")]
-    public virtual ICollection<ProjectTm> ProjectTms { get; set; } = new List<ProjectTm>();
-
-    [InverseProperty("Branch")]
     public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
 
     [InverseProperty("Branch")]
@@ -166,9 +160,6 @@ public partial class Branch
 
     [InverseProperty("Branch")]
     public virtual ICollection<SalesOffer> SalesOffers { get; set; } = new List<SalesOffer>();
-
-    [InverseProperty("Branch")]
-    public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
 
     [InverseProperty("Branch")]
     public virtual ICollection<User> Users { get; set; } = new List<User>();

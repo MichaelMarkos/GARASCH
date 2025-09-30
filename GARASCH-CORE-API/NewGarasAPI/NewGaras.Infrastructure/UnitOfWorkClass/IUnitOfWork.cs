@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Task = NewGaras.Infrastructure.Entities.Task;
+using Type = NewGaras.Infrastructure.Entities.Type;
 
 namespace NewGaras.Infrastructure
 {
@@ -480,6 +481,32 @@ namespace NewGaras.Infrastructure
         IBaseRepository<ClientNational, int> clientNationals { get; }
         IBaseRepository<ClientInformation, int> clientInformations { get; }
         IBaseRepository<CostType, long> CostTypes { get; }
+
+        // ----------------- LMS -------------------
+        IBaseRepository<Competition , int> Competitions { get; }
+        IBaseRepository<CompetitionDay , int> CompetitionDays { get; }
+        IBaseRepository<CompetitionUser , int> CompetitionUsers { get; }
+        IBaseRepository<CompetitionDayUser , int> CompetitionDayUsers { get; }
+        IBaseRepository<CompetitionMemberAdmin , int> CompetitionMemberAdmins { get; }
+        IBaseRepository<Notice , int> Notices { get; }
+        IBaseRepository<SubjectRelationship , int> SubjectRelationships { get; }
+        IBaseRepository<Subject , int> Subjects { get; }
+        IBaseRepository<ResultControl , int> ResultControls { get; }
+        IBaseRepository<AssignedSubject , int> AssignedSubjects { get; }
+        IBaseRepository<CompetitionType , int> CompetitionTypes { get; }
+        IBaseRepository<Specialdept , int> Specialdepts { get; }
+        IBaseRepository<Hall , int> Halls { get; }
+        IBaseRepository<Type , int> Types { get; }
+        IBaseRepository<Year , int> Years { get; }
+        IBaseRepository<AcademicYear , int> AcademicYears { get; }
+        IBaseRepository<Dept , int> Depts { get; }
+        IBaseRepository<Academiclevel , int> Academiclevels { get; }
+        IBaseRepository<SubjectRelationship , int> SubjectRelationship { get; }
+        IBaseRepository<UserDepartment , int> UserDepartment { get; }
+        IBaseRepository<Programm , int> Programm { get; }
+        IBaseRepository<ResultControlForProgram , int> ResultControlForPrograms { get; }
+        IBaseRepository<ResultControlForStudent , int> ResultControlForStudents { get; }
+
         //----------------------------------------------------------------------------------
         int Complete();
         Task<int> CompleteAsync();

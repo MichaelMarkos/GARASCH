@@ -189,8 +189,5 @@ public partial class ProjectFabrication
     public virtual ICollection<ProjectFabricationVersion> ProjectFabricationVersions { get; set; } = new List<ProjectFabricationVersion>();
 
     [InverseProperty("FabricationOrder")]
-    public virtual ICollection<ProjectFabricationWorkshopStationHistory> ProjectFabricationWorkshopStationHistories { get; set; } = new List<ProjectFabricationWorkshopStationHistory>();
-
-    [InverseProperty("FabricationOrder")]
     public virtual ICollection<PurchasePoitem> PurchasePoitems { get; set; } = new List<PurchasePoitem>();
 }

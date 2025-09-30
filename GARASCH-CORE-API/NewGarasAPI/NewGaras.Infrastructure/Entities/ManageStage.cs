@@ -36,14 +36,7 @@ public partial class ManageStage
     [InverseProperty("ManageStageModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }
 
-    [ForeignKey("ProjectTmid")]
-    [InverseProperty("ManageStages")]
-    public virtual ProjectTm ProjectTm { get; set; }
-
     [ForeignKey("StageId")]
     [InverseProperty("ManageStages")]
     public virtual Stage Stage { get; set; }
-
-    [InverseProperty("ManageStage")]
-    public virtual ICollection<TaskInfo> TaskInfos { get; set; } = new List<TaskInfo>();
 }

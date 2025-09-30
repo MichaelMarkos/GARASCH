@@ -90,9 +90,6 @@ public partial class MaintenanceFor
     [InverseProperty("MaintenanceFors")]
     public virtual Project Project { get; set; }
 
-    [InverseProperty("MaintenanceFor")]
-    public virtual ICollection<ProjectCheque> ProjectCheques { get; set; } = new List<ProjectCheque>();
-
     [ForeignKey("SalesOfferId")]
     [InverseProperty("MaintenanceFors")]
     public virtual SalesOffer SalesOffer { get; set; }

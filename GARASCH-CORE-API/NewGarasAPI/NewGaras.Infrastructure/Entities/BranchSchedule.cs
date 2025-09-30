@@ -47,6 +47,9 @@ public partial class BranchSchedule
     [InverseProperty("BranchScheduleModifiedByNavigations")]
     public virtual User ModifiedByNavigation { get; set; }
 
+    [InverseProperty("BranchSchedule")]
+    public virtual ICollection<TransportationVehicleRoute> TransportationVehicleRoutes { get; set; } = new List<TransportationVehicleRoute>();
+
     [ForeignKey("WeekDayId")]
     [InverseProperty("BranchSchedules")]
     public virtual WeekDay WeekDay { get; set; }

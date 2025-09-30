@@ -3,28 +3,31 @@ using NewGaras.Infrastructure.Entities;
 using NewGaras.Infrastructure.Helper.TenantService;
 using System;
 using System.Collections.Generic;
-using Task = NewGaras.Infrastructure.Entities.Task;
+using Type = NewGaras.Infrastructure.Entities.Type;
 
 namespace NewGaras.Infrastructure.DBContext;
 
 public partial class GarasTestContext : DbContext
 {
-
     public string TenantId { get; set; }
     private readonly ITenantService _tenantService;
     public GarasTestContext(ITenantService tenantService)
     {
-        _tenantService = tenantService;
-        TenantId = _tenantService.GetTenant()?.TID;
+        _tenantService=tenantService;
+        TenantId=_tenantService.GetTenant()?.TID;
     }
 
-    public GarasTestContext(DbContextOptions options, ITenantService tenantService)
+    public GarasTestContext(DbContextOptions options , ITenantService tenantService)
         : base(options)
     {
-        _tenantService = tenantService;
-        TenantId = _tenantService.GetTenant()?.TID;
+        _tenantService=tenantService;
+        TenantId=_tenantService.GetTenant()?.TID;
     }
 
+
+    public virtual DbSet<AcademicYear> AcademicYears { get; set; }
+
+    public virtual DbSet<Academiclevel> Academiclevels { get; set; }
 
     public virtual DbSet<Account> Accounts { get; set; }
 
@@ -49,6 +52,8 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<Area> Areas { get; set; }
 
     public virtual DbSet<AssetDepreciation> AssetDepreciations { get; set; }
+
+    public virtual DbSet<AssignedSubject> AssignedSubjects { get; set; }
 
     public virtual DbSet<AttachmentCategory> AttachmentCategories { get; set; }
 
@@ -146,6 +151,20 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<CompanySpecialty> CompanySpecialties { get; set; }
 
+    public virtual DbSet<Competition> Competitions { get; set; }
+
+    public virtual DbSet<CompetitionDay> CompetitionDays { get; set; }
+
+    public virtual DbSet<CompetitionDayResource> CompetitionDayResources { get; set; }
+
+    public virtual DbSet<CompetitionDayUser> CompetitionDayUsers { get; set; }
+
+    public virtual DbSet<CompetitionMemberAdmin> CompetitionMemberAdmins { get; set; }
+
+    public virtual DbSet<CompetitionType> CompetitionTypes { get; set; }
+
+    public virtual DbSet<CompetitionUser> CompetitionUsers { get; set; }
+
     public virtual DbSet<ConfirmedRecieveAndRelease> ConfirmedRecieveAndReleases { get; set; }
 
     public virtual DbSet<ConfirmedRecieveAndReleaseAttachment> ConfirmedRecieveAndReleaseAttachments { get; set; }
@@ -175,6 +194,8 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<CrmreportReason> CrmreportReasons { get; set; }
 
     public virtual DbSet<Currency> Currencies { get; set; }
+
+    public virtual DbSet<CurrentStudent> CurrentStudents { get; set; }
 
     public virtual DbSet<DailyAdjustingEntry> DailyAdjustingEntries { get; set; }
 
@@ -218,6 +239,8 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<DepreciationType> DepreciationTypes { get; set; }
 
+    public virtual DbSet<Dept> Depts { get; set; }
+
     public virtual DbSet<District> Districts { get; set; }
 
     public virtual DbSet<DoctorRoom> DoctorRooms { get; set; }
@@ -228,12 +251,6 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<DriversAttachment> DriversAttachments { get; set; }
 
-    public virtual DbSet<EinvoiceAttachment> EinvoiceAttachments { get; set; }
-
-    public virtual DbSet<EinvoiceCompanyActivity> EinvoiceCompanyActivities { get; set; }
-
-    public virtual DbSet<EinvoiceSetting> EinvoiceSettings { get; set; }
-
     public virtual DbSet<Email> Emails { get; set; }
 
     public virtual DbSet<EmailAttachment> EmailAttachments { get; set; }
@@ -243,6 +260,8 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<EmailCategoryType> EmailCategoryTypes { get; set; }
 
     public virtual DbSet<EmailCc> EmailCcs { get; set; }
+
+    public virtual DbSet<EmailReceiver> EmailReceivers { get; set; }
 
     public virtual DbSet<EmailType> EmailTypes { get; set; }
 
@@ -276,11 +295,15 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<Governorate> Governorates { get; set; }
 
+    public virtual DbSet<Gpacalculation> Gpacalculations { get; set; }
+
     public virtual DbSet<Group> Groups { get; set; }
 
     public virtual DbSet<GroupRole> GroupRoles { get; set; }
 
     public virtual DbSet<GroupUser> GroupUsers { get; set; }
+
+    public virtual DbSet<Hall> Halls { get; set; }
 
     public virtual DbSet<Holiday> Holidays { get; set; }
 
@@ -420,6 +443,10 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<Nationality> Nationalities { get; set; }
 
+    public virtual DbSet<Notice> Notices { get; set; }
+
+    public virtual DbSet<NoticeSpecailDeptAndLevel> NoticeSpecailDeptAndLevels { get; set; }
+
     public virtual DbSet<Notification> Notifications { get; set; }
 
     public virtual DbSet<NotificationProcess> NotificationProcesses { get; set; }
@@ -427,6 +454,8 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<NotificationSubscription> NotificationSubscriptions { get; set; }
 
     public virtual DbSet<OffDay> OffDays { get; set; }
+
+    public virtual DbSet<Otp> Otps { get; set; }
 
     public virtual DbSet<OverTimeAndDeductionRate> OverTimeAndDeductionRates { get; set; }
 
@@ -482,6 +511,8 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<ProductionUom> ProductionUoms { get; set; }
 
+    public virtual DbSet<Programm> Programms { get; set; }
+
     public virtual DbSet<ProgressStatus> ProgressStatuses { get; set; }
 
     public virtual DbSet<ProgressType> ProgressTypes { get; set; }
@@ -491,8 +522,6 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<ProjectAssignUser> ProjectAssignUsers { get; set; }
 
     public virtual DbSet<ProjectAttachment> ProjectAttachments { get; set; }
-
-    public virtual DbSet<ProjectCheque> ProjectCheques { get; set; }
 
     public virtual DbSet<ProjectContactPerson> ProjectContactPeople { get; set; }
 
@@ -520,63 +549,9 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<ProjectFabricationVersion> ProjectFabricationVersions { get; set; }
 
-    public virtual DbSet<ProjectFabricationWorkshopStationHistory> ProjectFabricationWorkshopStationHistories { get; set; }
-
-    public virtual DbSet<ProjectInstallAttachment> ProjectInstallAttachments { get; set; }
-
-    public virtual DbSet<ProjectInstallation> ProjectInstallations { get; set; }
-
-    public virtual DbSet<ProjectInstallationAttachment> ProjectInstallationAttachments { get; set; }
-
-    public virtual DbSet<ProjectInstallationBoq> ProjectInstallationBoqs { get; set; }
-
-    public virtual DbSet<ProjectInstallationJobTitle> ProjectInstallationJobTitles { get; set; }
-
-    public virtual DbSet<ProjectInstallationReport> ProjectInstallationReports { get; set; }
-
-    public virtual DbSet<ProjectInstallationReportAttachment> ProjectInstallationReportAttachments { get; set; }
-
-    public virtual DbSet<ProjectInstallationReportClarification> ProjectInstallationReportClarifications { get; set; }
-
-    public virtual DbSet<ProjectInstallationReportClarificationAttachment> ProjectInstallationReportClarificationAttachments { get; set; }
-
-    public virtual DbSet<ProjectInstallationReportUser> ProjectInstallationReportUsers { get; set; }
-
-    public virtual DbSet<ProjectInstallationVersion> ProjectInstallationVersions { get; set; }
-
-    public virtual DbSet<ProjectInvoice> ProjectInvoices { get; set; }
-
-    public virtual DbSet<ProjectInvoiceCollected> ProjectInvoiceCollecteds { get; set; }
-
-    public virtual DbSet<ProjectInvoiceItem> ProjectInvoiceItems { get; set; }
-
-    public virtual DbSet<ProjectLetterOfCredit> ProjectLetterOfCredits { get; set; }
-
-    public virtual DbSet<ProjectLetterOfCreditComment> ProjectLetterOfCreditComments { get; set; }
-
-    public virtual DbSet<ProjectPaymentJournalEntry> ProjectPaymentJournalEntries { get; set; }
-
-    public virtual DbSet<ProjectPaymentTerm> ProjectPaymentTerms { get; set; }
-
     public virtual DbSet<ProjectProgress> ProjectProgresses { get; set; }
 
     public virtual DbSet<ProjectProgressUser> ProjectProgressUsers { get; set; }
-
-    public virtual DbSet<ProjectSprint> ProjectSprints { get; set; }
-
-    public virtual DbSet<ProjectTm> ProjectTms { get; set; }
-
-    public virtual DbSet<ProjectTmassignUser> ProjectTmassignUsers { get; set; }
-
-    public virtual DbSet<ProjectTmattachment> ProjectTmattachments { get; set; }
-
-    public virtual DbSet<ProjectTmimpDate> ProjectTmimpDates { get; set; }
-
-    public virtual DbSet<ProjectTmrevision> ProjectTmrevisions { get; set; }
-
-    public virtual DbSet<ProjectTmsprint> ProjectTmsprints { get; set; }
-
-    public virtual DbSet<ProjectWorkFlow> ProjectWorkFlows { get; set; }
 
     public virtual DbSet<ProjectWorkshopStation> ProjectWorkshopStations { get; set; }
 
@@ -611,6 +586,12 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<Reservation> Reservations { get; set; }
 
     public virtual DbSet<ReservationInvoice> ReservationInvoices { get; set; }
+
+    public virtual DbSet<ResultControl> ResultControls { get; set; }
+
+    public virtual DbSet<ResultControlForProgram> ResultControlForPrograms { get; set; }
+
+    public virtual DbSet<ResultControlForStudent> ResultControlForStudents { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
@@ -688,9 +669,9 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<SalesTarget> SalesTargets { get; set; }
 
-    public virtual DbSet<Sheet2> Sheet2s { get; set; }
-
     public virtual DbSet<ShippingMethod> ShippingMethods { get; set; }
+
+    public virtual DbSet<Specialdept> Specialdepts { get; set; }
 
     public virtual DbSet<Speciality> Specialities { get; set; }
 
@@ -701,6 +682,10 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<StatusReservation> StatusReservations { get; set; }
 
     public virtual DbSet<StpTaxTypeV> StpTaxTypeVs { get; set; }
+
+    public virtual DbSet<Subject> Subjects { get; set; }
+
+    public virtual DbSet<SubjectRelationship> SubjectRelationships { get; set; }
 
     public virtual DbSet<SubmittedReport> SubmittedReports { get; set; }
 
@@ -732,14 +717,6 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<SystemLog> SystemLogs { get; set; }
 
-    public virtual DbSet<Task> Tasks { get; set; }
-
-    public virtual DbSet<TaskCategory> TaskCategories { get; set; }
-
-    public virtual DbSet<TaskInfo> TaskInfos { get; set; }
-
-    public virtual DbSet<TaskType> TaskTypes { get; set; }
-
     public virtual DbSet<Tax> Taxes { get; set; }
 
     public virtual DbSet<TaxType> TaxTypes { get; set; }
@@ -754,9 +731,37 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<TermsLibrary> TermsLibraries { get; set; }
 
+    public virtual DbSet<TransportationLine> TransportationLines { get; set; }
+
+    public virtual DbSet<TransportationLineIncreaseRequest> TransportationLineIncreaseRequests { get; set; }
+
+    public virtual DbSet<TransportationLineIncreaseRequestLine> TransportationLineIncreaseRequestLines { get; set; }
+
+    public virtual DbSet<TransportationVehicle> TransportationVehicles { get; set; }
+
+    public virtual DbSet<TransportationVehicleRoute> TransportationVehicleRoutes { get; set; }
+
+    public virtual DbSet<TransportationVehicleRouteAccount> TransportationVehicleRouteAccounts { get; set; }
+
+    public virtual DbSet<TransportationVehicleRouteDeduction> TransportationVehicleRouteDeductions { get; set; }
+
+    public virtual DbSet<TransportationVehicleRouteDirection> TransportationVehicleRouteDirections { get; set; }
+
+    public virtual DbSet<TransportationVehicleRouteEmployee> TransportationVehicleRouteEmployees { get; set; }
+
+    public virtual DbSet<TransportationVehicleRouteEmployeeException> TransportationVehicleRouteEmployeeExceptions { get; set; }
+
+    public virtual DbSet<TransprotationUserAttedance> TransprotationUserAttedances { get; set; }
+
+    public virtual DbSet<Type> Types { get; set; }
+
     public virtual DbSet<TypeService> TypeServices { get; set; }
 
+    public virtual DbSet<UploadFilebyStudent> UploadFilebyStudents { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
+
+    public virtual DbSet<UserDepartment> UserDepartments { get; set; }
 
     public virtual DbSet<UserPatient> UserPatients { get; set; }
 
@@ -978,6 +983,8 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<VacationPaymentStrategy> VacationPaymentStrategies { get; set; }
 
+    public virtual DbSet<VehicleType> VehicleTypes { get; set; }
+
     public virtual DbSet<VisitsScheduleOfMaintenance> VisitsScheduleOfMaintenances { get; set; }
 
     public virtual DbSet<VisitsScheduleOfMaintenanceAttachment> VisitsScheduleOfMaintenanceAttachments { get; set; }
@@ -991,13 +998,17 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<WorkingHourseTracking> WorkingHourseTrackings { get; set; }
 
     public virtual DbSet<WorkshopStation> WorkshopStations { get; set; }
+
+    public virtual DbSet<Year> Years { get; set; }
+
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var tenantConnectionString = _tenantService.GetConnectionString();
-        if (!string.IsNullOrEmpty(tenantConnectionString))
+        if(!string.IsNullOrEmpty(tenantConnectionString))
         {
             var DBProvider = _tenantService.GetDatabaseProvider();
-            if (DBProvider.ToLower() == "mssql")
+            if(DBProvider.ToLower()=="mssql")
             {
                 optionsBuilder.UseSqlServer(tenantConnectionString);
             }
@@ -1007,6 +1018,16 @@ public partial class GarasTestContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Arabic_CI_AS");
+
+        modelBuilder.Entity<AcademicYear>(entity =>
+        {
+            entity.Property(e => e.Term).HasDefaultValue("");
+        });
+
+        modelBuilder.Entity<Academiclevel>(entity =>
+        {
+            entity.Property(e => e.Level).HasDefaultValue("");
+        });
 
         modelBuilder.Entity<Account>(entity =>
         {
@@ -1891,6 +1912,11 @@ public partial class GarasTestContext : DbContext
             entity.Property(e => e.IsLocal).HasDefaultValue(false);
         });
 
+        modelBuilder.Entity<CurrentStudent>(entity =>
+        {
+            entity.HasOne(d => d.HrUser).WithMany(p => p.CurrentStudents).HasConstraintName("FK_CurrentStudent_HrUser_HrUserID");
+        });
+
         modelBuilder.Entity<DailyAdjustingEntryCostCenter>(entity =>
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
@@ -2169,11 +2195,6 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.DriversAttachmentModifiedByNavigations).HasConstraintName("FK_DriversAttachment_User1");
         });
 
-        modelBuilder.Entity<EinvoiceSetting>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-        });
-
         modelBuilder.Entity<Email>(entity =>
         {
             entity.HasOne(d => d.EmailTypeNavigation).WithMany(p => p.Emails)
@@ -2221,6 +2242,13 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.EmailNavigation).WithMany(p => p.EmailCcs)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_EmailCc_Email");
+        });
+
+        modelBuilder.Entity<EmailReceiver>(entity =>
+        {
+            entity.HasOne(d => d.EmailNavigation).WithMany(p => p.EmailReceivers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_EmailReceivers_Email");
         });
 
         modelBuilder.Entity<ExchangeRate>(entity =>
@@ -3039,10 +3067,6 @@ public partial class GarasTestContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ManageStages_User");
 
-            entity.HasOne(d => d.ProjectTm).WithMany(p => p.ManageStages)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ManageStages_ProjectTM");
-
             entity.HasOne(d => d.Stage).WithMany(p => p.ManageStages)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ManageStages_Stages");
@@ -3223,6 +3247,11 @@ public partial class GarasTestContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__National__3214EC27224522B5");
         });
 
+        modelBuilder.Entity<Notice>(entity =>
+        {
+            entity.Property(e => e.ReceiverType).HasDefaultValue(0);
+        });
+
         modelBuilder.Entity<Notification>(entity =>
         {
             entity.Property(e => e.New).HasDefaultValue(true);
@@ -3246,6 +3275,11 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.Holiday).WithMany(p => p.OffDays).HasConstraintName("FK_OffDay_Holiday");
 
             entity.HasOne(d => d.VacationPaymentStrategy).WithMany(p => p.OffDays).HasConstraintName("FK_OffDay_VacationPaymentStrategy");
+        });
+
+        modelBuilder.Entity<Otp>(entity =>
+        {
+            entity.HasOne(d => d.HrUser).WithMany(p => p.Otps).HasConstraintName("FK_Otp_HrUser_HrUserID");
         });
 
         modelBuilder.Entity<OverTimeAndDeductionRate>(entity =>
@@ -3621,31 +3655,6 @@ public partial class GarasTestContext : DbContext
                 .HasConstraintName("FK_ProjectAttachment_Project");
         });
 
-        modelBuilder.Entity<ProjectCheque>(entity =>
-        {
-            entity.HasOne(d => d.ChequeChashingStatus).WithMany(p => p.ProjectCheques).HasConstraintName("FK_ProjectCheque_ChequeCashingStatus");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectChequeCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectCheque_User");
-
-            entity.HasOne(d => d.Currency).WithMany(p => p.ProjectCheques)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectCheque_Currency");
-
-            entity.HasOne(d => d.MaintenanceFor).WithMany(p => p.ProjectCheques).HasConstraintName("FK_ProjectCheque_MaintenanceFor");
-
-            entity.HasOne(d => d.MaintenanceOrder).WithMany(p => p.ProjectCheques).HasConstraintName("FK_ProjectCheque_ManagementOfMaintenanceOrder");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectChequeModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectCheque_User1");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectCheques).HasConstraintName("FK_ProjectCheque_Project");
-
-            entity.HasOne(d => d.WithdrawedByNavigation).WithMany(p => p.ProjectChequeWithdrawedByNavigations).HasConstraintName("FK_ProjectCheque_User2");
-        });
-
         modelBuilder.Entity<ProjectContactPerson>(entity =>
         {
             entity.HasOne(d => d.Area).WithMany(p => p.ProjectContactPeople).HasConstraintName("FK_ProjectContactPerson_Area");
@@ -3842,298 +3851,6 @@ public partial class GarasTestContext : DbContext
                 .HasConstraintName("FK_ProjectFabricationVersion_ProjectFabrication");
         });
 
-        modelBuilder.Entity<ProjectFabricationWorkshopStationHistory>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-            entity.Property(e => e.IsCurrent).HasDefaultValue(true);
-
-            entity.HasOne(d => d.FabricationOrder).WithMany(p => p.ProjectFabricationWorkshopStationHistories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectFabricationWorkshopStationHistory_ProjectFabrication");
-
-            entity.HasOne(d => d.ProjectWorkshopStation).WithMany(p => p.ProjectFabricationWorkshopStationHistories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectFabricationWorkshopStationHistory_ProjectWorkshopStation");
-        });
-
-        modelBuilder.Entity<ProjectInstallAttachment>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInstallAttachmentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallAttachment_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInstallAttachmentModifiedByNavigations).HasConstraintName("FK_ProjectInstallAttachment_User1");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectInstallAttachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallAttachment_Project");
-        });
-
-        modelBuilder.Entity<ProjectInstallation>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInstallationCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallation_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInstallationModifiedByNavigations).HasConstraintName("FK_ProjectInstallation_User1");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectInstallations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Project_ProjectInstallation");
-        });
-
-        modelBuilder.Entity<ProjectInstallationAttachment>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInstallationAttachmentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationAttachment_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInstallationAttachmentModifiedByNavigations).HasConstraintName("FK_ProjectInstallationAttachment_User1");
-
-            entity.HasOne(d => d.ProjectInstallation).WithMany(p => p.ProjectInstallationAttachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationAttachment_ProjectInstallation");
-        });
-
-        modelBuilder.Entity<ProjectInstallationBoq>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInstallationBoqCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationBOQ_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInstallationBoqModifiedByNavigations).HasConstraintName("FK_ProjectInstallationBOQ_User1");
-
-            entity.HasOne(d => d.ProjectInstallation).WithMany(p => p.ProjectInstallationBoqs)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationBOQ_ProjectInstallation");
-
-            entity.HasOne(d => d.SalesOfferProduct).WithMany(p => p.ProjectInstallationBoqs).HasConstraintName("FK__ProjectIn__Sales__619D16F6");
-        });
-
-        modelBuilder.Entity<ProjectInstallationJobTitle>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInstallationJobTitleCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationJobTitle_User");
-
-            entity.HasOne(d => d.JobTitle).WithMany(p => p.ProjectInstallationJobTitles)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationJobTitle_JobTitle");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInstallationJobTitleModifiedByNavigations).HasConstraintName("FK_ProjectInstallationJobTitle_User1");
-        });
-
-        modelBuilder.Entity<ProjectInstallationReport>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInstallationReportCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReport_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInstallationReportModifiedByNavigations).HasConstraintName("FK_ProjectInstallationReport_User1");
-
-            entity.HasOne(d => d.ProjectInstallation).WithMany(p => p.ProjectInstallationReports)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReport_ProjectInstallation");
-        });
-
-        modelBuilder.Entity<ProjectInstallationReportAttachment>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInstallationReportAttachmentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReportAttachment_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInstallationReportAttachmentModifiedByNavigations).HasConstraintName("FK_ProjectInstallationReportAttachment_User1");
-
-            entity.HasOne(d => d.ProjectInstallationReport).WithMany(p => p.ProjectInstallationReportAttachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReportAttachment_ProjectInstallationReport");
-        });
-
-        modelBuilder.Entity<ProjectInstallationReportClarification>(entity =>
-        {
-            entity.HasOne(d => d.ClarificationUser).WithMany(p => p.ProjectInstallationReportClarificationClarificationUsers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReportClarification_User");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInstallationReportClarificationCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReportClarification_User1");
-
-            entity.HasOne(d => d.ModifedByNavigation).WithMany(p => p.ProjectInstallationReportClarificationModifedByNavigations).HasConstraintName("FK_ProjectInstallationReportClarification_User2");
-
-            entity.HasOne(d => d.ProjectInstallationReport).WithMany(p => p.ProjectInstallationReportClarifications)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReportClarification_ProjectInstallationReport");
-        });
-
-        modelBuilder.Entity<ProjectInstallationReportClarificationAttachment>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInstallationReportClarificationAttachmentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReportClarificationAttachment_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInstallationReportClarificationAttachmentModifiedByNavigations).HasConstraintName("FK_ProjectInstallationReportClarificationAttachment_User1");
-
-            entity.HasOne(d => d.ProjectInstallationReportClarification).WithMany(p => p.ProjectInstallationReportClarificationAttachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReportClarificationAttachment_ProjectInstallationReportClarification");
-        });
-
-        modelBuilder.Entity<ProjectInstallationReportUser>(entity =>
-        {
-            entity.HasOne(d => d.Branch).WithMany(p => p.ProjectInstallationReportUsers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReportUsers_Branch");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInstallationReportUserCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReportUsers_User1");
-
-            entity.HasOne(d => d.Department).WithMany(p => p.ProjectInstallationReportUsers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReportUsers_Department");
-
-            entity.HasOne(d => d.JobTitle).WithMany(p => p.ProjectInstallationReportUsers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReportUsers_JobTitle");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInstallationReportUserModifiedByNavigations).HasConstraintName("FK_ProjectInstallationReportUsers_User2");
-
-            entity.HasOne(d => d.ProjectInstallationReport).WithMany(p => p.ProjectInstallationReportUsers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReportUsers_ProjectInstallationReport");
-
-            entity.HasOne(d => d.User).WithMany(p => p.ProjectInstallationReportUserUsers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationReportUsers_User");
-        });
-
-        modelBuilder.Entity<ProjectInstallationVersion>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInstallationVersions)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationVersion_User");
-
-            entity.HasOne(d => d.ProjectInstallation).WithMany(p => p.ProjectInstallationVersions)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInstallationVersion_ProjectInstallation");
-        });
-
-        modelBuilder.Entity<ProjectInvoice>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_Invoice");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInvoiceCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInvoice_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInvoiceModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInvoice_User1");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectInvoices)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInvoice_Project");
-        });
-
-        modelBuilder.Entity<ProjectInvoiceCollected>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInvoiceCollectedCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInvoiceCollected_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectInvoiceCollectedModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInvoiceCollected_User1");
-
-            entity.HasOne(d => d.PaymentMethod).WithMany(p => p.ProjectInvoiceCollecteds).HasConstraintName("FK_ProjectInvoiceCollected_PaymentMethod");
-
-            entity.HasOne(d => d.ProjectInvoice).WithMany(p => p.ProjectInvoiceCollecteds)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInvoiceCollected_ProjectInvoice");
-        });
-
-        modelBuilder.Entity<ProjectInvoiceItem>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectInvoiceItemCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInvoiceItem_User");
-
-            entity.HasOne(d => d.ModifedByNavigation).WithMany(p => p.ProjectInvoiceItemModifedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInvoiceItem_User1");
-
-            entity.HasOne(d => d.ProjectInvoice).WithMany(p => p.ProjectInvoiceItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectInvoiceItem_ProjectInvoice");
-        });
-
-        modelBuilder.Entity<ProjectLetterOfCredit>(entity =>
-        {
-            entity.HasOne(d => d.Currency).WithMany(p => p.ProjectLetterOfCredits)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectLetterOfCredit_Currency");
-
-            entity.HasOne(d => d.LetterOfCreditType).WithMany(p => p.ProjectLetterOfCredits)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectLetterOfCredit_LetterOfCreditType");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectLetterOfCredits)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectLetterOfCredit_Project");
-        });
-
-        modelBuilder.Entity<ProjectLetterOfCreditComment>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectLetterOfCreditCommentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectLetterOfCreditComment_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectLetterOfCreditCommentModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectLetterOfCreditComment_User1");
-
-            entity.HasOne(d => d.ProjectLetterOfCredit).WithMany(p => p.ProjectLetterOfCreditComments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectLetterOfCreditComment_ProjectLetterOfCredit");
-        });
-
-        modelBuilder.Entity<ProjectPaymentJournalEntry>(entity =>
-        {
-            entity.HasOne(d => d.DailyJournalEntry).WithMany(p => p.ProjectPaymentJournalEntries)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectPaymentJournalEntry_DailyJournalEntry");
-        });
-
-        modelBuilder.Entity<ProjectPaymentTerm>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectPaymentTermCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectPaymentTerms_User");
-
-            entity.HasOne(d => d.Currency).WithMany(p => p.ProjectPaymentTerms)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectPaymentTerms_Currency");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectPaymentTermModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectPaymentTerms_User1");
-
-            entity.HasOne(d => d.PaymentTerm).WithMany(p => p.ProjectPaymentTerms)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectPaymentTerms_PaymentTerms");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectPaymentTerms)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectPaymentTerms_Project");
-        });
-
         modelBuilder.Entity<ProjectProgress>(entity =>
         {
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectProgressCreatedByNavigations)
@@ -4180,152 +3897,6 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.ProjectProgress).WithMany(p => p.ProjectProgressUsers)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProjectProgressUsers_ProjectProgress");
-        });
-
-        modelBuilder.Entity<ProjectSprint>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_ProjectSprinit");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectSprintCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectSprint_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectSprintModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectSprint_User1");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectSprints)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectSprint_Project");
-        });
-
-        modelBuilder.Entity<ProjectTm>(entity =>
-        {
-            entity.Property(e => e.Status).HasDefaultValue(true);
-            entity.Property(e => e.TimeTracking).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Branch).WithMany(p => p.ProjectTms)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTM_Branch");
-
-            entity.HasOne(d => d.Client).WithMany(p => p.ProjectTms)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTM_Client");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectTmCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTM_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectTmModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTM_User1");
-
-            entity.HasOne(d => d.Priorty).WithMany(p => p.ProjectTms)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTM_Priority");
-        });
-
-        modelBuilder.Entity<ProjectTmassignUser>(entity =>
-        {
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectTmassignUserCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMAssignUser_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectTmassignUserModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMAssignUser_User1");
-
-            entity.HasOne(d => d.ProjectTm).WithMany(p => p.ProjectTmassignUsers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMAssignUser_ProjectTM");
-        });
-
-        modelBuilder.Entity<ProjectTmattachment>(entity =>
-        {
-            entity.HasOne(d => d.Category).WithMany(p => p.ProjectTmattachments).HasConstraintName("FK_ProjectTMAttachment_AttachmentCategory");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectTmattachmentCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMAttachment_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectTmattachmentModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMAttachment_User1");
-
-            entity.HasOne(d => d.ProjectTm).WithMany(p => p.ProjectTmattachments)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMAttachment_ProjectTM");
-        });
-
-        modelBuilder.Entity<ProjectTmimpDate>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_ImpDate");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectTmimpDateCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMImpDate_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectTmimpDateModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMImpDate_User1");
-
-            entity.HasOne(d => d.ProjectTm).WithMany(p => p.ProjectTmimpDates)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ImpDate_ProjectTM");
-        });
-
-        modelBuilder.Entity<ProjectTmrevision>(entity =>
-        {
-            entity.Property(e => e.Billable).HasDefaultValue(false);
-            entity.Property(e => e.TimeTracking).HasDefaultValue(false);
-
-            entity.HasOne(d => d.Client).WithMany(p => p.ProjectTmrevisions)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMRevision_Client");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectTmrevisionCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMRevision_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectTmrevisionModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMRevision_User1");
-
-            entity.HasOne(d => d.Priority).WithMany(p => p.ProjectTmrevisions)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMRevision_Priority");
-        });
-
-        modelBuilder.Entity<ProjectTmsprint>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_ProjectTMSprinit");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectTmsprintCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMSprint_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectTmsprintModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMSprint_User1");
-
-            entity.HasOne(d => d.ProjectTm).WithMany(p => p.ProjectTmsprints)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectTMSprint_ProjectTM");
-        });
-
-        modelBuilder.Entity<ProjectWorkFlow>(entity =>
-        {
-            entity.HasOne(d => d.CreateByNavigation).WithMany(p => p.ProjectWorkFlowCreateByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectWorkFlow_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectWorkFlowModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectWorkFlow_User1");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectWorkFlows)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProjectWorkFlow_Project");
         });
 
         modelBuilder.Entity<ProjectWorkshopStation>(entity =>
@@ -5158,6 +4729,13 @@ public partial class GarasTestContext : DbContext
             entity.ToView("STP_TaxType_v");
         });
 
+        modelBuilder.Entity<SubjectRelationship>(entity =>
+        {
+            entity.HasOne(d => d.MainSubject).WithMany(p => p.SubjectRelationshipMainSubjects).OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.SubSubject).WithMany(p => p.SubjectRelationshipSubSubjects).OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
         modelBuilder.Entity<SubmittedReport>(entity =>
         {
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.SubmittedReportCreatedByNavigations)
@@ -5370,70 +4948,6 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.SystemLogs).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<Task>(entity =>
-        {
-            entity.ToTable("Task", tb => tb.HasTrigger("Trig_Task_log"));
-
-            entity.Property(e => e.Active).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Branch).WithMany(p => p.Tasks).HasConstraintName("FK_Task_Branch");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Task_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskModifiedByNavigations).HasConstraintName("FK_Task_User1");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.Tasks).HasConstraintName("FK_Task_Project");
-
-            entity.HasOne(d => d.ProjectSprint).WithMany(p => p.Tasks).HasConstraintName("FK_Task_ProjectSprint");
-
-            entity.HasOne(d => d.ProjectWorkFlow).WithMany(p => p.Tasks).HasConstraintName("FK_Task_ProjectWorkFlow");
-
-            entity.HasOne(d => d.TaskType).WithMany(p => p.Tasks)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Task_TaskType");
-        });
-
-        modelBuilder.Entity<TaskCategory>(entity =>
-        {
-            entity.Property(e => e.Active).HasDefaultValue(true);
-        });
-
-        modelBuilder.Entity<TaskInfo>(entity =>
-        {
-            entity.Property(e => e.Eapprove).HasDefaultValue(true);
-            entity.Property(e => e.Status).HasDefaultValue(true);
-            entity.Property(e => e.TimeTracking).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskInfoCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskInfo_User");
-
-            entity.HasOne(d => d.ManageStage).WithMany(p => p.TaskInfos).HasConstraintName("FK_TaskInfo_ManageStages");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskInfoModifiedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskInfo_User1");
-
-            entity.HasOne(d => d.TaskCategory).WithMany(p => p.TaskInfos)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskInfo_TaskCategory");
-        });
-
-        modelBuilder.Entity<TaskType>(entity =>
-        {
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.Active).HasDefaultValue(true);
-            entity.Property(e => e.CanEdit).HasDefaultValue(true);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaskTypeCreatedByNavigations)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TaskType_User");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TaskTypeModifiedByNavigations).HasConstraintName("FK_TaskType_User1");
-        });
-
         modelBuilder.Entity<Tax>(entity =>
         {
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TaxCreatedByNavigations)
@@ -5500,6 +5014,168 @@ public partial class GarasTestContext : DbContext
                 .HasConstraintName("FK_TermsLibrary_TermsGroups");
         });
 
+        modelBuilder.Entity<TransportationLine>(entity =>
+        {
+            entity.HasOne(d => d.CreationByNavigation).WithMany(p => p.TransportationLineCreationByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationLine_User");
+
+            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TransportationLineModifiedByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationLine_User1");
+
+            entity.HasOne(d => d.TransportationVehicle).WithMany(p => p.TransportationLines)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationLine_TransportationVehicle");
+        });
+
+        modelBuilder.Entity<TransportationLineIncreaseRequest>(entity =>
+        {
+            entity.HasOne(d => d.ApprovedByNavigation).WithMany(p => p.TransportationLineIncreaseRequestApprovedByNavigations).HasConstraintName("FK_TransportationLineIncreaseRequest_User1");
+
+            entity.HasOne(d => d.CreationByNavigation).WithMany(p => p.TransportationLineIncreaseRequestCreationByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationLineIncreaseRequest_User");
+        });
+
+        modelBuilder.Entity<TransportationLineIncreaseRequestLine>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Table_1");
+
+            entity.HasOne(d => d.TransportationLine).WithMany(p => p.TransportationLineIncreaseRequestLines)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationLineIncreaseRequestLines_TransportationLine");
+
+            entity.HasOne(d => d.TransportationLineIncreaseRequest).WithMany(p => p.TransportationLineIncreaseRequestLines)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationLineIncreaseRequestLines_TransportationLineIncreaseRequest");
+        });
+
+        modelBuilder.Entity<TransportationVehicle>(entity =>
+        {
+            entity.HasOne(d => d.CreationByNavigation).WithMany(p => p.TransportationVehicleCreationByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicle_User");
+
+            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TransportationVehicleModifiedByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicle_User1");
+
+            entity.HasOne(d => d.VehicleType).WithMany(p => p.TransportationVehicles)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicle_VehicleType");
+        });
+
+        modelBuilder.Entity<TransportationVehicleRoute>(entity =>
+        {
+            entity.HasOne(d => d.BranchSchedule).WithMany(p => p.TransportationVehicleRoutes).HasConstraintName("FK_TransportationVehicleRoute_BranchSchedule");
+
+            entity.HasOne(d => d.CreationByNavigation).WithMany(p => p.TransportationVehicleRouteCreationByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRoute_User");
+
+            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TransportationVehicleRouteModifiedByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRoute_User1");
+
+            entity.HasOne(d => d.Supervisor).WithMany(p => p.TransportationVehicleRouteSupervisors).HasConstraintName("FK_TransportationVehicleRoute_User2");
+
+            entity.HasOne(d => d.SupplierContactPerson).WithMany(p => p.TransportationVehicleRoutes).HasConstraintName("FK_TransportationVehicleRoute_SupplierContactPerson");
+
+            entity.HasOne(d => d.Supplier).WithMany(p => p.TransportationVehicleRoutes).HasConstraintName("FK_TransportationVehicleRoute_Supplier");
+
+            entity.HasOne(d => d.TransportationLine).WithMany(p => p.TransportationVehicleRoutes)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRoute_TransportationLine");
+        });
+
+        modelBuilder.Entity<TransportationVehicleRouteAccount>(entity =>
+        {
+            entity.HasOne(d => d.CreationByNavigation).WithMany(p => p.TransportationVehicleRouteAccountCreationByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRouteAccounts_User");
+
+            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.TransportationVehicleRouteAccountModifiedByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRouteAccounts_User1");
+
+            entity.HasOne(d => d.TransportationVehicleRoute).WithMany(p => p.TransportationVehicleRouteAccounts)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRouteAccounts_TransportationVehicleRoute");
+        });
+
+        modelBuilder.Entity<TransportationVehicleRouteDeduction>(entity =>
+        {
+            entity.HasOne(d => d.CreationByNavigation).WithMany(p => p.TransportationVehicleRouteDeductions).HasConstraintName("FK_TransportationVehicleRouteDeduction_User");
+
+            entity.HasOne(d => d.TransportationVehicleRoute).WithMany(p => p.TransportationVehicleRouteDeductions)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRouteDeduction_TransportationVehicleRoute");
+        });
+
+        modelBuilder.Entity<TransportationVehicleRouteDirection>(entity =>
+        {
+            entity.HasOne(d => d.CreationByNavigation).WithMany(p => p.TransportationVehicleRouteDirections)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRouteDirection_User");
+
+            entity.HasOne(d => d.TransportationVehicleRoute).WithMany(p => p.TransportationVehicleRouteDirections)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRouteDirection_TransportationVehicleRoute");
+        });
+
+        modelBuilder.Entity<TransportationVehicleRouteEmployee>(entity =>
+        {
+            entity.HasOne(d => d.CreationByNavigation).WithMany(p => p.TransportationVehicleRouteEmployees)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRouteEmployee_User");
+
+            entity.HasOne(d => d.HrUser).WithMany(p => p.TransportationVehicleRouteEmployees)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRoute_HrUser");
+
+            entity.HasOne(d => d.TransportationVehicleRouteDirection).WithMany(p => p.TransportationVehicleRouteEmployees).HasConstraintName("FK_TransportationVehicleRouteEmployee_TransportationVehicleRouteDirection");
+
+            entity.HasOne(d => d.TransportationVehicleRoute).WithMany(p => p.TransportationVehicleRouteEmployees)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRouteEmployee_TransportationVehicleRoute");
+        });
+
+        modelBuilder.Entity<TransportationVehicleRouteEmployeeException>(entity =>
+        {
+            entity.HasOne(d => d.CreationByNavigation).WithMany(p => p.TransportationVehicleRouteEmployeeExceptions)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRouteEmployeeException_User");
+
+            entity.HasOne(d => d.HrUser).WithMany(p => p.TransportationVehicleRouteEmployeeExceptions)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRouteEmployeeException_HrUser");
+
+            entity.HasOne(d => d.TransportationVehicleRouteDirection).WithMany(p => p.TransportationVehicleRouteEmployeeExceptions).HasConstraintName("FK_TransportationVehicleRouteEmployeeException_TransportationVehicleRouteDirection");
+
+            entity.HasOne(d => d.TransportationVehicleRoute).WithMany(p => p.TransportationVehicleRouteEmployeeExceptions)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransportationVehicleRouteEmployeeException_TransportationVehicleRoute");
+        });
+
+        modelBuilder.Entity<TransprotationUserAttedance>(entity =>
+        {
+            entity.HasOne(d => d.CheckInRouteDirection).WithMany(p => p.TransprotationUserAttedanceCheckInRouteDirections).HasConstraintName("FK_TransprotationUserAttedance_TransportationVehicleRouteDirection");
+
+            entity.HasOne(d => d.CheckOutRouteDirection).WithMany(p => p.TransprotationUserAttedanceCheckOutRouteDirections).HasConstraintName("FK_TransprotationUserAttedance_TransportationVehicleRouteDirection1");
+
+            entity.HasOne(d => d.CreationByNavigation).WithMany(p => p.TransprotationUserAttedances)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TransprotationUserAttedance_User");
+        });
+
+        modelBuilder.Entity<UploadFilebyStudent>(entity =>
+        {
+            entity.Property(e => e.Uploadfile).HasDefaultValue("");
+
+            entity.HasOne(d => d.HrUser).WithMany(p => p.UploadFilebyStudents).HasConstraintName("FK_UploadFilebyStudent_HrUser_HrUserID");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.Property(e => e.Active).HasDefaultValue(true);
@@ -5513,6 +5189,11 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.JobTitle).WithMany(p => p.Users).HasConstraintName("FK_User_JobTitle");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.InverseModifiedByNavigation).HasConstraintName("FK_User_User1");
+        });
+
+        modelBuilder.Entity<UserDepartment>(entity =>
+        {
+            entity.HasOne(d => d.HrUser).WithMany(p => p.UserDepartments).HasConstraintName("FK_UserDepartment_HrUser_HrUserID");
         });
 
         modelBuilder.Entity<UserPatient>(entity =>
@@ -5597,10 +5278,6 @@ public partial class GarasTestContext : DbContext
         modelBuilder.Entity<UserTimer>(entity =>
         {
             entity.Property(e => e.AtWork).HasDefaultValue(true);
-
-            entity.HasOne(d => d.TaskInfo).WithMany(p => p.UserTimers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_UserTimer_TaskInfo");
 
             entity.HasOne(d => d.User).WithMany(p => p.UserTimers)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -6224,8 +5901,6 @@ public partial class GarasTestContext : DbContext
             entity.HasOne(d => d.Project).WithMany(p => p.WorkingHourseTrackings).HasConstraintName("FK_WorkingHourseTracking_Project");
 
             entity.HasOne(d => d.Shift).WithMany(p => p.WorkingHourseTrackings).HasConstraintName("FK_WorkingHourseTracking_BranchSchedule");
-
-            entity.HasOne(d => d.Task).WithMany(p => p.WorkingHourseTrackings).HasConstraintName("FK_WorkingHourseTracking_Task");
         });
 
         modelBuilder.Entity<WorkshopStation>(entity =>

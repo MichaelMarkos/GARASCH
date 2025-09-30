@@ -37,10 +37,6 @@ public partial class UserTimer
     [Column("ISPlay")]
     public bool Isplay { get; set; }
 
-    [ForeignKey("TaskInfoId")]
-    [InverseProperty("UserTimers")]
-    public virtual TaskInfo TaskInfo { get; set; }
-
     [ForeignKey("UserId")]
     [InverseProperty("UserTimers")]
     public virtual User User { get; set; }

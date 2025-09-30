@@ -73,7 +73,4 @@ public partial class DailyJournalEntry
 
     [InverseProperty("JournalEntry")]
     public virtual ICollection<PosClosingDay> PosClosingDays { get; set; } = new List<PosClosingDay>();
-
-    [InverseProperty("DailyJournalEntry")]
-    public virtual ICollection<ProjectPaymentJournalEntry> ProjectPaymentJournalEntries { get; set; } = new List<ProjectPaymentJournalEntry>();
 }

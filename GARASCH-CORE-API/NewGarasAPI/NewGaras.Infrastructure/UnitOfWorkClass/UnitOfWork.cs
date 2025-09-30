@@ -14,6 +14,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using Task = NewGaras.Infrastructure.Entities.Task;
+using Type = NewGaras.Infrastructure.Entities.Type;
 
 namespace NewGaras.Infrastructure
 {
@@ -490,6 +491,30 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<CostType, long> CostTypes { get; private set; }
         public IBaseRepository<MilitaryStatus, int> MilitaryStatuses { get; private set; }
         public IBaseRepository<GeographicalName, long> GeographicalNames { get; private set; }
+        //        ------------------- LMS-------------------
+        public IBaseRepository<Competition , int> Competitions{ get; private set; }
+        public IBaseRepository<CompetitionDay , int> CompetitionDays { get; private set; }
+        public IBaseRepository<CompetitionUser , int> CompetitionUsers { get; private set; }
+        public IBaseRepository<CompetitionDayUser , int> CompetitionDayUsers { get; private set; }
+        public IBaseRepository<CompetitionMemberAdmin , int> CompetitionMemberAdmins { get; private set; }
+        public IBaseRepository<Notice , int> Notices { get; private set; }
+        public IBaseRepository<SubjectRelationship , int> SubjectRelationships { get; private set; }
+        public IBaseRepository<Subject , int> Subjects { get; private set; }
+        public IBaseRepository<ResultControl , int> ResultControls { get; private set; }
+        public IBaseRepository<AssignedSubject , int> AssignedSubjects { get; private set; }
+        public IBaseRepository<CompetitionType , int> CompetitionTypes { get; private set; }
+        public IBaseRepository<Specialdept , int> Specialdepts { get; private set; }
+        public IBaseRepository<Hall , int> Halls { get; private set; }
+        public IBaseRepository<Type , int> Types { get; private set; }
+        public IBaseRepository<Year , int> Years { get; private set; }
+        public IBaseRepository<AcademicYear , int> AcademicYears { get; private set; }
+        public IBaseRepository<Dept , int> Depts { get; private set; }
+        public IBaseRepository<Academiclevel , int> Academiclevels { get; private set; }
+        public IBaseRepository<SubjectRelationship , int> SubjectRelationship { get; private set; }
+        public IBaseRepository<UserDepartment , int> UserDepartment { get; private set; }
+        public IBaseRepository<Programm , int> Programm { get; private set; }
+        public IBaseRepository<ResultControlForProgram , int> ResultControlForPrograms { get; private set; }
+        public IBaseRepository<ResultControlForStudent , int> ResultControlForStudents { get; private set; }
 
 
 
@@ -956,8 +981,36 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             Reservations= new BaseRepository<Reservation, int>(_context);
             InvoiceTypes= new BaseRepository<InvoiceType, int>(_context);
             PosNumbers= new BaseRepository<PosNumber, int>(_context);
-         //--------------------------------------------------------------------------------------------
-    }
+
+                              ///  ---------------  LMS -----------------------
+                              
+            Competitions=new BaseRepository<Competition , int>(_context);
+            CompetitionDays=new BaseRepository<CompetitionDay , int>(_context);
+            CompetitionUsers=new BaseRepository<CompetitionUser , int>(_context);
+            CompetitionDayUsers=new BaseRepository<CompetitionDayUser , int>(_context);
+            CompetitionMemberAdmins=new BaseRepository<CompetitionMemberAdmin , int>(_context);
+            Notices=new BaseRepository<Notice , int>(_context);
+            SubjectRelationships=new BaseRepository<SubjectRelationship , int>(_context);
+            Subjects=new BaseRepository<Subject , int>(_context);
+            ResultControls=new BaseRepository<ResultControl , int>(_context);
+            AssignedSubjects=new BaseRepository<AssignedSubject , int>(_context);
+            CompetitionTypes=new BaseRepository<CompetitionType , int>(_context);
+            Specialdepts=new BaseRepository<Specialdept , int>(_context);
+            Halls=new BaseRepository<Hall , int>(_context);
+            Types=new BaseRepository<Type , int>(_context);
+            Years=new BaseRepository<Year , int>(_context);
+            AcademicYears=new BaseRepository<AcademicYear , int>(_context);
+            Depts=new BaseRepository<Dept , int>(_context);
+            Academiclevels=new BaseRepository<Academiclevel , int>(_context);
+            SubjectRelationship=new BaseRepository<SubjectRelationship , int>(_context);
+            UserDepartment=new BaseRepository<UserDepartment , int>(_context);
+            Programm=new BaseRepository<Programm , int>(_context);
+            ResultControlForPrograms=new BaseRepository<ResultControlForProgram , int>(_context);
+            ResultControlForStudents=new BaseRepository<ResultControlForStudent , int>(_context);
+
+
+            //--------------------------------------------------------------------------------------------
+        }
 
         public int Complete()
         {

@@ -58,6 +58,9 @@ public partial class Email
     [InverseProperty("EmailNavigation")]
     public virtual ICollection<EmailCc> EmailCcs { get; set; } = new List<EmailCc>();
 
+    [InverseProperty("EmailNavigation")]
+    public virtual ICollection<EmailReceiver> EmailReceivers { get; set; } = new List<EmailReceiver>();
+
     [ForeignKey("EmailType")]
     [InverseProperty("Emails")]
     public virtual EmailType EmailTypeNavigation { get; set; }

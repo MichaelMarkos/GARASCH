@@ -81,15 +81,6 @@ public partial class Currency
     public virtual ICollection<PricingExtraCost> PricingExtraCostLocalCurrencies { get; set; } = new List<PricingExtraCost>();
 
     [InverseProperty("Currency")]
-    public virtual ICollection<ProjectCheque> ProjectCheques { get; set; } = new List<ProjectCheque>();
-
-    [InverseProperty("Currency")]
-    public virtual ICollection<ProjectLetterOfCredit> ProjectLetterOfCredits { get; set; } = new List<ProjectLetterOfCredit>();
-
-    [InverseProperty("Currency")]
-    public virtual ICollection<ProjectPaymentTerm> ProjectPaymentTerms { get; set; } = new List<ProjectPaymentTerm>();
-
-    [InverseProperty("Currency")]
     public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
 
     [InverseProperty("Currency")]

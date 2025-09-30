@@ -126,8 +126,4 @@ public partial class WorkingHourseTracking
     [ForeignKey("ShiftId")]
     [InverseProperty("WorkingHourseTrackings")]
     public virtual BranchSchedule Shift { get; set; }
-
-    [ForeignKey("TaskId")]
-    [InverseProperty("WorkingHourseTrackings")]
-    public virtual Task Task { get; set; }
 }

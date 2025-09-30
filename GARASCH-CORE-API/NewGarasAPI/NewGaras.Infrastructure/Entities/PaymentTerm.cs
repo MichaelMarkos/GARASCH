@@ -15,7 +15,4 @@ public partial class PaymentTerm
     [Required]
     [StringLength(50)]
     public string PaymentTermName { get; set; }
-
-    [InverseProperty("PaymentTerm")]
-    public virtual ICollection<ProjectPaymentTerm> ProjectPaymentTerms { get; set; } = new List<ProjectPaymentTerm>();
 }

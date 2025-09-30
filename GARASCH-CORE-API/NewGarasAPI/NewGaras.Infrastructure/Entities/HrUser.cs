@@ -107,6 +107,12 @@ public partial class HrUser
     [Column(TypeName = "datetime")]
     public DateTime? AcademicYearDate { get; set; }
 
+    [Column(TypeName = "decimal(18, 8)")]
+    public decimal? Latitude { get; set; }
+
+    [Column(TypeName = "decimal(18, 8)")]
+    public decimal? Longtitud { get; set; }
+
     [InverseProperty("HrUser")]
     public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
 
@@ -122,6 +128,21 @@ public partial class HrUser
     public virtual Church ChurchOfPresence { get; set; }
 
     [InverseProperty("HrUser")]
+    public virtual ICollection<CompetitionDayUser> CompetitionDayUsers { get; set; } = new List<CompetitionDayUser>();
+
+    [InverseProperty("Lecturer")]
+    public virtual ICollection<CompetitionDay> CompetitionDays { get; set; } = new List<CompetitionDay>();
+
+    [InverseProperty("HrUser")]
+    public virtual ICollection<CompetitionMemberAdmin> CompetitionMemberAdmins { get; set; } = new List<CompetitionMemberAdmin>();
+
+    [InverseProperty("HrUser")]
+    public virtual ICollection<CompetitionUser> CompetitionUsers { get; set; } = new List<CompetitionUser>();
+
+    [InverseProperty("HrUser")]
+    public virtual ICollection<Competition> Competitions { get; set; } = new List<Competition>();
+
+    [InverseProperty("HrUser")]
     public virtual ICollection<ContractDetail> ContractDetails { get; set; } = new List<ContractDetail>();
 
     [InverseProperty("HrUser")]
@@ -130,6 +151,9 @@ public partial class HrUser
     [ForeignKey("CreatedById")]
     [InverseProperty("HrUserCreatedBies")]
     public virtual User CreatedBy { get; set; }
+
+    [InverseProperty("HrUser")]
+    public virtual ICollection<CurrentStudent> CurrentStudents { get; set; } = new List<CurrentStudent>();
 
     [InverseProperty("Doctor")]
     public virtual ICollection<DoctorSchedule> DoctorSchedules { get; set; } = new List<DoctorSchedule>();
@@ -190,6 +214,12 @@ public partial class HrUser
     [InverseProperty("HrUsers")]
     public virtual Nationality Nationality { get; set; }
 
+    [InverseProperty("CreationByNavigation")]
+    public virtual ICollection<Notice> Notices { get; set; } = new List<Notice>();
+
+    [InverseProperty("HrUser")]
+    public virtual ICollection<Otp> Otps { get; set; } = new List<Otp>();
+
     [InverseProperty("HrUser")]
     public virtual ICollection<Payroll> Payrolls { get; set; } = new List<Payroll>();
 
@@ -201,11 +231,35 @@ public partial class HrUser
     public virtual ICollection<ProjectProgressUser> ProjectProgressUsers { get; set; } = new List<ProjectProgressUser>();
 
     [InverseProperty("HrUser")]
+    public virtual ICollection<ResultControlForProgram> ResultControlForPrograms { get; set; } = new List<ResultControlForProgram>();
+
+    [InverseProperty("HrUser")]
+    public virtual ICollection<ResultControlForStudent> ResultControlForStudents { get; set; } = new List<ResultControlForStudent>();
+
+    [InverseProperty("HrUser")]
+    public virtual ICollection<ResultControl> ResultControls { get; set; } = new List<ResultControl>();
+
+    [InverseProperty("HrUser")]
     public virtual ICollection<Salary> Salaries { get; set; } = new List<Salary>();
+
+    [InverseProperty("HrUser")]
+    public virtual ICollection<Subject> Subjects { get; set; } = new List<Subject>();
+
+    [InverseProperty("HrUser")]
+    public virtual ICollection<TransportationVehicleRouteEmployeeException> TransportationVehicleRouteEmployeeExceptions { get; set; } = new List<TransportationVehicleRouteEmployeeException>();
+
+    [InverseProperty("HrUser")]
+    public virtual ICollection<TransportationVehicleRouteEmployee> TransportationVehicleRouteEmployees { get; set; } = new List<TransportationVehicleRouteEmployee>();
+
+    [InverseProperty("HrUser")]
+    public virtual ICollection<UploadFilebyStudent> UploadFilebyStudents { get; set; } = new List<UploadFilebyStudent>();
 
     [ForeignKey("UserId")]
     [InverseProperty("HrUserUsers")]
     public virtual User User { get; set; }
+
+    [InverseProperty("HrUser")]
+    public virtual ICollection<UserDepartment> UserDepartments { get; set; } = new List<UserDepartment>();
 
     [InverseProperty("HrUser")]
     public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();

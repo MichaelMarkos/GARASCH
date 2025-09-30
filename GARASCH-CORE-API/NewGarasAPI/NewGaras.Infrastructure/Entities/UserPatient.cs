@@ -41,6 +41,12 @@ public partial class UserPatient
     [StringLength(520)]
     public string Description { get; set; }
 
+    [StringLength(50)]
+    public string Mobile { get; set; }
+
+    [StringLength(50)]
+    public string LandLine { get; set; }
+
     [ForeignKey("AreaId")]
     [InverseProperty("UserPatients")]
     public virtual Area Area { get; set; }

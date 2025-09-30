@@ -194,12 +194,6 @@ public partial class Client
     public virtual Currency OpeningBalanceCurrency { get; set; }
 
     [InverseProperty("Client")]
-    public virtual ICollection<ProjectTmrevision> ProjectTmrevisions { get; set; } = new List<ProjectTmrevision>();
-
-    [InverseProperty("Client")]
-    public virtual ICollection<ProjectTm> ProjectTms { get; set; } = new List<ProjectTm>();
-
-    [InverseProperty("Client")]
     public virtual ICollection<ReservationInvoice> ReservationInvoices { get; set; } = new List<ReservationInvoice>();
 
     [InverseProperty("Client")]

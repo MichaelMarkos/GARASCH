@@ -18,7 +18,4 @@ public partial class ChequeCashingStatus
     public string Status { get; set; }
 
     public bool Active { get; set; }
-
-    [InverseProperty("ChequeChashingStatus")]
-    public virtual ICollection<ProjectCheque> ProjectCheques { get; set; } = new List<ProjectCheque>();
 }

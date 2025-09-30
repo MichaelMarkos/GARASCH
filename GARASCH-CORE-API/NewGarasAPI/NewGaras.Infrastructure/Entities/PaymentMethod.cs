@@ -21,8 +21,5 @@ public partial class PaymentMethod
     public virtual ICollection<MedicalReservation> MedicalReservations { get; set; } = new List<MedicalReservation>();
 
     [InverseProperty("PaymentMethod")]
-    public virtual ICollection<ProjectInvoiceCollected> ProjectInvoiceCollecteds { get; set; } = new List<ProjectInvoiceCollected>();
-
-    [InverseProperty("PaymentMethod")]
     public virtual ICollection<Salary> Salaries { get; set; } = new List<Salary>();
 }
