@@ -21,8 +21,8 @@ public partial class Notice
 
     public DateTime? Date { get; set; }
 
-    [Column("receiverType")]
-    public int? ReceiverType { get; set; }
+    [Column("receiverTypeId")]
+    public int? ReceiverTypeId { get; set; }
 
     public int? CompetitionId { get; set; }
 
@@ -38,4 +38,8 @@ public partial class Notice
 
     [InverseProperty("Notices")]
     public virtual ICollection<NoticeSpecailDeptAndLevel> NoticeSpecailDeptAndLevels { get; set; } = new List<NoticeSpecailDeptAndLevel>();
+
+    [ForeignKey("ReceiverTypeId")]
+    [InverseProperty("Notices")]
+    public virtual ReceiverType ReceiverType { get; set; }
 }

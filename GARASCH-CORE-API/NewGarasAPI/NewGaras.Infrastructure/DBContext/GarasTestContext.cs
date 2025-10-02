@@ -9,6 +9,7 @@ namespace NewGaras.Infrastructure.DBContext;
 
 public partial class GarasTestContext : DbContext
 {
+
     public string TenantId { get; set; }
     private readonly ITenantService _tenantService;
     public GarasTestContext(ITenantService tenantService)
@@ -23,6 +24,7 @@ public partial class GarasTestContext : DbContext
         _tenantService=tenantService;
         TenantId=_tenantService.GetTenant()?.TID;
     }
+
 
 
     public virtual DbSet<AcademicYear> AcademicYears { get; set; }
@@ -565,6 +567,8 @@ public partial class GarasTestContext : DbContext
 
     public virtual DbSet<Rate> Rates { get; set; }
 
+    public virtual DbSet<ReceiverType> ReceiverTypes { get; set; }
+
     public virtual DbSet<Region> Regions { get; set; }
 
     public virtual DbSet<Relationship> Relationships { get; set; }
@@ -1000,7 +1004,6 @@ public partial class GarasTestContext : DbContext
     public virtual DbSet<WorkshopStation> WorkshopStations { get; set; }
 
     public virtual DbSet<Year> Years { get; set; }
-
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -3249,7 +3252,9 @@ public partial class GarasTestContext : DbContext
 
         modelBuilder.Entity<Notice>(entity =>
         {
-            entity.Property(e => e.ReceiverType).HasDefaultValue(0);
+            entity.Property(e => e.ReceiverTypeId).HasDefaultValue(0);
+
+            entity.HasOne(d => d.ReceiverType).WithMany(p => p.Notices).HasConstraintName("FK_Notices_ReceiverType");
         });
 
         modelBuilder.Entity<Notification>(entity =>

@@ -6,14 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NewGaras.Infrastructure.Entities;
 
-public partial class Dept
+[Table("ReceiverType")]
+public partial class ReceiverType
 {
     [Key]
     public int Id { get; set; }
 
     [Required]
+    [StringLength(100)]
     public string Name { get; set; }
 
-    [InverseProperty("Deptartment")]
-    public virtual ICollection<Specialdept> Specialdepts { get; set; } = new List<Specialdept>();
+    [InverseProperty("ReceiverType")]
+    public virtual ICollection<Notice> Notices { get; set; } = new List<Notice>();
 }
