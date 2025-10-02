@@ -1,31 +1,33 @@
-using Microsoft.EntityFrameworkCore;
-using NewGarasAPI.Models;
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
-using NewGarasAPI.Hubs;
 using Microsoft.AspNetCore.SignalR;
-using NewGaras.Infrastructure.Entities;
-using NewGaras.Infrastructure.DBContext;
-using NewGaras.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using NewGaras.Domain.Interfaces.ServicesInterfaces;
-using NewGaras.Domain.Services;
 using NewGaras.Domain.Mappers;
-using NewGaras.Infrastructure.Interfaces.ServicesInterfaces;
-using NewGaras.Infrastructure.Models.Mail;
-using NewGaras.Infrastructure.Helper.TenantService;
-using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.BYCompany;
-using NewGaras.Domain.Services.BYCompany;
-using Org.BouncyCastle.Crypto.Tls;
-using NewGaras.Domain.Services.Purchasing;
-using NewGaras.Infrastructure.Models.EmailTool;
-using NewGaras.Domain.Services.ContractExtensionJob;
+using NewGaras.Domain.Services;
 using NewGaras.Domain.Services.ApplicationsVersion;
-using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Medical;
-using NewGaras.Domain.Services.Medical;
-using NewGaras.Infrastructure.Interfaces.Library;
-using NewGaras.Domain.Services.Library;
-using NewGaras.Domain.Services.Family;
-using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Church;
+using NewGaras.Domain.Services.BYCompany;
 using NewGaras.Domain.Services.ChurchAndPriest;
+using NewGaras.Domain.Services.ContractExtensionJob;
+using NewGaras.Domain.Services.Family;
+using NewGaras.Domain.Services.Library;
+using NewGaras.Domain.Services.LMS;
+using NewGaras.Domain.Services.Medical;
+using NewGaras.Domain.Services.Purchasing;
+using NewGaras.Infrastructure;
+using NewGaras.Infrastructure.DBContext;
+using NewGaras.Infrastructure.Entities;
+using NewGaras.Infrastructure.Helper.TenantService;
+using NewGaras.Infrastructure.Interfaces.Library;
+using NewGaras.Infrastructure.Interfaces.LMS;
+using NewGaras.Infrastructure.Interfaces.ServicesInterfaces;
+using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.BYCompany;
+using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Church;
+using NewGaras.Infrastructure.Interfaces.ServicesInterfaces.Medical;
+using NewGaras.Infrastructure.Models.EmailTool;
+using NewGaras.Infrastructure.Models.Mail;
+using NewGarasAPI.Hubs;
+using NewGarasAPI.Models;
+using Org.BouncyCastle.Crypto.Tls;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -115,6 +117,8 @@ builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IMedicalFinancialService, MedicalFinancialService>();
 //-----------------------------------------------Library------------------------------
 builder.Services.AddScoped<ILibraryService, LibraryService>();
+//-----------------------------------------------LMS------------------------------
+builder.Services.AddScoped<IAuthLMsService , AuthLMSService>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -168,6 +172,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
 }
 
 app.UseHttpsRedirection();

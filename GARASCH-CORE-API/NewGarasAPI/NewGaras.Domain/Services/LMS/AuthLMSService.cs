@@ -362,7 +362,79 @@ namespace NewGaras.Domain.Services.LMS
             return response;
         }
 
+        public async Task<BaseResponseWithData<IEnumerable<CompetitorUserInfoDTO>>> GetUserRoleAdminCometitionListAsync()
+        {
+            var Response = new BaseResponseWithData<IEnumerable<CompetitorUserInfoDTO>>();
+            Response.Result = true;
+            Response.Errors = new List<Error>();
+            try
+            {
+                IEnumerable<CompetitorUserInfoDTO> data = new List<CompetitorUserInfoDTO>();
+                var UserIdsInadminCompetitionRole = _unitOfWork.UserRoles.FindAll(x => x.Role.Name == "adminCompetition", new[] { "Role" }).Select(u=>u.UserId);
+                var HrUsers = _unitOfWork.HrUsers.FindAll(x => UserIdsInadminCompetitionRole.Contains(x.Id) , new[] { "HrUserMobiles" } );
 
+                if (HrUsers.Count() > 0)
+                {
+                    data = HrUsers.Select(user => new CompetitorUserInfoDTO
+                    {
+                        UserId = user.Id,
+                        PhoneNumber = user.HrUserMobiles != null && user.HrUserMobiles.Any() ? user.HrUserMobiles.First().MobileNumber   : string.Empty,
+                        UserPhoto = user.ImgPath != null ? BaseURL + user.ImgPath : "",
+                    }).ToList();
+                }
+                Response.Data = data;
+            }
+            catch (Exception ex)
+            {
+                Response.Result = false;
+                Error error = new Error();
+                error.ErrorCode = "Err10";
+                error.ErrorMSG = ex.InnerException.Message;
+                Response.Errors.Add(error);
+                return Response;
+            }
+            return Response;
+        }
+
+        public double Haversine(double lat1, double lon1, double lat2, double lon2)
+        {
+            // Radius of the Earth in kilometers
+            const double R = 6371.0;
+
+            // Convert latitude and longitude from degrees to radians
+            double lat1Rad = DegreesToRadians(lat1);
+            double lon1Rad = DegreesToRadians(lon1);
+            double lat2Rad = DegreesToRadians(lat2);
+            double lon2Rad = DegreesToRadians(lon2);
+
+            // Difference in coordinates
+            double dLat;
+            double dLon;
+            if (lat2Rad > lat1Rad)
+            { dLat = lat2Rad - lat1Rad; }
+            else
+            { dLat = lat1Rad - lat2Rad; }
+            if (lon2Rad > lon1Rad)
+            { dLon = lon2Rad - lon1Rad; }
+            else
+            { dLon = lon1Rad - lon2Rad; }
+
+
+            // Haversine formula
+            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                       Math.Cos(lat1Rad) * Math.Cos(lat2Rad) *
+                       Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+            // Distance in kilometersمش
+
+            return ((R * c) * 1000);
+        }
+        public static double DegreesToRadians(double degrees)
+        {
+            return degrees * (Math.PI / 180);
+        }
 
     }
 }

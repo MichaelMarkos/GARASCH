@@ -5,7 +5,7 @@ namespace NewGaras.Infrastructure.DTO.LMS
     public class CompetitorUserInfoDTO
     {
         public string UserPhoto { get; set; }
-        public string UserId { get; set; }
+        public long UserId { get; set; }
         public string UserName { get; set; }
         public string FullName { get; set; }
         public bool Active { get; set; }

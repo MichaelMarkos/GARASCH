@@ -506,6 +506,9 @@ namespace NewGaras.Infrastructure
         IBaseRepository<Programm , int> Programm { get; }
         IBaseRepository<ResultControlForProgram , int> ResultControlForPrograms { get; }
         IBaseRepository<ResultControlForStudent , int> ResultControlForStudents { get; }
+        IBaseRepository<CompetitionDayResource , int> CompetitionDayResources { get; }
+        IBaseRepository<UploadFilebyStudent , int> UploadFilebyStudent { get; }
+        IBaseRepository<NoticeSpecailDeptAndLevel , int> NoticeSpecailDeptAndLevel { get; }
 
         //----------------------------------------------------------------------------------
         int Complete();

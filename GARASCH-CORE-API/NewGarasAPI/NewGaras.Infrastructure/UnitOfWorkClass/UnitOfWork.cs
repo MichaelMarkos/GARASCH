@@ -515,6 +515,9 @@ namespace NewGaras.Infrastructure
         public IBaseRepository<Programm , int> Programm { get; private set; }
         public IBaseRepository<ResultControlForProgram , int> ResultControlForPrograms { get; private set; }
         public IBaseRepository<ResultControlForStudent , int> ResultControlForStudents { get; private set; }
+        public IBaseRepository<CompetitionDayResource , int> CompetitionDayResources { get; private set; }
+        public IBaseRepository<UploadFilebyStudent , int> UploadFilebyStudent { get; private set; }
+        public IBaseRepository<NoticeSpecailDeptAndLevel , int> NoticeSpecailDeptAndLevel { get; private set; }
 
 
 
@@ -1007,6 +1010,9 @@ public IBaseRepository<AttendenceNPayrollSettings, int> AttendenceNPayrollSettin
             Programm=new BaseRepository<Programm , int>(_context);
             ResultControlForPrograms=new BaseRepository<ResultControlForProgram , int>(_context);
             ResultControlForStudents=new BaseRepository<ResultControlForStudent , int>(_context);
+            CompetitionDayResources=new BaseRepository<CompetitionDayResource , int>(_context);
+            UploadFilebyStudent=new BaseRepository<UploadFilebyStudent , int>(_context);
+            NoticeSpecailDeptAndLevel=new BaseRepository<NoticeSpecailDeptAndLevel , int>(_context);
 
 
             //--------------------------------------------------------------------------------------------

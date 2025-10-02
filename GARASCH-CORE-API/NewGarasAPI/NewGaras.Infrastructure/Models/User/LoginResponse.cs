@@ -36,7 +36,7 @@ namespace NewGarasAPI.Models.User
         int? localCurrencyId;
         string localCurrencyName;
         bool allowLocationTracking;
-
+        
 
         [DataMember]
         public bool AllowLocationTracking

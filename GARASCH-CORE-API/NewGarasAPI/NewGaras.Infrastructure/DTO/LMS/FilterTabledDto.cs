@@ -34,5 +34,34 @@ namespace NewGaras.Infrastructure.DTO.LMS
         public decimal? FromScore { get; set; }    //new
         public decimal? UserScore { get; set; }    //new
     }
+    public class FilterTabledDto2
+    {
+        public int CompetitionDayId { get; set; }
+        public int CompetitionId { get; set; }
+        public string Name { get; set; }
+        public string? NameCompetition { get; set; }
+        [Required]
+        public DateTime? From { get; set; }
+
+        [Required]
+        public DateTime? To { get; set; }
+        public int? NumberOfStudents { get; set; }
+        public int? NumberOfAttendce { get; set; }
+        public int? hallid { get; set; }
+        public string? hallName { get; set; }
+        public string Location { get; set; }
+        public string specialDeptName { get; set; }
+        public string levelName { get; set; }
+        public string NameOfDoctor { get; set; }
+        public DateTime? date { get; set; }
+        public string? ImagePath { get; set; }
+
+    }
+    public class FilterTabledDto3
+    {
+        public DateTime? datetime { get; set; }
+        public List<FilterTabledDto2> Allcompetitionday { get; set; }
+    }
+
 
 }
