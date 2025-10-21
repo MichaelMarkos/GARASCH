@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NewGaras.Infrastructure.Entities;
 using NewGaras.Infrastructure.Helper.TenantService;
-using System;
-using System.Collections.Generic;
 using Type = NewGaras.Infrastructure.Entities.Type;
 
 namespace NewGaras.Infrastructure.DBContext;

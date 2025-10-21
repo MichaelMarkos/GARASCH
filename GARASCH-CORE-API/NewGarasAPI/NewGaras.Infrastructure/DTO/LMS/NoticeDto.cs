@@ -15,7 +15,7 @@ namespace NewGaras.Infrastructure.DTO.LMS
         public int? AcademicYearId { get; set; }
         public int? CompetitionId { get; set; }
         public bool? NewsOrAlertsFlag { get; set; }
-       // public ReceiverType TypeId { get; set; }
+        public int TypeId { get; set; }
 
     }
 }

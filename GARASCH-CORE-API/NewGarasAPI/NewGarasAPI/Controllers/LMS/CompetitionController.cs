@@ -170,7 +170,6 @@ namespace NewGarasAPI.Controllers.LMS
                 error.ErrorCode="Err10";
                 error.errorMSG=ex.InnerException!=null ? ex.InnerException.Message : ex.Message;
                 Response.Errors.Add(error);
-
                 return BadRequest(Response);
             }
         }
@@ -3626,7 +3625,7 @@ namespace NewGarasAPI.Controllers.LMS
                         error.ErrorCode="Err10";
                         error.ErrorMSG="هذا المستخدم غير موجود";
                         Response.Errors.Add(error);
-
+                        return BadRequest(Response);
                     }
 
                     var userRoles = _unitOfWork.UserRoles.FindAllQueryable(x=>x.Id > 0 ,new[]{"Role"}).Select(n=>n.Role.Name);

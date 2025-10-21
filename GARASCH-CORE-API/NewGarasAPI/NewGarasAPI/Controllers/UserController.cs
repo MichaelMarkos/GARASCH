@@ -460,6 +460,11 @@ namespace NewGarasAPI.Controllers
                                     response.CompanyInfo = ClientInfo.Name;
                                     //response.CompanyImg = baseURL + ClientInfo.Logo;
                                 }
+
+                                // gt hrUser 
+                                response.HrUser = _Context.HrUsers.Where(x=>x.UserId ==CheckUserDB.Id).Select(i=>i.Id).FirstOrDefault();
+
+
                                 return response;
                             }
 

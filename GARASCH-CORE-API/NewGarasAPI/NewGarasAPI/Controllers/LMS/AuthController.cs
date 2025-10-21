@@ -118,8 +118,8 @@ namespace NewGarasAPI.Controllers.LMS
                 return BadRequest(response);
             }
         }
-        [Authorize]
-        [HttpPost("StudentInfo")] //new controll
+       // [Authorize]
+        [HttpGet("StudentInfo")] //new controll
         public async Task<IActionResult> StudentInfo([FromHeader] long HrUserId)
         {
             BaseResponseWithData<YearInfoDto> Response = new BaseResponseWithData<YearInfoDto>();
